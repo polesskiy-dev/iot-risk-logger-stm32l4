@@ -108,58 +108,6 @@
         )
       )
     )
-    (symbol "Connector:TestPoint_Probe" (pin_numbers hide) (pin_names (offset 0.762) hide) (in_bom yes) (on_board yes)
-      (property "Reference" "TP" (at 1.651 5.842 0)
-        (effects (font (size 1.27 1.27)))
-      )
-      (property "Value" "TestPoint_Probe" (at 1.651 4.064 0)
-        (effects (font (size 1.27 1.27)))
-      )
-      (property "Footprint" "" (at 5.08 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (property "Datasheet" "~" (at 5.08 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (property "ki_keywords" "test point tp" (at 0 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (property "ki_description" "test point (alternative probe-style design)" (at 0 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (property "ki_fp_filters" "Pin* Test*" (at 0 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (symbol "TestPoint_Probe_0_1"
-        (polyline
-          (pts
-            (xy 1.27 0.762)
-            (xy 0 0)
-            (xy 0.762 1.27)
-            (xy 1.27 0.762)
-          )
-          (stroke (width 0) (type default))
-          (fill (type outline))
-        )
-        (polyline
-          (pts
-            (xy 1.397 0.635)
-            (xy 0.635 1.397)
-            (xy 2.413 3.175)
-            (xy 3.175 2.413)
-            (xy 1.397 0.635)
-          )
-          (stroke (width 0) (type default))
-          (fill (type background))
-        )
-      )
-      (symbol "TestPoint_Probe_1_1"
-        (pin passive line (at 0 0 90) (length 0)
-          (name "1" (effects (font (size 1.27 1.27))))
-          (number "1" (effects (font (size 1.27 1.27))))
-        )
-      )
-    )
     (symbol "Connector:USB_C_Receptacle_USB2.0" (pin_names (offset 1.016)) (in_bom yes) (on_board yes)
       (property "Reference" "J" (at -10.16 19.05 0)
         (effects (font (size 1.27 1.27)) (justify left))
@@ -3078,13 +3026,6 @@
       (effects (font (size 1.27 1.27)) (justify right) hide)
     )
   )
-  (global_label "SCL" (shape input) (at 196.85 106.68 0) (fields_autoplaced)
-    (effects (font (size 1.27 1.27)) (justify left))
-    (uuid 8b96d570-c125-4c9f-b7f7-5914c4d537e0)
-    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 202.7707 106.7594 0)
-      (effects (font (size 1.27 1.27)) (justify left) hide)
-    )
-  )
   (global_label "_TEMP_RESET" (shape input) (at 334.01 50.8 180) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
     (uuid 8cb9d027-f19a-492d-b7f3-d955ca32b2cf)
@@ -3132,13 +3073,6 @@
     (uuid a598f647-99bc-47d6-b6af-047f458facb6)
     (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 227.1872 50.8 0)
       (effects (font (size 1.27 1.27)) (justify right) hide)
-    )
-  )
-  (global_label "SDA" (shape bidirectional) (at 196.85 102.87 0) (fields_autoplaced)
-    (effects (font (size 1.27 1.27)) (justify left))
-    (uuid a9d932ef-b932-46aa-ae83-76655947e794)
-    (property "Intersheetrefs" "${INTERSHEET_REFS}" (at 202.8312 102.7906 0)
-      (effects (font (size 1.27 1.27)) (justify left) hide)
     )
   )
   (global_label "_LED" (shape input) (at 240.03 123.19 180) (fields_autoplaced)
@@ -3243,7 +3177,7 @@
   (symbol (lib_id "power:GND") (at 82.55 66.04 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 01f8b056-2653-4c55-aadf-5a015c9a1fc7)
-    (property "Reference" "#PWR015" (at 82.55 72.39 0)
+    (property "Reference" "#PWR024" (at 82.55 72.39 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 82.55 71.12 0)
@@ -3259,7 +3193,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR015") (unit 1)
+          (reference "#PWR024") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -3273,7 +3207,7 @@
   (symbol (lib_id "power:GND") (at 351.79 228.6 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 02af6b7a-bdb8-4174-85f2-e3f6910daa46)
-    (property "Reference" "#PWR02" (at 351.79 234.95 0)
+    (property "Reference" "#PWR053" (at 351.79 234.95 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 351.79 233.68 0)
@@ -3289,7 +3223,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR02") (unit 1)
+          (reference "#PWR053") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -3343,7 +3277,7 @@
   (symbol (lib_id "Device:C") (at 36.83 52.07 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 07d8e25f-a4c2-4d97-b554-4bd35018babc)
-    (property "Reference" "C2" (at 30.48 50.8 0)
+    (property "Reference" "C6" (at 30.48 50.8 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "100n" (at 29.21 53.34 0)
@@ -3369,7 +3303,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "C2") (unit 1)
+          (reference "C6") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -3383,7 +3317,7 @@
   (symbol (lib_id "power:GND") (at 121.92 172.72 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 09524cbb-09a8-4e1b-9b04-a95ca93812e0)
-    (property "Reference" "#PWR060" (at 121.92 179.07 0)
+    (property "Reference" "#PWR045" (at 121.92 179.07 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 121.92 177.8 0)
@@ -3399,7 +3333,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR060") (unit 1)
+          (reference "#PWR045") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -3455,7 +3389,7 @@
   (symbol (lib_name "GND_1") (lib_id "power:GND") (at 74.93 218.44 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 0baa82aa-3248-4dd3-9ddf-579321325863)
-    (property "Reference" "#PWR046" (at 74.93 224.79 0)
+    (property "Reference" "#PWR052" (at 74.93 224.79 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 74.93 223.52 0)
@@ -3471,7 +3405,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR046") (unit 1)
+          (reference "#PWR052") (unit 1)
         )
       )
     )
@@ -3480,7 +3414,7 @@
   (symbol (lib_id "power:+3V0") (at 69.85 109.22 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 0bffc2e8-2aa4-4a23-9b34-65c7ac68b408)
-    (property "Reference" "#PWR036" (at 69.85 113.03 0)
+    (property "Reference" "#PWR035" (at 69.85 113.03 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3V0" (at 69.85 104.14 0)
@@ -3496,7 +3430,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR036") (unit 1)
+          (reference "#PWR035") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -3510,13 +3444,13 @@
   (symbol (lib_id "Regulator_Linear:L78L33_SOT89") (at 113.03 104.14 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 0eda0e2a-f99f-4f24-9e06-d322a0bca71e)
-    (property "Reference" "U7" (at 113.03 97.79 0)
+    (property "Reference" "U5" (at 113.03 97.79 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "L78L33ABUTR" (at 113.03 100.33 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "Package_TO_SOT_SMD:SOT-89-3_Handsoldering" (at 113.03 99.06 0)
+    (property "Footprint" "Package_TO_SOT_SMD:SOT-89-3" (at 113.03 99.06 0)
       (effects (font (size 1.27 1.27) italic) hide)
     )
     (property "Datasheet" "http://www.st.com/content/ccc/resource/technical/document/datasheet/15/55/e5/aa/23/5b/43/fd/CD00000446.pdf/files/CD00000446.pdf/jcr:content/translations/en.CD00000446.pdf" (at 113.03 105.41 0)
@@ -3537,7 +3471,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "U7") (unit 1)
+          (reference "U5") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -3551,7 +3485,7 @@
   (symbol (lib_id "Device:C") (at 377.19 50.8 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 0f4a1f14-8270-4dee-8765-7bf06b54aa3d)
-    (property "Reference" "C13" (at 379.73 49.53 0)
+    (property "Reference" "C4" (at 379.73 49.53 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "100n" (at 379.73 52.07 0)
@@ -3577,7 +3511,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "C13") (unit 1)
+          (reference "C4") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -3591,7 +3525,7 @@
   (symbol (lib_id "Device:C") (at 69.85 123.19 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 124bfb20-4003-418f-a68f-5f4e2aa5e6e3)
-    (property "Reference" "C14" (at 72.39 121.92 0)
+    (property "Reference" "C9" (at 72.39 121.92 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "100n" (at 72.39 124.46 0)
@@ -3617,7 +3551,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "C14") (unit 1)
+          (reference "C9") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -3631,7 +3565,7 @@
   (symbol (lib_id "power:GND") (at 111.76 172.72 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 13ff209e-e365-41df-92ac-f26d4fa9333e)
-    (property "Reference" "#PWR021" (at 111.76 179.07 0)
+    (property "Reference" "#PWR044" (at 111.76 179.07 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 111.76 177.8 0)
@@ -3647,7 +3581,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR021") (unit 1)
+          (reference "#PWR044") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -3692,7 +3626,7 @@
   (symbol (lib_id "power:GND") (at 46.99 66.04 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 14746d3d-129a-4d2c-8293-c941990d3c01)
-    (property "Reference" "#PWR08" (at 46.99 72.39 0)
+    (property "Reference" "#PWR023" (at 46.99 72.39 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 46.99 71.12 0)
@@ -3708,7 +3642,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR08") (unit 1)
+          (reference "#PWR023") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -3722,7 +3656,7 @@
   (symbol (lib_id "power:GND") (at 190.5 261.62 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 14a655e8-3cb4-4cab-9cbe-af2212b6db77)
-    (property "Reference" "#PWR040" (at 190.5 267.97 0)
+    (property "Reference" "#PWR058" (at 190.5 267.97 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 190.5 266.7 0)
@@ -3738,7 +3672,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR040") (unit 1)
+          (reference "#PWR058") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -3752,7 +3686,7 @@
   (symbol (lib_id "power:GND") (at 377.19 60.96 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 152f75a4-f5c9-4600-9ca3-d648fb6461d1)
-    (property "Reference" "#PWR035" (at 377.19 67.31 0)
+    (property "Reference" "#PWR019" (at 377.19 67.31 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 377.19 66.04 0)
@@ -3768,7 +3702,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR035") (unit 1)
+          (reference "#PWR019") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -3823,7 +3757,7 @@
   (symbol (lib_id "OPT3001DNPR:OPT3001DNPR") (at 248.92 50.8 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 1b55c7a2-fdba-4ea8-ac38-26d9c0c88a1c)
-    (property "Reference" "U4" (at 248.92 33.02 0)
+    (property "Reference" "U2" (at 248.92 33.02 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "OPT3001DNPR" (at 248.92 35.56 0)
@@ -3857,7 +3791,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "U4") (unit 1)
+          (reference "U2") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -3871,7 +3805,7 @@
   (symbol (lib_id "Device:LED") (at 242.57 116.84 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 1b6673f0-0923-4de2-9908-0a5aee5a8016)
-    (property "Reference" "D1" (at 246.38 117.1574 90)
+    (property "Reference" "D2" (at 246.38 117.1574 90)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "LED" (at 246.38 119.6974 90)
@@ -3897,7 +3831,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "D1") (unit 1)
+          (reference "D2") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -3911,7 +3845,7 @@
   (symbol (lib_id "power:+3V0") (at 281.94 38.1 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 1be6257c-431b-433f-a5b7-b7bf6587257a)
-    (property "Reference" "#PWR029" (at 281.94 41.91 0)
+    (property "Reference" "#PWR09" (at 281.94 41.91 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3V0" (at 281.94 33.02 0)
@@ -3927,7 +3861,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR029") (unit 1)
+          (reference "#PWR09") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -3941,7 +3875,7 @@
   (symbol (lib_id "Sensor_Motion:LIS2DE12") (at 82.55 53.34 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 1c5db861-2a88-42ff-a856-88e4d53b3f71)
-    (property "Reference" "U8" (at 84.7441 66.04 0)
+    (property "Reference" "U4" (at 84.7441 66.04 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "LIS2DW12" (at 84.7441 68.58 0)
@@ -3977,7 +3911,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "U8") (unit 1)
+          (reference "U4") (unit 1)
         )
       )
     )
@@ -4029,7 +3963,7 @@
   (symbol (lib_id "ST25DV64K-IER8T3:ST25DV64K-IER8T3") (at 144.78 40.64 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 2288cbe8-0348-4fa0-ad56-dd3a18e6df92)
-    (property "Reference" "U3" (at 161.29 33.02 0)
+    (property "Reference" "U1" (at 161.29 33.02 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "ST25DV04K" (at 161.29 35.56 0)
@@ -4064,7 +3998,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "U3") (unit 1)
+          (reference "U1") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -4078,7 +4012,7 @@
   (symbol (lib_id "power:+3V0") (at 123.19 101.6 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 230a34c8-22f9-4989-9d92-c59c838d6d1f)
-    (property "Reference" "#PWR056" (at 123.19 105.41 0)
+    (property "Reference" "#PWR027" (at 123.19 105.41 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3V0" (at 123.19 96.52 0)
@@ -4094,7 +4028,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR056") (unit 1)
+          (reference "#PWR027") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -4108,7 +4042,7 @@
   (symbol (lib_id "Device:C") (at 322.58 151.13 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 281a79f4-3888-4bef-9b82-36e43b3d4fb4)
-    (property "Reference" "C19" (at 325.12 149.86 0)
+    (property "Reference" "C10" (at 325.12 149.86 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "4n7" (at 325.12 152.4 0)
@@ -4134,7 +4068,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "C19") (unit 1)
+          (reference "C10") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -4148,7 +4082,7 @@
   (symbol (lib_id "power:GND") (at 372.11 104.14 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 3037e0eb-1398-4e45-9d04-2c2a2e23793a)
-    (property "Reference" "#PWR051" (at 372.11 110.49 0)
+    (property "Reference" "#PWR030" (at 372.11 110.49 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 372.11 109.22 0)
@@ -4164,7 +4098,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR051") (unit 1)
+          (reference "#PWR030") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -4178,7 +4112,7 @@
   (symbol (lib_id "power:+3V0") (at 354.33 198.12 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 30c83b49-2a55-4b98-b0eb-c83b17e34139)
-    (property "Reference" "#PWR03" (at 354.33 201.93 0)
+    (property "Reference" "#PWR051" (at 354.33 201.93 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3V0" (at 354.33 193.04 0)
@@ -4194,7 +4128,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR03") (unit 1)
+          (reference "#PWR051") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -4208,7 +4142,7 @@
   (symbol (lib_id "power:+3V0") (at 224.79 38.1 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 337f3b67-447d-4614-a637-2d67975b92b9)
-    (property "Reference" "#PWR026" (at 224.79 41.91 0)
+    (property "Reference" "#PWR08" (at 224.79 41.91 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3V0" (at 224.79 33.02 0)
@@ -4224,7 +4158,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR026") (unit 1)
+          (reference "#PWR08") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -4238,7 +4172,7 @@
   (symbol (lib_id "power:+3V0") (at 196.85 38.1 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 33f1e237-38ca-476c-8474-749ca5d7cc78)
-    (property "Reference" "#PWR017" (at 196.85 41.91 0)
+    (property "Reference" "#PWR06" (at 196.85 41.91 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3V0" (at 196.85 33.02 0)
@@ -4254,7 +4188,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR017") (unit 1)
+          (reference "#PWR06") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -4268,7 +4202,7 @@
   (symbol (lib_id "power:GND") (at 152.4 172.72 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 38527495-2720-4f1e-b157-cc83c66aa223)
-    (property "Reference" "#PWR014" (at 152.4 179.07 0)
+    (property "Reference" "#PWR048" (at 152.4 179.07 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 152.4 177.8 0)
@@ -4284,7 +4218,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR014") (unit 1)
+          (reference "#PWR048") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -4298,7 +4232,7 @@
   (symbol (lib_id "Device:R") (at 356.87 107.95 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 3919ee7b-2c35-4ede-a218-33241a03c8fa)
-    (property "Reference" "R7" (at 360.68 106.68 0)
+    (property "Reference" "R1" (at 360.68 106.68 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "5k1" (at 361.95 109.22 0)
@@ -4324,7 +4258,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "R7") (unit 1)
+          (reference "R1") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -4338,7 +4272,7 @@
   (symbol (lib_id "power:GND") (at 46.99 135.89 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 3c9f3491-cf4d-4733-a494-1ee858caf1cd)
-    (property "Reference" "#PWR039" (at 46.99 142.24 0)
+    (property "Reference" "#PWR038" (at 46.99 142.24 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 46.99 140.97 0)
@@ -4354,7 +4288,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR039") (unit 1)
+          (reference "#PWR038") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -4368,7 +4302,7 @@
   (symbol (lib_id "Device:C") (at 142.24 168.91 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 3e82167a-030d-4f0f-9f10-57880711ccbc)
-    (property "Reference" "C4" (at 148.59 167.64 0)
+    (property "Reference" "C14" (at 148.59 167.64 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "100n" (at 149.86 170.18 0)
@@ -4394,7 +4328,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "C4") (unit 1)
+          (reference "C14") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -4408,7 +4342,7 @@
   (symbol (lib_id "power:GND") (at 142.24 60.96 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 3e8763d0-51ff-46b2-8c7b-4a661ebe8fb1)
-    (property "Reference" "#PWR022" (at 142.24 67.31 0)
+    (property "Reference" "#PWR012" (at 142.24 67.31 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 142.24 66.04 0)
@@ -4424,7 +4358,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR022") (unit 1)
+          (reference "#PWR012") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -4438,7 +4372,7 @@
   (symbol (lib_id "power:GND") (at 142.24 172.72 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 4131b2e2-6b04-4c35-b523-d272abed8937)
-    (property "Reference" "#PWR019" (at 142.24 179.07 0)
+    (property "Reference" "#PWR047" (at 142.24 179.07 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 142.24 177.8 0)
@@ -4454,7 +4388,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR019") (unit 1)
+          (reference "#PWR047") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -4508,7 +4442,7 @@
   (symbol (lib_id "Device:C") (at 132.08 168.91 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 4436a717-dbc0-4048-a537-efb3c28acc7d)
-    (property "Reference" "C7" (at 138.43 167.64 0)
+    (property "Reference" "C13" (at 138.43 167.64 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "100n" (at 139.7 170.18 0)
@@ -4534,7 +4468,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "C7") (unit 1)
+          (reference "C13") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -4548,7 +4482,7 @@
   (symbol (lib_id "power:+3V0") (at 74.93 162.56 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 46d29b5e-d8f2-4b80-9d7e-e5b548ce1a82)
-    (property "Reference" "#PWR062" (at 74.93 166.37 0)
+    (property "Reference" "#PWR042" (at 74.93 166.37 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3V0" (at 74.93 157.48 0)
@@ -4564,7 +4498,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR062") (unit 1)
+          (reference "#PWR042") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -4578,7 +4512,7 @@
   (symbol (lib_id "power:GND") (at 132.08 172.72 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 4c6688b7-07cf-4e0c-b6f7-0de44e8dbbd6)
-    (property "Reference" "#PWR018" (at 132.08 179.07 0)
+    (property "Reference" "#PWR046" (at 132.08 179.07 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 132.08 177.8 0)
@@ -4594,7 +4528,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR018") (unit 1)
+          (reference "#PWR046") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -4608,7 +4542,7 @@
   (symbol (lib_id "Device:C") (at 41.91 187.96 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 4dc50449-0b06-4f54-b22c-35ee4d05deec)
-    (property "Reference" "C18" (at 39.37 186.69 0)
+    (property "Reference" "C17" (at 39.37 186.69 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "22p" (at 39.37 189.23 0)
@@ -4634,7 +4568,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "C18") (unit 1)
+          (reference "C17") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -4648,7 +4582,7 @@
   (symbol (lib_id "power:+3V0") (at 349.25 38.1 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 5071c06f-6ac4-4039-8f6c-42863fabfc94)
-    (property "Reference" "#PWR032" (at 349.25 41.91 0)
+    (property "Reference" "#PWR010" (at 349.25 41.91 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3V0" (at 349.25 33.02 0)
@@ -4664,7 +4598,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR032") (unit 1)
+          (reference "#PWR010") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -4678,7 +4612,7 @@
   (symbol (lib_id "MCU_ST_STM32L4:STM32L412K8Tx") (at 74.93 190.5 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 50d7a95c-120c-4104-b9f8-c31656100091)
-    (property "Reference" "U1" (at 77.1241 215.9 0)
+    (property "Reference" "U7" (at 77.1241 215.9 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "STM32L412K8Tx" (at 77.1241 218.44 0)
@@ -4725,7 +4659,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "U1") (unit 1)
+          (reference "U7") (unit 1)
         )
       )
     )
@@ -4734,7 +4668,7 @@
   (symbol (lib_id "power:GND") (at 281.94 60.96 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 514e4659-1e52-4501-859c-63aef25dbe48)
-    (property "Reference" "#PWR030" (at 281.94 67.31 0)
+    (property "Reference" "#PWR016" (at 281.94 67.31 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 281.94 66.04 0)
@@ -4750,7 +4684,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR030") (unit 1)
+          (reference "#PWR016") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -4764,7 +4698,7 @@
   (symbol (lib_id "Device:R") (at 275.59 109.22 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 57b9fc84-eae2-4ca5-8111-154ac972d685)
-    (property "Reference" "R4" (at 279.4 107.95 0)
+    (property "Reference" "R5" (at 279.4 107.95 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "5k1" (at 280.67 110.49 0)
@@ -4790,7 +4724,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "R4") (unit 1)
+          (reference "R5") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -4804,7 +4738,7 @@
   (symbol (lib_id "power:GND") (at 36.83 66.04 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 5c28d7c6-b3c8-4d30-8a10-3ff0427f8bd8)
-    (property "Reference" "#PWR06" (at 36.83 72.39 0)
+    (property "Reference" "#PWR022" (at 36.83 72.39 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 36.83 71.12 0)
@@ -4820,7 +4754,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR06") (unit 1)
+          (reference "#PWR022") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -4834,7 +4768,7 @@
   (symbol (lib_id "Device:C") (at 111.76 168.91 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 5c9c435a-04a9-4726-beae-e62850c01d29)
-    (property "Reference" "C8" (at 105.41 167.64 0)
+    (property "Reference" "C11" (at 105.41 167.64 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "100n" (at 104.14 170.18 0)
@@ -4860,7 +4794,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "C8") (unit 1)
+          (reference "C11") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -4874,7 +4808,7 @@
   (symbol (lib_id "Device:C") (at 102.87 110.49 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 5e352dc6-18ba-42ad-a998-81590990d060)
-    (property "Reference" "C20" (at 100.33 109.22 0)
+    (property "Reference" "C8" (at 100.33 109.22 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "10u" (at 100.33 111.76 0)
@@ -4900,7 +4834,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "C20") (unit 1)
+          (reference "C8") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -4914,7 +4848,7 @@
   (symbol (lib_id "Device:R") (at 213.36 250.19 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 5fa8f9e9-d991-485c-b776-f22e2e5e794e)
-    (property "Reference" "R9" (at 207.01 251.46 0)
+    (property "Reference" "R8" (at 207.01 251.46 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "82k" (at 207.01 248.92 0)
@@ -4940,7 +4874,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "R9") (unit 1)
+          (reference "R8") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -4954,7 +4888,7 @@
   (symbol (lib_id "Device:C") (at 46.99 52.07 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 606b9315-cb86-4a33-9cda-13e9b82ca099)
-    (property "Reference" "C3" (at 40.64 50.8 0)
+    (property "Reference" "C7" (at 40.64 50.8 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "1u" (at 40.64 53.34 0)
@@ -4980,7 +4914,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "C3") (unit 1)
+          (reference "C7") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -4994,7 +4928,7 @@
   (symbol (lib_id "Device:C") (at 381 224.79 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 6a10abe8-86e8-4f7b-b003-9b3f573bfa82)
-    (property "Reference" "C15" (at 387.35 223.52 0)
+    (property "Reference" "C18" (at 387.35 223.52 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "100n" (at 388.62 226.06 0)
@@ -5020,7 +4954,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "C15") (unit 1)
+          (reference "C18") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -5058,7 +4992,7 @@
   (symbol (lib_id "Device:C") (at 281.94 44.45 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 6a523010-39b1-44cc-b59a-21fece99f567)
-    (property "Reference" "C12" (at 284.48 43.18 0)
+    (property "Reference" "C3" (at 284.48 43.18 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "100n" (at 284.48 45.72 0)
@@ -5084,7 +5018,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "C12") (unit 1)
+          (reference "C3") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -5098,7 +5032,7 @@
   (symbol (lib_id "power:+3V0") (at 264.16 105.41 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 6d42a773-724f-4f55-a661-f33bee41ac28)
-    (property "Reference" "#PWR010" (at 264.16 109.22 0)
+    (property "Reference" "#PWR032" (at 264.16 109.22 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3V0" (at 264.16 100.33 0)
@@ -5114,7 +5048,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR010") (unit 1)
+          (reference "#PWR032") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -5128,7 +5062,7 @@
   (symbol (lib_id "power:+5V") (at 378.46 101.6 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 6f1340af-d5e2-4e8b-8953-644a470dceff)
-    (property "Reference" "#PWR052" (at 378.46 105.41 0)
+    (property "Reference" "#PWR029" (at 378.46 105.41 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+5V" (at 378.46 96.52 0)
@@ -5144,7 +5078,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR052") (unit 1)
+          (reference "#PWR029") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -5158,7 +5092,7 @@
   (symbol (lib_id "power:+3V0") (at 275.59 105.41 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 70d4835b-7454-4cac-9936-887d8c375b82)
-    (property "Reference" "#PWR011" (at 275.59 109.22 0)
+    (property "Reference" "#PWR033" (at 275.59 109.22 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3V0" (at 275.59 100.33 0)
@@ -5174,7 +5108,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR011") (unit 1)
+          (reference "#PWR033") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -5188,7 +5122,7 @@
   (symbol (lib_id "power:GND") (at 196.85 60.96 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 70de4b11-25f8-4381-ba00-afed39fc8475)
-    (property "Reference" "#PWR020" (at 196.85 67.31 0)
+    (property "Reference" "#PWR013" (at 196.85 67.31 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 196.85 66.04 0)
@@ -5204,7 +5138,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR020") (unit 1)
+          (reference "#PWR013") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -5258,7 +5192,7 @@
   (symbol (lib_id "power:+3V0") (at 377.19 38.1 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 750a8478-b311-4976-8705-142f6adc491c)
-    (property "Reference" "#PWR034" (at 377.19 41.91 0)
+    (property "Reference" "#PWR011" (at 377.19 41.91 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3V0" (at 377.19 33.02 0)
@@ -5274,7 +5208,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR034") (unit 1)
+          (reference "#PWR011") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -5288,7 +5222,7 @@
   (symbol (lib_id "power:+3V0") (at 46.99 35.56 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 7bfa95e0-4e6e-42a7-9d6a-54117af9026a)
-    (property "Reference" "#PWR07" (at 46.99 39.37 0)
+    (property "Reference" "#PWR03" (at 46.99 39.37 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3V0" (at 46.99 30.48 0)
@@ -5304,7 +5238,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR07") (unit 1)
+          (reference "#PWR03") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -5318,7 +5252,7 @@
   (symbol (lib_id "power:GND") (at 113.03 119.38 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 7ed11118-92be-44d0-99f9-d21febac8ae9)
-    (property "Reference" "#PWR055" (at 113.03 125.73 0)
+    (property "Reference" "#PWR037" (at 113.03 125.73 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 113.03 124.46 0)
@@ -5334,7 +5268,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR055") (unit 1)
+          (reference "#PWR037") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -5348,7 +5282,7 @@
   (symbol (lib_id "power:GND") (at 102.87 119.38 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 8a3ad0b1-22a7-476d-8146-10c79f172982)
-    (property "Reference" "#PWR054" (at 102.87 125.73 0)
+    (property "Reference" "#PWR036" (at 102.87 125.73 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 102.87 124.46 0)
@@ -5364,7 +5298,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR054") (unit 1)
+          (reference "#PWR036") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -5378,7 +5312,7 @@
   (symbol (lib_id "power:+3V0") (at 152.4 162.56 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 8c4486a2-92d5-4207-97cc-d174f5c44ca6)
-    (property "Reference" "#PWR016" (at 152.4 166.37 0)
+    (property "Reference" "#PWR043" (at 152.4 166.37 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3V0" (at 152.4 157.48 0)
@@ -5394,7 +5328,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR016") (unit 1)
+          (reference "#PWR043") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -5408,7 +5342,7 @@
   (symbol (lib_id "power:+5V") (at 227.33 234.95 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 8e49a840-ba29-4415-b18a-cf0606454ee5)
-    (property "Reference" "#PWR043" (at 227.33 238.76 0)
+    (property "Reference" "#PWR057" (at 227.33 238.76 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+5V" (at 227.33 229.87 0)
@@ -5424,7 +5358,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR043") (unit 1)
+          (reference "#PWR057") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -5438,7 +5372,7 @@
   (symbol (lib_id "power:GND") (at 41.91 193.04 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 8f112305-b0b6-471a-b570-44c0af98fda2)
-    (property "Reference" "#PWR047" (at 41.91 199.39 0)
+    (property "Reference" "#PWR050" (at 41.91 199.39 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 41.91 198.12 0)
@@ -5454,7 +5388,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR047") (unit 1)
+          (reference "#PWR050") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -5468,7 +5402,7 @@
   (symbol (lib_id "Sensor_Humidity:SHT30-DIS") (at 349.25 50.8 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 904940f2-73aa-486c-88fa-4fbcc22938df)
-    (property "Reference" "U5" (at 351.2694 40.64 0)
+    (property "Reference" "U3" (at 351.2694 40.64 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "SHT30-DIS" (at 351.2694 43.18 0)
@@ -5501,7 +5435,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "U5") (unit 1)
+          (reference "U3") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -5515,7 +5449,7 @@
   (symbol (lib_id "power:GND") (at 330.2 157.48 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 94833442-4142-46a8-a8fe-90ca4c061c89)
-    (property "Reference" "#PWR049" (at 330.2 163.83 0)
+    (property "Reference" "#PWR041" (at 330.2 163.83 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 330.2 162.56 0)
@@ -5531,7 +5465,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR049") (unit 1)
+          (reference "#PWR041") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -5545,7 +5479,7 @@
   (symbol (lib_id "power:GND") (at 266.7 60.96 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 95f0de9b-f152-4867-ae30-c9c62812b713)
-    (property "Reference" "#PWR028" (at 266.7 67.31 0)
+    (property "Reference" "#PWR015" (at 266.7 67.31 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 266.7 66.04 0)
@@ -5561,7 +5495,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR028") (unit 1)
+          (reference "#PWR015") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -5575,7 +5509,7 @@
   (symbol (lib_id "power:+3V0") (at 82.55 38.1 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 973afac1-776a-4c0d-9a6a-6108d59b53fb)
-    (property "Reference" "#PWR042" (at 82.55 41.91 0)
+    (property "Reference" "#PWR04" (at 82.55 41.91 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3V0" (at 82.55 33.02 0)
@@ -5591,7 +5525,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR042") (unit 1)
+          (reference "#PWR04") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -5605,7 +5539,7 @@
   (symbol (lib_id "power:GND") (at 381 228.6 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 97d88c77-fc75-4c30-b576-e2e34d570209)
-    (property "Reference" "#PWR059" (at 381 234.95 0)
+    (property "Reference" "#PWR055" (at 381 234.95 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 381 233.68 0)
@@ -5621,7 +5555,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR059") (unit 1)
+          (reference "#PWR055") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -5635,7 +5569,7 @@
   (symbol (lib_id "power:GND") (at 336.55 60.96 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 9c2fe1b0-b640-415c-9bef-89bc85dae502)
-    (property "Reference" "#PWR031" (at 336.55 67.31 0)
+    (property "Reference" "#PWR017" (at 336.55 67.31 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 336.55 66.04 0)
@@ -5651,7 +5585,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR031") (unit 1)
+          (reference "#PWR017") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -5665,7 +5599,7 @@
   (symbol (lib_id "Device:C") (at 196.85 44.45 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 9c40d7df-f9e0-4b4b-95b0-2ea73737f981)
-    (property "Reference" "C9" (at 190.5 43.18 0)
+    (property "Reference" "C1" (at 190.5 43.18 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "1u" (at 190.5 45.72 0)
@@ -5691,7 +5625,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "C9") (unit 1)
+          (reference "C1") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -5705,7 +5639,7 @@
   (symbol (lib_id "power:GND") (at 224.79 62.23 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid a448a854-efc5-45e2-984f-96389f74b5f3)
-    (property "Reference" "#PWR027" (at 224.79 68.58 0)
+    (property "Reference" "#PWR020" (at 224.79 68.58 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 224.79 67.31 0)
@@ -5721,7 +5655,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR027") (unit 1)
+          (reference "#PWR020") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -5735,7 +5669,7 @@
   (symbol (lib_id "power:+3V0") (at 36.83 35.56 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid a4a5ed50-1318-495e-8bc2-c53ece18d9bb)
-    (property "Reference" "#PWR05" (at 36.83 39.37 0)
+    (property "Reference" "#PWR02" (at 36.83 39.37 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3V0" (at 36.83 30.48 0)
@@ -5751,7 +5685,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR05") (unit 1)
+          (reference "#PWR02") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -5765,7 +5699,7 @@
   (symbol (lib_id "Device:C") (at 121.92 168.91 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid adbb67f9-fc26-4395-b338-a8eb67880835)
-    (property "Reference" "C10" (at 115.57 167.64 0)
+    (property "Reference" "C12" (at 115.57 167.64 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "1u" (at 115.57 170.18 0)
@@ -5791,7 +5725,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "C10") (unit 1)
+          (reference "C12") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -5805,7 +5739,7 @@
   (symbol (lib_id "power:+5V") (at 353.06 101.6 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid aefececc-2245-415e-9875-2aaae1e4fdc8)
-    (property "Reference" "#PWR050" (at 353.06 105.41 0)
+    (property "Reference" "#PWR028" (at 353.06 105.41 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+5V" (at 353.06 96.52 0)
@@ -5821,7 +5755,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR050") (unit 1)
+          (reference "#PWR028") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -5835,7 +5769,7 @@
   (symbol (lib_id "Device:R") (at 213.36 257.81 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid af6804a7-cc32-4cd3-9880-b03e833df5a8)
-    (property "Reference" "R1" (at 207.01 259.08 0)
+    (property "Reference" "R9" (at 207.01 259.08 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "33k" (at 207.01 256.54 0)
@@ -5861,7 +5795,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "R1") (unit 1)
+          (reference "R9") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -5875,7 +5809,7 @@
   (symbol (lib_id "power:+3V0") (at 220.98 234.95 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid b34cdc5e-309c-4d15-88e1-02a5abd217a9)
-    (property "Reference" "#PWR045" (at 220.98 238.76 0)
+    (property "Reference" "#PWR056" (at 220.98 238.76 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3V0" (at 220.98 229.87 0)
@@ -5891,7 +5825,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR045") (unit 1)
+          (reference "#PWR056") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -5905,7 +5839,7 @@
   (symbol (lib_id "Device:R") (at 264.16 109.22 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid b66394bf-c56c-4e8e-be1c-2cfcf995b59b)
-    (property "Reference" "R5" (at 267.97 107.95 0)
+    (property "Reference" "R4" (at 267.97 107.95 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "5k1" (at 269.24 110.49 0)
@@ -5931,7 +5865,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "R5") (unit 1)
+          (reference "R4") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -5945,7 +5879,7 @@
   (symbol (lib_id "Diode:BAT60A") (at 349.25 106.68 180) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid b97ee2cd-c7aa-4032-962a-997d0a0f1208)
-    (property "Reference" "D2" (at 347.98 100.33 0)
+    (property "Reference" "D1" (at 347.98 100.33 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "BAT60A" (at 347.98 102.87 0)
@@ -5971,7 +5905,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "D2") (unit 1)
+          (reference "D1") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -6025,7 +5959,7 @@
   (symbol (lib_id "power:GND") (at 25.4 66.04 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid ba96f1b1-d80d-4b4c-9862-cc96a5891747)
-    (property "Reference" "#PWR012" (at 25.4 72.39 0)
+    (property "Reference" "#PWR021" (at 25.4 72.39 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 25.4 71.12 0)
@@ -6041,7 +5975,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR012") (unit 1)
+          (reference "#PWR021") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -6055,7 +5989,7 @@
   (symbol (lib_id "Connector:USB_C_Receptacle_USB2.0") (at 330.2 121.92 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid bcdff8c2-2e12-45f0-ae33-d57dd0a672f0)
-    (property "Reference" "J3" (at 330.2 99.06 0)
+    (property "Reference" "J1" (at 330.2 99.06 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "USB Type-C" (at 330.2 101.6 0)
@@ -6099,7 +6033,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "J3") (unit 1)
+          (reference "J1") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -6113,7 +6047,7 @@
   (symbol (lib_id "power:+3V0") (at 25.4 35.56 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid bf2d3d4a-d2e7-4540-8e30-48b3a5734233)
-    (property "Reference" "#PWR013" (at 25.4 39.37 0)
+    (property "Reference" "#PWR01" (at 25.4 39.37 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3V0" (at 25.4 30.48 0)
@@ -6129,7 +6063,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR013") (unit 1)
+          (reference "#PWR01") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -6143,7 +6077,7 @@
   (symbol (lib_id "power:GND") (at 349.25 60.96 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid bfb23dc3-29d9-4892-95d2-c3fa8500a712)
-    (property "Reference" "#PWR033" (at 349.25 67.31 0)
+    (property "Reference" "#PWR018" (at 349.25 67.31 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 349.25 66.04 0)
@@ -6159,7 +6093,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR033") (unit 1)
+          (reference "#PWR018") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -6208,7 +6142,7 @@
   (symbol (lib_id "power:GND") (at 213.36 261.62 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid c441af7c-f272-4ffd-b77f-efc6304199dc)
-    (property "Reference" "#PWR041" (at 213.36 267.97 0)
+    (property "Reference" "#PWR059" (at 213.36 267.97 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 213.36 266.7 0)
@@ -6224,7 +6158,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR041") (unit 1)
+          (reference "#PWR059") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -6238,7 +6172,7 @@
   (symbol (lib_id "Device:C") (at 152.4 168.91 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid c532e815-4494-4319-ad9b-5be28ad4f11e)
-    (property "Reference" "C6" (at 158.115 167.64 0)
+    (property "Reference" "C15" (at 158.115 167.64 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "10u" (at 158.75 170.18 0)
@@ -6264,7 +6198,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "C6") (unit 1)
+          (reference "C15") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -6278,7 +6212,7 @@
   (symbol (lib_id "power:+5V") (at 102.87 101.6 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid c81bb45b-a593-4c24-b45b-48c90a316350)
-    (property "Reference" "#PWR053" (at 102.87 105.41 0)
+    (property "Reference" "#PWR026" (at 102.87 105.41 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+5V" (at 102.87 96.52 0)
@@ -6294,7 +6228,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR053") (unit 1)
+          (reference "#PWR026") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -6308,7 +6242,7 @@
   (symbol (lib_id "power:+3V0") (at 203.2 38.1 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid ca85186f-5232-4074-92ef-40494314eba8)
-    (property "Reference" "#PWR024" (at 203.2 41.91 0)
+    (property "Reference" "#PWR07" (at 203.2 41.91 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3V0" (at 203.2 33.02 0)
@@ -6324,7 +6258,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR024") (unit 1)
+          (reference "#PWR07") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -6338,7 +6272,7 @@
   (symbol (lib_id "power:+3V0") (at 46.99 107.95 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid cbf27fab-0ee3-42f4-968f-e39a41b3c194)
-    (property "Reference" "#PWR038" (at 46.99 111.76 0)
+    (property "Reference" "#PWR034" (at 46.99 111.76 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3V0" (at 46.99 102.87 0)
@@ -6354,7 +6288,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR038") (unit 1)
+          (reference "#PWR034") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -6368,7 +6302,7 @@
   (symbol (lib_id "Device:R") (at 316.23 151.13 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid ce99fcdf-92b6-4124-a925-b9c417181e4a)
-    (property "Reference" "R2" (at 309.88 152.4 0)
+    (property "Reference" "R7" (at 309.88 152.4 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "1M" (at 309.88 149.86 0)
@@ -6394,7 +6328,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "R2") (unit 1)
+          (reference "R7") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -6408,7 +6342,7 @@
   (symbol (lib_id "Memory_Flash:W25Q32JVSS") (at 46.99 123.19 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid d3eafc4b-b823-403f-8f2f-f42ad21ec963)
-    (property "Reference" "U2" (at 55.88 121.92 0)
+    (property "Reference" "U6" (at 55.88 121.92 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "W25Q64JV" (at 55.88 124.46 0)
@@ -6440,7 +6374,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "U2") (unit 1)
+          (reference "U6") (unit 1)
         )
       )
     )
@@ -6449,7 +6383,7 @@
   (symbol (lib_id "Device:R") (at 364.49 107.95 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid d568451a-f82c-40ae-aa81-814b19ca6e04)
-    (property "Reference" "R8" (at 368.3 106.68 0)
+    (property "Reference" "R2" (at 368.3 106.68 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "5k1" (at 369.57 109.22 0)
@@ -6475,7 +6409,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "R8") (unit 1)
+          (reference "R2") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -6489,7 +6423,7 @@
   (symbol (lib_id "Device:C") (at 29.21 187.96 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid d85f5944-be6a-4b09-85fa-6a10fff84a0d)
-    (property "Reference" "C17" (at 26.67 186.69 0)
+    (property "Reference" "C16" (at 26.67 186.69 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "22p" (at 26.67 189.23 0)
@@ -6515,7 +6449,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "C17") (unit 1)
+          (reference "C16") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -6526,70 +6460,10 @@
     )
   )
 
-  (symbol (lib_id "Connector:TestPoint_Probe") (at 196.85 106.68 90) (unit 1)
-    (in_bom no) (on_board yes) (dnp no)
-    (uuid e02dbabd-70a9-40ec-a360-e30a12e0c8e1)
-    (property "Reference" "TP2" (at 191.77 102.87 90)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Value" "TestPoint_Probe" (at 195.2625 100.33 90)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Footprint" "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm" (at 196.85 101.6 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "~" (at 196.85 101.6 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 09b14af6-1bbd-4fa3-a818-087dc33b98d5))
-    (instances
-      (project "iot-risk-logger-stm32l4"
-        (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "TP2") (unit 1)
-        )
-      )
-      (project "iot-data-logger-nfc-samd21"
-        (path "/a430d7dc-28bf-48df-bb1e-9c942d21db4d"
-          (reference "TP2") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "Connector:TestPoint_Probe") (at 196.85 102.87 90) (unit 1)
-    (in_bom no) (on_board yes) (dnp no)
-    (uuid e151ce5f-2948-4e61-813a-b26a41109692)
-    (property "Reference" "TP1" (at 191.77 99.06 90)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Value" "TestPoint_Probe" (at 195.2625 96.52 90)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Footprint" "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm" (at 196.85 97.79 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "~" (at 196.85 97.79 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 1638480f-9e60-4d84-bbfd-dcea61915a31))
-    (instances
-      (project "iot-risk-logger-stm32l4"
-        (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "TP1") (unit 1)
-        )
-      )
-      (project "iot-data-logger-nfc-samd21"
-        (path "/a430d7dc-28bf-48df-bb1e-9c942d21db4d"
-          (reference "TP1") (unit 1)
-        )
-      )
-    )
-  )
-
   (symbol (lib_id "power:GND") (at 97.79 66.04 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid e475a2b0-d7a0-411e-8461-e1707cd07720)
-    (property "Reference" "#PWR04" (at 97.79 72.39 0)
+    (property "Reference" "#PWR025" (at 97.79 72.39 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 97.79 71.12 0)
@@ -6605,7 +6479,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR04") (unit 1)
+          (reference "#PWR025") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -6619,7 +6493,7 @@
   (symbol (lib_id "Connector:Conn_ARM_JTAG_SWD_10") (at 354.33 213.36 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid e71d8f2d-16cc-40fe-b947-6f72700b5efd)
-    (property "Reference" "J1" (at 342.9 212.09 0)
+    (property "Reference" "J2" (at 342.9 212.09 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "Conn_ARM_JTAG_SWD_10" (at 342.9 214.63 0)
@@ -6644,7 +6518,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "J1") (unit 1)
+          (reference "J2") (unit 1)
         )
       )
     )
@@ -6677,7 +6551,7 @@
   (symbol (lib_id "power:+3V0") (at 242.57 105.41 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid e84824c4-81a5-43fe-8901-8b0a0eb5f069)
-    (property "Reference" "#PWR09" (at 242.57 109.22 0)
+    (property "Reference" "#PWR031" (at 242.57 109.22 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3V0" (at 242.57 100.33 0)
@@ -6693,7 +6567,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR09") (unit 1)
+          (reference "#PWR031") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -6707,7 +6581,7 @@
   (symbol (lib_id "power:GND") (at 203.2 60.96 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid e89446ab-7062-4052-9f58-adb6bd96a2d8)
-    (property "Reference" "#PWR025" (at 203.2 67.31 0)
+    (property "Reference" "#PWR014" (at 203.2 67.31 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 203.2 66.04 0)
@@ -6723,7 +6597,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR025") (unit 1)
+          (reference "#PWR014") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -6737,7 +6611,7 @@
   (symbol (lib_id "power:GND") (at 29.21 193.04 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid e937a6e3-04aa-4870-b7c7-38ba072484e4)
-    (property "Reference" "#PWR01" (at 29.21 199.39 0)
+    (property "Reference" "#PWR049" (at 29.21 199.39 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 29.21 198.12 0)
@@ -6753,7 +6627,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR01") (unit 1)
+          (reference "#PWR049") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -6767,7 +6641,7 @@
   (symbol (lib_id "power:GND") (at 354.33 228.6 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid eafcba07-7a0e-412e-86ac-2d4dafa7cc29)
-    (property "Reference" "#PWR058" (at 354.33 234.95 0)
+    (property "Reference" "#PWR054" (at 354.33 234.95 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 354.33 233.68 0)
@@ -6783,7 +6657,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR058") (unit 1)
+          (reference "#PWR054") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -6797,7 +6671,7 @@
   (symbol (lib_id "power:GND") (at 316.23 157.48 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid f015106d-062d-464c-b263-bbe2ea45be03)
-    (property "Reference" "#PWR048" (at 316.23 163.83 0)
+    (property "Reference" "#PWR040" (at 316.23 163.83 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 316.23 162.56 0)
@@ -6813,7 +6687,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR048") (unit 1)
+          (reference "#PWR040") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -6827,7 +6701,7 @@
   (symbol (lib_id "power:+3V0") (at 182.88 38.1 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid f89e4abb-a5b4-4588-8f33-a202a2a0de21)
-    (property "Reference" "#PWR023" (at 182.88 41.91 0)
+    (property "Reference" "#PWR05" (at 182.88 41.91 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3V0" (at 182.88 33.02 0)
@@ -6843,7 +6717,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR023") (unit 1)
+          (reference "#PWR05") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -6857,7 +6731,7 @@
   (symbol (lib_id "power:GND") (at 69.85 135.89 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid fecc773f-b678-4134-b38a-c32ae5f21408)
-    (property "Reference" "#PWR037" (at 69.85 142.24 0)
+    (property "Reference" "#PWR039" (at 69.85 142.24 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 69.85 140.97 0)
@@ -6873,7 +6747,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "#PWR037") (unit 1)
+          (reference "#PWR039") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"
@@ -6887,7 +6761,7 @@
   (symbol (lib_id "Device:C") (at 203.2 44.45 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid ff12b159-dfca-416f-b093-b18332cce71b)
-    (property "Reference" "C11" (at 205.74 43.18 0)
+    (property "Reference" "C2" (at 205.74 43.18 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "100n" (at 205.74 45.72 0)
@@ -6913,7 +6787,7 @@
     (instances
       (project "iot-risk-logger-stm32l4"
         (path "/a0c78d85-b3f6-4318-9ed0-83640f187f18"
-          (reference "C11") (unit 1)
+          (reference "C2") (unit 1)
         )
       )
       (project "iot-data-logger-nfc-samd21"

@@ -1,0 +1,118 @@
+
+(rules PCB iot-risk-logger-stm32l4
+  (snap_angle 
+    fortyfive_degree
+  )
+  (autoroute_settings
+    (fanout off)
+    (autoroute on)
+    (postroute on)
+    (vias on)
+    (via_costs 50)
+    (plane_via_costs 5)
+    (start_ripup_costs 100)
+    (start_pass_no 3560)
+    (layer_rule F.Cu
+      (active on)
+      (preferred_direction horizontal)
+      (preferred_direction_trace_costs 1.0)
+      (against_preferred_direction_trace_costs 2.7)
+    )
+    (layer_rule B.Cu
+      (active on)
+      (preferred_direction vertical)
+      (preferred_direction_trace_costs 1.0)
+      (against_preferred_direction_trace_costs 1.6)
+    )
+  )
+  (rule
+    (width 203.2)
+    (clearance 203.4)
+    (clearance 101.6 (type smd_to_turn_gap))
+    (clearance 50.8 (type smd))
+    (clearance 203.4 (type "kicad_default"))
+    (clearance 203.4 (type GND))
+    (clearance 203.4 (type PWR))
+  )
+  (padstack "Via[0-1]_800:400_um"
+    (shape
+      (circle F.Cu 800.0 0.0 0.0)
+    )
+    (shape
+      (circle B.Cu 800.0 0.0 0.0)
+    )
+    (attach off)
+  )
+  (via 
+    "Via[0-1]_800:400_um" "Via[0-1]_800:400_um" default
+  )
+  (via 
+    "Via[0-1]_800:400_um-kicad_default" "Via[0-1]_800:400_um" "kicad_default"
+  )
+  (via 
+    "Via[0-1]_800:400_um-GND" "Via[0-1]_800:400_um" GND
+  )
+  (via 
+    "Via[0-1]_800:400_um-PWR" "Via[0-1]_800:400_um" PWR
+  )
+  (via_rule
+    default "Via[0-1]_800:400_um"
+  )
+  (via_rule
+    "kicad_default" "Via[0-1]_800:400_um-kicad_default"
+  )
+  (via_rule
+    GND "Via[0-1]_800:400_um-GND"
+  )
+  (via_rule
+    PWR "Via[0-1]_800:400_um-PWR"
+  )
+  (class default
+    (clearance_class default)
+    (via_rule default)
+    (rule
+      (width 203.2)
+    )
+    (circuit 
+      (use_layer F.Cu B.Cu)
+    )
+  )
+  (class "kicad_default"
+    "Net-(BT1-+)" "_RESET" /VDDA "_LED" "Net-(D1-A)" SWDCLK SWDIO SDA
+    SCL "_QSPI_NCS" "QSPI_CLK" "_NFC_INT" "_LIGHT_INT" "IMU_INT1" "IMU_INT2" "TEMP_INT"
+    "_TEMP_RESET" "QSPI_IO3" "QSPI_IO2" "Net-(D2-A)" "USB_DP" "USB_DM" "Net-(U7-PC14)" "Net-(U7-PC15)"
+    "Net-(J1-CC1)" "unconnected-(J1-SBU1-PadA8)" "USB_VBUS_SENSE" "QSPI_IO1" "QSPI_IO0" SWO "Net-(J1-CC2)" "unconnected-(J1-SBU2-PadB8)"
+    "unconnected-(J2-KEY-Pad7)" "unconnected-(J2-NC{slash}TDI-Pad8)" "unconnected-(U1-V_EH-Pad1)" "Net-(U1-AC0)" "Net-(U1-AC1)" "unconnected-(U4-~{CS}-Pad2)" "unconnected-(U4-SA0{slash}SDO-Pad3)" "unconnected-(U7-PA4-Pad10)"
+    "unconnected-(U7-PA5-Pad11)" "unconnected-(U7-PH3-Pad31)"
+    (clearance_class "kicad_default")
+    (via_rule "kicad_default")
+    (rule
+      (width 203.2)
+    )
+    (circuit 
+      (use_layer F.Cu B.Cu)
+    )
+  )
+  (class GND
+    GND "Net-(D3-GND)"
+    (clearance_class GND)
+    (via_rule GND)
+    (rule
+      (width 203.2)
+    )
+    (circuit 
+      (use_layer F.Cu B.Cu)
+    )
+  )
+  (class PWR
+    +3V0 +5V
+    (clearance_class PWR)
+    (via_rule PWR)
+    (rule
+      (width 203.2)
+    )
+    (circuit 
+      (use_layer F.Cu B.Cu)
+    )
+  )
+)
