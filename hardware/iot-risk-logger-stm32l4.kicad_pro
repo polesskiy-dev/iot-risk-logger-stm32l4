@@ -34,18 +34,18 @@
         "other_text_thickness": 0.15,
         "other_text_upright": false,
         "pads": {
-          "drill": 0.762,
-          "height": 1.524,
-          "width": 1.524
+          "drill": 0.3,
+          "height": 0.6,
+          "width": 0.6
         },
-        "silk_line_width": 3.3528,
+        "silk_line_width": 0.254,
         "silk_text_italic": false,
         "silk_text_size_h": 1.0,
         "silk_text_size_v": 1.0,
         "silk_text_thickness": 0.15,
         "silk_text_upright": false,
         "zones": {
-          "min_clearance": 0.5
+          "min_clearance": 0.30479999999999996
         }
       },
       "diff_pair_dimensions": [
@@ -454,7 +454,41 @@
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
+        "name": "NFC_ANT",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.2032,
+        "via_diameter": 0.8,
+        "via_drill": 0.4,
+        "wire_width": 6
+      },
+      {
+        "bus_width": 12,
+        "clearance": 0.2032,
+        "diff_pair_gap": 0.25,
+        "diff_pair_via_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "line_style": 0,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
         "name": "PWR",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.254,
+        "via_diameter": 0.8,
+        "via_drill": 0.4,
+        "wire_width": 6
+      },
+      {
+        "bus_width": 12,
+        "clearance": 0.2032,
+        "diff_pair_gap": 0.25,
+        "diff_pair_via_gap": 0.25,
+        "diff_pair_width": 0.77,
+        "line_style": 0,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "USB",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "schematic_color": "rgba(0, 0, 0, 0.000)",
         "track_width": 0.2032,
@@ -470,20 +504,32 @@
     "netclass_assignments": null,
     "netclass_patterns": [
       {
+        "netclass": "USB",
+        "pattern": "USB_N"
+      },
+      {
+        "netclass": "USB",
+        "pattern": "USB_P"
+      },
+      {
+        "netclass": "NFC_ANT",
+        "pattern": "Net-(U1-AC1)"
+      },
+      {
+        "netclass": "NFC_ANT",
+        "pattern": "Net-(U1-AC0)"
+      },
+      {
         "netclass": "GND",
-        "pattern": "GND"
+        "pattern": "*GND*"
       },
       {
         "netclass": "PWR",
-        "pattern": "+3V0"
+        "pattern": "*+*"
       },
       {
         "netclass": "PWR",
-        "pattern": "+5V"
-      },
-      {
-        "netclass": "GND",
-        "pattern": "Net-(D3-GND)"
+        "pattern": "_LED"
       }
     ]
   },
@@ -522,6 +568,14 @@
       "version": 1
     },
     "net_format_name": "",
+    "ngspice": {
+      "fix_include_paths": true,
+      "meta": {
+        "version": 0
+      },
+      "model_mode": 0,
+      "workbook_filename": ""
+    },
     "page_layout_descr_file": "",
     "plot_directory": "",
     "spice_current_sheet_as_root": false,
