@@ -3,7 +3,7 @@
 
 Open source & open hardware project aimed to collect environment data e.g for logistics, cold chain monitoring, last mile delivery, etc. 
 
-[assembly video](./enclosure/docs/risk-logger-assembly-v15.mp4)
+https://github.com/polesskiy-dev/iot-risk-logger-stm32l4/assets/5185707/393b0768-925d-4c34-bb85-259de904c167
 
 ## Schematicd & PCB
 [Schematics PDF](hardware/docs/iot-risk-logger-stm32l4-sch.pdf)
