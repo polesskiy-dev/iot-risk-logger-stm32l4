@@ -8,6 +8,8 @@ https://github.com/polesskiy-dev/iot-risk-logger-stm32l4/assets/5185707/393b0768
 ## Schematicd & PCB
 [Schematics PDF](hardware/docs/iot-risk-logger-stm32l4-sch.pdf)
 
+[iot-risk-logger-stm32l4-sch.pdf](https://github.com/polesskiy-dev/iot-risk-logger-stm32l4/files/14073860/iot-risk-logger-stm32l4-sch.pdf)
+
 ![PCB Front](./hardware/docs/pcb-front.png)
 ![PCB Back](./hardware/docs/pcb-back.png)
 
