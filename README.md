@@ -24,6 +24,11 @@ https://github.com/polesskiy-dev/iot-risk-logger-stm32l4/assets/5185707/393b0768
 | IMU | LIS2DW12 |
 | Power | CR2032 3V 235mAh |
 
+## Enclosure
+### Assembly
+
+![drawings](./enclosure/docs/iot-risk-logger-stm32l4-drawing.png)
+
 
 ### Developed with
 |||
