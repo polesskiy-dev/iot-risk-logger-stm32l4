@@ -13,6 +13,20 @@ https://github.com/polesskiy-dev/iot-risk-logger-stm32l4/assets/5185707/393b0768
 ![PCB Front](./hardware/docs/pcb-front.png)
 ![PCB Back](./hardware/docs/pcb-back.png)
 
+## Hardware specifications
+
+|Item|Description|
+|-|-|
+| MCU | STM32L412 Cortex M4, 80MHz (48), 128K ROM, 40K RAM, TQFP32 |
+| Crystal | 32.768kHz |
+| Flash | QSPI 64Mbit |
+| NFC | ST25DV04K |
+| Temperature & Humidity | SHT30-DIS |
+| Light | OPT3001 |
+| IMU | LIS2DW12 |
+| Power | CR2032 3V 235mAh |
+
+
 ### Developed with
 |||
 |-|-|
