@@ -30,7 +30,6 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "info_led.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
