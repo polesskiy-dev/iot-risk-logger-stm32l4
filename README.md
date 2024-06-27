@@ -5,7 +5,7 @@ Open source & open hardware project aimed to collect environment data e.g for lo
 
 https://github.com/polesskiy-dev/iot-risk-logger-stm32l4/assets/5185707/393b0768-925d-4c34-bb85-259de904c167
 
-## Schematicd & PCB
+## Schematics & PCB
 [Schematics PDF](hardware/docs/iot-risk-logger-stm32l4.pdf)
 
 ![PCB Front](./hardware/docs/pcb-front.png)

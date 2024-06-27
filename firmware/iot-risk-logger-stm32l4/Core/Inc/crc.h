@@ -1,8 +1,9 @@
+/* USER CODE BEGIN Header */
 /**
   ******************************************************************************
-  * @file    custom_mems_conf.h
-  * @author  MEMS Software Solutions Team
-  * @brief   This file contains definitions of the MEMS components bus interfaces for custom boards
+  * @file    crc.h
+  * @brief   This file contains all the function prototypes for
+  *          the crc.c file
   ******************************************************************************
   * @attention
   *
@@ -15,33 +16,37 @@
   *
   ******************************************************************************
   */
-
+/* USER CODE END Header */
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef CUSTOM_MEMS_CONF_H
-#define CUSTOM_MEMS_CONF_H
+#ifndef __CRC_H__
+#define __CRC_H__
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32l4xx_hal.h"
-#include "custom_bus.h"
-#include "custom_errno.h"
+#include "main.h"
 
-/* USER CODE BEGIN 1 */
+/* USER CODE BEGIN Includes */
 
-/* USER CODE END 1 */
+/* USER CODE END Includes */
 
-#define USE_CUSTOM_MOTION_SENSOR_LIS2DW12_0       0U
+extern CRC_HandleTypeDef hcrc;
 
-#define CUSTOM_LIS2DW12_0_I2C_Init BSP_I2C1_Init
-#define CUSTOM_LIS2DW12_0_I2C_DeInit BSP_I2C1_DeInit
-#define CUSTOM_LIS2DW12_0_I2C_ReadReg BSP_I2C1_ReadReg
-#define CUSTOM_LIS2DW12_0_I2C_WriteReg BSP_I2C1_WriteReg
+/* USER CODE BEGIN Private defines */
+
+/* USER CODE END Private defines */
+
+void MX_CRC_Init(void);
+
+/* USER CODE BEGIN Prototypes */
+
+/* USER CODE END Prototypes */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* CUSTOM_MEMS_CONF_H*/
+#endif /* __CRC_H__ */
+

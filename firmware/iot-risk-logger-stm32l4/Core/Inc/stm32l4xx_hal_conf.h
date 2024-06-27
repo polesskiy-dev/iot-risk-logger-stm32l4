@@ -77,7 +77,7 @@
 /*#define HAL_SPI_MODULE_ENABLED   */
 /*#define HAL_SRAM_MODULE_ENABLED   */
 /*#define HAL_SWPMI_MODULE_ENABLED   */
-/*#define HAL_TIM_MODULE_ENABLED   */
+#define HAL_TIM_MODULE_ENABLED
 /*#define HAL_TSC_MODULE_ENABLED   */
 /*#define HAL_UART_MODULE_ENABLED   */
 /*#define HAL_USART_MODULE_ENABLED   */
@@ -181,7 +181,7 @@
   * @brief This is the HAL system configuration section
   */
 
-#define  VDD_VALUE					  3300U /*!< Value of VDD in mv */
+#define  VDD_VALUE					  3000U /*!< Value of VDD in mv */
 #define  TICK_INT_PRIORITY            15U    /*!< tick interrupt priority */
 #define  USE_RTOS                     0U
 #define  PREFETCH_ENABLE              0U
