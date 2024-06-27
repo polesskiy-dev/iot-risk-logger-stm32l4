@@ -106,7 +106,8 @@ Core/Src/lptim.c \
 Core/Src/quadspi.c \
 Core/Src/rng.c \
 Core/Src/rtc.c \
-Core/Src/stm32l4xx_hal_timebase_tim.c
+Core/Src/stm32l4xx_hal_timebase_tim.c \
+app/tasks/info_led/info_led.c
 
 # ASM sources
 ASM_SOURCES =  \
@@ -184,7 +185,8 @@ C_INCLUDES =  \
 -IDrivers/CMSIS/Include \
 -IDrivers/BSP/Components/lis2dw12 \
 -IDrivers/BSP/Components/ST25DV \
--IX-CUBE-MEMS1/Target
+-IX-CUBE-MEMS1/Target \
+-Iapp/tasks/info_led
 
 
 # compile gcc flags
