@@ -26,5 +26,8 @@
 #define LIS2DW12_ACC_I2C
 /* STMicroelectronics.X-CUBE-NFC4.3.0.0 */
 #define ST25DV_NFC4_I2C
+#define LIB_NDEF
+#define Interface
+#define BSP_NFCTAG
 
 #endif /* __RTE_COMPONENTS_H__ */
