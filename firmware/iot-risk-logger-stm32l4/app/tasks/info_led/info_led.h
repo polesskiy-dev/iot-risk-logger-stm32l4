@@ -10,8 +10,16 @@ extern "C" {
 #include "main.h"
 #include "stm32l4xx_hal.h"
 
+/* Define the queue handle */
+extern osMessageQueueId_t infoLedQueueHandle;
+
 void infoLedTaskInit(void);
 void infoLedTask(void *argument);
+
+/* Queue message type */
+typedef enum {
+  INFO_LED_FLASH
+} InfoLedMessage_t;
 
 #ifdef __cplusplus
 }

@@ -9,6 +9,9 @@ extern "C" {
 #include "FreeRTOS.h"
 #include "main.h"
 #include "stm32l4xx_hal.h"
+#include "st25dv_reg.h"
+#include "st25dv.h"
+#include "info_led.h"
 
 void nfcTaskInit(void);
 void nfcTask(void *argument);

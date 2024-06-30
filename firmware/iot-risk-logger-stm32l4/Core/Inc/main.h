@@ -29,7 +29,6 @@ extern "C" {
 /* Includes ------------------------------------------------------------------*/
 #include "stm32l4xx_hal.h"
 
-#include "st25dv_conf.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -60,20 +59,26 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define _NFC_INT_Pin GPIO_PIN_0
 #define _NFC_INT_GPIO_Port GPIOA
+#define _NFC_INT_EXTI_IRQn EXTI0_IRQn
 #define _LIGHT_INT_Pin GPIO_PIN_1
 #define _LIGHT_INT_GPIO_Port GPIOA
+#define _LIGHT_INT_EXTI_IRQn EXTI1_IRQn
 #define USB_VBUS_SENSE_Pin GPIO_PIN_8
 #define USB_VBUS_SENSE_GPIO_Port GPIOA
+#define USB_VBUS_SENSE_EXTI_IRQn EXTI9_5_IRQn
 #define _LED_Pin GPIO_PIN_15
 #define _LED_GPIO_Port GPIOA
 #define _TEMP_RESET_Pin GPIO_PIN_4
 #define _TEMP_RESET_GPIO_Port GPIOB
 #define TEMP_INT_Pin GPIO_PIN_5
 #define TEMP_INT_GPIO_Port GPIOB
+#define TEMP_INT_EXTI_IRQn EXTI9_5_IRQn
 #define IMU_INT1_Pin GPIO_PIN_6
 #define IMU_INT1_GPIO_Port GPIOB
+#define IMU_INT1_EXTI_IRQn EXTI9_5_IRQn
 #define IMU_INT2_Pin GPIO_PIN_7
 #define IMU_INT2_GPIO_Port GPIOB
+#define IMU_INT2_EXTI_IRQn EXTI9_5_IRQn
 
 /* USER CODE BEGIN Private defines */
 

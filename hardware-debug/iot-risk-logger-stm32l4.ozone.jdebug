@@ -33,7 +33,8 @@ void OnProjectLoad (void) {
   //
   // User settings
   //
-  File.Open ("$(ProjectDir)/iot-risk-logger-stm32l4/build/iot-risk-logger-stm32l4.elf");
+  Project.SetOSPlugin ("FreeRTOSPlugin_CM4");
+  File.Open ("$(ProjectDir)/../firmware/iot-risk-logger-stm32l4/build/iot-risk-logger-stm32l4.elf");
 }
 
 /*********************************************************************
@@ -186,8 +187,8 @@ void AfterTargetReset (void) {
 *
 **********************************************************************
 */
-//void BeforeTargetDownload (void) {
-//}
+void BeforeTargetDownload (void) {
+}
 
 /*********************************************************************
 *
