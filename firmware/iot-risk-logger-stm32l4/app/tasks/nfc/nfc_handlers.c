@@ -33,3 +33,24 @@ void NFC_HandleGPOInterrupt(ST25DV_Object_t *pObj) {
     SEGGER_RTT_printf(0, "NFC ITStatus: 0x%x\n", ITStatus);
   }
 }
+
+int32_t NFC_ReadMailboxTo(ST25DV_Object_t *pObj, uint8_t pMailboxBuffer[ST25DV_MAX_MAILBOX_LENGTH]) {
+  uint8_t mailboxLength;
+  int32_t status = ST25DV_ReadMBLength_Dyn(pObj, &mailboxLength);
+
+  if (status != NFCTAG_OK) {
+    SEGGER_RTT_printf(1, "ST25DV ST25DV_ReadMBLength_Dyn Error\n");
+    return NFCTAG_ERROR;
+  }
+
+  SEGGER_RTT_printf(0, "Mailbox length: %d\n", mailboxLength);
+
+  status = ST25DV_ReadMailboxData(pObj, pMailboxBuffer, MAILBOX_START_OFFSET, ST25DV_MAX_MAILBOX_LENGTH);
+
+  if (status != NFCTAG_OK) {
+    SEGGER_RTT_printf(1, "ST25DV ST25DV_ReadMailboxData Error\n");
+    return NFCTAG_ERROR;
+  }
+
+  return NFCTAG_OK;
+}

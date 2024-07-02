@@ -18,7 +18,10 @@ extern "C" {
 }
 #endif
 
+#define MAILBOX_START_OFFSET 0x00
+
 int32_t NFC_ST25DVInit(ST25DV_Object_t *pObj);
 void NFC_HandleGPOInterrupt(ST25DV_Object_t *pObj);
+int32_t NFC_ReadMailboxTo(ST25DV_Object_t *pObj, uint8_t pMailboxBuffer[ST25DV_MAX_MAILBOX_LENGTH]);
 
 #endif //NFC_HANDLERS_H

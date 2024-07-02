@@ -9,8 +9,9 @@
 #include "nfc.h"
 #include "nfc_handlers.h"
 
-// TODO put NFC descriptor into Actor
+// TODO put into Actor
 static ST25DV_Object_t st25dv;
+static uint8_t mailboxBuffer[ST25DV_MAX_MAILBOX_LENGTH];
 
 /* Queue Handle */
 osMessageQueueId_t nfcQueueHandle;
@@ -60,7 +61,11 @@ void NFC_Task(void *argument) {
           break;
         case MAILBOX_HAS_NEW_MESSAGE:
           SEGGER_RTT_printf(0, "Mailbox has new message\n");
-          // Handle new message in mailbox
+          NFC_ReadMailboxTo(&st25dv, mailboxBuffer);
+          // Print for debug purposes
+          for (int i = 0; i < ST25DV_MAX_MAILBOX_LENGTH; i++) {
+            SEGGER_RTT_printf(0, "0x%x ", mailboxBuffer[i]);
+          }
           break;
       }
     }
