@@ -13,8 +13,8 @@ extern "C" {
 /* Define the queue handle */
 extern osMessageQueueId_t infoLedQueueHandle;
 
-void infoLedTaskInit(void);
-void infoLedTask(void *argument);
+void INFO_LED_TaskInit(void);
+void INFO_LED_Task(void *argument);
 
 /* Queue message type */
 typedef enum {

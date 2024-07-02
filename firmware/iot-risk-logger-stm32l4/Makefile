@@ -111,6 +111,7 @@ libraries/RTT/RTT/SEGGER_RTT.c \
 libraries/RTT/RTT/SEGGER_RTT_printf.c \
 libraries/RTT/Syscalls/SEGGER_RTT_Syscalls_GCC.c \
 app/tasks/info_led/info_led.c \
+app/tasks/nfc/nfc_handlers.c \
 app/tasks/nfc/nfc.c
 
 # ASM sources

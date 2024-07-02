@@ -13,18 +13,20 @@ extern "C" {
 #include "stm32l4xx_hal.h"
 #include "st25dv_reg.h"
 #include "st25dv.h"
+#include "custom_bus.h"
 #include "info_led.h"
+#include "nfc_handlers.h"
 
 /* Define the queue handle */
 extern osMessageQueueId_t nfcQueueHandle;
 
-void nfcTaskInit(void);
-void nfcTask(void *argument);
+void NFC_TaskInit(void);
+void NFC_Task(void *argument);
 
 /* Queue message type */
 typedef enum {
   GPO_INTERRUPT,
-  MAILBOX_NEW_MESSAGE,
+  MAILBOX_HAS_NEW_MESSAGE,
 } nfcMessage_t;
 
 #ifdef __cplusplus

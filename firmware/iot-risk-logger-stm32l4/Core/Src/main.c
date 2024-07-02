@@ -100,6 +100,7 @@ int main(void)
   MX_LPTIM1_Init();
   MX_QUADSPI_Init();
   /* USER CODE BEGIN 2 */
+  SEGGER_RTT_Init();
 
   /* USER CODE END 2 */
 
