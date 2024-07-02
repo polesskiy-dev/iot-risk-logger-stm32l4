@@ -44,3 +44,11 @@ https://github.com/polesskiy-dev/iot-risk-logger-stm32l4/assets/5185707/393b0768
 | Power analysis | Nordic Power Profiler Kit II |
 | Oscilloscope & Logic analyzer | Digilent Analog Discovery 3 |
 | Logic analyzer software | Digilent Waveforms | 
+
+## Quick start
+
+After clone, init submodules
+
+```bash
+git submodule update --init --recursive
+```

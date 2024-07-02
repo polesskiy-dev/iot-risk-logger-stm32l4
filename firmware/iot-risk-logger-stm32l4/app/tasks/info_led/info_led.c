@@ -37,11 +37,5 @@ void infoLedTask(void *argument) {
         HAL_GPIO_TogglePin(_LED_GPIO_Port, _LED_Pin);
       }
     }
-
-    // Toggle LED
-//    HAL_GPIO_TogglePin(_LED_GPIO_Port, _LED_Pin);
-
-    // Delay for a period
-//    osDelay (pdMS_TO_TICKS(BLINK_PERIOD_MS));
   }
 };

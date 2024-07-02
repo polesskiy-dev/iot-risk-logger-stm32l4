@@ -1,13 +1,15 @@
 #include "nfc.h"
 #include "custom_bus.h"
 
-EXTI_HandleTypeDef hexti;
+/**
+ * @see https://www.st.com/resource/en/application_note/an5512-st25-fast-transfer-mode-embedded-library-stmicroelectronics.pdf
+ * @see https://www.st.com/resource/en/application_note/an4910-data-exchange-between-wired-ic-and-wireless-rf-iso-15693-using-fast-transfer-mode-supported-by-st25dvi2c-series-stmicroelectronics.pdf
+ */
 
 // TODO put NFC descriptor into Actor
 static ST25DV_Object_t st25dv;
 
 static int32_t initST25DV(void);
-static void initGPOInterrupt(void);
 static void handleGPOInterrupt(void);
 
 void nfcTaskInit(void) {
@@ -22,6 +24,8 @@ void nfcTaskInit(void) {
 
 void nfcTask(void *argument) {
   (void) argument; // Avoid unused parameter warning
+  nfcMessage_t msg;
+  uint8_t ITStatus = 0x00;
 
   /* init functions call here */
 
@@ -33,9 +37,28 @@ void nfcTask(void *argument) {
   }
 
   /* Reset Mailbox enable to allow write to EEPROM */
-//  CUSTOM_NFCTAG_ResetMBEN_Dyn(CUSTOM_NFCTAG_INSTANCE);
+  ST25DV_ResetMBEN_Dyn(&st25dv);
+
+  SEGGER_RTT_printf(0, "NFC initialized\n");
 
   for (;;) {
+    // Wait for messages from the queue
+    if (osMessageQueueGet(infoLedQueueHandle, &msg, NULL, osWaitForever) == osOK) {
+      switch (msg) {
+        case GPO_INTERRUPT:
+          // recon GPO interrupt type
+          // TODO handle error
+          ST25DV_ReadITSTStatus_Dyn(&st25dv, &ITStatus);
+          if (ITStatus & (ST25DV_ITSTS_DYN_RFPUTMSG_MASK<<ST25DV_ITSTS_DYN_RFPUTMSG_SHIFT)) {
+            // TODO log
+          }
+
+          break;
+        case MAILBOX_NEW_MESSAGE:
+          // Handle new message in mailbox
+          break;
+      }
+    }
   }
 }
 

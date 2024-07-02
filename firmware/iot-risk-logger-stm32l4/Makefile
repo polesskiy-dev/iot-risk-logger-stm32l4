@@ -107,6 +107,9 @@ Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Src/usbd_msc.c \
 Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Src/usbd_msc_bot.c \
 Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Src/usbd_msc_data.c \
 Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Src/usbd_msc_scsi.c \
+libraries/RTT/RTT/SEGGER_RTT.c \
+libraries/RTT/RTT/SEGGER_RTT_printf.c \
+libraries/RTT/Syscalls/SEGGER_RTT_Syscalls_GCC.c \
 app/tasks/info_led/info_led.c \
 app/tasks/nfc/nfc.c
 
@@ -187,6 +190,9 @@ C_INCLUDES =  \
 -IDrivers/CMSIS/Include \
 -IDrivers/BSP/Components/lis2dw12 \
 -IDrivers/BSP/Components/ST25DV \
+-Ilibraries/RTT/Config \
+-Ilibraries/RTT/RTT \
+-Ilibraries/RTT/Syscalls \
 -Iapp/tasks/info_led \
 -Iapp/tasks/nfc
 

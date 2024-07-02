@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+#include <stdio.h>
+
 #include "cmsis_os2.h"
 #include "FreeRTOS.h"
 #include "main.h"
@@ -13,8 +15,17 @@ extern "C" {
 #include "st25dv.h"
 #include "info_led.h"
 
+/* Define the queue handle */
+extern osMessageQueueId_t nfcQueueHandle;
+
 void nfcTaskInit(void);
 void nfcTask(void *argument);
+
+/* Queue message type */
+typedef enum {
+  GPO_INTERRUPT,
+  MAILBOX_NEW_MESSAGE,
+} nfcMessage_t;
 
 #ifdef __cplusplus
 }
