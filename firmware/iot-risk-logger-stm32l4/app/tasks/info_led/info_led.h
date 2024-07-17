@@ -9,17 +9,20 @@ extern "C" {
 #include "FreeRTOS.h"
 #include "main.h"
 #include "stm32l4xx_hal.h"
+#include "actor.h"
+
+typedef struct {
+  actor_t super;
+} INFO_LED_Actor_t;
+
+extern const INFO_LED_Actor_t INFO_LED_Actor;
 
 /* Define the queue handle */
 extern osMessageQueueId_t infoLedQueueHandle;
 
+INFO_LED_Actor_t *INFO_LED_ActorConstructor(void);
 void INFO_LED_TaskInit(void);
 void INFO_LED_Task(void *argument);
-
-/* Queue message type */
-typedef enum {
-  INFO_LED_FLASH
-} InfoLedMessage_t;
 
 #ifdef __cplusplus
 }

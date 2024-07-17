@@ -29,7 +29,7 @@ void NFC_HandleGPOInterrupt(ST25DV_Object_t *pObj) {
   uint8_t ITStatus;
   ST25DV_ReadITSTStatus_Dyn(pObj, &ITStatus);
   if (ITStatus & ST25DV_ITSTS_DYN_RFPUTMSG_MASK) {
-    osMessageQueuePut(nfcQueueHandle, &(nfcMessage_t){MAILBOX_HAS_NEW_MESSAGE}, 0, 0);
+    osMessageQueuePut(nfcQueueHandle, &(message_t){NFC_MAILBOX_HAS_NEW_MESSAGE}, 0, 0);
     SEGGER_RTT_printf(0, "NFC ITStatus: 0x%x\n", ITStatus);
   }
 }

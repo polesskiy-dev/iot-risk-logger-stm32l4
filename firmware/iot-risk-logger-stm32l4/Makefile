@@ -110,6 +110,10 @@ Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Src/usbd_msc_scsi.c \
 libraries/RTT/RTT/SEGGER_RTT.c \
 libraries/RTT/RTT/SEGGER_RTT_printf.c \
 libraries/RTT/Syscalls/SEGGER_RTT_Syscalls_GCC.c \
+app/actor/actor.c \
+app/event_manager/event_manager.c \
+app/config/actors_list/actors_list.c \
+app/config/events_list/events_list.c \
 app/tasks/info_led/info_led.c \
 app/tasks/nfc/nfc_handlers.c \
 app/tasks/nfc/nfc.c
@@ -194,6 +198,10 @@ C_INCLUDES =  \
 -Ilibraries/RTT/Config \
 -Ilibraries/RTT/RTT \
 -Ilibraries/RTT/Syscalls \
+-Iapp/actor \
+-Iapp/event_manager \
+-Iapp/config/actors_list/actors_list \
+-Iapp/config/events_list/events_list \
 -Iapp/tasks/info_led \
 -Iapp/tasks/nfc
 

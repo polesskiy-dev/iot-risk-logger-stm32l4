@@ -19,7 +19,7 @@ osMessageQueueId_t nfcQueueHandle;
 
 void NFC_TaskInit(void) {
   /* Create the queue */
-  nfcQueueHandle = osMessageQueueNew(8, sizeof(nfcMessage_t), &(osMessageQueueAttr_t){
+  nfcQueueHandle = osMessageQueueNew(8, sizeof(message_t), &(osMessageQueueAttr_t){
     .name = "nfcQueue"
   });
 
@@ -34,7 +34,7 @@ void NFC_TaskInit(void) {
 
 void NFC_Task(void *argument) {
   (void) argument; // Avoid unused parameter warning
-  nfcMessage_t msg;
+  message_t msg;
   uint8_t ITStatus = 0x00;
 
   /* init functions call here */
@@ -55,11 +55,11 @@ void NFC_Task(void *argument) {
   for (;;) {
     // Wait for messages from the queue
     if (osMessageQueueGet(nfcQueueHandle, &msg, NULL, osWaitForever) == osOK) {
-      switch (msg) {
-        case GPO_INTERRUPT:
+      switch (msg.event) {
+        case NFC_GPO_INTERRUPT:
           NFC_HandleGPOInterrupt(&st25dv);
           break;
-        case MAILBOX_HAS_NEW_MESSAGE:
+        case NFC_MAILBOX_HAS_NEW_MESSAGE:
           SEGGER_RTT_printf(0, "Mailbox has new message\n");
           NFC_ReadMailboxTo(&st25dv, mailboxBuffer);
           // Print for debug purposes
@@ -75,7 +75,7 @@ void NFC_Task(void *argument) {
 /** Handle GPO interrupt */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
   if (GPIO_Pin == _NFC_INT_Pin) {
-    osMessageQueuePut(infoLedQueueHandle, &(InfoLedMessage_t){INFO_LED_FLASH}, 0, 0);
-    osMessageQueuePut(nfcQueueHandle, &(nfcMessage_t){GPO_INTERRUPT}, 0, 0);
+    osMessageQueuePut(infoLedQueueHandle, &(message_t){INFO_LED_FLASH}, 0, 0);
+    osMessageQueuePut(nfcQueueHandle, &(message_t){NFC_GPO_INTERRUPT}, 0, 0);
   }
 }

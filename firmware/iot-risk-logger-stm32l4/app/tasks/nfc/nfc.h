@@ -23,12 +23,6 @@ extern osMessageQueueId_t nfcQueueHandle;
 void NFC_TaskInit(void);
 void NFC_Task(void *argument);
 
-/* Queue message type */
-typedef enum {
-  GPO_INTERRUPT,
-  MAILBOX_HAS_NEW_MESSAGE,
-} nfcMessage_t;
-
 #ifdef __cplusplus
 }
 #endif
