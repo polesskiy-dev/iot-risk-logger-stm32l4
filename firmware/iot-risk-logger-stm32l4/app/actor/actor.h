@@ -23,6 +23,10 @@ extern "C" {
 #include "../config/events_list/events_list.h"
 #include "../config/actors_list/actors_list.h"
 
+#define DEFAULT_QUEUE_SIZE 8
+#define DEFAULT_QUEUE_MESSAGE_SIZE sizeof(message_t)
+#define DEFAULT_TASK_STACK_SIZE (128 * 4)
+
 /**
 * @brief Structure representing a message in the actor framework.
 */
