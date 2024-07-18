@@ -17,17 +17,22 @@ extern "C" {
 #include "info_led.h"
 #include "nfc_handlers.h"
 
-/* Define the queue handle */
-extern osMessageQueueId_t nfcQueueHandle;
+typedef enum {
+  NFC_STATE_INIT = 0,
+  NFC_STATE_READY,
+  NFC_STATE_ERROR,
+  NFC_STATE_MAX
+} NFC_State_t;
+
+typedef struct {
+  actor_t super;
+  NFC_State_t state;
+} NFC_Actor_t;
+
+extern NFC_Actor_t NFC_Actor;
 
 void NFC_TaskInit(void);
 void NFC_Task(void *argument);
-
-/* Queue message type */
-typedef enum {
-  GPO_INTERRUPT,
-  MAILBOX_HAS_NEW_MESSAGE,
-} nfcMessage_t;
 
 #ifdef __cplusplus
 }

@@ -27,6 +27,7 @@
 /* USER CODE BEGIN Includes */
 #include "info_led.h"
 #include "nfc.h"
+#include "temperature_humidity_sensor.h"
 
 /* USER CODE END Includes */
 
@@ -100,7 +101,13 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   INFO_LED_TaskInit();
+  TH_SENS_TaskInit();
   NFC_TaskInit();
+  // TODO
+  // LIGHT_SENS_TaskInit();
+  // ACCEL_TaskInit();
+  // MEMORY_TaskInit();
+
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */

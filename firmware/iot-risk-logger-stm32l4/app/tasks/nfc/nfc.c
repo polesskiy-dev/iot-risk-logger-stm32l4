@@ -13,28 +13,34 @@
 static ST25DV_Object_t st25dv;
 static uint8_t mailboxBuffer[ST25DV_MAX_MAILBOX_LENGTH];
 
-/* Queue Handle */
-osMessageQueueId_t nfcQueueHandle;
+static osStatus_t handleNFCMessage(NFC_Actor_t *this, message_t *message);
 
+NFC_Actor_t NFC_Actor = {
+        .super = {
+                .actorId = NFC_ACTOR_ID,
+                .messageHandler = (messageHandler_t) handleNFCMessage,
+                .osMessageQueueId = NULL,
+                .osThreadId = NULL,
+        },
+        .state = NFC_STATE_READY
+};
+
+const osThreadAttr_t nfcTaskDescription = {
+        .name = "nfcTask",
+        .priority = osPriorityNormal,
+        .stack_size = DEFAULT_TASK_STACK_SIZE
+};
 
 void NFC_TaskInit(void) {
-  /* Create the queue */
-  nfcQueueHandle = osMessageQueueNew(8, sizeof(nfcMessage_t), &(osMessageQueueAttr_t){
+  NFC_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MESSAGE_SIZE, &(osMessageQueueAttr_t){
     .name = "nfcQueue"
   });
-
-  osThreadAttr_t attr = {
-          .name = "nfcTask",
-          .priority = osPriorityNormal,
-          .stack_size = 128 * 4
-  };
-
-  osThreadNew(NFC_Task, NULL, &attr);
+  NFC_Actor.super.osThreadId = osThreadNew(NFC_Task, NULL, &nfcTaskDescription);
 }
 
 void NFC_Task(void *argument) {
   (void) argument; // Avoid unused parameter warning
-  nfcMessage_t msg;
+  message_t msg;
   uint8_t ITStatus = 0x00;
 
   /* init functions call here */
@@ -49,33 +55,38 @@ void NFC_Task(void *argument) {
 
   /* Reset Mailbox enable to allow write to EEPROM */
   ST25DV_ResetMBEN_Dyn(&st25dv);
-  // RTT_CTRL_TEXT_GREEN
   SEGGER_RTT_printf(0, "NFC initialized\n");
 
   for (;;) {
     // Wait for messages from the queue
-    if (osMessageQueueGet(nfcQueueHandle, &msg, NULL, osWaitForever) == osOK) {
-      switch (msg) {
-        case GPO_INTERRUPT:
-          NFC_HandleGPOInterrupt(&st25dv);
-          break;
-        case MAILBOX_HAS_NEW_MESSAGE:
-          SEGGER_RTT_printf(0, "Mailbox has new message\n");
-          NFC_ReadMailboxTo(&st25dv, mailboxBuffer);
-          // Print for debug purposes
-          for (int i = 0; i < ST25DV_MAX_MAILBOX_LENGTH; i++) {
-            SEGGER_RTT_printf(0, "0x%x ", mailboxBuffer[i]);
-          }
-          break;
-      }
+    if (osMessageQueueGet(NFC_Actor.super.osMessageQueueId, &msg, NULL, osWaitForever) == osOK) {
+      NFC_Actor.super.messageHandler((actor_t *) &NFC_Actor, &msg);
     }
+  }
+}
+
+static osStatus_t handleNFCMessage(NFC_Actor_t *this, message_t *message) {
+  switch (message->event) {
+    case NFC_GPO_INTERRUPT:
+      NFC_HandleGPOInterrupt(&st25dv);
+      return osOK;
+    case NFC_MAILBOX_HAS_NEW_MESSAGE:
+      SEGGER_RTT_printf(0, "Mailbox has new message\n");
+      NFC_ReadMailboxTo(&st25dv, mailboxBuffer);
+      // Print for debug purposes
+      for (int i = 0; i < ST25DV_MAX_MAILBOX_LENGTH; i++) {
+        SEGGER_RTT_printf(0, "0x%x ", mailboxBuffer[i]);
+      }
+      return osOK;
+    default:
+      return osError;
   }
 }
 
 /** Handle GPO interrupt */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
   if (GPIO_Pin == _NFC_INT_Pin) {
-    osMessageQueuePut(infoLedQueueHandle, &(InfoLedMessage_t){INFO_LED_FLASH}, 0, 0);
-    osMessageQueuePut(nfcQueueHandle, &(nfcMessage_t){GPO_INTERRUPT}, 0, 0);
+    osMessageQueuePut(infoLedQueueHandle, &(message_t){INFO_LED_FLASH}, 0, 0);
+    osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NFC_GPO_INTERRUPT}, 0, 0);
   }
 }
