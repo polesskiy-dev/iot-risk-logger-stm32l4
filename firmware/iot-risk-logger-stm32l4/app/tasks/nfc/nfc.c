@@ -16,6 +16,11 @@ static uint8_t mailboxBuffer[ST25DV_MAX_MAILBOX_LENGTH];
 /* Queue Handle */
 osMessageQueueId_t nfcQueueHandle;
 
+const osThreadAttr_t nfcTaskDescription = {
+        .name = "nfcTask",
+        .priority = osPriorityNormal,
+        .stack_size = 128 * 4
+};
 
 void NFC_TaskInit(void) {
   /* Create the queue */
@@ -23,13 +28,8 @@ void NFC_TaskInit(void) {
     .name = "nfcQueue"
   });
 
-  osThreadAttr_t attr = {
-          .name = "nfcTask",
-          .priority = osPriorityNormal,
-          .stack_size = 128 * 4
-  };
-
-  osThreadNew(NFC_Task, NULL, &attr);
+  // TODO store in NFC Actor
+  osThreadNew(NFC_Task, NULL, &nfcTaskDescription);
 }
 
 void NFC_Task(void *argument) {
@@ -49,7 +49,6 @@ void NFC_Task(void *argument) {
 
   /* Reset Mailbox enable to allow write to EEPROM */
   ST25DV_ResetMBEN_Dyn(&st25dv);
-  // RTT_CTRL_TEXT_GREEN
   SEGGER_RTT_printf(0, "NFC initialized\n");
 
   for (;;) {

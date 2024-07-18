@@ -3,8 +3,6 @@
 #define BLINK_PERIOD_MS 100
 #define BLINK_NFC_GPO_PERIOD_MS 500
 
-
-
 /* Queue Handle */
 osMessageQueueId_t infoLedQueueHandle;
 

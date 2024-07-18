@@ -1,8 +1,9 @@
 /*!
  * @file actor.h
- * @brief Brief description of the file.
+ * @brief Actor (Active object) pico framework
  *
- * Detailed description of the file.
+ * This file contains the definitions and structures needed for the actor framework,
+ * which facilitates message handling in a CMSIS-RTOS2 environment.
  *
  * @date 17/07/2024
  * @author artempolisskyi
@@ -20,30 +21,37 @@ extern "C" {
 #include "main.h"
 #include "cmsis_os2.h"
 #include "../config/events_list/events_list.h"
+#include "../config/actors_list/actors_list.h"
 
+/**
+* @brief Structure representing a message in the actor framework.
+*/
 typedef struct {
-  event_t event;
-  void *payload;
-  ssize_t payload_size;
+  event_t event;          ///< Event associated with the message
+  void *payload;          ///< Pointer to the message payload
+  ssize_t payload_size;   ///< Size of the message payload
 } message_t;
+
+// Forward declare struct actor_t
+struct actor_t;
 
 /**
  * @brief Function pointer type for message handlers.
  *
+ * @param actor Pointer to the actor that is handling the message.
  * @param message Pointer to the message to be handled.
  * @return osStatus_t Status of the message handling.
  */
-typedef osStatus_t (*messageHandler_t)(message_t *message);
+typedef osStatus_t (*messageHandler_t)(struct actor_t *actor, message_t *message);
 
 /**
- * @brief Base actor structure to inherit from.
+ * @brief Structure representing a base actor in the actor framework.
  */
-typedef struct {
-  uint8_t actorId; ///< Unique actor ID
-  osThreadId_t osThreadId; ///< CMSIS-RTOS2 Thread ID
+typedef struct actor_t {
+  ACTOR_ID actorId;                ///< Unique actor ID
+  osThreadId_t osThreadId;         ///< CMSIS-RTOS2 Thread ID
   osMessageQueueId_t osMessageQueueId; ///< Message queue ID
   messageHandler_t messageHandler; ///< Message handler, most likely a state machine
-  uint8_t state; ///< Actor state
 } actor_t;
 
 #ifdef __cplusplus
