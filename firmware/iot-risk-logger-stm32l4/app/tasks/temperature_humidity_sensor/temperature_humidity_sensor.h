@@ -21,9 +21,9 @@ extern "C" {
 #include "actor.h"
 
 typedef enum {
-  TH_SENS_STATE_INIT = 0,
-  TH_SENS_STATE_READY,
-  TH_SENS_DATA_READY_WAIT,
+  TH_SENS_INIT_STATE = 0,
+  TH_SENS_READY_TO_READ_STATE,
+  TH_SENS_MEASURE_WAIT_STATE,
   TH_SENS_STATE_ERROR,
   TH_SENS_STATE_MAX
 } TH_SENS_State_t;
@@ -31,6 +31,8 @@ typedef enum {
 typedef struct {
   actor_t super;
   TH_SENS_State_t state;
+  int32_t temperature; ///< in milli degrees Celsius
+  int32_t humidity; ///< in milli RH
 } TH_SENS_Actor_t;
 
 extern TH_SENS_Actor_t TH_SENS_Actor;

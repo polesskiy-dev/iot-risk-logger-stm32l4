@@ -9,10 +9,15 @@
  */
 
 #include "temperature_humidity_sensor.h"
+#include "sht3x_i2c.h"
+#include "sensirion_i2c.h"
+#include "custom_bus.h"
+#include "FreeRTOSConfig.h"
 
 static osStatus_t handleTHSensorMessage(TH_SENS_Actor_t *this, message_t *message);
-static osStatus_t initTHSensor(TH_SENS_Actor_t *this);
-static osStatus_t readTHSensor(TH_SENS_Actor_t *this);
+static osStatus_t initTHSensor(TH_SENS_Actor_t *this, message_t *message);
+static osStatus_t startSingleShotRead(TH_SENS_Actor_t *this, message_t *message);
+//static osStatus_t collectMeasurements(TH_SENS_Actor_t *this, message_t *message);
 
 TH_SENS_Actor_t TH_SENS_Actor = {
         .super = {
@@ -21,7 +26,7 @@ TH_SENS_Actor_t TH_SENS_Actor = {
                 .osMessageQueueId = NULL,
                 .osThreadId = NULL,
         },
-        .state = TH_SENS_STATE_INIT
+        .state = TH_SENS_INIT_STATE
 };
 
 const osThreadAttr_t thSensorTaskDescription = {
@@ -46,45 +51,71 @@ void TH_SENS_Task(void *argument) {
   for (;;) {
     // Wait for messages from the queue
     if (osMessageQueueGet(TH_SENS_Actor.super.osMessageQueueId, &msg, NULL, osWaitForever) == osOK) {
-      TH_SENS_Actor.super.messageHandler((actor_t *) &TH_SENS_Actor, &msg);
+      osStatus_t status = TH_SENS_Actor.super.messageHandler((actor_t *) &TH_SENS_Actor, &msg);
+      if (status != osOK) {
+        // TODO Handle error, emit common error event and reinitialize module
+        TH_SENS_Actor.state = TH_SENS_STATE_ERROR;
+      }
     }
   }
 }
 
 static osStatus_t handleTHSensorMessage(TH_SENS_Actor_t *this, message_t *message) {
-  switch (message->event) {
-    case TH_SENS_INITIALIZE:
-      initTHSensor(this);
-      return osOK;
-    case RTC_CRON_READ_SENSORS:
-      // TODO
-      return osOK;
-    case TH_SENS_DATA_SHOULD_BE_READY:
-      // TODO
-      return osOK;
+  switch (this->state) {
+    case TH_SENS_INIT_STATE:
+      return initTHSensor(this, message);
+    case TH_SENS_READY_TO_READ_STATE:
+      return startSingleShotRead(this, message);
+//    case TH_SENS_MEASURE_WAIT_STATE:
+//      return collectMeasurements(this, message);
+    case TH_SENS_STATE_ERROR:
+    // TODO handle reinit after error
     default:
-      // Handle unknown message
       return osError;
   }
 }
 
-static osStatus_t initTHSensor(TH_SENS_Actor_t *this) {
-  if (this->state == TH_SENS_STATE_INIT) {
+static osStatus_t initTHSensor(TH_SENS_Actor_t *this, message_t *message) {
+  if (this->state == TH_SENS_INIT_STATE) {
+    BSP_I2C1_Init(); // TODO think about proper place to init I2C
+    // TODO soft reset of the sensor by pulling down _TEMP_RESET for 1uS minimum
+    sht3x_init(SHT31_I2C_ADDR_44 << 1);
+    osMessageQueuePut(TH_SENS_Actor.super.osMessageQueueId, &(message_t){TH_SENS_START_SINGLE_SHOT_READ}, 0, 0);
     // TODO check sensor ID
-    this->state = TH_SENS_STATE_READY;
+    this->state = TH_SENS_READY_TO_READ_STATE;
     SEGGER_RTT_printf(0, "temperature humidity sensor initialized\n");
     return osOK;
   }
   return osError;
 }
 
-static osStatus_t readTHSensor(TH_SENS_Actor_t *this) {
-  switch (this->state) {
-    case TH_SENS_STATE_READY:
-    case TH_SENS_DATA_READY_WAIT:
-      // TODO read sensor data
-      return osOK;
-    default:
-      return osError;
+static osStatus_t startSingleShotRead(TH_SENS_Actor_t *this, message_t *message) {
+  if (TH_SENS_START_SINGLE_SHOT_READ == message->event) {
+    osStatus_t status = sht3x_measure_single_shot(REPEATABILITY_MEDIUM, false, &this->temperature, &this->humidity);
+    if (status != osOK) return osError;
+
+    SEGGER_RTT_printf(0, "temperature: %d humidity %d\n", this->temperature, this->humidity);
+
+    osDelay(5000);
+    osMessageQueuePut(TH_SENS_Actor.super.osMessageQueueId, &(message_t){TH_SENS_START_SINGLE_SHOT_READ}, 0, 0);
+
+    this->state = TH_SENS_READY_TO_READ_STATE;
   }
+
+  return osOK;
 }
+
+//static osStatus_t collectMeasurements(TH_SENS_Actor_t *this, message_t *message) {
+//  if (TH_SENS_READ_MEASUREMENT == message->event) {
+//
+////    local_error = sensirion_i2c_read_data_inplace(_i2c_address, buffer_ptr, 4);
+//
+//    osStatus_t status = osMessageQueuePut(TH_SENS_Actor.super.osMessageQueueId, &(message_t){TH_SENS_START_SINGLE_SHOT_READ}, 0, 0);
+//    if (status != osOK) {
+//      this->state = TH_SENS_STATE_ERROR;
+//      SEGGER_RTT_printf(0, "error reading temperature and humidity sensor\n");
+//      return osError;
+//    }
+//    return osOK;
+//  }
+//}
