@@ -118,8 +118,11 @@ app/actor/actor.c \
 app/event_manager/event_manager.c \
 app/config/actors_list/actors_list.c \
 app/config/events_list/events_list.c \
+app/drivers/opt3001/opt3001.c \
+app/drivers/opt3001/opt3001_reg.c \
 app/tasks/info_led/info_led.c \
 app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c \
+app/tasks/light_sensor/light_sensor.c \
 app/tasks/nfc/nfc_handlers.c \
 app/tasks/nfc/nfc.c
 
@@ -206,10 +209,12 @@ C_INCLUDES =  \
 -Ilibraries/embedded-i2c-sht3x \
 -Iapp/actor \
 -Iapp/event_manager \
+-Iapp/drivers/opt3001 \
 -Iapp/config/actors_list/actors_list \
 -Iapp/config/events_list/events_list \
 -Iapp/tasks/info_led \
 -Iapp/tasks/temperature_humidity_sensor \
+-Iapp/tasks/light_sensor \
 -Iapp/tasks/nfc
 
 
