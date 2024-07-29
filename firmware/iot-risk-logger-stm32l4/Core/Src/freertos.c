@@ -28,6 +28,7 @@
 #include "info_led.h"
 #include "nfc.h"
 #include "temperature_humidity_sensor.h"
+#include "light_sensor.h"
 
 /* USER CODE END Includes */
 
@@ -115,6 +116,7 @@ void MX_FREERTOS_Init(void) {
   INFO_LED_TaskInit();
   NFC_TaskInit();
   TH_SENS_TaskInit();
+  LIGHT_SENS_TaskInit();
   // TODO
   // LIGHT_SENS_TaskInit();
   // ACCEL_TaskInit();

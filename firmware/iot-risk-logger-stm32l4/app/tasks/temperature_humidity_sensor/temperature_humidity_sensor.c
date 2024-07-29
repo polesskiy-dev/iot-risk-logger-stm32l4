@@ -10,14 +10,11 @@
 
 #include "temperature_humidity_sensor.h"
 #include "sht3x_i2c.h"
-#include "sensirion_i2c.h"
 #include "custom_bus.h"
-#include "FreeRTOSConfig.h"
 
 static osStatus_t handleTHSensorMessage(TH_SENS_Actor_t *this, message_t *message);
 static osStatus_t initTHSensor(TH_SENS_Actor_t *this, message_t *message);
 static osStatus_t startSingleShotRead(TH_SENS_Actor_t *this, message_t *message);
-//static osStatus_t collectMeasurements(TH_SENS_Actor_t *this, message_t *message);
 
 TH_SENS_Actor_t TH_SENS_Actor = {
         .super = {
@@ -104,18 +101,3 @@ static osStatus_t startSingleShotRead(TH_SENS_Actor_t *this, message_t *message)
 
   return osOK;
 }
-
-//static osStatus_t collectMeasurements(TH_SENS_Actor_t *this, message_t *message) {
-//  if (TH_SENS_READ_MEASUREMENT == message->event) {
-//
-////    local_error = sensirion_i2c_read_data_inplace(_i2c_address, buffer_ptr, 4);
-//
-//    osStatus_t status = osMessageQueuePut(TH_SENS_Actor.super.osMessageQueueId, &(message_t){TH_SENS_START_SINGLE_SHOT_READ}, 0, 0);
-//    if (status != osOK) {
-//      this->state = TH_SENS_STATE_ERROR;
-//      SEGGER_RTT_printf(0, "error reading temperature and humidity sensor\n");
-//      return osError;
-//    }
-//    return osOK;
-//  }
-//}

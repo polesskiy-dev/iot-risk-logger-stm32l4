@@ -35,6 +35,11 @@ typedef struct {
   int32_t lux; ///< in milli lux
 } LIGHT_SENS_Actor_t;
 
+extern LIGHT_SENS_Actor_t LIGHT_SENS_Actor;
+
+void LIGHT_SENS_TaskInit(void);
+void LIGHT_SENS_Task(void *argument);
+
 #ifdef __cplusplus
 }
 #endif
