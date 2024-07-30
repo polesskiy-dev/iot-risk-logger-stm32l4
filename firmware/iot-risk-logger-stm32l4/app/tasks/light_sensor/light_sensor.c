@@ -12,6 +12,7 @@
 
 static osStatus_t handleMessageFSM(LIGHT_SENS_Actor_t *this, message_t *message);
 static osStatus_t handleInit(LIGHT_SENS_Actor_t *this, message_t *message);
+static osStatus_t handleReadyWait(LIGHT_SENS_Actor_t *this, message_t *message);
 
 LIGHT_SENS_Actor_t LIGHT_SENS_Actor = {
         .super = {
@@ -42,6 +43,8 @@ void LIGHT_SENS_Task(void *argument) {
 
   // TODO run in global init manager
   osMessageQueuePut(LIGHT_SENS_Actor.super.osMessageQueueId, &(message_t){LIGHT_SENS_INITIALIZE}, 0, 0);
+  // debug check
+  osMessageQueuePut(LIGHT_SENS_Actor.super.osMessageQueueId, &(message_t){LIGHT_SENS_SINGLE_SHOT_READ}, 0, 0);
 
   for (;;) {
     // Wait for messages from the queue
@@ -58,7 +61,10 @@ void LIGHT_SENS_Task(void *argument) {
 static osStatus_t handleMessageFSM(LIGHT_SENS_Actor_t *this, message_t *message) {
   switch (this->state) {
     case LIGHT_SENS_INIT_STATE:
-        return handleInit(this, message);
+      return handleInit(this, message);
+    case LIGHT_SENS_READY_WAIT_STATE:
+      return handleReadyWait(this, message);
+    // TODO case LIGHT_SENS_TURNED_OFF_STATE:
   }
 
   return osError;
@@ -81,13 +87,16 @@ static osStatus_t handleInit(LIGHT_SENS_Actor_t *this, message_t *message) {
     if (status != osOK) return osError;
     SEGGER_RTT_printf(1, "OPT3001 ID: %x\n", opt3001Id);
 
-    // write config
-    uint16_t opt3001Config =  0x0000 | \
-                              OPT3001_CONFIG_RANGE_NUMBER_AUTO_SCALE | \
-                              OPT3001_CONFIG_CONVERSION_TIME_800_MS  | \
-                              OPT3001_CONFIG_MODE_CONTINUOUS         | \
-                              OPT3001_CONFIG_LATCH_ENABLED           | \
-                              OPT3001_CONFIG_FAULT_COUNT_4;
+
+//    uint16_t opt3001Config =  0x0000 | \
+//                              OPT3001_CONFIG_RANGE_NUMBER_AUTO_SCALE | \
+//                              OPT3001_CONFIG_CONVERSION_TIME_800_MS  | \
+//                              OPT3001_CONFIG_MODE_CONTINUOUS         | \
+//                              OPT3001_CONFIG_LATCH_ENABLED           | \
+//                              OPT3001_CONFIG_FAULT_COUNT_4;
+
+    // write default config (OPT3001 remains in turned off state)
+    uint16_t opt3001Config = OPT3001_CONFIG_DEFAULT;
 
     status = OPT3001_WriteConfig(opt3001Config);
 
@@ -106,8 +115,58 @@ static osStatus_t handleInit(LIGHT_SENS_Actor_t *this, message_t *message) {
       return osError;
     }
 
-    this->state = LIGHT_SENS_READ_READY_STATE;
+    this->state = LIGHT_SENS_READY_WAIT_STATE;
   }
 
   return osOK;
+}
+
+static osStatus_t handleReadyWait(LIGHT_SENS_Actor_t *this, message_t *message) {
+  osStatus_t status;
+
+  switch (message->event) {
+    case LIGHT_SENS_SINGLE_SHOT_READ:
+      // start single shot read
+      status = OPT3001_WriteConfig(OPT3001_CONFIG_RANGE_NUMBER_AUTO_SCALE | \
+                                    OPT3001_CONFIG_CONVERSION_TIME_800_MS  | \
+                                    OPT3001_CONFIG_MODE_SINGLE_SHOT        | \
+                                    OPT3001_CONFIG_LATCH_ENABLED);
+
+      if (status != osOK) return osError;
+
+      // wait for the sensor to finish the measurement
+      osDelay(1000); // TODO replace with 800ms
+
+      // read the measured rawLux
+      uint16_t rawLux = 0x0000;
+      status = OPT3001_ReadResultRawLux(&rawLux);
+
+      if (status != osOK) return osError;
+
+      // convert rawLux to lux for debug
+      this->lux = OPT3001_RawToMilliLux(rawLux);
+      SEGGER_RTT_printf(1, "OPT3001 milli Lux: %d\n", this->lux);
+
+      // remains in ready state after successful read
+      this->state = LIGHT_SENS_READY_WAIT_STATE;
+      return osOK;
+    case LIGHT_SENS_CONTINUOUS_READ:
+      // start continuous read
+      status = OPT3001_WriteConfig(OPT3001_CONFIG_DEFAULT | OPT3001_CONFIG_MODE_CONTINUOUS | OPT3001_CONFIG_FAULT_COUNT_4);
+
+      if (status != osOK) return osError;
+
+      this->state = LIGHT_SENS_CONTINUOUS_READ_WAIT_THRESHOLD_STATE;
+      return osOK;
+    case LIGHT_SENS_TURN_OFF:
+      // turn off the sensor
+      status = OPT3001_WriteConfig(OPT3001_CONFIG_DEFAULT | OPT3001_CONFIG_MODE_SHUTDOWN);
+
+      if (status != osOK) return osError;
+
+      this->state = LIGHT_SENS_TURNED_OFF_STATE;
+      return osOK;
+    default:
+      return osError;
+  }
 }

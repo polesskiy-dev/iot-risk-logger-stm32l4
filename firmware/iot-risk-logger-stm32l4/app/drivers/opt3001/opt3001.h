@@ -74,7 +74,7 @@ extern "C" {
 * @brief Calculate the exponent and mantissa of lux value from the raw register value.
 */
 #define OPT3001_REG_EXPONENT(n)		  ((n) >> 12)
-#define OPT3001_REG_MANTISSA(n)		  ((n) & 0xfff)
+#define OPT3001_REG_MANTISSA(n)		  ((n) & 0x0FFF)
 
 /**
 * @brief  OPT3001 Light Sensor status enumerator definition.
@@ -104,7 +104,7 @@ OPT3001_RESULT OPT3001_ReadConfig(uint16_t *config);
 OPT3001_RESULT OPT3001_WriteLowLimit(uint16_t lowLimitRawLux);
 OPT3001_RESULT OPT3001_WriteHighLimit(uint16_t highLimitRawLux);
 OPT3001_RESULT OPT3001_ReadResultRawLux(uint16_t *rawLux);
-uint32_t rawToMilliLux(uint16_t rawLux);
+uint32_t OPT3001_RawToMilliLux(uint16_t rawLux);
 
 #ifdef __cplusplus
 }

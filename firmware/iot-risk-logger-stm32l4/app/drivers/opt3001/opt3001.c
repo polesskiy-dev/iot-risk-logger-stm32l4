@@ -79,9 +79,9 @@ OPT3001_RESULT OPT3001_ReadResultRawLux(uint16_t *rawLux) {
  * @param[in] rawLux raw data from sensor
  * @return milli lux
  */
-uint32_t rawToMilliLux(uint16_t rawLux) {
-  uint8_t exponent = OPT3001_REG_EXPONENT(rawLux) & 0x0F;
-  uint16_t mantissa = OPT3001_REG_MANTISSA(rawLux);
+uint32_t OPT3001_RawToMilliLux(uint16_t rawLux) {
+  uint32_t exponent = OPT3001_REG_EXPONENT(rawLux) & 0x0F;
+  uint32_t mantissa = OPT3001_REG_MANTISSA(rawLux);
 
-  return (1 << exponent) * mantissa;
+  return ((1 << exponent) * mantissa);
 }
