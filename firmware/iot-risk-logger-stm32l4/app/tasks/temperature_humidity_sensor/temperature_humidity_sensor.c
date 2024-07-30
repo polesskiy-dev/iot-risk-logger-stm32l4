@@ -73,7 +73,7 @@ static osStatus_t handleTHSensorMessage(TH_SENS_Actor_t *this, message_t *messag
 }
 
 static osStatus_t initTHSensor(TH_SENS_Actor_t *this, message_t *message) {
-  if (this->state == TH_SENS_INIT_STATE) {
+  if (TH_SENS_INITIALIZE == message->event) {
     BSP_I2C1_Init(); // TODO think about proper place to init I2C
     // TODO soft reset of the sensor by pulling down _TEMP_RESET for 1uS minimum
     sht3x_init(SHT31_I2C_ADDR_44 << 1);

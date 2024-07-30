@@ -28,7 +28,7 @@ extern "C" {
  * @brief Config Range number.
  * Selects the full-scale lux range of the device
  */
-#define OPT3001_CONFIG_RANGE_NUMBER_AUTO_SCALE  (0xC0000)
+#define OPT3001_CONFIG_RANGE_NUMBER_AUTO_SCALE  (0xC000)
 
 /**
  * @brief Config Operation mode.
@@ -81,11 +81,15 @@ extern "C" {
 */
 #define OPT3001_OK      (0)
 #define OPT3001_ERROR   (-1)
+#define OPT3001_BUSY    (-2)
+#define OPT3001_TIMEOUT (-3)
+#define OPT3001_NACK    (-102)
+
 
 #define OPT3001_RESULT int32_t
 
-typedef OPT3001_RESULT (*OPT3001_WriteReg_Func)(void *, uint16_t, const uint8_t*, uint16_t);
-typedef OPT3001_RESULT (*OPT3001_ReadReg_Func) (void *, uint16_t, uint8_t*, uint16_t);
+typedef OPT3001_RESULT (*OPT3001_WriteReg_Func)(uint16_t, uint16_t, uint8_t*, uint16_t);
+typedef OPT3001_RESULT (*OPT3001_ReadReg_Func) (uint16_t, uint16_t, uint8_t*, uint16_t);
 
 typedef struct {
   uint8_t i2cAddress;

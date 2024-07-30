@@ -23,9 +23,20 @@ OPT3001_RESULT OPT3001_InitIO(uint8_t i2cAddress, OPT3001_WriteReg_Func WriteReg
     return OPT3001_OK;
 }
 
+OPT3001_RESULT OPT3001_ReadDeviceID(uint16_t *id) {
+    uint8_t idData[OPT3001_REGISTER_SIZE];
+    int32_t transferResult = OPT3001_IO.ReadReg(OPT3001_IO.i2cAddress, OPT3001_DEVICE_ID_REG, idData, OPT3001_REGISTER_SIZE);
+
+    if (transferResult != OPT3001_OK)
+        return OPT3001_ERROR;
+
+    *id = (idData[0] << 8) | idData[1];
+    return OPT3001_OK;
+}
+
 OPT3001_RESULT OPT3001_ReadConfig(uint16_t *config) {
     uint8_t configData[OPT3001_REGISTER_SIZE];
-    uint32_t transferResult = OPT3001_IO.ReadReg(&OPT3001_IO, OPT3001_CONFIG_REG, configData, OPT3001_REGISTER_SIZE);
+    int32_t transferResult = OPT3001_IO.ReadReg(OPT3001_IO.i2cAddress, OPT3001_CONFIG_REG, configData, OPT3001_REGISTER_SIZE);
 
     if (transferResult != OPT3001_OK)
         return OPT3001_ERROR;
@@ -36,22 +47,22 @@ OPT3001_RESULT OPT3001_ReadConfig(uint16_t *config) {
 
 OPT3001_RESULT OPT3001_WriteConfig(uint16_t config) {
     uint8_t configData[OPT3001_REGISTER_SIZE] = {config >> 8, config & 0xFF};
-    return OPT3001_IO.WriteReg(&OPT3001_IO, OPT3001_CONFIG_REG, configData, OPT3001_REGISTER_SIZE);
+    return OPT3001_IO.WriteReg(OPT3001_IO.i2cAddress, OPT3001_CONFIG_REG, configData, OPT3001_REGISTER_SIZE);
 }
 
 OPT3001_RESULT OPT3001_WriteLowLimit(uint16_t lowLimitRawLux) {
   uint8_t lowLimitData[OPT3001_REGISTER_SIZE] = {lowLimitRawLux >> 8, lowLimitRawLux & 0xFF};
-  return OPT3001_IO.WriteReg(&OPT3001_IO, OPT3001_LIMIT_LOW_REG, lowLimitData, OPT3001_REGISTER_SIZE);
+  return OPT3001_IO.WriteReg(OPT3001_IO.i2cAddress, OPT3001_LIMIT_LOW_REG, lowLimitData, OPT3001_REGISTER_SIZE);
 }
 
 OPT3001_RESULT OPT3001_WriteHighLimit(uint16_t highLimitRawLux) {
   uint8_t highLimitData[OPT3001_REGISTER_SIZE] = {highLimitRawLux >> 8, highLimitRawLux & 0xFF};
-  return OPT3001_IO.WriteReg(&OPT3001_IO, OPT3001_LIMIT_HIGH_REG, highLimitData, OPT3001_REGISTER_SIZE);
+  return OPT3001_IO.WriteReg(OPT3001_IO.i2cAddress, OPT3001_LIMIT_HIGH_REG, highLimitData, OPT3001_REGISTER_SIZE);
 }
 
 OPT3001_RESULT OPT3001_ReadResultRawLux(uint16_t *rawLux) {
     uint8_t rawLuxData[OPT3001_REGISTER_SIZE];
-    uint32_t transferResult = OPT3001_IO.ReadReg(&OPT3001_IO, OPT3001_RESULT_REG, rawLuxData, OPT3001_REGISTER_SIZE);
+    int32_t transferResult = OPT3001_IO.ReadReg(OPT3001_IO.i2cAddress, OPT3001_RESULT_REG, rawLuxData, OPT3001_REGISTER_SIZE);
 
     if (transferResult != OPT3001_OK)
         return OPT3001_ERROR;
