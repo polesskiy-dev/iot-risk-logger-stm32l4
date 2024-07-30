@@ -119,7 +119,6 @@ app/event_manager/event_manager.c \
 app/config/actors_list/actors_list.c \
 app/config/events_list/events_list.c \
 app/drivers/opt3001/opt3001.c \
-app/drivers/opt3001/opt3001_reg.c \
 app/tasks/info_led/info_led.c \
 app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c \
 app/tasks/light_sensor/light_sensor.c \
