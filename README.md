@@ -1,7 +1,13 @@
 # IoT Risk Data Logger, 
 ## STM32L4 based
 
-Open source & open hardware project aimed to collect environment data e.g for logistics, cold chain monitoring, last mile delivery, etc. 
+Open source & open hardware project aimed to collect environment data e.g for logistics, cold chain monitoring, last mile delivery, etc.
+
+## Firmware docs
+
+[Documentation: Doxygen](https://polesskiy-dev.github.io/iot-risk-logger-stm32l4/)
+
+## Parts video 
 
 https://github.com/polesskiy-dev/iot-risk-logger-stm32l4/assets/5185707/393b0768-925d-4c34-bb85-259de904c167
 
