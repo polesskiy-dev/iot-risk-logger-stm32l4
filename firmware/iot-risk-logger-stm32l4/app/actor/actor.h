@@ -32,7 +32,10 @@ extern "C" {
 */
 typedef struct {
   event_t event;          ///< Event associated with the message
-  void *payload;          ///< Pointer to the message payload
+  union {
+    void *ptr;            ///< Pointer to the message payload
+    uint32_t value;       ///< payload value
+  } payload;
   ssize_t payload_size;   ///< Size of the message payload
 } message_t;
 

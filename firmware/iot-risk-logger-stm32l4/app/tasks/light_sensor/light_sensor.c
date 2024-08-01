@@ -9,10 +9,14 @@
  */
 
 #include "light_sensor.h"
+#include "light_sensor_events.h"
 
+// state handlers
 static osStatus_t handleMessageFSM(LIGHT_SENS_Actor_t *this, message_t *message);
 static osStatus_t handleInit(LIGHT_SENS_Actor_t *this, message_t *message);
-static osStatus_t handleReadyWait(LIGHT_SENS_Actor_t *this, message_t *message);
+static osStatus_t handleTurnedOff(LIGHT_SENS_Actor_t *this, message_t *message);
+static osStatus_t handleContinuousMeasure(LIGHT_SENS_Actor_t *this, message_t *message);
+static osStatus_t handleOutOfRange(LIGHT_SENS_Actor_t *this, message_t *message);
 
 LIGHT_SENS_Actor_t LIGHT_SENS_Actor = {
         .super = {
@@ -21,7 +25,9 @@ LIGHT_SENS_Actor_t LIGHT_SENS_Actor = {
                 .osMessageQueueId = NULL,
                 .osThreadId = NULL,
         },
-        .state = LIGHT_SENS_INIT_STATE
+        .state = LIGHT_SENS_NO_STATE,
+        .rawLux = 0x0000,
+        .highLimit = OPT3001_CONFIG_LIMIT_MAX
 };
 
 const osThreadAttr_t lightSensorTaskDescription = {
@@ -60,16 +66,21 @@ void LIGHT_SENS_Task(void *argument) {
 
 static osStatus_t handleMessageFSM(LIGHT_SENS_Actor_t *this, message_t *message) {
   switch (this->state) {
-    case LIGHT_SENS_INIT_STATE:
+    case LIGHT_SENS_NO_STATE:
       return handleInit(this, message);
-    case LIGHT_SENS_READY_WAIT_STATE:
-      return handleReadyWait(this, message);
-    // TODO case LIGHT_SENS_TURNED_OFF_STATE:
+    case LIGHT_SENS_TURNED_OFF_STATE:
+      return handleTurnedOff(this, message);
+    case LIGHT_SENS_CONTINUOUS_MEASURE_STATE:
+      return handleContinuousMeasure(this, message);
+    case LIGHT_SENS_OUT_OF_RANGE_STATE:
+      return handleOutOfRange(this, message);
   }
 
   return osError;
 }
-
+/**
+ * @brief Initializes the sensor, configures I2C, writes default settings, and transitions to the TURNED_OFF state
+ */
 static osStatus_t handleInit(LIGHT_SENS_Actor_t *this, message_t *message) {
   if (LIGHT_SENS_INITIALIZE == message->event) {
     // init BSP I2C
@@ -86,14 +97,6 @@ static osStatus_t handleInit(LIGHT_SENS_Actor_t *this, message_t *message) {
 
     if (status != osOK) return osError;
     SEGGER_RTT_printf(1, "OPT3001 ID: %x\n", opt3001Id);
-
-
-//    uint16_t opt3001Config =  0x0000 | \
-//                              OPT3001_CONFIG_RANGE_NUMBER_AUTO_SCALE | \
-//                              OPT3001_CONFIG_CONVERSION_TIME_800_MS  | \
-//                              OPT3001_CONFIG_MODE_CONTINUOUS         | \
-//                              OPT3001_CONFIG_LATCH_ENABLED           | \
-//                              OPT3001_CONFIG_FAULT_COUNT_4;
 
     // write default config (OPT3001 remains in turned off state)
     uint16_t opt3001Config = OPT3001_CONFIG_DEFAULT;
@@ -115,21 +118,30 @@ static osStatus_t handleInit(LIGHT_SENS_Actor_t *this, message_t *message) {
       return osError;
     }
 
-    this->state = LIGHT_SENS_READY_WAIT_STATE;
+    // TODO read it from NOR flash e.g. emit LIGHT_SENS_INITIALIZE_SUCCESS to global events manager
+    // set high limit and minimal low limit so that the sensor never triggers the interrupt on low limit
+    status = OPT3001_WriteHighLimit(this->highLimit)
+    | OPT3001_WriteLowLimit(OPT3001_CONFIG_LIMIT_MIN);
+    if (status != osOK) return osError;
+
+    this->state = LIGHT_SENS_TURNED_OFF_STATE;
   }
 
   return osOK;
 }
 
-static osStatus_t handleReadyWait(LIGHT_SENS_Actor_t *this, message_t *message) {
+/**
+ * @brief Perform single-shot measurements, set limits, or switch to continuous measurement mode.
+ */
+static osStatus_t handleTurnedOff(LIGHT_SENS_Actor_t *this, message_t *message) {
   osStatus_t status;
 
   switch (message->event) {
     case LIGHT_SENS_SINGLE_SHOT_READ:
-      // start single shot read
+      // set single shot mode
       status = OPT3001_WriteConfig(OPT3001_CONFIG_RANGE_NUMBER_AUTO_SCALE | \
-                                    OPT3001_CONFIG_CONVERSION_TIME_800_MS  | \
-                                    OPT3001_CONFIG_MODE_SINGLE_SHOT        | \
+                                    OPT3001_CONFIG_CONVERSION_TIME_800_MS | \
+                                    OPT3001_CONFIG_MODE_SINGLE_SHOT | \
                                     OPT3001_CONFIG_LATCH_ENABLED);
 
       if (status != osOK) return osError;
@@ -138,25 +150,55 @@ static osStatus_t handleReadyWait(LIGHT_SENS_Actor_t *this, message_t *message) 
       osDelay(1000); // TODO replace with 800ms
 
       // read the measured rawLux
-      uint16_t rawLux = 0x0000;
-      status = OPT3001_ReadResultRawLux(&rawLux);
+      status = OPT3001_ReadResultRawLux(&this->rawLux);
 
       if (status != osOK) return osError;
 
       // convert rawLux to lux for debug
-      this->lux = OPT3001_RawToMilliLux(rawLux);
-      SEGGER_RTT_printf(1, "OPT3001 milli Lux: %d\n", this->lux);
+      SEGGER_RTT_printf(1, "OPT3001 milli Lux: %d\n", OPT3001_RawToMilliLux(this->rawLux));
 
-      // remains in ready state after successful read
-      this->state = LIGHT_SENS_READY_WAIT_STATE;
+      // remains in turned off state after successful read, opt3001 turns off automatically after single shot read
+      this->state = LIGHT_SENS_TURNED_OFF_STATE;
       return osOK;
-    case LIGHT_SENS_CONTINUOUS_READ:
-      // start continuous read
-      status = OPT3001_WriteConfig(OPT3001_CONFIG_DEFAULT | OPT3001_CONFIG_MODE_CONTINUOUS | OPT3001_CONFIG_FAULT_COUNT_4);
+    case LIGHT_SENS_MEASURE_CONTINUOUSLY:
+      // set continuous measurements mode
+      status = OPT3001_WriteConfig(OPT3001_CONFIG_RANGE_NUMBER_AUTO_SCALE | \
+                                    OPT3001_CONFIG_CONVERSION_TIME_800_MS | \
+                                    OPT3001_CONFIG_MODE_CONTINUOUS | \
+                                    OPT3001_CONFIG_FAULT_COUNT_4 | \
+                                    OPT3001_CONFIG_LATCH_ENABLED);
 
       if (status != osOK) return osError;
 
-      this->state = LIGHT_SENS_CONTINUOUS_READ_WAIT_THRESHOLD_STATE;
+      this->state = LIGHT_SENS_CONTINUOUS_MEASURE_STATE;
+      return osOK;
+    case LIGHT_SENS_SET_LIMIT:
+      // set high limit from message payload
+      this->highLimit = message->payload.value;
+      status = OPT3001_WriteHighLimit(this->highLimit);
+
+      if (status != osOK) return osError;
+
+      this->state = LIGHT_SENS_TURNED_OFF_STATE;
+      return osOK;
+  }
+
+  return osOK;
+};
+
+/**
+ * @brief Cron read sensor data periodically, handle limit interrupts, or turn off the sensor.
+ */
+static osStatus_t handleContinuousMeasure(LIGHT_SENS_Actor_t *this, message_t *message) {
+  osStatus_t status;
+
+  switch (message->event) {
+    case LIGHT_SENS_CRON_READ:
+      // read the measured rawLux on RTC cron
+      status = OPT3001_ReadResultRawLux(&this->rawLux);
+      if (status != osOK) return osError;
+
+      this->state = LIGHT_SENS_CONTINUOUS_MEASURE_STATE;
       return osOK;
     case LIGHT_SENS_TURN_OFF:
       // turn off the sensor
@@ -166,7 +208,62 @@ static osStatus_t handleReadyWait(LIGHT_SENS_Actor_t *this, message_t *message) 
 
       this->state = LIGHT_SENS_TURNED_OFF_STATE;
       return osOK;
-    default:
-      return osError;
+    case LIGHT_SENS_LIMIT_INT:
+      // read the measured rawLux overvalue
+      status = OPT3001_ReadResultRawLux(&this->rawLux);
+      if (status != osOK) return osError;
+
+      // TODO emit to event manager LIGHT_SENS_LIMIT_INT with this->rawLux payload
+
+      // swap limits to wait for lux returning below the high limit
+      status = OPT3001_WriteHighLimit(OPT3001_CONFIG_LIMIT_MAX)
+      | OPT3001_WriteLowLimit(this->highLimit);
+      if (status != osOK) return osError;
+
+      this->state = LIGHT_SENS_OUT_OF_RANGE_STATE;
+      return osOK;
   }
+
+  return osOK;
+}
+
+/**
+ * @brief Cron read sensor data, handle limit interrupts, or turn off the sensor.
+ */
+static osStatus_t handleOutOfRange(LIGHT_SENS_Actor_t *this, message_t *message) {
+  osStatus_t status;
+
+  switch (message->event) {
+    case LIGHT_SENS_CRON_READ:
+      // still read the measured rawLux on RTC cron
+      status = OPT3001_ReadResultRawLux(&this->rawLux);
+      if (status != osOK) return osError;
+
+      this->state = LIGHT_SENS_OUT_OF_RANGE_STATE;
+      return osOK;
+    case LIGHT_SENS_TURN_OFF:
+      // turn off the sensor
+      status = OPT3001_WriteConfig(OPT3001_CONFIG_DEFAULT | OPT3001_CONFIG_MODE_SHUTDOWN);
+
+      if (status != osOK) return osError;
+
+      this->state = LIGHT_SENS_TURNED_OFF_STATE;
+      return osOK;
+    case LIGHT_SENS_LIMIT_INT:
+      // read the measured rawLux OK overvalue
+      status = OPT3001_ReadResultRawLux(&this->rawLux);
+      if (status != osOK) return osError;
+      // TODO emit to event manager LIGHT_SENS_LIMIT_INT with this->rawLux payload, handle that this is OK value
+
+      // swap limits back to normal
+      status = OPT3001_WriteHighLimit(this->highLimit)
+               | OPT3001_WriteLowLimit(OPT3001_CONFIG_LIMIT_MIN);
+      if (status != osOK) return osError;
+
+      // back to continuous measure state
+      this->state = LIGHT_SENS_CONTINUOUS_MEASURE_STATE;
+      return osOK;
+  }
+
+  return osOK;
 }

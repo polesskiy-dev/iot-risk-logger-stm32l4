@@ -56,6 +56,9 @@ extern "C" {
                                                  OPT3001_CONFIG_LATCH_ENABLED           | \
                                                  OPT3001_CONFIG_FAULT_COUNT_1)
 
+#define OPT3001_CONFIG_LIMIT_MAX                (0xFFFF)
+#define OPT3001_CONFIG_LIMIT_MIN                (0x0000)
+
 /**
 * @brief  OPT3001 Light Sensor registers addresses.
 */
@@ -84,7 +87,6 @@ extern "C" {
 #define OPT3001_BUSY    (-2)
 #define OPT3001_TIMEOUT (-3)
 #define OPT3001_NACK    (-102)
-
 
 #define OPT3001_RESULT int32_t
 

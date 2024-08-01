@@ -1,1 +1,0 @@
-# TI OPT3001 Light Sensor
