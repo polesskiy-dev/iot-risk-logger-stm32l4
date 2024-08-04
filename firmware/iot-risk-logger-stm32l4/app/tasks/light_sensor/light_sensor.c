@@ -9,7 +9,6 @@
  */
 
 #include "light_sensor.h"
-#include "light_sensor_events.h"
 
 // state handlers
 static osStatus_t handleMessageFSM(LIGHT_SENS_Actor_t *this, message_t *message);

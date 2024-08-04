@@ -95,11 +95,11 @@ typedef OPT3001_RESULT (*OPT3001_ReadReg_Func) (uint16_t, uint16_t, uint8_t*, ui
 
 typedef struct {
   uint8_t i2cAddress;
-  OPT3001_WriteReg_Func WriteReg;
-  OPT3001_ReadReg_Func ReadReg;
+  OPT3001_WriteReg_Func writeReg;
+  OPT3001_ReadReg_Func readReg;
 } OPT3001_IO_t;
 
-OPT3001_RESULT OPT3001_InitIO(uint8_t i2cAddress, OPT3001_WriteReg_Func WriteReg, OPT3001_ReadReg_Func ReadReg);
+OPT3001_RESULT OPT3001_InitIO(uint8_t i2cAddress, OPT3001_WriteReg_Func writeReg, OPT3001_ReadReg_Func readReg);
 OPT3001_RESULT OPT3001_ReadDeviceID(uint16_t *id);
 OPT3001_RESULT OPT3001_WriteConfig(uint16_t config);
 OPT3001_RESULT OPT3001_ReadConfig(uint16_t *config);
