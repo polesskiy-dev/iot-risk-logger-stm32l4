@@ -95,7 +95,7 @@ static osStatus_t handleInit(LIGHT_SENS_Actor_t *this, message_t *message) {
     status = OPT3001_ReadDeviceID(&opt3001Id);
 
     if (status != osOK) return osError;
-    SEGGER_RTT_printf(1, "OPT3001 ID: %x\n", opt3001Id);
+    SEGGER_SYSVIEW_PrintfTarget("OPT3001 ID: %x\n", opt3001Id);
 
     // write default config (OPT3001 remains in turned off state)
     uint16_t opt3001Config = OPT3001_CONFIG_DEFAULT;
@@ -103,17 +103,17 @@ static osStatus_t handleInit(LIGHT_SENS_Actor_t *this, message_t *message) {
     status = OPT3001_WriteConfig(opt3001Config);
 
     if (status != osOK) return osError;
-    SEGGER_RTT_printf(1, "Write OPT3001 Config: %x\n", opt3001Config);
+    SEGGER_SYSVIEW_PrintfTarget("Write OPT3001 Config: %x\n", opt3001Config);
 
     // read existing config to verify equality
     uint16_t opt3001ConfigFromSensor = 0x0000;
     status = OPT3001_ReadConfig(&opt3001ConfigFromSensor);
 
     if (status != osOK) return osError;
-    SEGGER_RTT_printf(1, "OPT3001 Config: %x\n", opt3001ConfigFromSensor);
+    SEGGER_SYSVIEW_PrintfTarget("OPT3001 Config: %x\n", opt3001ConfigFromSensor);
 
     if (opt3001Config != opt3001ConfigFromSensor) {
-      SEGGER_RTT_printf(1, "OPT3001 Config mismatch\n");
+      SEGGER_SYSVIEW_PrintfTarget("OPT3001 Config mismatch\n");
       return osError;
     }
 
@@ -154,7 +154,7 @@ static osStatus_t handleTurnedOff(LIGHT_SENS_Actor_t *this, message_t *message) 
       if (status != osOK) return osError;
 
       // convert rawLux to lux for debug
-      SEGGER_RTT_printf(1, "OPT3001 milli Lux: %d\n", OPT3001_RawToMilliLux(this->rawLux));
+      SEGGER_SYSVIEW_PrintfTarget("OPT3001 milli Lux: %d\n", OPT3001_RawToMilliLux(this->rawLux));
 
       // remains in turned off state after successful read, opt3001 turns off automatically after single shot read
       this->state = LIGHT_SENS_TURNED_OFF_STATE;

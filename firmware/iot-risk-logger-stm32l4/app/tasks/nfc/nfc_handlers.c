@@ -12,13 +12,13 @@ int32_t NFC_ST25DVInit(ST25DV_Object_t *pObj) {
 
   int32_t status = ST25DV_RegisterBusIO(pObj, &IO);
   if (status != NFCTAG_OK) {
-    SEGGER_RTT_printf(1, "ST25DV RegisterBusIO Error: %d\n", status);
+    SEGGER_SYSVIEW_PrintfTarget("ST25DV RegisterBusIO Error: %d\n", status);
     return NFCTAG_ERROR;
   }
 
   status = St25Dv_Drv.Init(pObj);
   if (status != NFCTAG_OK) {
-    SEGGER_RTT_printf(1, "ST25DV Driver Init Error: %d\n", status);
+    SEGGER_SYSVIEW_PrintfTarget("ST25DV Driver Init Error: %d\n", status);
     return NFCTAG_ERROR;
   }
 
@@ -30,7 +30,7 @@ void NFC_HandleGPOInterrupt(ST25DV_Object_t *pObj) {
   ST25DV_ReadITSTStatus_Dyn(pObj, &ITStatus);
   if (ITStatus & ST25DV_ITSTS_DYN_RFPUTMSG_MASK) {
     osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NFC_MAILBOX_HAS_NEW_MESSAGE}, 0, 0);
-    SEGGER_RTT_printf(0, "NFC ITStatus: 0x%x\n", ITStatus);
+    SEGGER_SYSVIEW_PrintfTarget("NFC ITStatus: 0x%x\n", ITStatus);
   }
 }
 
@@ -39,16 +39,16 @@ int32_t NFC_ReadMailboxTo(ST25DV_Object_t *pObj, uint8_t pMailboxBuffer[ST25DV_M
   int32_t status = ST25DV_ReadMBLength_Dyn(pObj, &mailboxLength);
 
   if (status != NFCTAG_OK) {
-    SEGGER_RTT_printf(1, "ST25DV ST25DV_ReadMBLength_Dyn Error\n");
+    SEGGER_SYSVIEW_PrintfTarget("ST25DV ST25DV_ReadMBLength_Dyn Error\n");
     return NFCTAG_ERROR;
   }
 
-  SEGGER_RTT_printf(0, "Mailbox length: %d\n", mailboxLength);
+  SEGGER_SYSVIEW_PrintfTarget("Mailbox length: %d\n", mailboxLength);
 
   status = ST25DV_ReadMailboxData(pObj, pMailboxBuffer, MAILBOX_START_OFFSET, ST25DV_MAX_MAILBOX_LENGTH);
 
   if (status != NFCTAG_OK) {
-    SEGGER_RTT_printf(1, "ST25DV ST25DV_ReadMailboxData Error\n");
+    SEGGER_SYSVIEW_PrintfTarget("ST25DV ST25DV_ReadMailboxData Error\n");
     return NFCTAG_ERROR;
   }
 

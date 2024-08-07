@@ -9,7 +9,6 @@
  */
 
 #include "temperature_humidity_sensor.h"
-#include "sht3x_i2c.h"
 #include "custom_bus.h"
 
 static osStatus_t handleTHSensorMessage(TH_SENS_Actor_t *this, message_t *message);
@@ -76,11 +75,11 @@ static osStatus_t initTHSensor(TH_SENS_Actor_t *this, message_t *message) {
   if (TH_SENS_INITIALIZE == message->event) {
     BSP_I2C1_Init(); // TODO think about proper place to init I2C
     // TODO soft reset of the sensor by pulling down _TEMP_RESET for 1uS minimum
-    sht3x_init(SHT31_I2C_ADDR_44 << 1);
+//    sht3x_init(SHT31_I2C_ADDR_44 << 1);
     osMessageQueuePut(TH_SENS_Actor.super.osMessageQueueId, &(message_t){TH_SENS_START_SINGLE_SHOT_READ}, 0, 0);
     // TODO check sensor ID
     this->state = TH_SENS_READY_TO_READ_STATE;
-    SEGGER_RTT_printf(0, "temperature humidity sensor initialized\n");
+    SEGGER_SYSVIEW_PrintfTarget("temperature humidity sensor initialized\n");
     return osOK;
   }
   return osError;
@@ -88,10 +87,10 @@ static osStatus_t initTHSensor(TH_SENS_Actor_t *this, message_t *message) {
 
 static osStatus_t startSingleShotRead(TH_SENS_Actor_t *this, message_t *message) {
   if (TH_SENS_START_SINGLE_SHOT_READ == message->event) {
-    osStatus_t status = sht3x_measure_single_shot(REPEATABILITY_MEDIUM, false, &this->temperature, &this->humidity);
+    osStatus_t status = 0; //sht3x_measure_single_shot(REPEATABILITY_MEDIUM, false, &this->temperature, &this->humidity);
     if (status != osOK) return osError;
 
-    SEGGER_RTT_printf(0, "temperature: %d humidity %d\n", this->temperature, this->humidity);
+    SEGGER_SYSVIEW_PrintfTarget("temperature: %d humidity %d\n", this->temperature, this->humidity);
 
     osDelay(5000);
     osMessageQueuePut(TH_SENS_Actor.super.osMessageQueueId, &(message_t){TH_SENS_START_SINGLE_SHOT_READ}, 0, 0);
