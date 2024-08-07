@@ -100,7 +100,6 @@ int main(void)
   MX_LPTIM1_Init();
   MX_QUADSPI_Init();
   /* USER CODE BEGIN 2 */
-  SEGGER_RTT_Init();
 
   /* USER CODE END 2 */
 
@@ -109,6 +108,9 @@ int main(void)
 
   /* Call init function for freertos objects (in freertos.c) */
   MX_FREERTOS_Init();
+
+  /* Init SystemView */
+  SEGGER_SYSVIEW_Conf();
 
   /* Start scheduler */
   osKernelStart();

@@ -110,10 +110,9 @@ Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Src/usbd_msc_scsi.c \
 libraries/RTT/RTT/SEGGER_RTT.c \
 libraries/RTT/RTT/SEGGER_RTT_printf.c \
 libraries/RTT/Syscalls/SEGGER_RTT_Syscalls_GCC.c \
-libraries/embedded-i2c-sht3x/sensirion_common.c \
-libraries/embedded-i2c-sht3x/sensirion_i2c.c \
-libraries/embedded-i2c-sht3x/sensirion_i2c_hal.c \
-libraries/embedded-i2c-sht3x/sht3x_i2c.c \
+libraries/SystemView/SYSVIEW/SEGGER_SYSVIEW.c \
+libraries/SystemView/Sample/FreeRTOSV10/Config/Cortex-M/SEGGER_SYSVIEW_Config_FreeRTOS.c \
+libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c \
 app/actor/actor.c \
 app/event_manager/event_manager.c \
 app/config/actors_list/actors_list.c \
@@ -131,7 +130,8 @@ ASM_SOURCES =  \
 startup_stm32l412xx.s
 
 # ASM sources
-ASMM_SOURCES = 
+ASMM_SOURCES = \
+libraries/RTT/RTT/SEGGER_RTT_ASM_ARMv7M.S
 
 
 #######################################
@@ -206,7 +206,11 @@ C_INCLUDES =  \
 -Ilibraries/RTT/Config \
 -Ilibraries/RTT/RTT \
 -Ilibraries/RTT/Syscalls \
--Ilibraries/embedded-i2c-sht3x \
+-Ilibraries/SystemView/Config \
+-Ilibraries/SystemView/SEGGER \
+-Ilibraries/SystemView/SYSVIEW \
+-Ilibraries/SystemView/Sample/FreeRTOSV10/Config/Cortex-M \
+-Ilibraries/SystemView/Sample/FreeRTOSV10 \
 -Iapp/actor \
 -Iapp/event_manager \
 -Iapp/drivers/opt3001 \

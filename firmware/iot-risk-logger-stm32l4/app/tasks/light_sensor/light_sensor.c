@@ -51,6 +51,8 @@ void LIGHT_SENS_Task(void *argument) {
   // debug check
   osMessageQueuePut(LIGHT_SENS_Actor.super.osMessageQueueId, &(message_t){LIGHT_SENS_SINGLE_SHOT_READ}, 0, 0);
 
+  SEGGER_SYSVIEW_PrintfTarget("Light Sensor initialized\n");
+
   for (;;) {
     // Wait for messages from the queue
     if (osMessageQueueGet(LIGHT_SENS_Actor.super.osMessageQueueId, &msg, NULL, osWaitForever) == osOK) {
