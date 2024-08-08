@@ -27,6 +27,7 @@
 #include "rtc.h"
 #include "usb_device.h"
 #include "gpio.h"
+#include "cron.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -100,6 +101,7 @@ int main(void)
   MX_LPTIM1_Init();
   MX_QUADSPI_Init();
   /* USER CODE BEGIN 2 */
+  CRON_Init();
 
   /* USER CODE END 2 */
 

@@ -45,11 +45,13 @@ const char * const lightSensStatesNames[LIGHT_SENS_MAX_STATE] = {
   "LIGHT_SENS_STATE_ERROR"
 };
 
-void LIGHT_SENS_TaskInit(void) {
+actor_t* LIGHT_SENS_TaskInit(void) {
   LIGHT_SENS_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MESSAGE_SIZE, &(osMessageQueueAttr_t){
           .name = "lightSensorQueue"
   });
   LIGHT_SENS_Actor.super.osThreadId = osThreadNew(LIGHT_SENS_Task, NULL, &lightSensorTaskDescription);
+
+  return &LIGHT_SENS_Actor.super;
 }
 
 void LIGHT_SENS_Task(void *argument) {
