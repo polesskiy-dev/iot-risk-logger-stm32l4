@@ -17,6 +17,8 @@ static osStatus_t handleTurnedOff(LIGHT_SENS_Actor_t *this, message_t *message);
 static osStatus_t handleContinuousMeasure(LIGHT_SENS_Actor_t *this, message_t *message);
 static osStatus_t handleOutOfRange(LIGHT_SENS_Actor_t *this, message_t *message);
 
+static osStatus_t toState(LIGHT_SENS_Actor_t *this, LIGHT_SENS_State_t nextState);
+
 LIGHT_SENS_Actor_t LIGHT_SENS_Actor = {
         .super = {
                 .actorId = LIGHT_SENSOR_ACTOR_ID,
@@ -33,6 +35,14 @@ const osThreadAttr_t lightSensorTaskDescription = {
         .name = "lightSensorTask",
         .priority = osPriorityNormal,
         .stack_size = DEFAULT_TASK_STACK_SIZE
+};
+
+const char * const lightSensStatesNames[LIGHT_SENS_MAX_STATE] = {
+  "LIGHT_SENS_NO_STATE",
+  "LIGHT_SENS_TURNED_OFF_STATE",
+  "LIGHT_SENS_CONTINUOUS_MEASURE_STATE",
+  "LIGHT_SENS_OUT_OF_RANGE_STATE",
+  "LIGHT_SENS_STATE_ERROR"
 };
 
 void LIGHT_SENS_TaskInit(void) {
@@ -125,7 +135,7 @@ static osStatus_t handleInit(LIGHT_SENS_Actor_t *this, message_t *message) {
     | OPT3001_WriteLowLimit(OPT3001_CONFIG_LIMIT_MIN);
     if (status != osOK) return osError;
 
-    this->state = LIGHT_SENS_TURNED_OFF_STATE;
+    toState(this, LIGHT_SENS_TURNED_OFF_STATE);
   }
 
   return osOK;
@@ -159,7 +169,7 @@ static osStatus_t handleTurnedOff(LIGHT_SENS_Actor_t *this, message_t *message) 
       SEGGER_SYSVIEW_PrintfTarget("OPT3001 milli Lux: %d\n", OPT3001_RawToMilliLux(this->rawLux));
 
       // remains in turned off state after successful read, opt3001 turns off automatically after single shot read
-      this->state = LIGHT_SENS_TURNED_OFF_STATE;
+      toState(this, LIGHT_SENS_TURNED_OFF_STATE);
       return osOK;
     case LIGHT_SENS_MEASURE_CONTINUOUSLY:
       // set continuous measurements mode
@@ -171,7 +181,7 @@ static osStatus_t handleTurnedOff(LIGHT_SENS_Actor_t *this, message_t *message) 
 
       if (status != osOK) return osError;
 
-      this->state = LIGHT_SENS_CONTINUOUS_MEASURE_STATE;
+      toState(this, LIGHT_SENS_CONTINUOUS_MEASURE_STATE);
       return osOK;
     case LIGHT_SENS_SET_LIMIT:
       // set high limit from message payload
@@ -180,7 +190,7 @@ static osStatus_t handleTurnedOff(LIGHT_SENS_Actor_t *this, message_t *message) 
 
       if (status != osOK) return osError;
 
-      this->state = LIGHT_SENS_TURNED_OFF_STATE;
+      toState(this, LIGHT_SENS_TURNED_OFF_STATE);
       return osOK;
   }
 
@@ -199,7 +209,7 @@ static osStatus_t handleContinuousMeasure(LIGHT_SENS_Actor_t *this, message_t *m
       status = OPT3001_ReadResultRawLux(&this->rawLux);
       if (status != osOK) return osError;
 
-      this->state = LIGHT_SENS_CONTINUOUS_MEASURE_STATE;
+      toState(this, LIGHT_SENS_CONTINUOUS_MEASURE_STATE);
       return osOK;
     case LIGHT_SENS_TURN_OFF:
       // turn off the sensor
@@ -207,7 +217,7 @@ static osStatus_t handleContinuousMeasure(LIGHT_SENS_Actor_t *this, message_t *m
 
       if (status != osOK) return osError;
 
-      this->state = LIGHT_SENS_TURNED_OFF_STATE;
+      toState(this, LIGHT_SENS_TURNED_OFF_STATE);
       return osOK;
     case LIGHT_SENS_LIMIT_INT:
       // read the measured rawLux overvalue
@@ -221,7 +231,7 @@ static osStatus_t handleContinuousMeasure(LIGHT_SENS_Actor_t *this, message_t *m
       | OPT3001_WriteLowLimit(this->highLimit);
       if (status != osOK) return osError;
 
-      this->state = LIGHT_SENS_OUT_OF_RANGE_STATE;
+      toState(this, LIGHT_SENS_OUT_OF_RANGE_STATE);
       return osOK;
   }
 
@@ -240,7 +250,7 @@ static osStatus_t handleOutOfRange(LIGHT_SENS_Actor_t *this, message_t *message)
       status = OPT3001_ReadResultRawLux(&this->rawLux);
       if (status != osOK) return osError;
 
-      this->state = LIGHT_SENS_OUT_OF_RANGE_STATE;
+      toState(this, LIGHT_SENS_OUT_OF_RANGE_STATE);
       return osOK;
     case LIGHT_SENS_TURN_OFF:
       // turn off the sensor
@@ -248,7 +258,7 @@ static osStatus_t handleOutOfRange(LIGHT_SENS_Actor_t *this, message_t *message)
 
       if (status != osOK) return osError;
 
-      this->state = LIGHT_SENS_TURNED_OFF_STATE;
+      toState(this, LIGHT_SENS_TURNED_OFF_STATE);
       return osOK;
     case LIGHT_SENS_LIMIT_INT:
       // read the measured rawLux OK overvalue
@@ -262,9 +272,15 @@ static osStatus_t handleOutOfRange(LIGHT_SENS_Actor_t *this, message_t *message)
       if (status != osOK) return osError;
 
       // back to continuous measure state
-      this->state = LIGHT_SENS_CONTINUOUS_MEASURE_STATE;
+      toState(this, LIGHT_SENS_CONTINUOUS_MEASURE_STATE);
       return osOK;
   }
 
+  return osOK;
+}
+
+static osStatus_t toState(LIGHT_SENS_Actor_t *this, LIGHT_SENS_State_t nextState) {
+  SEGGER_SYSVIEW_PrintfTarget("Light Sensor State from %s to %s\n", lightSensStatesNames[this->state], lightSensStatesNames[nextState]);
+  this->state = nextState;
   return osOK;
 }
