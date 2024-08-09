@@ -1,0 +1,64 @@
+name: build-artifacts
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v3
+        with:
+          ref: main  # Ensure we're checking out the main branch
+          submodules: true  # Initialize and update submodules automatically
+          fetch-depth: 0  # Fetch all history to ensure proper submodule handling
+
+      - name: Initialize submodules (in case it's not done automatically)
+        run: |
+          git submodule sync
+          git submodule update --init --recursive
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y gcc-arm-none-eabi make
+
+      - name: Build project
+        run: |
+          cd firmware/iot-risk-logger-stm32l4
+          make all
+
+      - name: Calculate Flash and RAM usage
+        run: |
+          cd firmware/iot-risk-logger-stm32l4
+          SIZE_OUTPUT=$(arm-none-eabi-size build/iot-risk-logger-stm32l4.elf)
+          TEXT_SIZE=$(echo "$SIZE_OUTPUT" | awk 'NR==2 {print $1}')
+          DATA_SIZE=$(echo "$SIZE_OUTPUT" | awk 'NR==2 {print $2}')
+          BSS_SIZE=$(echo "$SIZE_OUTPUT" | awk 'NR==2 {print $3}')
+          FLASH_USAGE=$((TEXT_SIZE + DATA_SIZE))
+          RAM_USAGE=$((DATA_SIZE + BSS_SIZE))
+          echo "Flash usage: $FLASH_USAGE bytes" > flash_usage.txt
+          echo "RAM usage: $RAM_USAGE bytes" > ram_usage.txt
+
+      - name: Checkout artifacts branch
+        run: |
+          git fetch origin artifacts
+          git checkout artifacts
+          git merge main --no-edit  # Merge changes from main into artifacts
+
+      - name: Update artifacts
+        run: |
+          mkdir -p artifacts
+          mv firmware/iot-risk-logger-stm32l4/flash_usage.txt firmware/iot-risk-logger-stm32l4/ram_usage.txt artifacts/
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add artifacts/flash_usage.txt artifacts/ram_usage.txt
+          git commit -m "Update Flash and RAM usage artifacts"
+          git push origin artifacts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

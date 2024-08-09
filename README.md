@@ -1,3 +1,8 @@
+![CI Status](https://github.com/polesskiy-dev/iot-risk-logger-stm32l4/actions/workflows/ci.yml/badge.svg?branch=main)
+[![codecov](https://codecov.io/gh/polesskiy-dev/iot-risk-logger-stm32l4/graph/badge.svg?token=0MO4ODZ1HA)](https://codecov.io/gh/polesskiy-dev/iot-risk-logger-stm32l4)
+[![Documentation](https://img.shields.io/badge/docs-Doxygen-blue.svg)](https://polesskiy-dev.github.io/iot-risk-logger-stm32l4/)
+![GitHub release (with filter)](https://img.shields.io/github/v/release/polesskiy-dev/iot-risk-logger-stm32l4)
+
 # IoT Risk Data Logger, 
 ## STM32L4 based
 
