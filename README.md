@@ -1,3 +1,11 @@
+![CI Status](https://github.com/polesskiy-dev/iot-risk-logger-stm32l4/actions/workflows/ci.yml/badge.svg?branch=main)
+[![codecov](https://codecov.io/gh/polesskiy-dev/iot-risk-logger-stm32l4/graph/badge.svg?token=0MO4ODZ1HA)](https://codecov.io/gh/polesskiy-dev/iot-risk-logger-stm32l4)
+[![Documentation](https://img.shields.io/badge/docs-Doxygen-blue.svg)](https://polesskiy-dev.github.io/iot-risk-logger-stm32l4/)
+![GitHub release (with filter)](https://img.shields.io/github/v/release/polesskiy-dev/iot-risk-logger-stm32l4)
+
+![Dynamic JSON Badge](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fpolesskiy-dev%2Fiot-risk-logger-stm32l4%2Fartifacts%2Fartifacts%2Fusage.json&query=%24.SRAM&label=SRAM)
+![Dynamic JSON Badge](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fpolesskiy-dev%2Fiot-risk-logger-stm32l4%2Fartifacts%2Fartifacts%2Fusage.json&query=%24.flash&label=FLASH)
+
 # IoT Risk Data Logger, 
 ## STM32L4 based
 
