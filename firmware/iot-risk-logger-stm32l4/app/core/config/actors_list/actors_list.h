@@ -17,8 +17,6 @@ extern "C" {
 
 #include <stdio.h>
 
-#include "main.h"
-
 typedef enum {
   NFC_ACTOR_ID = 0,
   ACCELEROMETER_SENSOR_ACTOR_ID,

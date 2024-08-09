@@ -17,8 +17,6 @@ extern "C" {
 
 #include <stdio.h>
 
-#include "main.h"
-
 /**
  * @brief Event type
  * Contains all possible events for the application

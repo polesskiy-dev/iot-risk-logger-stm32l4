@@ -18,7 +18,6 @@ extern "C" {
 #include <stdio.h>
 
 #include "main.h"
-#include "actor.h"
 
 typedef enum {
   TH_SENS_INIT_STATE = 0,

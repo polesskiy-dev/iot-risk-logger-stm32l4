@@ -34,6 +34,13 @@ extern "C" {
 #include "SEGGER_SYSVIEW_Conf.h"
 #include "SEGGER_SYSVIEW.h"
 
+#include "actor.h"
+#include "info_led.h"
+#include "nfc.h"
+#include "temperature_humidity_sensor.h"
+#include "light_sensor.h"
+#include "cron.h"
+
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

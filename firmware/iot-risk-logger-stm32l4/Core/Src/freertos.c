@@ -25,10 +25,6 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "info_led.h"
-#include "nfc.h"
-#include "temperature_humidity_sensor.h"
-#include "light_sensor.h"
 
 /* USER CODE END Includes */
 

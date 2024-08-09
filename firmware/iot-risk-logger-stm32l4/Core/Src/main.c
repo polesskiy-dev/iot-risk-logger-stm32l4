@@ -20,14 +20,12 @@
 #include "main.h"
 #include "cmsis_os.h"
 #include "crc.h"
-#include "fatfs.h"
 #include "lptim.h"
 #include "quadspi.h"
 #include "rng.h"
 #include "rtc.h"
 #include "usb_device.h"
 #include "gpio.h"
-#include "cron.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -96,7 +94,6 @@ int main(void)
   MX_GPIO_Init();
   MX_CRC_Init();
   MX_RNG_Init();
-  MX_FATFS_Init();
   MX_RTC_Init();
   MX_LPTIM1_Init();
   MX_QUADSPI_Init();
@@ -110,9 +107,6 @@ int main(void)
 
   /* Call init function for freertos objects (in freertos.c) */
   MX_FREERTOS_Init();
-
-  /* Init SystemView */
-  SEGGER_SYSVIEW_Conf();
 
   /* Start scheduler */
   osKernelStart();

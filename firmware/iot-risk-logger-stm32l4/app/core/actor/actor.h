@@ -18,7 +18,6 @@ extern "C" {
 
 #include <stdio.h>
 
-#include "main.h"
 #include "cmsis_os2.h"
 #include "../config/events_list/events_list.h"
 #include "../config/actors_list/actors_list.h"

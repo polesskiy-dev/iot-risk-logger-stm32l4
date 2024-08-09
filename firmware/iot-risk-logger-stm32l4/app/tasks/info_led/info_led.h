@@ -9,7 +9,6 @@ extern "C" {
 #include "FreeRTOS.h"
 #include "main.h"
 #include "stm32l4xx_hal.h"
-#include "actor.h"
 
 typedef struct {
   actor_t super;
