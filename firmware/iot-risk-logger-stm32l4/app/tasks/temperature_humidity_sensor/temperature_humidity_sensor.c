@@ -67,7 +67,7 @@ static osStatus_t handleTHSensorMessage(TH_SENS_Actor_t *this, message_t *messag
     case TH_SENS_STATE_ERROR:
     // TODO handle reinit after error
     default:
-      return osError;
+      return osOK; // TODO osError;
   }
 }
 
@@ -85,15 +85,13 @@ static osStatus_t initTHSensor(TH_SENS_Actor_t *this, message_t *message) {
   return osError;
 }
 
+// TODO implement single shot read
 static osStatus_t startSingleShotRead(TH_SENS_Actor_t *this, message_t *message) {
   if (TH_SENS_START_SINGLE_SHOT_READ == message->event) {
     osStatus_t status = 0; //sht3x_measure_single_shot(REPEATABILITY_MEDIUM, false, &this->temperature, &this->humidity);
     if (status != osOK) return osError;
 
     SEGGER_SYSVIEW_PrintfTarget("temperature: %d humidity %d\n", this->temperature, this->humidity);
-
-    osDelay(5000);
-    osMessageQueuePut(TH_SENS_Actor.super.osMessageQueueId, &(message_t){TH_SENS_START_SINGLE_SHOT_READ}, 0, 0);
 
     this->state = TH_SENS_READY_TO_READ_STATE;
   }

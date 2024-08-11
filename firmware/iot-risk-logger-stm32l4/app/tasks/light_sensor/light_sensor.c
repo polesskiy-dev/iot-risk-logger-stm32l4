@@ -61,7 +61,9 @@ void LIGHT_SENS_Task(void *argument) {
   // TODO run in global init manager
   osMessageQueuePut(LIGHT_SENS_Actor.super.osMessageQueueId, &(message_t){LIGHT_SENS_INITIALIZE}, 0, 0);
   // debug check
-  osMessageQueuePut(LIGHT_SENS_Actor.super.osMessageQueueId, &(message_t){LIGHT_SENS_SINGLE_SHOT_READ}, 0, 0);
+  //  osMessageQueuePut(LIGHT_SENS_Actor.super.osMessageQueueId, &(message_t){LIGHT_SENS_SINGLE_SHOT_READ}, 0, 0);
+  // TODO move it to initializer
+  osMessageQueuePut(LIGHT_SENS_Actor.super.osMessageQueueId, &(message_t){LIGHT_SENS_MEASURE_CONTINUOUSLY}, 0, 0);
 
   SEGGER_SYSVIEW_PrintfTarget("Light Sensor initialized\n");
 
@@ -89,7 +91,7 @@ static osStatus_t handleMessageFSM(LIGHT_SENS_Actor_t *this, message_t *message)
       return handleOutOfRange(this, message);
   }
 
-  return osError;
+  return osOK;
 }
 /**
  * @brief Initializes the sensor, configures I2C, writes default settings, and transitions to the TURNED_OFF state
@@ -133,8 +135,10 @@ static osStatus_t handleInit(LIGHT_SENS_Actor_t *this, message_t *message) {
 
     // TODO read it from NOR flash e.g. emit LIGHT_SENS_INITIALIZE_SUCCESS to global events manager
     // set high limit and minimal low limit so that the sensor never triggers the interrupt on low limit
-    status = OPT3001_WriteHighLimit(this->highLimit)
-    | OPT3001_WriteLowLimit(OPT3001_CONFIG_LIMIT_MIN);
+    status = OPT3001_WriteHighLimit(this->highLimit);
+    if (status != osOK) return osError;
+
+    status = OPT3001_WriteLowLimit(OPT3001_CONFIG_LIMIT_MIN);
     if (status != osOK) return osError;
 
     toState(this, LIGHT_SENS_TURNED_OFF_STATE);

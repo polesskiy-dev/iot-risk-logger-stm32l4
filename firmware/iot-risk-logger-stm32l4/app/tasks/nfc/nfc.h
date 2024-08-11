@@ -14,7 +14,6 @@ extern "C" {
 #include "st25dv_reg.h"
 #include "st25dv.h"
 #include "custom_bus.h"
-#include "info_led.h"
 #include "nfc_handlers.h"
 
 typedef enum {

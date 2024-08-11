@@ -11,6 +11,10 @@
 #include "cron.h"
 
 static uint8_t monthStrToNumber(const char* monthStr);
+static osStatus_t setTimeFromUnixTimestamp(int32_t timestamp);
+static osStatus_t setWakeUpPeriod(uint32_t periodSeconds);
+static int32_t getCurrentUnixTimestamp(void);
+
 static HAL_StatusTypeDef setCurrentTime(void);
 static HAL_StatusTypeDef setCurrentDate(void);
 
@@ -21,7 +25,95 @@ HAL_StatusTypeDef CRON_Init(void) {
   // set date to current (compilation date)
   status |= setCurrentDate();
 
+  // TODO remove after debugging
+  status |= setWakeUpPeriod(30); // every 5 seconds
+
   return status;
+}
+
+osStatus_t CRON_HandleMessageCMD(message_t *message) {
+  switch (message->event) {
+    case GLOBAL_CMD_SET_TIME_DATE:
+      return setTimeFromUnixTimestamp((int32_t)message->payload.value);
+    case GLOBAL_CMD_SET_WAKE_UP_PERIOD:
+      return setWakeUpPeriod(message->payload.value);
+  }
+  return osOK;
+}
+
+void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc) {
+  int32_t currentTimestamp = getCurrentUnixTimestamp();
+
+  osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_RTC_WAKE_UP, .payload.value = currentTimestamp}, 0, 0);
+}
+
+static osStatus_t setTimeFromUnixTimestamp(int32_t timestamp) {
+  // Convert Unix timestamp to broken-down time structure
+  time_t rawTime = timestamp;
+  struct tm *timeStruct = gmtime(&rawTime);
+
+  RTC_TimeTypeDef sTime = {0};
+  RTC_DateTypeDef sDate = {0};
+
+  // Set time
+  sTime.Hours = timeStruct->tm_hour;
+  sTime.Minutes = timeStruct->tm_min;
+  sTime.Seconds = timeStruct->tm_sec;
+  sTime.TimeFormat = RTC_HOURFORMAT_24;
+  sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+  sTime.StoreOperation = RTC_STOREOPERATION_RESET;
+
+  // Set date
+  sDate.Year = timeStruct->tm_year - YEARS_FROM_1900_TO_2000; // Adjust year to RTC format (00-99)
+  sDate.Month = timeStruct->tm_mon + 1; // Adjust month to RTC format (1-12)
+  sDate.Date = timeStruct->tm_mday;
+  sDate.WeekDay = (timeStruct->tm_wday == 0) ? 7 : timeStruct->tm_wday; // Sunday = 0 in tm struct, should be 7 in RTC
+
+  // Set RTC time and date
+  if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BIN) != HAL_OK) {
+    return osError;
+  }
+
+  if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BIN) != HAL_OK) {
+    return osError;
+  }
+
+  return osOK;
+}
+
+static osStatus_t setWakeUpPeriod(uint32_t periodSeconds) {
+  // Disable wake-up timer to modify it
+  if (HAL_RTCEx_DeactivateWakeUpTimer(&hrtc) != HAL_OK) {
+    return osError;
+  }
+
+  uint32_t wakeUpCounter = periodSeconds - 1; // Adjust for 0-based counter
+
+  if (HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, wakeUpCounter, RTC_WAKEUPCLOCK_CK_SPRE_16BITS, WAKE_UP_AUTO_CLEAR) != HAL_OK) {
+    return osError;
+  }
+
+  return osOK;
+}
+
+static int32_t getCurrentUnixTimestamp(void) {
+  RTC_TimeTypeDef sTime = {0};
+  RTC_DateTypeDef sDate = {0};
+
+  HAL_StatusTypeDef status = HAL_RTC_GetTime (&hrtc, &sTime, RTC_FORMAT_BIN);
+  status |= HAL_RTC_GetDate (&hrtc, &sDate, RTC_FORMAT_BIN);
+
+  // Convert time and date to Unix timestamp
+  struct tm timeStruct = {
+    .tm_sec = sTime.Seconds,
+    .tm_min = sTime.Minutes,
+    .tm_hour = sTime.Hours,
+    .tm_mday = sDate.Date, // day of the month, 1-31
+    .tm_mon = sDate.Month - 1, // months from 0
+    .tm_year = sDate.Year + YEARS_FROM_1900_TO_2000, // years from 1900
+  };
+
+  return mktime(&timeStruct);
 }
 
 /**
@@ -31,7 +123,7 @@ static HAL_StatusTypeDef setCurrentTime(void) {
   RTC_TimeTypeDef sTime = {0};
 
   // __TIME__ is a string in the format "HH:MM:SS"
-  char timeStr[] = __TIME__;
+  char timeStr[] = __TIME__; // TODO handle timezone subtraction
 
   // Extract hours, minutes, and seconds
   sTime.Hours = atoi(&timeStr[0]);    // Convert "HH" to integer
@@ -62,7 +154,7 @@ static HAL_StatusTypeDef setCurrentDate(void) {
   sDate.Year = atoi(&dateStr[7]) - 2000; // Convert "YYYY" to last two digits (RTC stores only last two digits)
 
   // Set a placeholder weekday; you can adjust this if you need the exact day
-  sDate.WeekDay = RTC_WEEKDAY_MONDAY; // Placeholder: Change this based on actual weekday
+  sDate.WeekDay = RTC_WEEKDAY_MONDAY; // TODO: Change this based on actual weekday
 
   return HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BIN);
 }

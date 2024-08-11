@@ -35,7 +35,7 @@ extern "C" {
 #include "SEGGER_SYSVIEW.h"
 
 #include "actor.h"
-#include "info_led.h"
+#include "event_manager.h"
 #include "nfc.h"
 #include "temperature_humidity_sensor.h"
 #include "light_sensor.h"

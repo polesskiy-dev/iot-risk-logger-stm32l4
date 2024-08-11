@@ -98,7 +98,7 @@ int main(void)
   MX_LPTIM1_Init();
   MX_QUADSPI_Init();
   /* USER CODE BEGIN 2 */
-  CRON_Init();
+  CRON_Init(); // Initialize the cron ASAP to set compile time/date
 
   /* USER CODE END 2 */
 
@@ -107,6 +107,9 @@ int main(void)
 
   /* Call init function for freertos objects (in freertos.c) */
   MX_FREERTOS_Init();
+
+  /* Init SystemView */
+  SEGGER_SYSVIEW_Conf();
 
   /* Start scheduler */
   osKernelStart();

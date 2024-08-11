@@ -109,9 +109,9 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
-  INFO_LED_TaskInit();
+  EV_MANAGER_TaskInit();
   //  NFC_TaskInit();
-  //  TH_SENS_TaskInit();
+  TH_SENS_TaskInit();
   LIGHT_SENS_TaskInit();
   // TODO
   // ACCEL_TaskInit();

@@ -164,6 +164,10 @@ extern "C" {
 	#define INCLUDE_pxTaskGetStackStart 0
 #endif
 
+#ifndef INCLUDE_pxTaskGetStackStart
+	#define INCLUDE_pxTaskGetStackStart 0
+#endif
+
 #ifndef INCLUDE_eTaskGetState
 	#define INCLUDE_eTaskGetState 0
 #endif

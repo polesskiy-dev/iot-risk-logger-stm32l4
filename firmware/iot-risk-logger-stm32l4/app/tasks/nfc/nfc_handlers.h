@@ -11,7 +11,6 @@ extern "C" {
 #include "st25dv.h"
 #include "custom_bus.h"
 #include "cmsis_os2.h"
-#include "info_led.h"
 #include "nfc.h"
 
 #ifdef __cplusplus

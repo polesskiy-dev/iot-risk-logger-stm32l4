@@ -18,6 +18,17 @@ extern "C" {
 #include <stdio.h>
 
 #include "main.h"
+#include "actor.h"
+#include "cmsis_os2.h"
+
+typedef struct {
+  actor_t super;
+} EV_MANAGER_Actor_t;
+
+extern EV_MANAGER_Actor_t EV_MANAGER_Actor;
+
+actor_t* EV_MANAGER_TaskInit(void);
+void EV_MANAGER_Task(void *argument);
 
 #ifdef __cplusplus
 }
