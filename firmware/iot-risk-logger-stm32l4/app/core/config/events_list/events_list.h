@@ -51,6 +51,8 @@ typedef enum {
   GLOBAL_INITIALIZE,
   GLOBAL_INITIALIZE_SUCCESS,
   GLOBAL_RTC_WAKE_UP,
+  GLOBAL_CMD_INFO_LED_ON,
+  GLOBAL_CMD_INFO_LED_OFF,
   GLOBAL_CMD_SET_TIME_DATE, ///< Set time and date from int32 UNIX timestamp
   GLOBAL_CMD_SET_WAKE_UP_PERIOD, ///< Set wake up period in seconds
   GLOBAL_CMD_START_CONTINUOUS_SENSING, ///< Start continuous sensors measurement

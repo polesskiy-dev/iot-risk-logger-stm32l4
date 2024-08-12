@@ -114,6 +114,7 @@ app/core/config/actors_list/actors_list.c \
 app/core/config/events_list/events_list.c \
 app/tasks/event_manager/event_manager.c \
 app/core/cron/cron.c \
+app/core/info_led/info_led.c \
 app/drivers/opt3001/opt3001.c \
 app/drivers/sht3x/sht3x.c \
 app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c \
@@ -211,6 +212,7 @@ C_INCLUDES =  \
 -Iapp/drivers/opt3001 \
 -Iapp/drivers/sht3x \
 -Iapp/core/cron \
+-Iapp/core/info_led \
 -Iapp/tasks/temperature_humidity_sensor \
 -Iapp/tasks/light_sensor \
 -Iapp/tasks/nfc

@@ -100,6 +100,7 @@ int main(void)
   MX_RNG_Init();
   /* USER CODE BEGIN 2 */
   CRON_Init(); // Initialize the cron ASAP to set compile time/date
+  INFO_LED_Init();
 
   /* USER CODE END 2 */
 
