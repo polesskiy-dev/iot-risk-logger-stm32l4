@@ -24,7 +24,7 @@ extern "C" {
 
 #define DEFAULT_QUEUE_SIZE 8
 #define DEFAULT_QUEUE_MESSAGE_SIZE sizeof(message_t)
-#define DEFAULT_TASK_STACK_SIZE (128 * 4)
+#define DEFAULT_TASK_STACK_SIZE_WORDS (128)
 
 /**
 * @brief Structure representing a message in the actor framework.

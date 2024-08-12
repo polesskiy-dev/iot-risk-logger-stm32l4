@@ -31,10 +31,15 @@ LIGHT_SENS_Actor_t LIGHT_SENS_Actor = {
         .highLimit = OPT3001_CONFIG_LIMIT_MAX
 };
 
+uint32_t lightSensorTaskBuffer[DEFAULT_TASK_STACK_SIZE_WORDS];
+StaticTask_t lightSensorTaskControlBlock;
 const osThreadAttr_t lightSensorTaskDescription = {
         .name = "lightSensorTask",
-        .priority = osPriorityNormal,
-        .stack_size = DEFAULT_TASK_STACK_SIZE
+        .cb_mem = &lightSensorTaskControlBlock,
+        .cb_size = sizeof(lightSensorTaskControlBlock),
+        .stack_mem = &lightSensorTaskBuffer[0],
+        .stack_size = sizeof(lightSensorTaskBuffer),
+        .priority = (osPriority_t) osPriorityNormal,
 };
 
 const char * const lightSensStatesNames[LIGHT_SENS_MAX_STATE] = {

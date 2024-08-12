@@ -25,10 +25,15 @@ TH_SENS_Actor_t TH_SENS_Actor = {
         .state = TH_SENS_INIT_STATE
 };
 
+uint32_t thSensorTaskBuffer[DEFAULT_TASK_STACK_SIZE_WORDS];
+StaticTask_t thSensorTaskControlBlock;
 const osThreadAttr_t thSensorTaskDescription = {
         .name = "thSensorTask",
-        .priority = osPriorityNormal,
-        .stack_size = DEFAULT_TASK_STACK_SIZE
+        .cb_mem = &thSensorTaskControlBlock,
+        .cb_size = sizeof(thSensorTaskControlBlock),
+        .stack_mem = &thSensorTaskBuffer[0],
+        .stack_size = sizeof(thSensorTaskBuffer),
+        .priority = (osPriority_t) osPriorityNormal,
 };
 
 void TH_SENS_TaskInit(void) {

@@ -25,10 +25,15 @@ NFC_Actor_t NFC_Actor = {
         .state = NFC_STATE_READY
 };
 
+uint32_t nfcTaskBuffer[DEFAULT_TASK_STACK_SIZE_WORDS];
+StaticTask_t nfcTaskControlBlock;
 const osThreadAttr_t nfcTaskDescription = {
         .name = "nfcTask",
-        .priority = osPriorityNormal,
-        .stack_size = DEFAULT_TASK_STACK_SIZE
+        .cb_mem = &nfcTaskControlBlock,
+        .cb_size = sizeof(nfcTaskControlBlock),
+        .stack_mem = &nfcTaskBuffer[0],
+        .stack_size = sizeof(nfcTaskBuffer),
+        .priority = (osPriority_t) osPriorityNormal,
 };
 
 void NFC_TaskInit(void) {
