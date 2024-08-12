@@ -112,6 +112,7 @@ libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c \
 app/core/actor/actor.c \
 app/core/config/actors_list/actors_list.c \
 app/core/config/events_list/events_list.c \
+app/core/retarget/retarget.c \
 app/tasks/event_manager/event_manager.c \
 app/core/cron/cron.c \
 app/core/info_led/info_led.c \
@@ -208,6 +209,7 @@ C_INCLUDES =  \
 -Iapp/core/actor \
 -Iapp/core/config/actors_list/actors_list \
 -Iapp/core/config/events_list/events_list \
+-Iapp/core/retarget \
 -Iapp/tasks/event_manager \
 -Iapp/drivers/opt3001 \
 -Iapp/drivers/sht3x \

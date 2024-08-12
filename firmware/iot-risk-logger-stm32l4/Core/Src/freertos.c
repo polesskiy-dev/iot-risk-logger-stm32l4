@@ -76,7 +76,7 @@ extern void SystemClock_Config(void);
 void PreSleepProcessing(uint32_t ulExpectedIdleTime)
 {
   HAL_SuspendTick();
-  SEGGER_SYSVIEW_PrintfTarget("Entering in STOP2 Mode...\n");
+  fprintf(stdout, "Entering in STOP2 Mode...\n");
   HAL_PWREx_EnterSTOP2Mode(PWR_STOPENTRY_WFI);
 }
 
@@ -84,7 +84,7 @@ void PostSleepProcessing(uint32_t ulExpectedIdleTime)
 {
   /* place for user code */
   SystemClock_Config();
-  SEGGER_SYSVIEW_PrintfTarget("Entering in STOP2 Mode...\n");
+  fprintf(stdout, "Entering in STOP2 Mode...\n");
   HAL_ResumeTick();
 }
 /* USER CODE END PREPOSTSLEEP */

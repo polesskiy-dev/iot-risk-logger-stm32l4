@@ -27,7 +27,7 @@ actor_t* EV_MANAGER_ActorInit(osThreadId_t defaultTaskHandle) {
   });
   EV_MANAGER_Actor.super.osThreadId = defaultTaskHandle;
 
-  SEGGER_SYSVIEW_PrintfTarget("Event Manager initialized\n");
+  fprintf(stdout, "Event Manager initialized\n");
   // TODO move to init manager
   osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_INITIALIZE}, 0, 0);
 

@@ -53,14 +53,14 @@ void NFC_Task(void *argument) {
   /* Init ST25DV driver */
   if (NFC_ST25DVInit(&st25dv) != NFCTAG_OK) {
     // TODO handle and log NFC init error
-    SEGGER_SYSVIEW_PrintfTarget("NFC initialization Error\n");
+    fprintf(stderr, "NFC initialization Error\n");
     /* Error */
     Error_Handler();
   }
 
   /* Reset Mailbox enable to allow write to EEPROM */
   ST25DV_ResetMBEN_Dyn(&st25dv);
-  SEGGER_SYSVIEW_PrintfTarget("NFC initialized\n");
+  fprintf(stdout, "NFC initialized\n");
 
   for (;;) {
     // Wait for messages from the queue
@@ -76,11 +76,11 @@ static osStatus_t handleNFCMessage(NFC_Actor_t *this, message_t *message) {
       NFC_HandleGPOInterrupt(&st25dv);
       return osOK;
     case NFC_MAILBOX_HAS_NEW_MESSAGE:
-      SEGGER_SYSVIEW_PrintfTarget("Mailbox has new message\n");
+      fprintf(stdout, "Mailbox has new message\n");
       NFC_ReadMailboxTo(&st25dv, mailboxBuffer);
       // Print for debug purposes
       for (int i = 0; i < ST25DV_MAX_MAILBOX_LENGTH; i++) {
-        SEGGER_SYSVIEW_PrintfTarget("0x%x ", mailboxBuffer[i]);
+        fprintf(stdout, "0x%x ", mailboxBuffer[i]);
       }
       return osOK;
     default:
