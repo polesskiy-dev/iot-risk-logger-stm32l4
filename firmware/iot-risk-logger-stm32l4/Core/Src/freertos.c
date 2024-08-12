@@ -72,14 +72,20 @@ extern void MX_USB_DEVICE_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /* USER CODE BEGIN PREPOSTSLEEP */
-__weak void PreSleepProcessing(uint32_t ulExpectedIdleTime)
+extern void SystemClock_Config(void);
+void PreSleepProcessing(uint32_t ulExpectedIdleTime)
 {
-/* place for user code */
+  HAL_SuspendTick();
+  SEGGER_SYSVIEW_PrintfTarget("Entering in STOP2 Mode...\n");
+  HAL_PWREx_EnterSTOP2Mode(PWR_STOPENTRY_WFI);
 }
 
-__weak void PostSleepProcessing(uint32_t ulExpectedIdleTime)
+void PostSleepProcessing(uint32_t ulExpectedIdleTime)
 {
-/* place for user code */
+  /* place for user code */
+  SystemClock_Config();
+  SEGGER_SYSVIEW_PrintfTarget("Entering in STOP2 Mode...\n");
+  HAL_ResumeTick();
 }
 /* USER CODE END PREPOSTSLEEP */
 
@@ -115,7 +121,7 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
-  EV_MANAGER_TaskInit();
+  EV_MANAGER_ActorInit(defaultTaskHandle);
   //  NFC_TaskInit();
   TH_SENS_TaskInit();
   LIGHT_SENS_TaskInit();
@@ -138,15 +144,19 @@ void MX_FREERTOS_Init(void) {
   * @retval None
   */
 /* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void *argument)
-{
+void StartDefaultTask(void *argument) {
   /* init code for USB_DEVICE */
-  MX_USB_DEVICE_Init();
+//  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN StartDefaultTask */
+  (void) argument; // Avoid unused parameter warning
+  message_t msg;
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    // process event manager messages
+    if (osMessageQueueGet(EV_MANAGER_Actor.super.osMessageQueueId, &msg, NULL, osWaitForever) == osOK) {
+      EV_MANAGER_Actor.super.messageHandler(&EV_MANAGER_Actor.super, &msg);
+    }
   }
   /* USER CODE END StartDefaultTask */
 }

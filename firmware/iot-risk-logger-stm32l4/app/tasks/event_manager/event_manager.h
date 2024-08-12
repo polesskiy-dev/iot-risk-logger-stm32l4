@@ -27,8 +27,7 @@ typedef struct {
 
 extern EV_MANAGER_Actor_t EV_MANAGER_Actor;
 
-actor_t* EV_MANAGER_TaskInit(void);
-void EV_MANAGER_Task(void *argument);
+actor_t* EV_MANAGER_ActorInit(osThreadId_t defaultTaskHandle);
 
 #ifdef __cplusplus
 }

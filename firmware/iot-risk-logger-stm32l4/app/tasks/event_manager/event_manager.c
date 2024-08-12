@@ -10,49 +10,31 @@
 
 #include "event_manager.h"
 
-static osStatus_t handleMessage(EV_MANAGER_Actor_t *this, message_t *message);
+static osStatus_t handleEvManagerMessage(EV_MANAGER_Actor_t *this, message_t *message);
 
 EV_MANAGER_Actor_t EV_MANAGER_Actor = {
         .super = {
                 .actorId = EV_MANAGER_ACTOR_ID,
-                .messageHandler = (messageHandler_t) handleMessage,
+                .messageHandler = (messageHandler_t) handleEvManagerMessage,
                 .osMessageQueueId = NULL,
                 .osThreadId = NULL,
         }
 };
 
-const osThreadAttr_t eventManagerTaskDescription = {
-        .name = "eventManagerTask",
-        .priority = osPriorityNormal,
-        .stack_size = DEFAULT_TASK_STACK_SIZE
-};
-
-actor_t* EV_MANAGER_TaskInit(void) {
+actor_t* EV_MANAGER_ActorInit(osThreadId_t defaultTaskHandle) {
   EV_MANAGER_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MESSAGE_SIZE, &(osMessageQueueAttr_t){
           .name = "eventManagerQueue"
   });
-  EV_MANAGER_Actor.super.osThreadId = osThreadNew(EV_MANAGER_Task, NULL, &eventManagerTaskDescription);
-
-  return &EV_MANAGER_Actor.super;
-}
-void EV_MANAGER_Task(void *argument) {
-  (void) argument; // Avoid unused parameter warning
-  message_t msg;
+  EV_MANAGER_Actor.super.osThreadId = defaultTaskHandle;
 
   SEGGER_SYSVIEW_PrintfTarget("Event Manager initialized\n");
   // TODO move to init manager
   osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_INITIALIZE}, 0, 0);
 
-  for (;;) {
-    // Wait for messages from the queue
-    if (osMessageQueueGet(EV_MANAGER_Actor.super.osMessageQueueId, &msg, NULL, osWaitForever) == osOK) {
-      // TODO verify correct execution?
-      EV_MANAGER_Actor.super.messageHandler(&EV_MANAGER_Actor.super, &msg);
-    }
-  }
+  return &EV_MANAGER_Actor.super;
 }
 
-static osStatus_t handleMessage(EV_MANAGER_Actor_t *this, message_t *message) {
+static osStatus_t handleEvManagerMessage(EV_MANAGER_Actor_t *this, message_t *message) {
   switch (message->event) {
     case GLOBAL_INITIALIZE:
       // TODO handle initialize event
