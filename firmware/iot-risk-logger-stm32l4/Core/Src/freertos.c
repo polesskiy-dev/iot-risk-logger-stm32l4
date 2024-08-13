@@ -135,12 +135,13 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   EV_MANAGER_ActorInit(defaultTaskHandle);
-  //  NFC_TaskInit();
   TH_SENS_TaskInit();
   LIGHT_SENS_TaskInit();
+  MEMORY_TaskInit();
   // TODO
+
+  //  NFC_TaskInit();
   // ACCEL_TaskInit();
-  // MEMORY_TaskInit();
 
   /* USER CODE END RTOS_THREADS */
 

@@ -11,7 +11,7 @@
 #include "light_sensor.h"
 
 // state handlers
-static osStatus_t handleMessageFSM(LIGHT_SENS_Actor_t *this, message_t *message);
+static osStatus_t handleLightSensorFSM(LIGHT_SENS_Actor_t *this, message_t *message);
 static osStatus_t handleInit(LIGHT_SENS_Actor_t *this, message_t *message);
 static osStatus_t handleTurnedOff(LIGHT_SENS_Actor_t *this, message_t *message);
 static osStatus_t handleContinuousMeasure(LIGHT_SENS_Actor_t *this, message_t *message);
@@ -22,7 +22,7 @@ static osStatus_t toState(LIGHT_SENS_Actor_t *this, LIGHT_SENS_State_t nextState
 LIGHT_SENS_Actor_t LIGHT_SENS_Actor = {
         .super = {
                 .actorId = LIGHT_SENSOR_ACTOR_ID,
-                .messageHandler = (messageHandler_t) handleMessageFSM,
+                .messageHandler = (messageHandler_t) handleLightSensorFSM,
                 .osMessageQueueId = NULL,
                 .osThreadId = NULL,
         },
@@ -84,7 +84,7 @@ void LIGHT_SENS_Task(void *argument) {
   }
 }
 
-static osStatus_t handleMessageFSM(LIGHT_SENS_Actor_t *this, message_t *message) {
+static osStatus_t handleLightSensorFSM(LIGHT_SENS_Actor_t *this, message_t *message) {
   switch (this->state) {
     case LIGHT_SENS_NO_STATE:
       return handleInit(this, message);

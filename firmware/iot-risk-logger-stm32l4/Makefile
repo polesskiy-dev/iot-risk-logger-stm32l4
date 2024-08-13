@@ -118,6 +118,7 @@ app/core/cron/cron.c \
 app/core/info_led/info_led.c \
 app/drivers/opt3001/opt3001.c \
 app/drivers/sht3x/sht3x.c \
+app/tasks/memory/memory.c \
 app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c \
 app/tasks/light_sensor/light_sensor.c \
 app/tasks/nfc/nfc_handlers.c \
@@ -215,6 +216,7 @@ C_INCLUDES =  \
 -Iapp/drivers/sht3x \
 -Iapp/core/cron \
 -Iapp/core/info_led \
+-Iapp/tasks/memory \
 -Iapp/tasks/temperature_humidity_sensor \
 -Iapp/tasks/light_sensor \
 -Iapp/tasks/nfc
