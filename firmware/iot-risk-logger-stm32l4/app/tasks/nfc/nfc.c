@@ -90,6 +90,7 @@ static osStatus_t handleNFCMessage(NFC_Actor_t *this, message_t *message) {
 
 /** Handle GPO interrupt */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+  fprintf(stdout, "HAL_GPIO_EXTI_Callback %d\n", GPIO_Pin);
   if (GPIO_Pin == _NFC_INT_Pin) {
 //    osMessageQueuePut(infoLedQueueHandle, &(message_t){INFO_LED_FLASH}, 0, 0);
     osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NFC_GPO_INTERRUPT}, 0, 0);

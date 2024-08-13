@@ -181,11 +181,11 @@ void RTC_WKUP_IRQHandler(void)
 void EXTI0_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI0_IRQn 0 */
-
+  SEGGER_SYSVIEW_RecordEnterISR();
   /* USER CODE END EXTI0_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(_NFC_INT_Pin);
   /* USER CODE BEGIN EXTI0_IRQn 1 */
-
+  SEGGER_SYSVIEW_RecordExitISR();
   /* USER CODE END EXTI0_IRQn 1 */
 }
 
@@ -195,11 +195,11 @@ void EXTI0_IRQHandler(void)
 void EXTI1_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI1_IRQn 0 */
-
+  SEGGER_SYSVIEW_RecordEnterISR();
   /* USER CODE END EXTI1_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(_LIGHT_INT_Pin);
   /* USER CODE BEGIN EXTI1_IRQn 1 */
-
+  SEGGER_SYSVIEW_RecordExitISR();
   /* USER CODE END EXTI1_IRQn 1 */
 }
 
@@ -209,14 +209,14 @@ void EXTI1_IRQHandler(void)
 void EXTI9_5_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI9_5_IRQn 0 */
-
+  SEGGER_SYSVIEW_RecordEnterISR();
   /* USER CODE END EXTI9_5_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(TEMP_INT_Pin);
   HAL_GPIO_EXTI_IRQHandler(IMU_INT1_Pin);
   HAL_GPIO_EXTI_IRQHandler(IMU_INT2_Pin);
   HAL_GPIO_EXTI_IRQHandler(USB_VBUS_SENSE_Pin);
   /* USER CODE BEGIN EXTI9_5_IRQn 1 */
-
+  SEGGER_SYSVIEW_RecordExitISR();
   /* USER CODE END EXTI9_5_IRQn 1 */
 }
 
@@ -226,11 +226,11 @@ void EXTI9_5_IRQHandler(void)
 void TIM6_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM6_IRQn 0 */
-
+  SEGGER_SYSVIEW_RecordEnterISR();
   /* USER CODE END TIM6_IRQn 0 */
   HAL_TIM_IRQHandler(&htim6);
   /* USER CODE BEGIN TIM6_IRQn 1 */
-
+  SEGGER_SYSVIEW_RecordExitISR();
   /* USER CODE END TIM6_IRQn 1 */
 }
 
@@ -240,11 +240,11 @@ void TIM6_IRQHandler(void)
 void USB_IRQHandler(void)
 {
   /* USER CODE BEGIN USB_IRQn 0 */
-
+  SEGGER_SYSVIEW_RecordEnterISR();
   /* USER CODE END USB_IRQn 0 */
   HAL_PCD_IRQHandler(&hpcd_USB_FS);
   /* USER CODE BEGIN USB_IRQn 1 */
-
+  SEGGER_SYSVIEW_RecordExitISR();
   /* USER CODE END USB_IRQn 1 */
 }
 

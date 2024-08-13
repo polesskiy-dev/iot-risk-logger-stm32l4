@@ -75,17 +75,30 @@ void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 extern void SystemClock_Config(void);
 void PreSleepProcessing(uint32_t ulExpectedIdleTime)
 {
+  // Disable SysTick Interrupt
+  SysTick->CTRL &= ~SysTick_CTRL_TICKINT_Msk;
+
+  // Suspend the HAL tick
   HAL_SuspendTick();
-  fprintf(stdout, "Entering in STOP2 Mode...\n");
+
+  fprintf(stdout, "Entering STOP2 Mode...\n");
+
+  // Enter STOP2 mode
   HAL_PWREx_EnterSTOP2Mode(PWR_STOPENTRY_WFI);
 }
 
 void PostSleepProcessing(uint32_t ulExpectedIdleTime)
 {
-  /* place for user code */
+  // Restore the system clock after waking up
   SystemClock_Config();
-  fprintf(stdout, "Entering in STOP2 Mode...\n");
+
+  // Enable SysTick Interrupt
+  SysTick->CTRL  |= SysTick_CTRL_TICKINT_Msk;
+
+  // Resume the HAL tick (if using SysTick)
   HAL_ResumeTick();
+
+  fprintf(stdout, "Exited STOP2 Mode...\n");
 }
 /* USER CODE END PREPOSTSLEEP */
 
@@ -144,10 +157,12 @@ void MX_FREERTOS_Init(void) {
   * @retval None
   */
 /* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void *argument) {
+void StartDefaultTask(void *argument)
+{
   /* init code for USB_DEVICE */
-//  MX_USB_DEVICE_Init();
+
   /* USER CODE BEGIN StartDefaultTask */
+  //  MX_USB_DEVICE_Init();
   (void) argument; // Avoid unused parameter warning
   message_t msg;
   /* Infinite loop */
