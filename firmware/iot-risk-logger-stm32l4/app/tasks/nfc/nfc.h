@@ -17,15 +17,17 @@ extern "C" {
 #include "nfc_handlers.h"
 
 typedef enum {
-  NFC_STATE_INIT = 0,
-  NFC_STATE_READY,
+  NFC_NO_STATE = 0,
+  NFC_STANDBY_STATE,
   NFC_STATE_ERROR,
-  NFC_STATE_MAX
+  NFC_MAX_STATE
 } NFC_State_t;
 
 typedef struct {
   actor_t super;
   NFC_State_t state;
+  ST25DV_Object_t st25dv;
+  uint8_t mailboxBuffer[ST25DV_MAX_MAILBOX_LENGTH];
 } NFC_Actor_t;
 
 extern NFC_Actor_t NFC_Actor;

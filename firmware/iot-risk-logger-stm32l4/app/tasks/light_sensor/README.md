@@ -8,7 +8,7 @@
   <summary>Diagram as a code</summary>
   
 ```plantuml
-@startuml{docs/assets/diagrams/light_sensor_fsm.png}
+@startuml
 title Light Sensor FSM
 hide empty description
 TURNED_OFF: Initialized, turned off\nready for commands, low power mode

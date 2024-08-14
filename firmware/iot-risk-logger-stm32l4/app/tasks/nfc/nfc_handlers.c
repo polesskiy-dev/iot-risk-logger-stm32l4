@@ -25,6 +25,11 @@ int32_t NFC_ST25DVInit(ST25DV_Object_t *pObj) {
   return NFCTAG_OK;
 }
 
+int32_t NFC_LowPowerMode(ST25DV_Object_t *pObj) {
+
+  return NFCTAG_OK;
+}
+
 void NFC_HandleGPOInterrupt(ST25DV_Object_t *pObj) {
   uint8_t ITStatus;
   ST25DV_ReadITSTStatus_Dyn(pObj, &ITStatus);

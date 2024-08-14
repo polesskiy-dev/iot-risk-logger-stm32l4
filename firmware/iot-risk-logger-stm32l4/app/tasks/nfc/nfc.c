@@ -9,20 +9,17 @@
 #include "nfc.h"
 #include "nfc_handlers.h"
 
-// TODO put into Actor
-static ST25DV_Object_t st25dv;
-static uint8_t mailboxBuffer[ST25DV_MAX_MAILBOX_LENGTH];
-
-static osStatus_t handleNFCMessage(NFC_Actor_t *this, message_t *message);
+static osStatus_t handleNFCFSM(NFC_Actor_t *this, message_t *message);
+static osStatus_t handleInit(NFC_Actor_t *this, message_t *message);
 
 NFC_Actor_t NFC_Actor = {
         .super = {
                 .actorId = NFC_ACTOR_ID,
-                .messageHandler = (messageHandler_t) handleNFCMessage,
+                .messageHandler = (messageHandler_t) handleNFCFSM,
                 .osMessageQueueId = NULL,
                 .osThreadId = NULL,
         },
-        .state = NFC_STATE_READY
+        .state = NFC_NO_STATE
 };
 
 uint32_t nfcTaskBuffer[DEFAULT_TASK_STACK_SIZE_WORDS];
@@ -46,53 +43,69 @@ void NFC_TaskInit(void) {
 void NFC_Task(void *argument) {
   (void) argument; // Avoid unused parameter warning
   message_t msg;
-  uint8_t ITStatus = 0x00;
-
-  /* init functions call here */
-
-  /* Init ST25DV driver */
-  if (NFC_ST25DVInit(&st25dv) != NFCTAG_OK) {
-    // TODO handle and log NFC init error
-    fprintf(stderr, "NFC initialization Error\n");
-    /* Error */
-    Error_Handler();
-  }
 
   /* Reset Mailbox enable to allow write to EEPROM */
-  ST25DV_ResetMBEN_Dyn(&st25dv);
-  fprintf(stdout, "NFC initialized\n");
+//  ST25DV_ResetMBEN_Dyn(&st25dv);
 
   for (;;) {
     // Wait for messages from the queue
     if (osMessageQueueGet(NFC_Actor.super.osMessageQueueId, &msg, NULL, osWaitForever) == osOK) {
-      NFC_Actor.super.messageHandler((actor_t *) &NFC_Actor, &msg);
-    }
-  }
-}
-
-static osStatus_t handleNFCMessage(NFC_Actor_t *this, message_t *message) {
-  switch (message->event) {
-    case NFC_GPO_INTERRUPT:
-      NFC_HandleGPOInterrupt(&st25dv);
-      return osOK;
-    case NFC_MAILBOX_HAS_NEW_MESSAGE:
-      fprintf(stdout, "Mailbox has new message\n");
-      NFC_ReadMailboxTo(&st25dv, mailboxBuffer);
-      // Print for debug purposes
-      for (int i = 0; i < ST25DV_MAX_MAILBOX_LENGTH; i++) {
-        fprintf(stdout, "0x%x ", mailboxBuffer[i]);
+      osStatus_t status = NFC_Actor.super.messageHandler((actor_t *) &NFC_Actor, &msg);
+      if (status != osOK) {
+        // TODO Handle error, emit common error event and reinitialize module
+        NFC_Actor.state = NFC_STATE_ERROR;
       }
-      return osOK;
-    default:
-      return osError;
+    }
   }
 }
 
 /** Handle GPO interrupt */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-  fprintf(stdout, "HAL_GPIO_EXTI_Callback %d\n", GPIO_Pin);
   if (GPIO_Pin == _NFC_INT_Pin) {
-//    osMessageQueuePut(infoLedQueueHandle, &(message_t){INFO_LED_FLASH}, 0, 0);
+    fprintf(stdout, "NFC GPO Interrupt\n");
     osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NFC_GPO_INTERRUPT}, 0, 0);
+  }
+}
+
+static osStatus_t handleNFCFSM(NFC_Actor_t *this, message_t *message) {
+  switch (this->state) {
+    case NFC_NO_STATE:
+      handleInit(this, message);
+      return osOK;
+    case NFC_STANDBY_STATE:
+      // TODO handle low power state
+      return osOK;
+  }
+
+//  switch (message->event) {
+//    case NFC_GPO_INTERRUPT:
+//      NFC_HandleGPOInterrupt(&st25dv);
+//      return osOK;
+//    case NFC_MAILBOX_HAS_NEW_MESSAGE:
+//      fprintf(stdout, "Mailbox has new message\n");
+//      NFC_ReadMailboxTo(&st25dv, mailboxBuffer);
+//      // Print for debug purposes
+//      for (int i = 0; i < ST25DV_MAX_MAILBOX_LENGTH; i++) {
+//        fprintf(stdout, "0x%x ", mailboxBuffer[i]);
+//      }
+//      return osOK;
+//    default:
+//      return osError;
+//  }
+}
+
+static osStatus_t handleInit(NFC_Actor_t *this, message_t *message) {
+  osStatus_t status;
+
+  switch (message->event) {
+    case NFC_INITIALIZE:
+      status = NFC_ST25DVInit(&this->st25dv);
+      if (status != NFCTAG_OK)
+        return osError;
+      this->state = NFC_STANDBY_STATE;
+
+      return osOK;
+    default:
+      return osOK;
   }
 }

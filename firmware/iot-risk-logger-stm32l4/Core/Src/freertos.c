@@ -72,34 +72,7 @@ extern void MX_USB_DEVICE_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /* USER CODE BEGIN PREPOSTSLEEP */
-extern void SystemClock_Config(void);
-void PreSleepProcessing(uint32_t ulExpectedIdleTime)
-{
-  // Disable SysTick Interrupt
-  SysTick->CTRL &= ~SysTick_CTRL_TICKINT_Msk;
-
-  // Suspend the HAL tick
-  HAL_SuspendTick();
-
-  fprintf(stdout, "Entering STOP2 Mode...\n");
-
-  // Enter STOP2 mode
-  HAL_PWREx_EnterSTOP2Mode(PWR_STOPENTRY_WFI);
-}
-
-void PostSleepProcessing(uint32_t ulExpectedIdleTime)
-{
-  // Restore the system clock after waking up
-  SystemClock_Config();
-
-  // Enable SysTick Interrupt
-  SysTick->CTRL  |= SysTick_CTRL_TICKINT_Msk;
-
-  // Resume the HAL tick (if using SysTick)
-  HAL_ResumeTick();
-
-  fprintf(stdout, "Exited STOP2 Mode...\n");
-}
+/** @see sleep.c */
 /* USER CODE END PREPOSTSLEEP */
 
 /**
@@ -138,9 +111,8 @@ void MX_FREERTOS_Init(void) {
   TH_SENS_TaskInit();
   LIGHT_SENS_TaskInit();
   MEMORY_TaskInit();
+  NFC_TaskInit();
   // TODO
-
-  //  NFC_TaskInit();
   // ACCEL_TaskInit();
 
   /* USER CODE END RTOS_THREADS */
