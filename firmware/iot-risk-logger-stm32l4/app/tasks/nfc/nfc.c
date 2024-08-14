@@ -33,11 +33,13 @@ const osThreadAttr_t nfcTaskDescription = {
         .priority = (osPriority_t) osPriorityNormal,
 };
 
-void NFC_TaskInit(void) {
+actor_t* NFC_TaskInit(void) {
   NFC_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MESSAGE_SIZE, &(osMessageQueueAttr_t){
     .name = "nfcQueue"
   });
   NFC_Actor.super.osThreadId = osThreadNew(NFC_Task, NULL, &nfcTaskDescription);
+
+  return (actor_t*) &NFC_Actor;
 }
 
 void NFC_Task(void *argument) {
@@ -74,6 +76,8 @@ static osStatus_t handleNFCFSM(NFC_Actor_t *this, message_t *message) {
       return osOK;
     case NFC_STANDBY_STATE:
       // TODO handle low power state
+      return osOK;
+    default:
       return osOK;
   }
 

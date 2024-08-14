@@ -32,7 +32,7 @@ typedef struct {
 
 extern NFC_Actor_t NFC_Actor;
 
-void NFC_TaskInit(void);
+actor_t* NFC_TaskInit(void);
 void NFC_Task(void *argument);
 
 #ifdef __cplusplus

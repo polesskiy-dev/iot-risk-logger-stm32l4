@@ -36,11 +36,13 @@ const osThreadAttr_t thSensorTaskDescription = {
         .priority = (osPriority_t) osPriorityNormal,
 };
 
-void TH_SENS_TaskInit(void) {
+actor_t* TH_SENS_TaskInit(void) {
   TH_SENS_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MESSAGE_SIZE, &(osMessageQueueAttr_t){
           .name = "thSensorQueue"
   });
   TH_SENS_Actor.super.osThreadId = osThreadNew(TH_SENS_Task, NULL, &thSensorTaskDescription);
+
+  return (actor_t*) &TH_SENS_Actor;
  }
 
 void TH_SENS_Task(void *argument) {

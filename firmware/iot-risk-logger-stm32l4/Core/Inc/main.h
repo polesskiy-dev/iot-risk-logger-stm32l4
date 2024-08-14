@@ -36,6 +36,7 @@ extern "C" {
 
 #include "actor.h"
 #include "event_manager.h"
+#include "power_mode_manager.h"
 #include "nfc.h"
 #include "memory.h"
 #include "temperature_humidity_sensor.h"

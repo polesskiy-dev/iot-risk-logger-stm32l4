@@ -9,3 +9,29 @@
  */
 
 #include "actors_list.h"
+
+/**
+ * @brief Global registry for all actors in the system.
+ *
+ * This array holds pointers to the initialized actors in the system. Each entry corresponds to
+ * an actor identified by a unique actor ID. Actors must be initialized and added to this registry
+ * during system startup.
+ *
+ * Example usage:
+ * @code
+ * ACTORS_LIST_SystemRegistry[CRON_ACTOR_ID] = CRON_ActorInit();
+ * @endcode
+ *
+ * @warning Ensure that each actor is correctly initialized before adding it to the registry.
+ */
+actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS] = {
+  [EV_MANAGER_ACTOR_ID] = NULL,
+  [CRON_ACTOR_ID] = NULL,
+  [PWRM_MANAGER_ACTOR_ID] = NULL,
+  [NFC_ACTOR_ID] = NULL,
+  [ACCELEROMETER_ACTOR_ID] = NULL,
+  [TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID] = NULL,
+  [LIGHT_SENSOR_ACTOR_ID] = NULL,
+  [MEMORY_ACTOR_ID] = NULL,
+  [INFO_LED_ACTOR_ID] = NULL,
+};

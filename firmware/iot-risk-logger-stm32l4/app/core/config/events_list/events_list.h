@@ -23,6 +23,20 @@ extern "C" {
  */
 typedef enum {
   EVENT_NONE = 0,
+  // GLOBAL Events
+  GLOBAL_CMD_INITIALIZE,
+  GLOBAL_INITIALIZE_SUCCESS,
+  GLOBAL_RTC_WAKE_UP, ///> RTC wakes up event
+  GLOBAL_TEMPERATURE_HUMIDITY_MEASUREMENTS_READY, ///< Temperature and humidity measurements are ready
+  GLOBAL_LIGHT_MEASUREMENTS_READY, ///< Light measurements are ready
+  GLOBAL_CMD_INFO_LED_ON,
+  GLOBAL_CMD_INFO_LED_OFF,
+  GLOBAL_CMD_SET_TIME_DATE, ///< Set time and date from int32 UNIX timestamp
+  GLOBAL_CMD_SET_WAKE_UP_PERIOD, ///< Set wake up period in seconds
+  GLOBAL_CMD_START_CONTINUOUS_SENSING, ///< Start continuous sensors measurement
+  GLOBAL_CMD_TURN_OFF, ///< Turn off to power saving mode
+  GLOBAL_ERROR,
+  GLOBAL_EVENTS_MAX,
   // INFO_LED
   INFO_LED_FLASH,
   // NFC
@@ -48,17 +62,6 @@ typedef enum {
   LIGHT_SENS_LIMIT_INT,
   LIGHT_SENS_RECOVER,
   LIGHT_SENS_ERROR,
-  // GLOBAL Events
-  GLOBAL_INITIALIZE,
-  GLOBAL_INITIALIZE_SUCCESS,
-  GLOBAL_RTC_WAKE_UP,
-  GLOBAL_CMD_INFO_LED_ON,
-  GLOBAL_CMD_INFO_LED_OFF,
-  GLOBAL_CMD_SET_TIME_DATE, ///< Set time and date from int32 UNIX timestamp
-  GLOBAL_CMD_SET_WAKE_UP_PERIOD, ///< Set wake up period in seconds
-  GLOBAL_CMD_START_CONTINUOUS_SENSING, ///< Start continuous sensors measurement
-  GLOBAL_CMD_TURN_OFF, ///< Turn off to power saving mode
-  GLOBAL_ERROR,
   MAX_EVENTS
 } event_t;
 

@@ -106,12 +106,15 @@ void MX_FREERTOS_Init(void) {
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
+  extern actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS];
   /* add threads, ... */
-  EV_MANAGER_ActorInit(defaultTaskHandle);
-  TH_SENS_TaskInit();
-  LIGHT_SENS_TaskInit();
-  MEMORY_TaskInit();
-  NFC_TaskInit();
+  ACTORS_LIST_SystemRegistry[CRON_ACTOR_ID]                         = CRON_ActorInit();
+  ACTORS_LIST_SystemRegistry[PWRM_MANAGER_ACTOR_ID]                 = PWRM_MANAGER_ActorInit();
+  ACTORS_LIST_SystemRegistry[TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID]  = TH_SENS_TaskInit();
+  ACTORS_LIST_SystemRegistry[LIGHT_SENSOR_ACTOR_ID]                 = LIGHT_SENS_TaskInit();
+  ACTORS_LIST_SystemRegistry[MEMORY_ACTOR_ID]                       = MEMORY_TaskInit();
+  ACTORS_LIST_SystemRegistry[NFC_ACTOR_ID]                          = NFC_TaskInit();
+  ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]                   = EV_MANAGER_ActorInit(defaultTaskHandle); // should be initialized last
   // TODO
   // ACCEL_TaskInit();
 
