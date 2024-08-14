@@ -21,7 +21,7 @@ PWRM_MANAGER_Actor_t PWRM_MANAGER_Actor = {
                 .osMessageQueueId = NULL,
                 .osThreadId = NULL,
         },
-        .state = PWRM_STOP2
+        .state = PWRM_NO_STATE
 };
 
 void PreSleepProcessing(uint32_t ulExpectedIdleTime)
@@ -61,6 +61,8 @@ void PostSleepProcessing(uint32_t ulExpectedIdleTime)
 }
 
 actor_t* PWRM_MANAGER_ActorInit(void) {
+  PWRM_MANAGER_Actor.state = PWRM_STOP2;
+
   fprintf(stdout, "Power Mode Manager initialized\n");
 
   return &PWRM_MANAGER_Actor.super;

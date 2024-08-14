@@ -54,7 +54,7 @@ typedef osStatus_t (*messageHandler_t)(struct actor_t *actor, message_t *message
  * @brief Structure representing a base actor in the actor framework.
  */
 typedef struct actor_t {
-  ACTOR_ID actorId;                ///< Unique actor ID
+  uint32_t actorId;                ///< Unique actor ID
   osThreadId_t osThreadId;         ///< CMSIS-RTOS2 Thread ID
   osMessageQueueId_t osMessageQueueId; ///< Message queue ID
   messageHandler_t messageHandler; ///< Message handler, most likely a state machine

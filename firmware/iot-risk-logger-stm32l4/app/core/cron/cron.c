@@ -10,6 +10,7 @@
 
 #include "cron.h"
 
+static osStatus_t handleCronMessage(CRON_Actor_t *this, message_t *message);
 static uint8_t monthStrToNumber(const char* monthStr);
 static osStatus_t setTimeFromUnixTimestamp(int32_t timestamp);
 static osStatus_t setWakeUpPeriod(uint32_t periodSeconds);
@@ -18,7 +19,16 @@ static int32_t getCurrentUnixTimestamp(void);
 static HAL_StatusTypeDef setCurrentTime(void);
 static HAL_StatusTypeDef setCurrentDate(void);
 
-HAL_StatusTypeDef CRON_Init(void) {
+CRON_Actor_t CRON_Actor = {
+  .super = {
+    .actorId = CRON_ACTOR_ID,
+    .messageHandler = (messageHandler_t) handleCronMessage,
+    .osMessageQueueId = NULL,
+    .osThreadId = NULL,
+  },
+};
+
+actor_t* CRON_ActorInit(void) {
   // set time to current (compilation time)
   HAL_StatusTypeDef status = setCurrentTime();
 
@@ -26,12 +36,20 @@ HAL_StatusTypeDef CRON_Init(void) {
   status |= setCurrentDate();
 
   // TODO remove after debugging
-  status |= setWakeUpPeriod(30); // every 5 seconds
+  status |= setWakeUpPeriod(30); // every 30 seconds
 
-  return status;
+  fprintf(stdout, "Cron initialized: %d\n", status);
+  return &CRON_Actor.super;
 }
 
-osStatus_t CRON_HandleMessageCMD(message_t *message) {
+
+void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc) {
+  int32_t currentTimestamp = getCurrentUnixTimestamp();
+
+  osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_RTC_WAKE_UP, .payload.value = currentTimestamp}, 0, 0);
+}
+
+static osStatus_t handleCronMessage(CRON_Actor_t *this, message_t *message) {
   switch (message->event) {
     case GLOBAL_CMD_SET_TIME_DATE:
       return setTimeFromUnixTimestamp((int32_t)message->payload.value);
@@ -39,12 +57,6 @@ osStatus_t CRON_HandleMessageCMD(message_t *message) {
       return setWakeUpPeriod(message->payload.value);
   }
   return osOK;
-}
-
-void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc) {
-  int32_t currentTimestamp = getCurrentUnixTimestamp();
-
-  osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_RTC_WAKE_UP, .payload.value = currentTimestamp}, 0, 0);
 }
 
 static osStatus_t setTimeFromUnixTimestamp(int32_t timestamp) {

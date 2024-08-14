@@ -26,8 +26,11 @@ extern "C" {
 #define YEARS_FROM_1900_TO_2000 100
 #define WAKE_UP_AUTO_CLEAR 1 ///< Auto-clear the wake-up event, especially useful in low-power modes.
 
-HAL_StatusTypeDef CRON_Init(void);
-osStatus_t CRON_HandleMessageCMD(message_t *message);
+typedef struct {
+  actor_t super;
+} CRON_Actor_t;
+
+actor_t* CRON_ActorInit(void);
 void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc);
 
 #ifdef __cplusplus

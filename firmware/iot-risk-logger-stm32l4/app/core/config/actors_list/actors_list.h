@@ -17,12 +17,15 @@ extern "C" {
 
 #include <stdio.h>
 
+#include "actor.h"
+
 typedef enum {
-  NO_ACTOR = 0,
-  EV_MANAGER_ACTOR_ID,
+  NO_ACTOR_ID = 0,
+  EV_MANAGER_ACTOR_ID, // should receive messages directly
+  CRON_ACTOR_ID,
   PWRM_MANAGER_ACTOR_ID,
   NFC_ACTOR_ID,
-  ACCELEROMETER_SENSOR_ACTOR_ID,
+  ACCELEROMETER_ACTOR_ID,
   TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID,
   LIGHT_SENSOR_ACTOR_ID,
   MEMORY_ACTOR_ID,

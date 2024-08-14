@@ -36,7 +36,7 @@ typedef struct {
 
 extern TH_SENS_Actor_t TH_SENS_Actor;
 
-void TH_SENS_TaskInit(void);
+actor_t* TH_SENS_TaskInit(void);
 void TH_SENS_Task(void *argument);
 
 #ifdef __cplusplus
