@@ -1,0 +1,303 @@
+ARM GAS  /tmp/ccIekLN0.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"retarget.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.retargetWriteError,"ax",%progbits
+  18              		.align	1
+  19              		.arch armv7e-m
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv4-sp-d16
+  25              	retargetWriteError:
+  26              	.LVL0:
+  27              	.LFB5:
+  28              		.file 1 "app/core/retarget/retarget.c"
+   1:app/core/retarget/retarget.c **** /*!
+   2:app/core/retarget/retarget.c ****  * @file retarget.c
+   3:app/core/retarget/retarget.c ****  * @brief implementation of retarget
+   4:app/core/retarget/retarget.c ****  *
+   5:app/core/retarget/retarget.c ****  * Detailed description of the implementation file.
+   6:app/core/retarget/retarget.c ****  *
+   7:app/core/retarget/retarget.c ****  * @date 13/08/2024
+   8:app/core/retarget/retarget.c ****  * @author artempolisskyi
+   9:app/core/retarget/retarget.c ****  */
+  10:app/core/retarget/retarget.c **** 
+  11:app/core/retarget/retarget.c **** #include "retarget.h"
+  12:app/core/retarget/retarget.c **** 
+  13:app/core/retarget/retarget.c **** static int retargetWriteInfo(struct _reent *r, void *fd, const char *ptr, int len);
+  14:app/core/retarget/retarget.c **** static int retargetWriteError(struct _reent *r, void *fd, const char *ptr, int len);
+  15:app/core/retarget/retarget.c **** 
+  16:app/core/retarget/retarget.c **** void RETARGET_Init(void) {
+  17:app/core/retarget/retarget.c ****   // Redirect stdout and stderr to SEGGER SystemView
+  18:app/core/retarget/retarget.c ****   setvbuf(stdout, NULL, _IONBF, 0); // No buffering for stdout
+  19:app/core/retarget/retarget.c ****   setvbuf(stderr, NULL, _IONBF, 0); // No buffering for stderr
+  20:app/core/retarget/retarget.c **** 
+  21:app/core/retarget/retarget.c ****   stdout->_write = retargetWriteInfo;
+  22:app/core/retarget/retarget.c ****   stderr->_write = retargetWriteError;
+  23:app/core/retarget/retarget.c **** }
+  24:app/core/retarget/retarget.c **** 
+  25:app/core/retarget/retarget.c **** static int retargetWriteInfo(struct _reent *r, void *fd, const char *ptr, int len)
+  26:app/core/retarget/retarget.c **** {
+  27:app/core/retarget/retarget.c ****   (void)r; // Unused parameter
+  28:app/core/retarget/retarget.c ****   int i;
+  29:app/core/retarget/retarget.c **** 
+  30:app/core/retarget/retarget.c ****   for (i = 0; i < len; i++) {
+ARM GAS  /tmp/ccIekLN0.s 			page 2
+
+
+  31:app/core/retarget/retarget.c ****     SEGGER_SYSVIEW_Print(ptr + i);
+  32:app/core/retarget/retarget.c ****   }
+  33:app/core/retarget/retarget.c **** 
+  34:app/core/retarget/retarget.c ****   return len;  // Return the number of bytes written
+  35:app/core/retarget/retarget.c **** }
+  36:app/core/retarget/retarget.c **** 
+  37:app/core/retarget/retarget.c **** static int retargetWriteError(struct _reent *r, void *fd, const char *ptr, int len)
+  38:app/core/retarget/retarget.c **** {
+  29              		.loc 1 38 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		.loc 1 38 1 is_stmt 0 view .LVU1
+  34 0000 70B5     		push	{r4, r5, r6, lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 16
+  37              		.cfi_offset 4, -16
+  38              		.cfi_offset 5, -12
+  39              		.cfi_offset 6, -8
+  40              		.cfi_offset 14, -4
+  41 0002 1646     		mov	r6, r2
+  42 0004 1D46     		mov	r5, r3
+  39:app/core/retarget/retarget.c ****   (void)r; // Unused parameter
+  43              		.loc 1 39 3 is_stmt 1 view .LVU2
+  40:app/core/retarget/retarget.c ****   int i;
+  44              		.loc 1 40 3 view .LVU3
+  41:app/core/retarget/retarget.c **** 
+  42:app/core/retarget/retarget.c ****   for (i = 0; i < len; i++) {
+  45              		.loc 1 42 3 view .LVU4
+  46              	.LVL1:
+  47              		.loc 1 42 10 is_stmt 0 view .LVU5
+  48 0006 0024     		movs	r4, #0
+  49              		.loc 1 42 3 view .LVU6
+  50 0008 03E0     		b	.L2
+  51              	.LVL2:
+  52              	.L3:
+  43:app/core/retarget/retarget.c ****     SEGGER_SYSVIEW_Error(ptr + i);
+  53              		.loc 1 43 5 is_stmt 1 discriminator 3 view .LVU7
+  54 000a 3019     		adds	r0, r6, r4
+  55 000c FFF7FEFF 		bl	SEGGER_SYSVIEW_Error
+  56              	.LVL3:
+  42:app/core/retarget/retarget.c ****     SEGGER_SYSVIEW_Error(ptr + i);
+  57              		.loc 1 42 24 discriminator 3 view .LVU8
+  42:app/core/retarget/retarget.c ****     SEGGER_SYSVIEW_Error(ptr + i);
+  58              		.loc 1 42 25 is_stmt 0 discriminator 3 view .LVU9
+  59 0010 0134     		adds	r4, r4, #1
+  60              	.LVL4:
+  61              	.L2:
+  42:app/core/retarget/retarget.c ****     SEGGER_SYSVIEW_Error(ptr + i);
+  62              		.loc 1 42 15 is_stmt 1 discriminator 1 view .LVU10
+  42:app/core/retarget/retarget.c ****     SEGGER_SYSVIEW_Error(ptr + i);
+  63              		.loc 1 42 3 is_stmt 0 discriminator 1 view .LVU11
+  64 0012 AC42     		cmp	r4, r5
+  65 0014 F9DB     		blt	.L3
+  44:app/core/retarget/retarget.c ****   }
+  45:app/core/retarget/retarget.c **** 
+  46:app/core/retarget/retarget.c ****   return len;  // Return the number of bytes written
+ARM GAS  /tmp/ccIekLN0.s 			page 3
+
+
+  66              		.loc 1 46 3 is_stmt 1 view .LVU12
+  47:app/core/retarget/retarget.c **** }...
+  67              		.loc 1 47 1 is_stmt 0 view .LVU13
+  68 0016 2846     		mov	r0, r5
+  69 0018 70BD     		pop	{r4, r5, r6, pc}
+  70              		.loc 1 47 1 view .LVU14
+  71              		.cfi_endproc
+  72              	.LFE5:
+  74              		.section	.text.retargetWriteInfo,"ax",%progbits
+  75              		.align	1
+  76              		.syntax unified
+  77              		.thumb
+  78              		.thumb_func
+  79              		.fpu fpv4-sp-d16
+  81              	retargetWriteInfo:
+  82              	.LVL5:
+  83              	.LFB4:
+  26:app/core/retarget/retarget.c **** {
+  84              		.loc 1 26 1 is_stmt 1 view -0
+  85              		.cfi_startproc
+  86              		@ args = 0, pretend = 0, frame = 0
+  87              		@ frame_needed = 0, uses_anonymous_args = 0
+  26:app/core/retarget/retarget.c **** {
+  88              		.loc 1 26 1 is_stmt 0 view .LVU16
+  89 0000 70B5     		push	{r4, r5, r6, lr}
+  90              	.LCFI1:
+  91              		.cfi_def_cfa_offset 16
+  92              		.cfi_offset 4, -16
+  93              		.cfi_offset 5, -12
+  94              		.cfi_offset 6, -8
+  95              		.cfi_offset 14, -4
+  96 0002 1646     		mov	r6, r2
+  97 0004 1D46     		mov	r5, r3
+  27:app/core/retarget/retarget.c ****   (void)r; // Unused parameter
+  98              		.loc 1 27 3 is_stmt 1 view .LVU17
+  28:app/core/retarget/retarget.c ****   int i;
+  99              		.loc 1 28 3 view .LVU18
+  30:app/core/retarget/retarget.c ****   for (i = 0; i < len; i++) {
+ 100              		.loc 1 30 3 view .LVU19
+ 101              	.LVL6:
+  30:app/core/retarget/retarget.c ****   for (i = 0; i < len; i++) {
+ 102              		.loc 1 30 10 is_stmt 0 view .LVU20
+ 103 0006 0024     		movs	r4, #0
+  30:app/core/retarget/retarget.c ****   for (i = 0; i < len; i++) {
+ 104              		.loc 1 30 3 view .LVU21
+ 105 0008 03E0     		b	.L6
+ 106              	.LVL7:
+ 107              	.L7:
+  31:app/core/retarget/retarget.c ****     SEGGER_SYSVIEW_Print(ptr + i);
+ 108              		.loc 1 31 5 is_stmt 1 discriminator 3 view .LVU22
+ 109 000a 3019     		adds	r0, r6, r4
+ 110 000c FFF7FEFF 		bl	SEGGER_SYSVIEW_Print
+ 111              	.LVL8:
+  30:app/core/retarget/retarget.c ****   for (i = 0; i < len; i++) {
+ 112              		.loc 1 30 24 discriminator 3 view .LVU23
+  30:app/core/retarget/retarget.c ****   for (i = 0; i < len; i++) {
+ 113              		.loc 1 30 25 is_stmt 0 discriminator 3 view .LVU24
+ARM GAS  /tmp/ccIekLN0.s 			page 4
+
+
+ 114 0010 0134     		adds	r4, r4, #1
+ 115              	.LVL9:
+ 116              	.L6:
+  30:app/core/retarget/retarget.c ****   for (i = 0; i < len; i++) {
+ 117              		.loc 1 30 15 is_stmt 1 discriminator 1 view .LVU25
+  30:app/core/retarget/retarget.c ****   for (i = 0; i < len; i++) {
+ 118              		.loc 1 30 3 is_stmt 0 discriminator 1 view .LVU26
+ 119 0012 AC42     		cmp	r4, r5
+ 120 0014 F9DB     		blt	.L7
+  34:app/core/retarget/retarget.c ****   return len;  // Return the number of bytes written
+ 121              		.loc 1 34 3 is_stmt 1 view .LVU27
+  35:app/core/retarget/retarget.c **** }
+ 122              		.loc 1 35 1 is_stmt 0 view .LVU28
+ 123 0016 2846     		mov	r0, r5
+ 124 0018 70BD     		pop	{r4, r5, r6, pc}
+  35:app/core/retarget/retarget.c **** }
+ 125              		.loc 1 35 1 view .LVU29
+ 126              		.cfi_endproc
+ 127              	.LFE4:
+ 129              		.section	.text.RETARGET_Init,"ax",%progbits
+ 130              		.align	1
+ 131              		.global	RETARGET_Init
+ 132              		.syntax unified
+ 133              		.thumb
+ 134              		.thumb_func
+ 135              		.fpu fpv4-sp-d16
+ 137              	RETARGET_Init:
+ 138              	.LFB3:
+  16:app/core/retarget/retarget.c **** void RETARGET_Init(void) {
+ 139              		.loc 1 16 26 is_stmt 1 view -0
+ 140              		.cfi_startproc
+ 141              		@ args = 0, pretend = 0, frame = 0
+ 142              		@ frame_needed = 0, uses_anonymous_args = 0
+ 143 0000 10B5     		push	{r4, lr}
+ 144              	.LCFI2:
+ 145              		.cfi_def_cfa_offset 8
+ 146              		.cfi_offset 4, -8
+ 147              		.cfi_offset 14, -4
+  18:app/core/retarget/retarget.c ****   setvbuf(stdout, NULL, _IONBF, 0); // No buffering for stdout
+ 148              		.loc 1 18 3 view .LVU31
+  18:app/core/retarget/retarget.c ****   setvbuf(stdout, NULL, _IONBF, 0); // No buffering for stdout
+ 149              		.loc 1 18 11 is_stmt 0 view .LVU32
+ 150 0002 0B4C     		ldr	r4, .L11
+ 151 0004 2068     		ldr	r0, [r4]
+  18:app/core/retarget/retarget.c ****   setvbuf(stdout, NULL, _IONBF, 0); // No buffering for stdout
+ 152              		.loc 1 18 3 view .LVU33
+ 153 0006 0023     		movs	r3, #0
+ 154 0008 0222     		movs	r2, #2
+ 155 000a 1946     		mov	r1, r3
+ 156 000c 8068     		ldr	r0, [r0, #8]
+ 157 000e FFF7FEFF 		bl	setvbuf
+ 158              	.LVL10:
+  19:app/core/retarget/retarget.c ****   setvbuf(stderr, NULL, _IONBF, 0); // No buffering for stderr
+ 159              		.loc 1 19 3 is_stmt 1 view .LVU34
+  19:app/core/retarget/retarget.c ****   setvbuf(stderr, NULL, _IONBF, 0); // No buffering for stderr
+ 160              		.loc 1 19 11 is_stmt 0 view .LVU35
+ 161 0012 2068     		ldr	r0, [r4]
+ARM GAS  /tmp/ccIekLN0.s 			page 5
+
+
+  19:app/core/retarget/retarget.c ****   setvbuf(stderr, NULL, _IONBF, 0); // No buffering for stderr
+ 162              		.loc 1 19 3 view .LVU36
+ 163 0014 0023     		movs	r3, #0
+ 164 0016 0222     		movs	r2, #2
+ 165 0018 1946     		mov	r1, r3
+ 166 001a C068     		ldr	r0, [r0, #12]
+ 167 001c FFF7FEFF 		bl	setvbuf
+ 168              	.LVL11:
+  21:app/core/retarget/retarget.c ****   stdout->_write = retargetWriteInfo;
+ 169              		.loc 1 21 3 is_stmt 1 view .LVU37
+ 170 0020 2368     		ldr	r3, [r4]
+ 171 0022 9A68     		ldr	r2, [r3, #8]
+  21:app/core/retarget/retarget.c ****   stdout->_write = retargetWriteInfo;
+ 172              		.loc 1 21 18 is_stmt 0 view .LVU38
+ 173 0024 0349     		ldr	r1, .L11+4
+ 174 0026 5162     		str	r1, [r2, #36]
+  22:app/core/retarget/retarget.c ****   stderr->_write = retargetWriteError;
+ 175              		.loc 1 22 3 is_stmt 1 view .LVU39
+ 176 0028 DB68     		ldr	r3, [r3, #12]
+  22:app/core/retarget/retarget.c ****   stderr->_write = retargetWriteError;
+ 177              		.loc 1 22 18 is_stmt 0 view .LVU40
+ 178 002a 034A     		ldr	r2, .L11+8
+ 179 002c 5A62     		str	r2, [r3, #36]
+  23:app/core/retarget/retarget.c **** }
+ 180              		.loc 1 23 1 view .LVU41
+ 181 002e 10BD     		pop	{r4, pc}
+ 182              	.L12:
+ 183              		.align	2
+ 184              	.L11:
+ 185 0030 00000000 		.word	_impure_ptr
+ 186 0034 00000000 		.word	retargetWriteInfo
+ 187 0038 00000000 		.word	retargetWriteError
+ 188              		.cfi_endproc
+ 189              	.LFE3:
+ 191              		.text
+ 192              	.Letext0:
+ 193              		.file 2 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stddef.h"
+ 194              		.file 3 "/usr/include/newlib/sys/_types.h"
+ 195              		.file 4 "/usr/include/newlib/sys/reent.h"
+ 196              		.file 5 "/usr/include/newlib/sys/lock.h"
+ 197              		.file 6 "libraries/SystemView/SYSVIEW/SEGGER_SYSVIEW.h"
+ 198              		.file 7 "/usr/include/newlib/stdio.h"
+ARM GAS  /tmp/ccIekLN0.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 retarget.c
+     /tmp/ccIekLN0.s:18     .text.retargetWriteError:0000000000000000 $t
+     /tmp/ccIekLN0.s:25     .text.retargetWriteError:0000000000000000 retargetWriteError
+     /tmp/ccIekLN0.s:75     .text.retargetWriteInfo:0000000000000000 $t
+     /tmp/ccIekLN0.s:81     .text.retargetWriteInfo:0000000000000000 retargetWriteInfo
+     /tmp/ccIekLN0.s:130    .text.RETARGET_Init:0000000000000000 $t
+     /tmp/ccIekLN0.s:137    .text.RETARGET_Init:0000000000000000 RETARGET_Init
+     /tmp/ccIekLN0.s:185    .text.RETARGET_Init:0000000000000030 $d
+
+UNDEFINED SYMBOLS
+SEGGER_SYSVIEW_Error
+SEGGER_SYSVIEW_Print
+setvbuf
+_impure_ptr

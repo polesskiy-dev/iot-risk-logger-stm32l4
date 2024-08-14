@@ -1,0 +1,1087 @@
+ARM GAS  /tmp/cch5Mq6A.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"SEGGER_SYSVIEW_FreeRTOS.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text._cbGetTime,"ax",%progbits
+  18              		.align	1
+  19              		.arch armv7e-m
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv4-sp-d16
+  25              	_cbGetTime:
+  26              	.LFB5:
+  27              		.file 1 "libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c"
+   1:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** /*********************************************************************
+   2:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *                    SEGGER Microcontroller GmbH                     *
+   3:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *                        The Embedded Experts                        *
+   4:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** **********************************************************************
+   5:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *                                                                    *
+   6:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *            (c) 1995 - 2021 SEGGER Microcontroller GmbH             *
+   7:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *                                                                    *
+   8:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *       www.segger.com     Support: support@segger.com               *
+   9:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *                                                                    *
+  10:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** **********************************************************************
+  11:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *                                                                    *
+  12:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *       SEGGER SystemView * Real-time application analysis           *
+  13:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *                                                                    *
+  14:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** **********************************************************************
+  15:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *                                                                    *
+  16:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** * All rights reserved.                                               *
+  17:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *                                                                    *
+  18:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** * SEGGER strongly recommends to not make any changes                 *
+  19:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** * to or modify the source code of this software in order to stay     *
+  20:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** * compatible with the SystemView and RTT protocol, and J-Link.       *
+  21:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *                                                                    *
+  22:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** * Redistribution and use in source and binary forms, with or         *
+  23:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** * without modification, are permitted provided that the following    *
+  24:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** * condition is met:                                                  *
+  25:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *                                                                    *
+  26:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** * o Redistributions of source code must retain the above copyright   *
+  27:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *   notice, this condition and the following disclaimer.             *
+  28:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *                                                                    *
+  29:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND             *
+  30:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** * CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,        *
+  31:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF           *
+ARM GAS  /tmp/cch5Mq6A.s 			page 2
+
+
+  32:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE           *
+  33:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** * DISCLAIMED. IN NO EVENT SHALL SEGGER Microcontroller BE LIABLE FOR *
+  34:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR           *
+  35:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT  *
+  36:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;    *
+  37:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF      *
+  38:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT          *
+  39:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE  *
+  40:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH   *
+  41:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** * DAMAGE.                                                            *
+  42:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *                                                                    *
+  43:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** **********************************************************************
+  44:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *                                                                    *
+  45:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *       SystemView version: 3.32                                    *
+  46:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *                                                                    *
+  47:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** **********************************************************************
+  48:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** -------------------------- END-OF-HEADER -----------------------------
+  49:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+  50:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** File    : SEGGER_SYSVIEW_FreeRTOS.c
+  51:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** Purpose : Interface between FreeRTOS and SystemView.
+  52:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** Revision: $Rev: 7947 $
+  53:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** */
+  54:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** #include "FreeRTOS.h"
+  55:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** #include "task.h"
+  56:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** #include "SEGGER_SYSVIEW.h"
+  57:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** #include "SEGGER_SYSVIEW_FreeRTOS.h"
+  58:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** #include "string.h" // Required for memset
+  59:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+  60:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+  61:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+  62:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** typedef struct SYSVIEW_FREERTOS_TASK_STATUS SYSVIEW_FREERTOS_TASK_STATUS;
+  63:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+  64:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** struct SYSVIEW_FREERTOS_TASK_STATUS {
+  65:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   U32         xHandle;
+  66:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   const char* pcTaskName;
+  67:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   unsigned    uxCurrentPriority;
+  68:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   U32         pxStack;
+  69:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   unsigned    uStackHighWaterMark;
+  70:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** };
+  71:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+  72:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** static SYSVIEW_FREERTOS_TASK_STATUS _aTasks[SYSVIEW_FREERTOS_MAX_NOF_TASKS];
+  73:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** static unsigned _NumTasks;
+  74:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+  75:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** /*********************************************************************
+  76:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *
+  77:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *       _cbSendTaskList()
+  78:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *
+  79:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *  Function description
+  80:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *    This function is part of the link between FreeRTOS and SYSVIEW.
+  81:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *    Called from SystemView when asked by the host, it uses SYSVIEW
+  82:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *    functions to send the entire task list to the host.
+  83:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** */
+  84:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** static void _cbSendTaskList(void) {
+  85:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   unsigned n;
+  86:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+  87:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   for (n = 0; n < _NumTasks; n++) {
+  88:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** #if INCLUDE_uxTaskGetStackHighWaterMark // Report Task Stack High Watermark
+ARM GAS  /tmp/cch5Mq6A.s 			page 3
+
+
+  89:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].uStackHighWaterMark = uxTaskGetStackHighWaterMark((TaskHandle_t)_aTasks[n].xHandle);
+  90:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** #endif
+  91:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     SYSVIEW_SendTaskInfo((U32)_aTasks[n].xHandle, _aTasks[n].pcTaskName, (unsigned)_aTasks[n].uxCur
+  92:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   }
+  93:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** }
+  94:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+  95:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** /*********************************************************************
+  96:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *
+  97:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *       _cbGetTime()
+  98:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *
+  99:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *  Function description
+ 100:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *    This function is part of the link between FreeRTOS and SYSVIEW.
+ 101:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *    Called from SystemView when asked by the host, returns the
+ 102:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *    current system time in micro seconds.
+ 103:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** */
+ 104:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** static U64 _cbGetTime(void) {
+  28              		.loc 1 104 29 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 08B5     		push	{r3, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 3, -8
+  36              		.cfi_offset 14, -4
+ 105:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   U64 Time;
+  37              		.loc 1 105 3 view .LVU1
+ 106:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+ 107:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   Time = xTaskGetTickCountFromISR();
+  38              		.loc 1 107 3 view .LVU2
+  39              		.loc 1 107 10 is_stmt 0 view .LVU3
+  40 0002 FFF7FEFF 		bl	xTaskGetTickCountFromISR
+  41              	.LVL0:
+ 108:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   Time *= portTICK_PERIOD_MS;
+  42              		.loc 1 108 3 is_stmt 1 view .LVU4
+ 109:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   Time *= 1000;
+  43              		.loc 1 109 3 view .LVU5
+  44              		.loc 1 109 8 is_stmt 0 view .LVU6
+  45 0006 C30E     		lsrs	r3, r0, #27
+  46 0008 4101     		lsls	r1, r0, #5
+  47 000a 091A     		subs	r1, r1, r0
+  48 000c 63F10003 		sbc	r3, r3, #0
+  49 0010 9B00     		lsls	r3, r3, #2
+  50 0012 43EA9173 		orr	r3, r3, r1, lsr #30
+  51 0016 8900     		lsls	r1, r1, #2
+  52 0018 0918     		adds	r1, r1, r0
+  53 001a 43F10003 		adc	r3, r3, #0
+  54 001e DB00     		lsls	r3, r3, #3
+  55              	.LVL1:
+ 110:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   return Time;
+  56              		.loc 1 110 3 is_stmt 1 view .LVU7
+ 111:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** }
+  57              		.loc 1 111 1 is_stmt 0 view .LVU8
+  58 0020 C800     		lsls	r0, r1, #3
+  59 0022 43EA5171 		orr	r1, r3, r1, lsr #29
+  60              	.LVL2:
+  61              		.loc 1 111 1 view .LVU9
+ARM GAS  /tmp/cch5Mq6A.s 			page 4
+
+
+  62 0026 08BD     		pop	{r3, pc}
+  63              		.cfi_endproc
+  64              	.LFE5:
+  66              		.section	.text.SYSVIEW_DeleteTask,"ax",%progbits
+  67              		.align	1
+  68              		.global	SYSVIEW_DeleteTask
+  69              		.syntax unified
+  70              		.thumb
+  71              		.thumb_func
+  72              		.fpu fpv4-sp-d16
+  74              	SYSVIEW_DeleteTask:
+  75              	.LVL3:
+  76              	.LFB8:
+ 112:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+ 113:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** /*********************************************************************
+ 114:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *
+ 115:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *       Global functions
+ 116:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *
+ 117:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** **********************************************************************
+ 118:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** */
+ 119:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** /*********************************************************************
+ 120:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *
+ 121:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *       SYSVIEW_AddTask()
+ 122:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *
+ 123:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *  Function description
+ 124:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *    Add a task to the internal list and record its information.
+ 125:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** */
+ 126:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** void SYSVIEW_AddTask(U32 xHandle, const char* pcTaskName, unsigned uxCurrentPriority, U32  pxStack,
+ 127:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   
+ 128:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   if (memcmp(pcTaskName, "IDLE", 5) == 0) {
+ 129:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     return;
+ 130:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   }
+ 131:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   
+ 132:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   if (_NumTasks >= SYSVIEW_FREERTOS_MAX_NOF_TASKS) {
+ 133:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     SEGGER_SYSVIEW_Warn("SYSTEMVIEW: Could not record task information. Maximum number of tasks rea
+ 134:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     return;
+ 135:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   }
+ 136:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+ 137:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   _aTasks[_NumTasks].xHandle = xHandle;
+ 138:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   _aTasks[_NumTasks].pcTaskName = pcTaskName;
+ 139:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   _aTasks[_NumTasks].uxCurrentPriority = uxCurrentPriority;
+ 140:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   _aTasks[_NumTasks].pxStack = pxStack;
+ 141:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   _aTasks[_NumTasks].uStackHighWaterMark = uStackHighWaterMark;
+ 142:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+ 143:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   _NumTasks++;
+ 144:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+ 145:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   SYSVIEW_SendTaskInfo(xHandle, pcTaskName,uxCurrentPriority, pxStack, uStackHighWaterMark);
+ 146:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+ 147:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** }
+ 148:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+ 149:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** /*********************************************************************
+ 150:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *
+ 151:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *       SYSVIEW_UpdateTask()
+ 152:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *
+ 153:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *  Function description
+ 154:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *    Update a task in the internal list and record its information.
+ 155:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** */
+ARM GAS  /tmp/cch5Mq6A.s 			page 5
+
+
+ 156:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** void SYSVIEW_UpdateTask(U32 xHandle, const char* pcTaskName, unsigned uxCurrentPriority, U32 pxStac
+ 157:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   unsigned n;
+ 158:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   
+ 159:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   if (memcmp(pcTaskName, "IDLE", 5) == 0) {
+ 160:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     return;
+ 161:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   }
+ 162:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+ 163:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   for (n = 0; n < _NumTasks; n++) {
+ 164:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     if (_aTasks[n].xHandle == xHandle) {
+ 165:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****       break;
+ 166:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     }
+ 167:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   }
+ 168:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   if (n < _NumTasks) {
+ 169:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].pcTaskName = pcTaskName;
+ 170:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].uxCurrentPriority = uxCurrentPriority;
+ 171:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].pxStack = pxStack;
+ 172:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].uStackHighWaterMark = uStackHighWaterMark;
+ 173:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+ 174:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     SYSVIEW_SendTaskInfo(xHandle, pcTaskName, uxCurrentPriority, pxStack, uStackHighWaterMark);
+ 175:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   } else {
+ 176:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     SYSVIEW_AddTask(xHandle, pcTaskName, uxCurrentPriority, pxStack, uStackHighWaterMark);
+ 177:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   }
+ 178:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** }
+ 179:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+ 180:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** /*********************************************************************
+ 181:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *
+ 182:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *       SYSVIEW_DeleteTask()
+ 183:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *
+ 184:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *  Function description
+ 185:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *    Delete a task from the internal list.
+ 186:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** */
+ 187:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** void SYSVIEW_DeleteTask(U32 xHandle) {
+  77              		.loc 1 187 38 is_stmt 1 view -0
+  78              		.cfi_startproc
+  79              		@ args = 0, pretend = 0, frame = 0
+  80              		@ frame_needed = 0, uses_anonymous_args = 0
+  81              		@ link register save eliminated.
+  82              		.loc 1 187 38 is_stmt 0 view .LVU11
+  83 0000 70B4     		push	{r4, r5, r6}
+  84              	.LCFI1:
+  85              		.cfi_def_cfa_offset 12
+  86              		.cfi_offset 4, -12
+  87              		.cfi_offset 5, -8
+  88              		.cfi_offset 6, -4
+ 188:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   unsigned n;
+  89              		.loc 1 188 3 is_stmt 1 view .LVU12
+ 189:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   
+ 190:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   if (_NumTasks == 0) {
+  90              		.loc 1 190 3 view .LVU13
+  91              		.loc 1 190 17 is_stmt 0 view .LVU14
+  92 0002 254B     		ldr	r3, .L12
+  93 0004 1C68     		ldr	r4, [r3]
+  94              		.loc 1 190 6 view .LVU15
+  95 0006 84B1     		cbz	r4, .L3
+ 191:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     return; // Early out
+ 192:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   }  
+ 193:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   for (n = 0; n < _NumTasks; n++) {
+ARM GAS  /tmp/cch5Mq6A.s 			page 6
+
+
+  96              		.loc 1 193 10 view .LVU16
+  97 0008 0023     		movs	r3, #0
+  98              	.L5:
+  99              	.LVL4:
+ 100              		.loc 1 193 15 is_stmt 1 discriminator 1 view .LVU17
+ 101              		.loc 1 193 3 is_stmt 0 discriminator 1 view .LVU18
+ 102 000a 9C42     		cmp	r4, r3
+ 103 000c 08D9     		bls	.L6
+ 194:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     if (_aTasks[n].xHandle == xHandle) {
+ 104              		.loc 1 194 5 is_stmt 1 view .LVU19
+ 105              		.loc 1 194 19 is_stmt 0 view .LVU20
+ 106 000e 03EB8302 		add	r2, r3, r3, lsl #2
+ 107 0012 2249     		ldr	r1, .L12+4
+ 108 0014 51F82220 		ldr	r2, [r1, r2, lsl #2]
+ 109              		.loc 1 194 8 view .LVU21
+ 110 0018 8242     		cmp	r2, r0
+ 111 001a 01D0     		beq	.L6
+ 193:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     if (_aTasks[n].xHandle == xHandle) {
+ 112              		.loc 1 193 30 is_stmt 1 discriminator 2 view .LVU22
+ 193:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     if (_aTasks[n].xHandle == xHandle) {
+ 113              		.loc 1 193 31 is_stmt 0 discriminator 2 view .LVU23
+ 114 001c 0133     		adds	r3, r3, #1
+ 115              	.LVL5:
+ 193:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     if (_aTasks[n].xHandle == xHandle) {
+ 116              		.loc 1 193 31 discriminator 2 view .LVU24
+ 117 001e F4E7     		b	.L5
+ 118              	.L6:
+ 195:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****       break;
+ 196:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     }
+ 197:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   }
+ 198:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   if (n == (_NumTasks - 1)) {  
+ 119              		.loc 1 198 3 is_stmt 1 view .LVU25
+ 120              		.loc 1 198 23 is_stmt 0 view .LVU26
+ 121 0020 651E     		subs	r5, r4, #1
+ 122              		.loc 1 198 6 view .LVU27
+ 123 0022 9D42     		cmp	r5, r3
+ 124 0024 03D0     		beq	.L10
+ 199:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     //
+ 200:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     // Task is last item in list.
+ 201:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     // Simply zero the item and decrement number of tasks.
+ 202:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     //
+ 203:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     memset(&_aTasks[n], 0, sizeof(_aTasks[n]));
+ 204:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _NumTasks--;
+ 205:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   } else if (n < _NumTasks) {
+ 125              		.loc 1 205 10 is_stmt 1 view .LVU28
+ 126              		.loc 1 205 13 is_stmt 0 view .LVU29
+ 127 0026 9C42     		cmp	r4, r3
+ 128 0028 10D8     		bhi	.L11
+ 129              	.LVL6:
+ 130              	.L3:
+ 206:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     //
+ 207:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     // Task is in the middle of the list.
+ 208:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     // Move last item to current position and decrement number of tasks.
+ 209:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     // Order of tasks does not really matter, so no need to move all following items.
+ 210:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     //
+ 211:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].xHandle             = _aTasks[_NumTasks - 1].xHandle;
+ 212:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].pcTaskName          = _aTasks[_NumTasks - 1].pcTaskName;
+ARM GAS  /tmp/cch5Mq6A.s 			page 7
+
+
+ 213:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].uxCurrentPriority   = _aTasks[_NumTasks - 1].uxCurrentPriority;
+ 214:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].pxStack             = _aTasks[_NumTasks - 1].pxStack;
+ 215:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].uStackHighWaterMark = _aTasks[_NumTasks - 1].uStackHighWaterMark;
+ 216:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     memset(&_aTasks[_NumTasks - 1], 0, sizeof(_aTasks[_NumTasks - 1]));
+ 217:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _NumTasks--;
+ 218:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   }
+ 219:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** }
+ 131              		.loc 1 219 1 view .LVU30
+ 132 002a 70BC     		pop	{r4, r5, r6}
+ 133              	.LCFI2:
+ 134              		.cfi_remember_state
+ 135              		.cfi_restore 6
+ 136              		.cfi_restore 5
+ 137              		.cfi_restore 4
+ 138              		.cfi_def_cfa_offset 0
+ 139 002c 7047     		bx	lr
+ 140              	.LVL7:
+ 141              	.L10:
+ 142              	.LCFI3:
+ 143              		.cfi_restore_state
+ 203:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _NumTasks--;
+ 144              		.loc 1 203 5 is_stmt 1 view .LVU31
+ 203:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _NumTasks--;
+ 145              		.loc 1 203 12 is_stmt 0 view .LVU32
+ 146 002e 1B48     		ldr	r0, .L12+4
+ 147              	.LVL8:
+ 203:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _NumTasks--;
+ 148              		.loc 1 203 12 view .LVU33
+ 149 0030 03EB8303 		add	r3, r3, r3, lsl #2
+ 150              	.LVL9:
+ 203:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _NumTasks--;
+ 151              		.loc 1 203 12 view .LVU34
+ 152 0034 00EB8301 		add	r1, r0, r3, lsl #2
+ 203:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _NumTasks--;
+ 153              		.loc 1 203 5 view .LVU35
+ 154 0038 0022     		movs	r2, #0
+ 155 003a 40F82320 		str	r2, [r0, r3, lsl #2]	@ unaligned
+ 156 003e 4A60     		str	r2, [r1, #4]	@ unaligned
+ 157 0040 8A60     		str	r2, [r1, #8]	@ unaligned
+ 158 0042 CA60     		str	r2, [r1, #12]	@ unaligned
+ 159 0044 0A61     		str	r2, [r1, #16]	@ unaligned
+ 204:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   } else if (n < _NumTasks) {
+ 160              		.loc 1 204 5 is_stmt 1 view .LVU36
+ 204:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   } else if (n < _NumTasks) {
+ 161              		.loc 1 204 14 is_stmt 0 view .LVU37
+ 162 0046 144B     		ldr	r3, .L12
+ 163 0048 1D60     		str	r5, [r3]
+ 164 004a EEE7     		b	.L3
+ 165              	.LVL10:
+ 166              	.L11:
+ 211:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].pcTaskName          = _aTasks[_NumTasks - 1].pcTaskName;
+ 167              		.loc 1 211 5 is_stmt 1 view .LVU38
+ 211:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].pcTaskName          = _aTasks[_NumTasks - 1].pcTaskName;
+ 168              		.loc 1 211 60 is_stmt 0 view .LVU39
+ 169 004c 134C     		ldr	r4, .L12+4
+ 170 004e 05EB8502 		add	r2, r5, r5, lsl #2
+ 171 0052 4FEA820C 		lsl	ip, r2, #2
+ARM GAS  /tmp/cch5Mq6A.s 			page 8
+
+
+ 172 0056 04EB8202 		add	r2, r4, r2, lsl #2
+ 211:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].pcTaskName          = _aTasks[_NumTasks - 1].pcTaskName;
+ 173              		.loc 1 211 36 view .LVU40
+ 174 005a 03EB8300 		add	r0, r3, r3, lsl #2
+ 175              	.LVL11:
+ 211:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].pcTaskName          = _aTasks[_NumTasks - 1].pcTaskName;
+ 176              		.loc 1 211 36 view .LVU41
+ 177 005e 04EB8001 		add	r1, r4, r0, lsl #2
+ 178 0062 54F80C60 		ldr	r6, [r4, ip]
+ 179 0066 44F82060 		str	r6, [r4, r0, lsl #2]
+ 212:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].uxCurrentPriority   = _aTasks[_NumTasks - 1].uxCurrentPriority;
+ 180              		.loc 1 212 5 is_stmt 1 view .LVU42
+ 212:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].uxCurrentPriority   = _aTasks[_NumTasks - 1].uxCurrentPriority;
+ 181              		.loc 1 212 60 is_stmt 0 view .LVU43
+ 182 006a 5068     		ldr	r0, [r2, #4]
+ 212:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].uxCurrentPriority   = _aTasks[_NumTasks - 1].uxCurrentPriority;
+ 183              		.loc 1 212 36 view .LVU44
+ 184 006c 4860     		str	r0, [r1, #4]
+ 213:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].pxStack             = _aTasks[_NumTasks - 1].pxStack;
+ 185              		.loc 1 213 5 is_stmt 1 view .LVU45
+ 213:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].pxStack             = _aTasks[_NumTasks - 1].pxStack;
+ 186              		.loc 1 213 60 is_stmt 0 view .LVU46
+ 187 006e 9068     		ldr	r0, [r2, #8]
+ 213:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].pxStack             = _aTasks[_NumTasks - 1].pxStack;
+ 188              		.loc 1 213 36 view .LVU47
+ 189 0070 8860     		str	r0, [r1, #8]
+ 214:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].uStackHighWaterMark = _aTasks[_NumTasks - 1].uStackHighWaterMark;
+ 190              		.loc 1 214 5 is_stmt 1 view .LVU48
+ 214:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].uStackHighWaterMark = _aTasks[_NumTasks - 1].uStackHighWaterMark;
+ 191              		.loc 1 214 60 is_stmt 0 view .LVU49
+ 192 0072 D068     		ldr	r0, [r2, #12]
+ 214:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].uStackHighWaterMark = _aTasks[_NumTasks - 1].uStackHighWaterMark;
+ 193              		.loc 1 214 36 view .LVU50
+ 194 0074 C860     		str	r0, [r1, #12]
+ 215:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     memset(&_aTasks[_NumTasks - 1], 0, sizeof(_aTasks[_NumTasks - 1]));
+ 195              		.loc 1 215 5 is_stmt 1 view .LVU51
+ 215:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     memset(&_aTasks[_NumTasks - 1], 0, sizeof(_aTasks[_NumTasks - 1]));
+ 196              		.loc 1 215 60 is_stmt 0 view .LVU52
+ 197 0076 1169     		ldr	r1, [r2, #16]
+ 215:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     memset(&_aTasks[_NumTasks - 1], 0, sizeof(_aTasks[_NumTasks - 1]));
+ 198              		.loc 1 215 36 view .LVU53
+ 199 0078 03EB8303 		add	r3, r3, r3, lsl #2
+ 200              	.LVL12:
+ 215:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     memset(&_aTasks[_NumTasks - 1], 0, sizeof(_aTasks[_NumTasks - 1]));
+ 201              		.loc 1 215 36 view .LVU54
+ 202 007c 04EB8303 		add	r3, r4, r3, lsl #2
+ 203 0080 1961     		str	r1, [r3, #16]
+ 216:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _NumTasks--;
+ 204              		.loc 1 216 5 is_stmt 1 view .LVU55
+ 205 0082 0023     		movs	r3, #0
+ 206 0084 44F80C30 		str	r3, [r4, ip]	@ unaligned
+ 207 0088 5360     		str	r3, [r2, #4]	@ unaligned
+ 208 008a 9360     		str	r3, [r2, #8]	@ unaligned
+ 209 008c D360     		str	r3, [r2, #12]	@ unaligned
+ 210 008e 1361     		str	r3, [r2, #16]	@ unaligned
+ 217:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   }
+ 211              		.loc 1 217 5 view .LVU56
+ARM GAS  /tmp/cch5Mq6A.s 			page 9
+
+
+ 217:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   }
+ 212              		.loc 1 217 14 is_stmt 0 view .LVU57
+ 213 0090 014B     		ldr	r3, .L12
+ 214 0092 1D60     		str	r5, [r3]
+ 215 0094 C9E7     		b	.L3
+ 216              	.L13:
+ 217 0096 00BF     		.align	2
+ 218              	.L12:
+ 219 0098 00000000 		.word	.LANCHOR0
+ 220 009c 00000000 		.word	.LANCHOR1
+ 221              		.cfi_endproc
+ 222              	.LFE8:
+ 224              		.section	.text.SYSVIEW_SendTaskInfo,"ax",%progbits
+ 225              		.align	1
+ 226              		.global	SYSVIEW_SendTaskInfo
+ 227              		.syntax unified
+ 228              		.thumb
+ 229              		.thumb_func
+ 230              		.fpu fpv4-sp-d16
+ 232              	SYSVIEW_SendTaskInfo:
+ 233              	.LVL13:
+ 234              	.LFB9:
+ 220:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+ 221:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** /*********************************************************************
+ 222:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *
+ 223:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *       SYSVIEW_SendTaskInfo()
+ 224:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *
+ 225:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *  Function description
+ 226:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** *    Record task information.
+ 227:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** */
+ 228:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** void SYSVIEW_SendTaskInfo(U32 TaskID, const char* sName, unsigned Prio, U32 StackBase, unsigned Sta
+ 235              		.loc 1 228 108 is_stmt 1 view -0
+ 236              		.cfi_startproc
+ 237              		@ args = 4, pretend = 0, frame = 24
+ 238              		@ frame_needed = 0, uses_anonymous_args = 0
+ 239              		.loc 1 228 108 is_stmt 0 view .LVU59
+ 240 0000 10B5     		push	{r4, lr}
+ 241              	.LCFI4:
+ 242              		.cfi_def_cfa_offset 8
+ 243              		.cfi_offset 4, -8
+ 244              		.cfi_offset 14, -4
+ 245 0002 86B0     		sub	sp, sp, #24
+ 246              	.LCFI5:
+ 247              		.cfi_def_cfa_offset 32
+ 229:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   SEGGER_SYSVIEW_TASKINFO TaskInfo;
+ 248              		.loc 1 229 3 is_stmt 1 view .LVU60
+ 230:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+ 231:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   memset(&TaskInfo, 0, sizeof(TaskInfo)); // Fill all elements with 0 to allow extending the struct
+ 249              		.loc 1 231 3 view .LVU61
+ 250 0004 0024     		movs	r4, #0
+ 251 0006 0194     		str	r4, [sp, #4]
+ 252 0008 0294     		str	r4, [sp, #8]
+ 253 000a 0394     		str	r4, [sp, #12]
+ 254 000c 0494     		str	r4, [sp, #16]
+ 255 000e 0594     		str	r4, [sp, #20]
+ 232:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   TaskInfo.TaskID     = TaskID;
+ 256              		.loc 1 232 3 view .LVU62
+ARM GAS  /tmp/cch5Mq6A.s 			page 10
+
+
+ 257              		.loc 1 232 23 is_stmt 0 view .LVU63
+ 258 0010 0190     		str	r0, [sp, #4]
+ 233:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   TaskInfo.sName      = sName;
+ 259              		.loc 1 233 3 is_stmt 1 view .LVU64
+ 260              		.loc 1 233 23 is_stmt 0 view .LVU65
+ 261 0012 0291     		str	r1, [sp, #8]
+ 234:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   TaskInfo.Prio       = Prio;
+ 262              		.loc 1 234 3 is_stmt 1 view .LVU66
+ 263              		.loc 1 234 23 is_stmt 0 view .LVU67
+ 264 0014 0392     		str	r2, [sp, #12]
+ 235:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   TaskInfo.StackBase  = StackBase;
+ 265              		.loc 1 235 3 is_stmt 1 view .LVU68
+ 266              		.loc 1 235 23 is_stmt 0 view .LVU69
+ 267 0016 0493     		str	r3, [sp, #16]
+ 236:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   TaskInfo.StackSize  = StackSize;
+ 268              		.loc 1 236 3 is_stmt 1 view .LVU70
+ 269              		.loc 1 236 23 is_stmt 0 view .LVU71
+ 270 0018 089B     		ldr	r3, [sp, #32]
+ 271              	.LVL14:
+ 272              		.loc 1 236 23 view .LVU72
+ 273 001a 0593     		str	r3, [sp, #20]
+ 237:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   SEGGER_SYSVIEW_SendTaskInfo(&TaskInfo);
+ 274              		.loc 1 237 3 is_stmt 1 view .LVU73
+ 275 001c 01A8     		add	r0, sp, #4
+ 276              	.LVL15:
+ 277              		.loc 1 237 3 is_stmt 0 view .LVU74
+ 278 001e FFF7FEFF 		bl	SEGGER_SYSVIEW_SendTaskInfo
+ 279              	.LVL16:
+ 238:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** }
+ 280              		.loc 1 238 1 view .LVU75
+ 281 0022 06B0     		add	sp, sp, #24
+ 282              	.LCFI6:
+ 283              		.cfi_def_cfa_offset 8
+ 284              		@ sp needed
+ 285 0024 10BD     		pop	{r4, pc}
+ 286              		.loc 1 238 1 view .LVU76
+ 287              		.cfi_endproc
+ 288              	.LFE9:
+ 290              		.section	.rodata.SYSVIEW_AddTask.str1.4,"aMS",%progbits,1
+ 291              		.align	2
+ 292              	.LC0:
+ 293 0000 49444C45 		.ascii	"IDLE\000"
+ 293      00
+ 294 0005 000000   		.align	2
+ 295              	.LC1:
+ 296 0008 53595354 		.ascii	"SYSTEMVIEW: Could not record task information. Maxi"
+ 296      454D5649 
+ 296      45573A20 
+ 296      436F756C 
+ 296      64206E6F 
+ 297 003b 6D756D20 		.ascii	"mum number of tasks reached.\000"
+ 297      6E756D62 
+ 297      6572206F 
+ 297      66207461 
+ 297      736B7320 
+ 298              		.section	.text.SYSVIEW_AddTask,"ax",%progbits
+ 299              		.align	1
+ARM GAS  /tmp/cch5Mq6A.s 			page 11
+
+
+ 300              		.global	SYSVIEW_AddTask
+ 301              		.syntax unified
+ 302              		.thumb
+ 303              		.thumb_func
+ 304              		.fpu fpv4-sp-d16
+ 306              	SYSVIEW_AddTask:
+ 307              	.LVL17:
+ 308              	.LFB6:
+ 126:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   
+ 309              		.loc 1 126 131 is_stmt 1 view -0
+ 310              		.cfi_startproc
+ 311              		@ args = 4, pretend = 0, frame = 0
+ 312              		@ frame_needed = 0, uses_anonymous_args = 0
+ 126:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   
+ 313              		.loc 1 126 131 is_stmt 0 view .LVU78
+ 314 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 315              	.LCFI7:
+ 316              		.cfi_def_cfa_offset 20
+ 317              		.cfi_offset 4, -20
+ 318              		.cfi_offset 5, -16
+ 319              		.cfi_offset 6, -12
+ 320              		.cfi_offset 7, -8
+ 321              		.cfi_offset 14, -4
+ 322 0002 83B0     		sub	sp, sp, #12
+ 323              	.LCFI8:
+ 324              		.cfi_def_cfa_offset 32
+ 325 0004 0546     		mov	r5, r0
+ 326 0006 0C46     		mov	r4, r1
+ 327 0008 1646     		mov	r6, r2
+ 328 000a 1F46     		mov	r7, r3
+ 128:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     return;
+ 329              		.loc 1 128 3 is_stmt 1 view .LVU79
+ 128:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     return;
+ 330              		.loc 1 128 7 is_stmt 0 view .LVU80
+ 331 000c 0522     		movs	r2, #5
+ 332              	.LVL18:
+ 128:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     return;
+ 333              		.loc 1 128 7 view .LVU81
+ 334 000e 1349     		ldr	r1, .L21
+ 335              	.LVL19:
+ 128:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     return;
+ 336              		.loc 1 128 7 view .LVU82
+ 337 0010 2046     		mov	r0, r4
+ 338              	.LVL20:
+ 128:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     return;
+ 339              		.loc 1 128 7 view .LVU83
+ 340 0012 FFF7FEFF 		bl	memcmp
+ 341              	.LVL21:
+ 128:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     return;
+ 342              		.loc 1 128 6 view .LVU84
+ 343 0016 D0B1     		cbz	r0, .L16
+ 132:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     SEGGER_SYSVIEW_Warn("SYSTEMVIEW: Could not record task information. Maximum number of tasks rea
+ 344              		.loc 1 132 3 is_stmt 1 view .LVU85
+ 132:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     SEGGER_SYSVIEW_Warn("SYSTEMVIEW: Could not record task information. Maximum number of tasks rea
+ 345              		.loc 1 132 17 is_stmt 0 view .LVU86
+ 346 0018 114B     		ldr	r3, .L21+4
+ 347 001a 1A68     		ldr	r2, [r3]
+ARM GAS  /tmp/cch5Mq6A.s 			page 12
+
+
+ 132:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     SEGGER_SYSVIEW_Warn("SYSTEMVIEW: Could not record task information. Maximum number of tasks rea
+ 348              		.loc 1 132 6 view .LVU87
+ 349 001c 072A     		cmp	r2, #7
+ 350 001e 18D8     		bhi	.L20
+ 137:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   _aTasks[_NumTasks].pcTaskName = pcTaskName;
+ 351              		.loc 1 137 3 is_stmt 1 view .LVU88
+ 137:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   _aTasks[_NumTasks].pcTaskName = pcTaskName;
+ 352              		.loc 1 137 30 is_stmt 0 view .LVU89
+ 353 0020 104B     		ldr	r3, .L21+8
+ 354 0022 02EB8200 		add	r0, r2, r2, lsl #2
+ 355 0026 03EB8001 		add	r1, r3, r0, lsl #2
+ 356 002a 43F82050 		str	r5, [r3, r0, lsl #2]
+ 138:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   _aTasks[_NumTasks].uxCurrentPriority = uxCurrentPriority;
+ 357              		.loc 1 138 3 is_stmt 1 view .LVU90
+ 138:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   _aTasks[_NumTasks].uxCurrentPriority = uxCurrentPriority;
+ 358              		.loc 1 138 33 is_stmt 0 view .LVU91
+ 359 002e 4C60     		str	r4, [r1, #4]
+ 139:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   _aTasks[_NumTasks].pxStack = pxStack;
+ 360              		.loc 1 139 3 is_stmt 1 view .LVU92
+ 139:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   _aTasks[_NumTasks].pxStack = pxStack;
+ 361              		.loc 1 139 40 is_stmt 0 view .LVU93
+ 362 0030 8E60     		str	r6, [r1, #8]
+ 140:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   _aTasks[_NumTasks].uStackHighWaterMark = uStackHighWaterMark;
+ 363              		.loc 1 140 3 is_stmt 1 view .LVU94
+ 140:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   _aTasks[_NumTasks].uStackHighWaterMark = uStackHighWaterMark;
+ 364              		.loc 1 140 30 is_stmt 0 view .LVU95
+ 365 0032 CF60     		str	r7, [r1, #12]
+ 141:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+ 366              		.loc 1 141 3 is_stmt 1 view .LVU96
+ 141:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+ 367              		.loc 1 141 42 is_stmt 0 view .LVU97
+ 368 0034 089B     		ldr	r3, [sp, #32]
+ 369 0036 0B61     		str	r3, [r1, #16]
+ 143:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+ 370              		.loc 1 143 3 is_stmt 1 view .LVU98
+ 143:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+ 371              		.loc 1 143 12 is_stmt 0 view .LVU99
+ 372 0038 0132     		adds	r2, r2, #1
+ 373 003a 094B     		ldr	r3, .L21+4
+ 374 003c 1A60     		str	r2, [r3]
+ 145:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+ 375              		.loc 1 145 3 is_stmt 1 view .LVU100
+ 376 003e 089B     		ldr	r3, [sp, #32]
+ 377 0040 0093     		str	r3, [sp]
+ 378 0042 3B46     		mov	r3, r7
+ 379 0044 3246     		mov	r2, r6
+ 380 0046 2146     		mov	r1, r4
+ 381 0048 2846     		mov	r0, r5
+ 382 004a FFF7FEFF 		bl	SYSVIEW_SendTaskInfo
+ 383              	.LVL22:
+ 384              	.L16:
+ 147:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+ 385              		.loc 1 147 1 is_stmt 0 view .LVU101
+ 386 004e 03B0     		add	sp, sp, #12
+ 387              	.LCFI9:
+ 388              		.cfi_remember_state
+ 389              		.cfi_def_cfa_offset 20
+ARM GAS  /tmp/cch5Mq6A.s 			page 13
+
+
+ 390              		@ sp needed
+ 391 0050 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 392              	.LVL23:
+ 393              	.L20:
+ 394              	.LCFI10:
+ 395              		.cfi_restore_state
+ 133:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     return;
+ 396              		.loc 1 133 5 is_stmt 1 view .LVU102
+ 397 0052 0548     		ldr	r0, .L21+12
+ 398 0054 FFF7FEFF 		bl	SEGGER_SYSVIEW_Warn
+ 399              	.LVL24:
+ 134:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   }
+ 400              		.loc 1 134 5 view .LVU103
+ 401 0058 F9E7     		b	.L16
+ 402              	.L22:
+ 403 005a 00BF     		.align	2
+ 404              	.L21:
+ 405 005c 00000000 		.word	.LC0
+ 406 0060 00000000 		.word	.LANCHOR0
+ 407 0064 00000000 		.word	.LANCHOR1
+ 408 0068 08000000 		.word	.LC1
+ 409              		.cfi_endproc
+ 410              	.LFE6:
+ 412              		.section	.text.SYSVIEW_UpdateTask,"ax",%progbits
+ 413              		.align	1
+ 414              		.global	SYSVIEW_UpdateTask
+ 415              		.syntax unified
+ 416              		.thumb
+ 417              		.thumb_func
+ 418              		.fpu fpv4-sp-d16
+ 420              	SYSVIEW_UpdateTask:
+ 421              	.LVL25:
+ 422              	.LFB7:
+ 156:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   unsigned n;
+ 423              		.loc 1 156 133 view -0
+ 424              		.cfi_startproc
+ 425              		@ args = 4, pretend = 0, frame = 0
+ 426              		@ frame_needed = 0, uses_anonymous_args = 0
+ 156:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   unsigned n;
+ 427              		.loc 1 156 133 is_stmt 0 view .LVU105
+ 428 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 429              	.LCFI11:
+ 430              		.cfi_def_cfa_offset 20
+ 431              		.cfi_offset 4, -20
+ 432              		.cfi_offset 5, -16
+ 433              		.cfi_offset 6, -12
+ 434              		.cfi_offset 7, -8
+ 435              		.cfi_offset 14, -4
+ 436 0002 83B0     		sub	sp, sp, #12
+ 437              	.LCFI12:
+ 438              		.cfi_def_cfa_offset 32
+ 439 0004 0446     		mov	r4, r0
+ 440 0006 0D46     		mov	r5, r1
+ 441 0008 1646     		mov	r6, r2
+ 442 000a 1F46     		mov	r7, r3
+ 157:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   
+ 443              		.loc 1 157 3 is_stmt 1 view .LVU106
+ARM GAS  /tmp/cch5Mq6A.s 			page 14
+
+
+ 159:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     return;
+ 444              		.loc 1 159 3 view .LVU107
+ 159:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     return;
+ 445              		.loc 1 159 7 is_stmt 0 view .LVU108
+ 446 000c 0522     		movs	r2, #5
+ 447              	.LVL26:
+ 159:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     return;
+ 448              		.loc 1 159 7 view .LVU109
+ 449 000e 1A49     		ldr	r1, .L30
+ 450              	.LVL27:
+ 159:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     return;
+ 451              		.loc 1 159 7 view .LVU110
+ 452 0010 2846     		mov	r0, r5
+ 453              	.LVL28:
+ 159:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     return;
+ 454              		.loc 1 159 7 view .LVU111
+ 455 0012 FFF7FEFF 		bl	memcmp
+ 456              	.LVL29:
+ 159:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     return;
+ 457              		.loc 1 159 6 view .LVU112
+ 458 0016 20B3     		cbz	r0, .L23
+ 163:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     if (_aTasks[n].xHandle == xHandle) {
+ 459              		.loc 1 163 10 view .LVU113
+ 460 0018 4FF0000C 		mov	ip, #0
+ 461              	.L25:
+ 462              	.LVL30:
+ 163:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     if (_aTasks[n].xHandle == xHandle) {
+ 463              		.loc 1 163 15 is_stmt 1 discriminator 1 view .LVU114
+ 163:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     if (_aTasks[n].xHandle == xHandle) {
+ 464              		.loc 1 163 17 is_stmt 0 discriminator 1 view .LVU115
+ 465 001c 174B     		ldr	r3, .L30+4
+ 466 001e 1B68     		ldr	r3, [r3]
+ 163:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     if (_aTasks[n].xHandle == xHandle) {
+ 467              		.loc 1 163 3 discriminator 1 view .LVU116
+ 468 0020 6345     		cmp	r3, ip
+ 469 0022 09D9     		bls	.L26
+ 164:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****       break;
+ 470              		.loc 1 164 5 is_stmt 1 view .LVU117
+ 164:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****       break;
+ 471              		.loc 1 164 19 is_stmt 0 view .LVU118
+ 472 0024 0CEB8C0E 		add	lr, ip, ip, lsl #2
+ 473 0028 154A     		ldr	r2, .L30+8
+ 474 002a 52F82E20 		ldr	r2, [r2, lr, lsl #2]
+ 164:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****       break;
+ 475              		.loc 1 164 8 view .LVU119
+ 476 002e A242     		cmp	r2, r4
+ 477 0030 02D0     		beq	.L26
+ 163:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     if (_aTasks[n].xHandle == xHandle) {
+ 478              		.loc 1 163 30 is_stmt 1 discriminator 2 view .LVU120
+ 163:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     if (_aTasks[n].xHandle == xHandle) {
+ 479              		.loc 1 163 31 is_stmt 0 discriminator 2 view .LVU121
+ 480 0032 0CF1010C 		add	ip, ip, #1
+ 481              	.LVL31:
+ 163:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     if (_aTasks[n].xHandle == xHandle) {
+ 482              		.loc 1 163 31 discriminator 2 view .LVU122
+ 483 0036 F1E7     		b	.L25
+ 484              	.L26:
+ARM GAS  /tmp/cch5Mq6A.s 			page 15
+
+
+ 168:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].pcTaskName = pcTaskName;
+ 485              		.loc 1 168 3 is_stmt 1 view .LVU123
+ 168:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].pcTaskName = pcTaskName;
+ 486              		.loc 1 168 6 is_stmt 0 view .LVU124
+ 487 0038 6345     		cmp	r3, ip
+ 488 003a 14D9     		bls	.L28
+ 169:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].uxCurrentPriority = uxCurrentPriority;
+ 489              		.loc 1 169 5 is_stmt 1 view .LVU125
+ 169:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].uxCurrentPriority = uxCurrentPriority;
+ 490              		.loc 1 169 27 is_stmt 0 view .LVU126
+ 491 003c 104A     		ldr	r2, .L30+8
+ 492 003e 0CEB8C03 		add	r3, ip, ip, lsl #2
+ 493 0042 02EB8303 		add	r3, r2, r3, lsl #2
+ 494 0046 5D60     		str	r5, [r3, #4]
+ 170:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].pxStack = pxStack;
+ 495              		.loc 1 170 5 is_stmt 1 view .LVU127
+ 170:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].pxStack = pxStack;
+ 496              		.loc 1 170 34 is_stmt 0 view .LVU128
+ 497 0048 9E60     		str	r6, [r3, #8]
+ 171:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].uStackHighWaterMark = uStackHighWaterMark;
+ 498              		.loc 1 171 5 is_stmt 1 view .LVU129
+ 171:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****     _aTasks[n].uStackHighWaterMark = uStackHighWaterMark;
+ 499              		.loc 1 171 24 is_stmt 0 view .LVU130
+ 500 004a DF60     		str	r7, [r3, #12]
+ 172:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+ 501              		.loc 1 172 5 is_stmt 1 view .LVU131
+ 172:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+ 502              		.loc 1 172 36 is_stmt 0 view .LVU132
+ 503 004c 9C46     		mov	ip, r3
+ 504              	.LVL32:
+ 172:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+ 505              		.loc 1 172 36 view .LVU133
+ 506 004e 089B     		ldr	r3, [sp, #32]
+ 507 0050 CCF81030 		str	r3, [ip, #16]
+ 174:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   } else {
+ 508              		.loc 1 174 5 is_stmt 1 view .LVU134
+ 509 0054 0093     		str	r3, [sp]
+ 510 0056 3B46     		mov	r3, r7
+ 511 0058 3246     		mov	r2, r6
+ 512 005a 2946     		mov	r1, r5
+ 513 005c 2046     		mov	r0, r4
+ 514 005e FFF7FEFF 		bl	SYSVIEW_SendTaskInfo
+ 515              	.LVL33:
+ 516              	.L23:
+ 178:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+ 517              		.loc 1 178 1 is_stmt 0 view .LVU135
+ 518 0062 03B0     		add	sp, sp, #12
+ 519              	.LCFI13:
+ 520              		.cfi_remember_state
+ 521              		.cfi_def_cfa_offset 20
+ 522              		@ sp needed
+ 523 0064 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 524              	.LVL34:
+ 525              	.L28:
+ 526              	.LCFI14:
+ 527              		.cfi_restore_state
+ 176:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   }
+ARM GAS  /tmp/cch5Mq6A.s 			page 16
+
+
+ 528              		.loc 1 176 5 is_stmt 1 view .LVU136
+ 529 0066 089B     		ldr	r3, [sp, #32]
+ 530 0068 0093     		str	r3, [sp]
+ 531 006a 3B46     		mov	r3, r7
+ 532 006c 3246     		mov	r2, r6
+ 533 006e 2946     		mov	r1, r5
+ 534 0070 2046     		mov	r0, r4
+ 535 0072 FFF7FEFF 		bl	SYSVIEW_AddTask
+ 536              	.LVL35:
+ 176:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   }
+ 537              		.loc 1 176 5 is_stmt 0 view .LVU137
+ 538 0076 F4E7     		b	.L23
+ 539              	.L31:
+ 540              		.align	2
+ 541              	.L30:
+ 542 0078 00000000 		.word	.LC0
+ 543 007c 00000000 		.word	.LANCHOR0
+ 544 0080 00000000 		.word	.LANCHOR1
+ 545              		.cfi_endproc
+ 546              	.LFE7:
+ 548              		.section	.text._cbSendTaskList,"ax",%progbits
+ 549              		.align	1
+ 550              		.syntax unified
+ 551              		.thumb
+ 552              		.thumb_func
+ 553              		.fpu fpv4-sp-d16
+ 555              	_cbSendTaskList:
+ 556              	.LFB4:
+  84:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   unsigned n;
+ 557              		.loc 1 84 35 is_stmt 1 view -0
+ 558              		.cfi_startproc
+ 559              		@ args = 0, pretend = 0, frame = 0
+ 560              		@ frame_needed = 0, uses_anonymous_args = 0
+ 561 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 562              	.LCFI15:
+ 563              		.cfi_def_cfa_offset 20
+ 564              		.cfi_offset 4, -20
+ 565              		.cfi_offset 5, -16
+ 566              		.cfi_offset 6, -12
+ 567              		.cfi_offset 7, -8
+ 568              		.cfi_offset 14, -4
+ 569 0002 83B0     		sub	sp, sp, #12
+ 570              	.LCFI16:
+ 571              		.cfi_def_cfa_offset 32
+  85:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+ 572              		.loc 1 85 3 view .LVU139
+  87:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** #if INCLUDE_uxTaskGetStackHighWaterMark // Report Task Stack High Watermark
+ 573              		.loc 1 87 3 view .LVU140
+ 574              	.LVL36:
+  87:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** #if INCLUDE_uxTaskGetStackHighWaterMark // Report Task Stack High Watermark
+ 575              		.loc 1 87 10 is_stmt 0 view .LVU141
+ 576 0004 0025     		movs	r5, #0
+  87:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** #if INCLUDE_uxTaskGetStackHighWaterMark // Report Task Stack High Watermark
+ 577              		.loc 1 87 3 view .LVU142
+ 578 0006 11E0     		b	.L33
+ 579              	.LVL37:
+ 580              	.L34:
+ARM GAS  /tmp/cch5Mq6A.s 			page 17
+
+
+  89:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** #endif
+ 581              		.loc 1 89 5 is_stmt 1 discriminator 3 view .LVU143
+  89:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** #endif
+ 582              		.loc 1 89 90 is_stmt 0 discriminator 3 view .LVU144
+ 583 0008 0B4E     		ldr	r6, .L36
+ 584 000a 05EB8504 		add	r4, r5, r5, lsl #2
+ 585 000e A700     		lsls	r7, r4, #2
+ 586 0010 06EB8404 		add	r4, r6, r4, lsl #2
+  89:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** #endif
+ 587              		.loc 1 89 38 discriminator 3 view .LVU145
+ 588 0014 F059     		ldr	r0, [r6, r7]
+ 589 0016 FFF7FEFF 		bl	uxTaskGetStackHighWaterMark
+ 590              	.LVL38:
+  89:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** #endif
+ 591              		.loc 1 89 36 discriminator 3 view .LVU146
+ 592 001a 2061     		str	r0, [r4, #16]
+  91:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c ****   }
+ 593              		.loc 1 91 5 is_stmt 1 discriminator 3 view .LVU147
+ 594 001c 0090     		str	r0, [sp]
+ 595 001e E368     		ldr	r3, [r4, #12]
+ 596 0020 A268     		ldr	r2, [r4, #8]
+ 597 0022 6168     		ldr	r1, [r4, #4]
+ 598 0024 F059     		ldr	r0, [r6, r7]
+ 599 0026 FFF7FEFF 		bl	SYSVIEW_SendTaskInfo
+ 600              	.LVL39:
+  87:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** #if INCLUDE_uxTaskGetStackHighWaterMark // Report Task Stack High Watermark
+ 601              		.loc 1 87 30 discriminator 3 view .LVU148
+  87:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** #if INCLUDE_uxTaskGetStackHighWaterMark // Report Task Stack High Watermark
+ 602              		.loc 1 87 31 is_stmt 0 discriminator 3 view .LVU149
+ 603 002a 0135     		adds	r5, r5, #1
+ 604              	.LVL40:
+ 605              	.L33:
+  87:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** #if INCLUDE_uxTaskGetStackHighWaterMark // Report Task Stack High Watermark
+ 606              		.loc 1 87 15 is_stmt 1 discriminator 1 view .LVU150
+  87:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** #if INCLUDE_uxTaskGetStackHighWaterMark // Report Task Stack High Watermark
+ 607              		.loc 1 87 17 is_stmt 0 discriminator 1 view .LVU151
+ 608 002c 034B     		ldr	r3, .L36+4
+ 609 002e 1B68     		ldr	r3, [r3]
+  87:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** #if INCLUDE_uxTaskGetStackHighWaterMark // Report Task Stack High Watermark
+ 610              		.loc 1 87 3 discriminator 1 view .LVU152
+ 611 0030 AB42     		cmp	r3, r5
+ 612 0032 E9D8     		bhi	.L34
+  93:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+ 613              		.loc 1 93 1 view .LVU153
+ 614 0034 03B0     		add	sp, sp, #12
+ 615              	.LCFI17:
+ 616              		.cfi_def_cfa_offset 20
+ 617              		@ sp needed
+ 618 0036 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 619              	.LVL41:
+ 620              	.L37:
+  93:libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c **** 
+ 621              		.loc 1 93 1 view .LVU154
+ 622              		.align	2
+ 623              	.L36:
+ 624 0038 00000000 		.word	.LANCHOR1
+ 625 003c 00000000 		.word	.LANCHOR0
+ARM GAS  /tmp/cch5Mq6A.s 			page 18
+
+
+ 626              		.cfi_endproc
+ 627              	.LFE4:
+ 629              		.global	SYSVIEW_X_OS_TraceAPI
+ 630              		.section	.bss._NumTasks,"aw",%nobits
+ 631              		.align	2
+ 632              		.set	.LANCHOR0,. + 0
+ 635              	_NumTasks:
+ 636 0000 00000000 		.space	4
+ 637              		.section	.bss._aTasks,"aw",%nobits
+ 638              		.align	2
+ 639              		.set	.LANCHOR1,. + 0
+ 642              	_aTasks:
+ 643 0000 00000000 		.space	160
+ 643      00000000 
+ 643      00000000 
+ 643      00000000 
+ 643      00000000 
+ 644              		.section	.rodata.SYSVIEW_X_OS_TraceAPI,"a"
+ 645              		.align	2
+ 648              	SYSVIEW_X_OS_TraceAPI:
+ 649 0000 00000000 		.word	_cbGetTime
+ 650 0004 00000000 		.word	_cbSendTaskList
+ 651              		.text
+ 652              	.Letext0:
+ 653              		.file 2 "libraries/SystemView/SYSVIEW/SEGGER_SYSVIEW.h"
+ 654              		.file 3 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h"
+ 655              		.file 4 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h"
+ 656              		.file 5 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
+ 657              		.file 6 "/usr/include/newlib/string.h"
+ARM GAS  /tmp/cch5Mq6A.s 			page 19
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 SEGGER_SYSVIEW_FreeRTOS.c
+     /tmp/cch5Mq6A.s:18     .text._cbGetTime:0000000000000000 $t
+     /tmp/cch5Mq6A.s:25     .text._cbGetTime:0000000000000000 _cbGetTime
+     /tmp/cch5Mq6A.s:67     .text.SYSVIEW_DeleteTask:0000000000000000 $t
+     /tmp/cch5Mq6A.s:74     .text.SYSVIEW_DeleteTask:0000000000000000 SYSVIEW_DeleteTask
+     /tmp/cch5Mq6A.s:219    .text.SYSVIEW_DeleteTask:0000000000000098 $d
+     /tmp/cch5Mq6A.s:225    .text.SYSVIEW_SendTaskInfo:0000000000000000 $t
+     /tmp/cch5Mq6A.s:232    .text.SYSVIEW_SendTaskInfo:0000000000000000 SYSVIEW_SendTaskInfo
+     /tmp/cch5Mq6A.s:291    .rodata.SYSVIEW_AddTask.str1.4:0000000000000000 $d
+     /tmp/cch5Mq6A.s:299    .text.SYSVIEW_AddTask:0000000000000000 $t
+     /tmp/cch5Mq6A.s:306    .text.SYSVIEW_AddTask:0000000000000000 SYSVIEW_AddTask
+     /tmp/cch5Mq6A.s:405    .text.SYSVIEW_AddTask:000000000000005c $d
+     /tmp/cch5Mq6A.s:413    .text.SYSVIEW_UpdateTask:0000000000000000 $t
+     /tmp/cch5Mq6A.s:420    .text.SYSVIEW_UpdateTask:0000000000000000 SYSVIEW_UpdateTask
+     /tmp/cch5Mq6A.s:542    .text.SYSVIEW_UpdateTask:0000000000000078 $d
+     /tmp/cch5Mq6A.s:549    .text._cbSendTaskList:0000000000000000 $t
+     /tmp/cch5Mq6A.s:555    .text._cbSendTaskList:0000000000000000 _cbSendTaskList
+     /tmp/cch5Mq6A.s:624    .text._cbSendTaskList:0000000000000038 $d
+     /tmp/cch5Mq6A.s:648    .rodata.SYSVIEW_X_OS_TraceAPI:0000000000000000 SYSVIEW_X_OS_TraceAPI
+     /tmp/cch5Mq6A.s:631    .bss._NumTasks:0000000000000000 $d
+     /tmp/cch5Mq6A.s:635    .bss._NumTasks:0000000000000000 _NumTasks
+     /tmp/cch5Mq6A.s:638    .bss._aTasks:0000000000000000 $d
+     /tmp/cch5Mq6A.s:642    .bss._aTasks:0000000000000000 _aTasks
+     /tmp/cch5Mq6A.s:645    .rodata.SYSVIEW_X_OS_TraceAPI:0000000000000000 $d
+
+UNDEFINED SYMBOLS
+xTaskGetTickCountFromISR
+SEGGER_SYSVIEW_SendTaskInfo
+memcmp
+SEGGER_SYSVIEW_Warn
+uxTaskGetStackHighWaterMark

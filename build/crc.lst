@@ -1,0 +1,318 @@
+ARM GAS  /tmp/ccVxjyV2.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"crc.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.MX_CRC_Init,"ax",%progbits
+  18              		.align	1
+  19              		.global	MX_CRC_Init
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	MX_CRC_Init:
+  27              	.LFB139:
+  28              		.file 1 "Core/Src/crc.c"
+   1:Core/Src/crc.c **** /* USER CODE BEGIN Header */
+   2:Core/Src/crc.c **** /**
+   3:Core/Src/crc.c ****   ******************************************************************************
+   4:Core/Src/crc.c ****   * @file    crc.c
+   5:Core/Src/crc.c ****   * @brief   This file provides code for the configuration
+   6:Core/Src/crc.c ****   *          of the CRC instances.
+   7:Core/Src/crc.c ****   ******************************************************************************
+   8:Core/Src/crc.c ****   * @attention
+   9:Core/Src/crc.c ****   *
+  10:Core/Src/crc.c ****   * Copyright (c) 2024 STMicroelectronics.
+  11:Core/Src/crc.c ****   * All rights reserved.
+  12:Core/Src/crc.c ****   *
+  13:Core/Src/crc.c ****   * This software is licensed under terms that can be found in the LICENSE file
+  14:Core/Src/crc.c ****   * in the root directory of this software component.
+  15:Core/Src/crc.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
+  16:Core/Src/crc.c ****   *
+  17:Core/Src/crc.c ****   ******************************************************************************
+  18:Core/Src/crc.c ****   */
+  19:Core/Src/crc.c **** /* USER CODE END Header */
+  20:Core/Src/crc.c **** /* Includes ------------------------------------------------------------------*/
+  21:Core/Src/crc.c **** #include "crc.h"
+  22:Core/Src/crc.c **** 
+  23:Core/Src/crc.c **** /* USER CODE BEGIN 0 */
+  24:Core/Src/crc.c **** 
+  25:Core/Src/crc.c **** /* USER CODE END 0 */
+  26:Core/Src/crc.c **** 
+  27:Core/Src/crc.c **** CRC_HandleTypeDef hcrc;
+  28:Core/Src/crc.c **** 
+  29:Core/Src/crc.c **** /* CRC init function */
+  30:Core/Src/crc.c **** void MX_CRC_Init(void)
+ARM GAS  /tmp/ccVxjyV2.s 			page 2
+
+
+  31:Core/Src/crc.c **** {
+  29              		.loc 1 31 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 08B5     		push	{r3, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 3, -8
+  37              		.cfi_offset 14, -4
+  32:Core/Src/crc.c **** 
+  33:Core/Src/crc.c ****   /* USER CODE BEGIN CRC_Init 0 */
+  34:Core/Src/crc.c **** 
+  35:Core/Src/crc.c ****   /* USER CODE END CRC_Init 0 */
+  36:Core/Src/crc.c **** 
+  37:Core/Src/crc.c ****   /* USER CODE BEGIN CRC_Init 1 */
+  38:Core/Src/crc.c **** 
+  39:Core/Src/crc.c ****   /* USER CODE END CRC_Init 1 */
+  40:Core/Src/crc.c ****   hcrc.Instance = CRC;
+  38              		.loc 1 40 3 view .LVU1
+  39              		.loc 1 40 17 is_stmt 0 view .LVU2
+  40 0002 0848     		ldr	r0, .L5
+  41 0004 084B     		ldr	r3, .L5+4
+  42 0006 0360     		str	r3, [r0]
+  41:Core/Src/crc.c ****   hcrc.Init.DefaultPolynomialUse = DEFAULT_POLYNOMIAL_ENABLE;
+  43              		.loc 1 41 3 is_stmt 1 view .LVU3
+  44              		.loc 1 41 34 is_stmt 0 view .LVU4
+  45 0008 0023     		movs	r3, #0
+  46 000a 0371     		strb	r3, [r0, #4]
+  42:Core/Src/crc.c ****   hcrc.Init.DefaultInitValueUse = DEFAULT_INIT_VALUE_ENABLE;
+  47              		.loc 1 42 3 is_stmt 1 view .LVU5
+  48              		.loc 1 42 33 is_stmt 0 view .LVU6
+  49 000c 4371     		strb	r3, [r0, #5]
+  43:Core/Src/crc.c ****   hcrc.Init.InputDataInversionMode = CRC_INPUTDATA_INVERSION_NONE;
+  50              		.loc 1 43 3 is_stmt 1 view .LVU7
+  51              		.loc 1 43 36 is_stmt 0 view .LVU8
+  52 000e 4361     		str	r3, [r0, #20]
+  44:Core/Src/crc.c ****   hcrc.Init.OutputDataInversionMode = CRC_OUTPUTDATA_INVERSION_DISABLE;
+  53              		.loc 1 44 3 is_stmt 1 view .LVU9
+  54              		.loc 1 44 37 is_stmt 0 view .LVU10
+  55 0010 8361     		str	r3, [r0, #24]
+  45:Core/Src/crc.c ****   hcrc.InputDataFormat = CRC_INPUTDATA_FORMAT_BYTES;
+  56              		.loc 1 45 3 is_stmt 1 view .LVU11
+  57              		.loc 1 45 24 is_stmt 0 view .LVU12
+  58 0012 0123     		movs	r3, #1
+  59 0014 0362     		str	r3, [r0, #32]
+  46:Core/Src/crc.c ****   if (HAL_CRC_Init(&hcrc) != HAL_OK)
+  60              		.loc 1 46 3 is_stmt 1 view .LVU13
+  61              		.loc 1 46 7 is_stmt 0 view .LVU14
+  62 0016 FFF7FEFF 		bl	HAL_CRC_Init
+  63              	.LVL0:
+  64              		.loc 1 46 6 view .LVU15
+  65 001a 00B9     		cbnz	r0, .L4
+  66              	.L1:
+  47:Core/Src/crc.c ****   {
+  48:Core/Src/crc.c ****     Error_Handler();
+  49:Core/Src/crc.c ****   }
+ARM GAS  /tmp/ccVxjyV2.s 			page 3
+
+
+  50:Core/Src/crc.c ****   /* USER CODE BEGIN CRC_Init 2 */
+  51:Core/Src/crc.c **** 
+  52:Core/Src/crc.c ****   /* USER CODE END CRC_Init 2 */
+  53:Core/Src/crc.c **** 
+  54:Core/Src/crc.c **** }
+  67              		.loc 1 54 1 view .LVU16
+  68 001c 08BD     		pop	{r3, pc}
+  69              	.L4:
+  48:Core/Src/crc.c ****   }
+  70              		.loc 1 48 5 is_stmt 1 view .LVU17
+  71 001e FFF7FEFF 		bl	Error_Handler
+  72              	.LVL1:
+  73              		.loc 1 54 1 is_stmt 0 view .LVU18
+  74 0022 FBE7     		b	.L1
+  75              	.L6:
+  76              		.align	2
+  77              	.L5:
+  78 0024 00000000 		.word	.LANCHOR0
+  79 0028 00300240 		.word	1073885184
+  80              		.cfi_endproc
+  81              	.LFE139:
+  83              		.section	.text.HAL_CRC_MspInit,"ax",%progbits
+  84              		.align	1
+  85              		.global	HAL_CRC_MspInit
+  86              		.syntax unified
+  87              		.thumb
+  88              		.thumb_func
+  89              		.fpu fpv4-sp-d16
+  91              	HAL_CRC_MspInit:
+  92              	.LVL2:
+  93              	.LFB140:
+  55:Core/Src/crc.c **** 
+  56:Core/Src/crc.c **** void HAL_CRC_MspInit(CRC_HandleTypeDef* crcHandle)
+  57:Core/Src/crc.c **** {
+  94              		.loc 1 57 1 is_stmt 1 view -0
+  95              		.cfi_startproc
+  96              		@ args = 0, pretend = 0, frame = 8
+  97              		@ frame_needed = 0, uses_anonymous_args = 0
+  98              		@ link register save eliminated.
+  58:Core/Src/crc.c **** 
+  59:Core/Src/crc.c ****   if(crcHandle->Instance==CRC)
+  99              		.loc 1 59 3 view .LVU20
+ 100              		.loc 1 59 15 is_stmt 0 view .LVU21
+ 101 0000 0268     		ldr	r2, [r0]
+ 102              		.loc 1 59 5 view .LVU22
+ 103 0002 094B     		ldr	r3, .L14
+ 104 0004 9A42     		cmp	r2, r3
+ 105 0006 00D0     		beq	.L13
+ 106 0008 7047     		bx	lr
+ 107              	.L13:
+  57:Core/Src/crc.c **** 
+ 108              		.loc 1 57 1 view .LVU23
+ 109 000a 82B0     		sub	sp, sp, #8
+ 110              	.LCFI1:
+ 111              		.cfi_def_cfa_offset 8
+  60:Core/Src/crc.c ****   {
+  61:Core/Src/crc.c ****   /* USER CODE BEGIN CRC_MspInit 0 */
+ARM GAS  /tmp/ccVxjyV2.s 			page 4
+
+
+  62:Core/Src/crc.c **** 
+  63:Core/Src/crc.c ****   /* USER CODE END CRC_MspInit 0 */
+  64:Core/Src/crc.c ****     /* CRC clock enable */
+  65:Core/Src/crc.c ****     __HAL_RCC_CRC_CLK_ENABLE();
+ 112              		.loc 1 65 5 is_stmt 1 view .LVU24
+ 113              	.LBB2:
+ 114              		.loc 1 65 5 view .LVU25
+ 115              		.loc 1 65 5 view .LVU26
+ 116 000c A3F50053 		sub	r3, r3, #8192
+ 117 0010 9A6C     		ldr	r2, [r3, #72]
+ 118 0012 42F48052 		orr	r2, r2, #4096
+ 119 0016 9A64     		str	r2, [r3, #72]
+ 120              		.loc 1 65 5 view .LVU27
+ 121 0018 9B6C     		ldr	r3, [r3, #72]
+ 122 001a 03F48053 		and	r3, r3, #4096
+ 123 001e 0193     		str	r3, [sp, #4]
+ 124              		.loc 1 65 5 view .LVU28
+ 125 0020 019B     		ldr	r3, [sp, #4]
+ 126              	.LBE2:
+ 127              		.loc 1 65 5 view .LVU29
+  66:Core/Src/crc.c ****   /* USER CODE BEGIN CRC_MspInit 1 */
+  67:Core/Src/crc.c **** 
+  68:Core/Src/crc.c ****   /* USER CODE END CRC_MspInit 1 */
+  69:Core/Src/crc.c ****   }
+  70:Core/Src/crc.c **** }
+ 128              		.loc 1 70 1 is_stmt 0 view .LVU30
+ 129 0022 02B0     		add	sp, sp, #8
+ 130              	.LCFI2:
+ 131              		.cfi_def_cfa_offset 0
+ 132              		@ sp needed
+ 133 0024 7047     		bx	lr
+ 134              	.L15:
+ 135 0026 00BF     		.align	2
+ 136              	.L14:
+ 137 0028 00300240 		.word	1073885184
+ 138              		.cfi_endproc
+ 139              	.LFE140:
+ 141              		.section	.text.HAL_CRC_MspDeInit,"ax",%progbits
+ 142              		.align	1
+ 143              		.global	HAL_CRC_MspDeInit
+ 144              		.syntax unified
+ 145              		.thumb
+ 146              		.thumb_func
+ 147              		.fpu fpv4-sp-d16
+ 149              	HAL_CRC_MspDeInit:
+ 150              	.LVL3:
+ 151              	.LFB141:
+  71:Core/Src/crc.c **** 
+  72:Core/Src/crc.c **** void HAL_CRC_MspDeInit(CRC_HandleTypeDef* crcHandle)
+  73:Core/Src/crc.c **** {
+ 152              		.loc 1 73 1 is_stmt 1 view -0
+ 153              		.cfi_startproc
+ 154              		@ args = 0, pretend = 0, frame = 0
+ 155              		@ frame_needed = 0, uses_anonymous_args = 0
+ 156              		@ link register save eliminated.
+  74:Core/Src/crc.c **** 
+  75:Core/Src/crc.c ****   if(crcHandle->Instance==CRC)
+ARM GAS  /tmp/ccVxjyV2.s 			page 5
+
+
+ 157              		.loc 1 75 3 view .LVU32
+ 158              		.loc 1 75 15 is_stmt 0 view .LVU33
+ 159 0000 0268     		ldr	r2, [r0]
+ 160              		.loc 1 75 5 view .LVU34
+ 161 0002 054B     		ldr	r3, .L19
+ 162 0004 9A42     		cmp	r2, r3
+ 163 0006 00D0     		beq	.L18
+ 164              	.L16:
+  76:Core/Src/crc.c ****   {
+  77:Core/Src/crc.c ****   /* USER CODE BEGIN CRC_MspDeInit 0 */
+  78:Core/Src/crc.c **** 
+  79:Core/Src/crc.c ****   /* USER CODE END CRC_MspDeInit 0 */
+  80:Core/Src/crc.c ****     /* Peripheral clock disable */
+  81:Core/Src/crc.c ****     __HAL_RCC_CRC_CLK_DISABLE();
+  82:Core/Src/crc.c ****   /* USER CODE BEGIN CRC_MspDeInit 1 */
+  83:Core/Src/crc.c **** 
+  84:Core/Src/crc.c ****   /* USER CODE END CRC_MspDeInit 1 */
+  85:Core/Src/crc.c ****   }
+  86:Core/Src/crc.c **** }
+ 165              		.loc 1 86 1 view .LVU35
+ 166 0008 7047     		bx	lr
+ 167              	.L18:
+  81:Core/Src/crc.c ****   /* USER CODE BEGIN CRC_MspDeInit 1 */
+ 168              		.loc 1 81 5 is_stmt 1 view .LVU36
+ 169 000a 044A     		ldr	r2, .L19+4
+ 170 000c 936C     		ldr	r3, [r2, #72]
+ 171 000e 23F48053 		bic	r3, r3, #4096
+ 172 0012 9364     		str	r3, [r2, #72]
+ 173              		.loc 1 86 1 is_stmt 0 view .LVU37
+ 174 0014 F8E7     		b	.L16
+ 175              	.L20:
+ 176 0016 00BF     		.align	2
+ 177              	.L19:
+ 178 0018 00300240 		.word	1073885184
+ 179 001c 00100240 		.word	1073876992
+ 180              		.cfi_endproc
+ 181              	.LFE141:
+ 183              		.global	hcrc
+ 184              		.section	.bss.hcrc,"aw",%nobits
+ 185              		.align	2
+ 186              		.set	.LANCHOR0,. + 0
+ 189              	hcrc:
+ 190 0000 00000000 		.space	36
+ 190      00000000 
+ 190      00000000 
+ 190      00000000 
+ 190      00000000 
+ 191              		.text
+ 192              	.Letext0:
+ 193              		.file 2 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h"
+ 194              		.file 3 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l412xx.h"
+ 195              		.file 4 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h"
+ 196              		.file 5 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_crc.h"
+ 197              		.file 6 "Core/Inc/main.h"
+ 198              		.file 7 "Core/Inc/crc.h"
+ARM GAS  /tmp/ccVxjyV2.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 crc.c
+     /tmp/ccVxjyV2.s:18     .text.MX_CRC_Init:0000000000000000 $t
+     /tmp/ccVxjyV2.s:26     .text.MX_CRC_Init:0000000000000000 MX_CRC_Init
+     /tmp/ccVxjyV2.s:78     .text.MX_CRC_Init:0000000000000024 $d
+     /tmp/ccVxjyV2.s:84     .text.HAL_CRC_MspInit:0000000000000000 $t
+     /tmp/ccVxjyV2.s:91     .text.HAL_CRC_MspInit:0000000000000000 HAL_CRC_MspInit
+     /tmp/ccVxjyV2.s:137    .text.HAL_CRC_MspInit:0000000000000028 $d
+     /tmp/ccVxjyV2.s:142    .text.HAL_CRC_MspDeInit:0000000000000000 $t
+     /tmp/ccVxjyV2.s:149    .text.HAL_CRC_MspDeInit:0000000000000000 HAL_CRC_MspDeInit
+     /tmp/ccVxjyV2.s:178    .text.HAL_CRC_MspDeInit:0000000000000018 $d
+     /tmp/ccVxjyV2.s:189    .bss.hcrc:0000000000000000 hcrc
+     /tmp/ccVxjyV2.s:185    .bss.hcrc:0000000000000000 $d
+
+UNDEFINED SYMBOLS
+HAL_CRC_Init
+Error_Handler

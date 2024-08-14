@@ -1,0 +1,2082 @@
+ARM GAS  /tmp/cc7kTUPi.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"custom_bus.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.I2C1_MspInit,"ax",%progbits
+  18              		.align	1
+  19              		.arch armv7e-m
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv4-sp-d16
+  25              	I2C1_MspInit:
+  26              	.LVL0:
+  27              	.LFB143:
+  28              		.file 1 "Core/Src/custom_bus.c"
+   1:Core/Src/custom_bus.c **** /* USER CODE BEGIN Header */
+   2:Core/Src/custom_bus.c **** /**
+   3:Core/Src/custom_bus.c ****   ******************************************************************************
+   4:Core/Src/custom_bus.c ****   * @file           : custom_bus.c
+   5:Core/Src/custom_bus.c ****   * @brief          : source file for the BSP BUS IO driver
+   6:Core/Src/custom_bus.c ****   ******************************************************************************
+   7:Core/Src/custom_bus.c ****   * @attention
+   8:Core/Src/custom_bus.c ****   *
+   9:Core/Src/custom_bus.c ****   * Copyright (c) 2023 STMicroelectronics.
+  10:Core/Src/custom_bus.c ****   * All rights reserved.
+  11:Core/Src/custom_bus.c ****   *
+  12:Core/Src/custom_bus.c ****   * This software is licensed under terms that can be found in the LICENSE file
+  13:Core/Src/custom_bus.c ****   * in the root directory of this software component.
+  14:Core/Src/custom_bus.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
+  15:Core/Src/custom_bus.c ****   *
+  16:Core/Src/custom_bus.c ****   ******************************************************************************
+  17:Core/Src/custom_bus.c **** */
+  18:Core/Src/custom_bus.c **** /* USER CODE END Header */
+  19:Core/Src/custom_bus.c **** 
+  20:Core/Src/custom_bus.c **** /* Includes ------------------------------------------------------------------*/
+  21:Core/Src/custom_bus.c **** #include "custom_bus.h"
+  22:Core/Src/custom_bus.c **** 
+  23:Core/Src/custom_bus.c **** __weak HAL_StatusTypeDef MX_I2C1_Init(I2C_HandleTypeDef* hi2c);
+  24:Core/Src/custom_bus.c **** 
+  25:Core/Src/custom_bus.c **** /** @addtogroup BSP
+  26:Core/Src/custom_bus.c ****   * @{
+  27:Core/Src/custom_bus.c ****   */
+  28:Core/Src/custom_bus.c **** 
+  29:Core/Src/custom_bus.c **** /** @addtogroup CUSTOM
+  30:Core/Src/custom_bus.c ****   * @{
+ARM GAS  /tmp/cc7kTUPi.s 			page 2
+
+
+  31:Core/Src/custom_bus.c ****   */
+  32:Core/Src/custom_bus.c **** 
+  33:Core/Src/custom_bus.c **** /** @defgroup CUSTOM_BUS CUSTOM BUS
+  34:Core/Src/custom_bus.c ****   * @{
+  35:Core/Src/custom_bus.c ****   */
+  36:Core/Src/custom_bus.c **** 
+  37:Core/Src/custom_bus.c **** #define DIV_ROUND_CLOSEST(x, d)  (((x) + ((d) / 2U)) / (d))
+  38:Core/Src/custom_bus.c **** 
+  39:Core/Src/custom_bus.c **** #define I2C_ANALOG_FILTER_DELAY_MIN            50U     /* ns */
+  40:Core/Src/custom_bus.c **** #define I2C_ANALOG_FILTER_DELAY_MAX            260U    /* ns */
+  41:Core/Src/custom_bus.c **** #define I2C_ANALOG_FILTER_DELAY_DEFAULT        2U      /* ns */
+  42:Core/Src/custom_bus.c **** 
+  43:Core/Src/custom_bus.c **** #ifndef I2C_VALID_TIMING_NBR
+  44:Core/Src/custom_bus.c ****   #define I2C_VALID_TIMING_NBR                 128U
+  45:Core/Src/custom_bus.c **** #endif
+  46:Core/Src/custom_bus.c **** 
+  47:Core/Src/custom_bus.c **** #define I2C_SPEED_STANDARD                     0U    /* 100 kHz */
+  48:Core/Src/custom_bus.c **** #define I2C_SPEED_FAST                         1U    /* 400 kHz */
+  49:Core/Src/custom_bus.c **** #define I2C_SPEED_FAST_PLUS                    2U    /* 1 MHz */
+  50:Core/Src/custom_bus.c **** 
+  51:Core/Src/custom_bus.c **** #define I2C_PRESC_MAX                          16U
+  52:Core/Src/custom_bus.c **** #define I2C_SCLDEL_MAX                         16U
+  53:Core/Src/custom_bus.c **** #define I2C_SDADEL_MAX                         16U
+  54:Core/Src/custom_bus.c **** #define I2C_SCLH_MAX                           256U
+  55:Core/Src/custom_bus.c **** #define I2C_SCLL_MAX                           256U
+  56:Core/Src/custom_bus.c **** #define SEC2NSEC                               1000000000UL
+  57:Core/Src/custom_bus.c **** 
+  58:Core/Src/custom_bus.c **** #if (USE_CUBEMX_BSP_V2 == 1)
+  59:Core/Src/custom_bus.c **** /**
+  60:Core/Src/custom_bus.c ****   * @brief I2C_charac
+  61:Core/Src/custom_bus.c ****   *  freq: I2C bus speed (Hz)
+  62:Core/Src/custom_bus.c ****   *  freq_min: 80% of I2C bus speed (Hz)
+  63:Core/Src/custom_bus.c ****   *  freq_max: 100% of I2C bus speed (Hz)
+  64:Core/Src/custom_bus.c ****   *  fall_max: Max fall time of both SDA and SCL signals (ns)
+  65:Core/Src/custom_bus.c ****   *  rise_max: Max rise time of both SDA and SCL signals (ns)
+  66:Core/Src/custom_bus.c ****   *  hddat_min: Min data hold time (ns)
+  67:Core/Src/custom_bus.c ****   *  vddat_max: Max data valid time (ns)
+  68:Core/Src/custom_bus.c ****   *  sudat_min: Min data setup time (ns)
+  69:Core/Src/custom_bus.c ****   *  lscl_min: Min low period of the SCL clock (ns)
+  70:Core/Src/custom_bus.c ****   *  hscl_min: Min high period of the SCL clock (ns)
+  71:Core/Src/custom_bus.c ****   *  trise: Rise time (ns)
+  72:Core/Src/custom_bus.c ****   *  tfall: Fall time (ns)
+  73:Core/Src/custom_bus.c ****   *  dnf: Digital filter coefficient (0-16)
+  74:Core/Src/custom_bus.c ****   */
+  75:Core/Src/custom_bus.c **** typedef struct
+  76:Core/Src/custom_bus.c **** {
+  77:Core/Src/custom_bus.c ****   uint32_t freq;
+  78:Core/Src/custom_bus.c ****   uint32_t freq_min;
+  79:Core/Src/custom_bus.c ****   uint32_t freq_max;
+  80:Core/Src/custom_bus.c ****   uint32_t hddat_min;
+  81:Core/Src/custom_bus.c ****   uint32_t vddat_max;
+  82:Core/Src/custom_bus.c ****   uint32_t sudat_min;
+  83:Core/Src/custom_bus.c ****   uint32_t lscl_min;
+  84:Core/Src/custom_bus.c ****   uint32_t hscl_min;
+  85:Core/Src/custom_bus.c ****   uint32_t trise;
+  86:Core/Src/custom_bus.c ****   uint32_t tfall;
+  87:Core/Src/custom_bus.c ****   uint32_t dnf;
+ARM GAS  /tmp/cc7kTUPi.s 			page 3
+
+
+  88:Core/Src/custom_bus.c **** }I2C_Charac_t;
+  89:Core/Src/custom_bus.c **** 
+  90:Core/Src/custom_bus.c **** /**
+  91:Core/Src/custom_bus.c ****   * @brief I2C timings parameters
+  92:Core/Src/custom_bus.c ****   *  presc: Prescaler value
+  93:Core/Src/custom_bus.c ****   *  tscldel: Data setup time
+  94:Core/Src/custom_bus.c ****   *  tsdadel: Data hold time
+  95:Core/Src/custom_bus.c ****   *  sclh: SCL high period (master mode)
+  96:Core/Src/custom_bus.c ****   *  scll: SCL low period (master mode)
+  97:Core/Src/custom_bus.c ****   */
+  98:Core/Src/custom_bus.c **** typedef struct
+  99:Core/Src/custom_bus.c **** {
+ 100:Core/Src/custom_bus.c ****   uint32_t presc;
+ 101:Core/Src/custom_bus.c ****   uint32_t tscldel;
+ 102:Core/Src/custom_bus.c ****   uint32_t tsdadel;
+ 103:Core/Src/custom_bus.c ****   uint32_t sclh;
+ 104:Core/Src/custom_bus.c ****   uint32_t scll;
+ 105:Core/Src/custom_bus.c **** }I2C_Timings_t;
+ 106:Core/Src/custom_bus.c **** 
+ 107:Core/Src/custom_bus.c **** static const I2C_Charac_t I2C_Charac[] =
+ 108:Core/Src/custom_bus.c **** {
+ 109:Core/Src/custom_bus.c ****   [I2C_SPEED_STANDARD] =
+ 110:Core/Src/custom_bus.c ****   {
+ 111:Core/Src/custom_bus.c ****     .freq = 100000,
+ 112:Core/Src/custom_bus.c ****     .freq_min = 80000,
+ 113:Core/Src/custom_bus.c ****     .freq_max = 120000,
+ 114:Core/Src/custom_bus.c ****     .hddat_min = 0,
+ 115:Core/Src/custom_bus.c ****     .vddat_max = 3450,
+ 116:Core/Src/custom_bus.c ****     .sudat_min = 250,
+ 117:Core/Src/custom_bus.c ****     .lscl_min = 4700,
+ 118:Core/Src/custom_bus.c ****     .hscl_min = 4000,
+ 119:Core/Src/custom_bus.c ****     .trise = 400,
+ 120:Core/Src/custom_bus.c ****     .tfall = 100,
+ 121:Core/Src/custom_bus.c ****     .dnf = I2C_ANALOG_FILTER_DELAY_DEFAULT,
+ 122:Core/Src/custom_bus.c ****   },
+ 123:Core/Src/custom_bus.c ****   [I2C_SPEED_FAST] =
+ 124:Core/Src/custom_bus.c ****   {
+ 125:Core/Src/custom_bus.c ****     .freq = 400000,
+ 126:Core/Src/custom_bus.c ****     .freq_min = 320000,
+ 127:Core/Src/custom_bus.c ****     .freq_max = 480000,
+ 128:Core/Src/custom_bus.c ****     .hddat_min = 0,
+ 129:Core/Src/custom_bus.c ****     .vddat_max = 900,
+ 130:Core/Src/custom_bus.c ****     .sudat_min = 100,
+ 131:Core/Src/custom_bus.c ****     .lscl_min = 1300,
+ 132:Core/Src/custom_bus.c ****     .hscl_min = 600,
+ 133:Core/Src/custom_bus.c ****     .trise = 250,
+ 134:Core/Src/custom_bus.c ****     .tfall = 100,
+ 135:Core/Src/custom_bus.c ****     .dnf = I2C_ANALOG_FILTER_DELAY_DEFAULT,
+ 136:Core/Src/custom_bus.c ****   },
+ 137:Core/Src/custom_bus.c ****   [I2C_SPEED_FAST_PLUS] =
+ 138:Core/Src/custom_bus.c ****   {
+ 139:Core/Src/custom_bus.c ****     .freq = 1000000,
+ 140:Core/Src/custom_bus.c ****     .freq_min = 800000,
+ 141:Core/Src/custom_bus.c ****     .freq_max = 1200000,
+ 142:Core/Src/custom_bus.c ****     .hddat_min = 0,
+ 143:Core/Src/custom_bus.c ****     .vddat_max = 450,
+ 144:Core/Src/custom_bus.c ****     .sudat_min = 50,
+ARM GAS  /tmp/cc7kTUPi.s 			page 4
+
+
+ 145:Core/Src/custom_bus.c ****     .lscl_min = 500,
+ 146:Core/Src/custom_bus.c ****     .hscl_min = 260,
+ 147:Core/Src/custom_bus.c ****     .trise = 60,
+ 148:Core/Src/custom_bus.c ****     .tfall = 100,
+ 149:Core/Src/custom_bus.c ****     .dnf = I2C_ANALOG_FILTER_DELAY_DEFAULT,
+ 150:Core/Src/custom_bus.c ****   },
+ 151:Core/Src/custom_bus.c **** };
+ 152:Core/Src/custom_bus.c **** static I2C_Timings_t valid_timing[I2C_VALID_TIMING_NBR];
+ 153:Core/Src/custom_bus.c **** static uint32_t valid_timing_nbr = 0;
+ 154:Core/Src/custom_bus.c **** #endif
+ 155:Core/Src/custom_bus.c **** 
+ 156:Core/Src/custom_bus.c **** /** @defgroup CUSTOM_BUS_Exported_Variables BUS Exported Variables
+ 157:Core/Src/custom_bus.c ****   * @{
+ 158:Core/Src/custom_bus.c ****   */
+ 159:Core/Src/custom_bus.c **** 
+ 160:Core/Src/custom_bus.c **** I2C_HandleTypeDef hi2c1;
+ 161:Core/Src/custom_bus.c **** /**
+ 162:Core/Src/custom_bus.c ****   * @}
+ 163:Core/Src/custom_bus.c ****   */
+ 164:Core/Src/custom_bus.c **** 
+ 165:Core/Src/custom_bus.c **** /** @defgroup CUSTOM_BUS_Private_Variables BUS Private Variables
+ 166:Core/Src/custom_bus.c ****   * @{
+ 167:Core/Src/custom_bus.c ****   */
+ 168:Core/Src/custom_bus.c **** 
+ 169:Core/Src/custom_bus.c **** #if (USE_HAL_I2C_REGISTER_CALLBACKS == 1U)
+ 170:Core/Src/custom_bus.c **** static uint32_t IsI2C1MspCbValid = 0;
+ 171:Core/Src/custom_bus.c **** #endif /* USE_HAL_I2C_REGISTER_CALLBACKS */
+ 172:Core/Src/custom_bus.c **** static uint32_t I2C1InitCounter = 0;
+ 173:Core/Src/custom_bus.c **** 
+ 174:Core/Src/custom_bus.c **** /**
+ 175:Core/Src/custom_bus.c ****   * @}
+ 176:Core/Src/custom_bus.c ****   */
+ 177:Core/Src/custom_bus.c **** 
+ 178:Core/Src/custom_bus.c **** /** @defgroup CUSTOM_BUS_Private_FunctionPrototypes  BUS Private Function
+ 179:Core/Src/custom_bus.c ****   * @{
+ 180:Core/Src/custom_bus.c ****   */
+ 181:Core/Src/custom_bus.c **** 
+ 182:Core/Src/custom_bus.c **** static void I2C1_MspInit(I2C_HandleTypeDef* hI2c);
+ 183:Core/Src/custom_bus.c **** static void I2C1_MspDeInit(I2C_HandleTypeDef* hI2c);
+ 184:Core/Src/custom_bus.c **** #if (USE_CUBEMX_BSP_V2 == 1)
+ 185:Core/Src/custom_bus.c **** static uint32_t I2C_GetTiming(uint32_t clock_src_hz, uint32_t i2cfreq_hz);
+ 186:Core/Src/custom_bus.c **** static void Compute_PRESC_SCLDEL_SDADEL(uint32_t clock_src_freq, uint32_t I2C_Speed);
+ 187:Core/Src/custom_bus.c **** static uint32_t Compute_SCLL_SCLH (uint32_t clock_src_freq, uint32_t I2C_speed);
+ 188:Core/Src/custom_bus.c **** #endif
+ 189:Core/Src/custom_bus.c **** 
+ 190:Core/Src/custom_bus.c **** /**
+ 191:Core/Src/custom_bus.c ****   * @}
+ 192:Core/Src/custom_bus.c ****   */
+ 193:Core/Src/custom_bus.c **** 
+ 194:Core/Src/custom_bus.c **** /** @defgroup CUSTOM_LOW_LEVEL_Private_Functions CUSTOM LOW LEVEL Private Functions
+ 195:Core/Src/custom_bus.c ****   * @{
+ 196:Core/Src/custom_bus.c ****   */
+ 197:Core/Src/custom_bus.c **** 
+ 198:Core/Src/custom_bus.c **** /** @defgroup CUSTOM_BUS_Exported_Functions CUSTOM_BUS Exported Functions
+ 199:Core/Src/custom_bus.c ****   * @{
+ 200:Core/Src/custom_bus.c ****   */
+ 201:Core/Src/custom_bus.c **** 
+ARM GAS  /tmp/cc7kTUPi.s 			page 5
+
+
+ 202:Core/Src/custom_bus.c **** /* BUS IO driver over I2C Peripheral */
+ 203:Core/Src/custom_bus.c **** /*******************************************************************************
+ 204:Core/Src/custom_bus.c ****                             BUS OPERATIONS OVER I2C
+ 205:Core/Src/custom_bus.c **** *******************************************************************************/
+ 206:Core/Src/custom_bus.c **** /**
+ 207:Core/Src/custom_bus.c ****   * @brief  Initialize I2C HAL
+ 208:Core/Src/custom_bus.c ****   * @retval BSP status
+ 209:Core/Src/custom_bus.c ****   */
+ 210:Core/Src/custom_bus.c **** int32_t BSP_I2C1_Init(void)
+ 211:Core/Src/custom_bus.c **** {
+ 212:Core/Src/custom_bus.c **** 
+ 213:Core/Src/custom_bus.c ****   int32_t ret = BSP_ERROR_NONE;
+ 214:Core/Src/custom_bus.c **** 
+ 215:Core/Src/custom_bus.c ****   hi2c1.Instance  = I2C1;
+ 216:Core/Src/custom_bus.c **** 
+ 217:Core/Src/custom_bus.c ****   if(I2C1InitCounter++ == 0)
+ 218:Core/Src/custom_bus.c ****   {
+ 219:Core/Src/custom_bus.c ****     if (HAL_I2C_GetState(&hi2c1) == HAL_I2C_STATE_RESET)
+ 220:Core/Src/custom_bus.c ****     {
+ 221:Core/Src/custom_bus.c ****     #if (USE_HAL_I2C_REGISTER_CALLBACKS == 0U)
+ 222:Core/Src/custom_bus.c ****       /* Init the I2C Msp */
+ 223:Core/Src/custom_bus.c ****       I2C1_MspInit(&hi2c1);
+ 224:Core/Src/custom_bus.c ****     #else
+ 225:Core/Src/custom_bus.c ****       if(IsI2C1MspCbValid == 0U)
+ 226:Core/Src/custom_bus.c ****       {
+ 227:Core/Src/custom_bus.c ****         if(BSP_I2C1_RegisterDefaultMspCallbacks() != BSP_ERROR_NONE)
+ 228:Core/Src/custom_bus.c ****         {
+ 229:Core/Src/custom_bus.c ****           return BSP_ERROR_MSP_FAILURE;
+ 230:Core/Src/custom_bus.c ****         }
+ 231:Core/Src/custom_bus.c ****       }
+ 232:Core/Src/custom_bus.c ****     #endif
+ 233:Core/Src/custom_bus.c ****       if(ret == BSP_ERROR_NONE)
+ 234:Core/Src/custom_bus.c ****       {
+ 235:Core/Src/custom_bus.c ****         /* Init the I2C */
+ 236:Core/Src/custom_bus.c ****         if(MX_I2C1_Init(&hi2c1) != HAL_OK)
+ 237:Core/Src/custom_bus.c ****         {
+ 238:Core/Src/custom_bus.c ****           ret = BSP_ERROR_BUS_FAILURE;
+ 239:Core/Src/custom_bus.c ****         }
+ 240:Core/Src/custom_bus.c ****         else if(HAL_I2CEx_ConfigAnalogFilter(&hi2c1, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
+ 241:Core/Src/custom_bus.c ****         {
+ 242:Core/Src/custom_bus.c ****           ret = BSP_ERROR_BUS_FAILURE;
+ 243:Core/Src/custom_bus.c ****         }
+ 244:Core/Src/custom_bus.c ****         else
+ 245:Core/Src/custom_bus.c ****         {
+ 246:Core/Src/custom_bus.c ****           ret = BSP_ERROR_NONE;
+ 247:Core/Src/custom_bus.c ****         }
+ 248:Core/Src/custom_bus.c ****       }
+ 249:Core/Src/custom_bus.c ****     }
+ 250:Core/Src/custom_bus.c ****   }
+ 251:Core/Src/custom_bus.c ****   return ret;
+ 252:Core/Src/custom_bus.c **** }
+ 253:Core/Src/custom_bus.c **** 
+ 254:Core/Src/custom_bus.c **** /**
+ 255:Core/Src/custom_bus.c ****   * @brief  DeInitialize I2C HAL.
+ 256:Core/Src/custom_bus.c ****   * @retval BSP status
+ 257:Core/Src/custom_bus.c ****   */
+ 258:Core/Src/custom_bus.c **** int32_t BSP_I2C1_DeInit(void)
+ARM GAS  /tmp/cc7kTUPi.s 			page 6
+
+
+ 259:Core/Src/custom_bus.c **** {
+ 260:Core/Src/custom_bus.c ****   int32_t ret = BSP_ERROR_NONE;
+ 261:Core/Src/custom_bus.c **** 
+ 262:Core/Src/custom_bus.c ****   if (I2C1InitCounter > 0)
+ 263:Core/Src/custom_bus.c ****   {
+ 264:Core/Src/custom_bus.c ****     if (--I2C1InitCounter == 0)
+ 265:Core/Src/custom_bus.c ****     {
+ 266:Core/Src/custom_bus.c ****   #if (USE_HAL_I2C_REGISTER_CALLBACKS == 0U)
+ 267:Core/Src/custom_bus.c ****       /* DeInit the I2C */
+ 268:Core/Src/custom_bus.c ****       I2C1_MspDeInit(&hi2c1);
+ 269:Core/Src/custom_bus.c ****   #endif
+ 270:Core/Src/custom_bus.c ****       /* DeInit the I2C */
+ 271:Core/Src/custom_bus.c ****       if (HAL_I2C_DeInit(&hi2c1) != HAL_OK)
+ 272:Core/Src/custom_bus.c ****       {
+ 273:Core/Src/custom_bus.c ****         ret = BSP_ERROR_BUS_FAILURE;
+ 274:Core/Src/custom_bus.c ****       }
+ 275:Core/Src/custom_bus.c ****     }
+ 276:Core/Src/custom_bus.c ****   }
+ 277:Core/Src/custom_bus.c ****   return ret;
+ 278:Core/Src/custom_bus.c **** }
+ 279:Core/Src/custom_bus.c **** 
+ 280:Core/Src/custom_bus.c **** /**
+ 281:Core/Src/custom_bus.c ****   * @brief  Check whether the I2C bus is ready.
+ 282:Core/Src/custom_bus.c ****   * @param DevAddr : I2C device address
+ 283:Core/Src/custom_bus.c ****   * @param Trials : Check trials number
+ 284:Core/Src/custom_bus.c ****   * @retval BSP status
+ 285:Core/Src/custom_bus.c ****   */
+ 286:Core/Src/custom_bus.c **** int32_t BSP_I2C1_IsReady(uint16_t DevAddr, uint32_t Trials)
+ 287:Core/Src/custom_bus.c **** {
+ 288:Core/Src/custom_bus.c ****   int32_t ret = BSP_ERROR_NONE;
+ 289:Core/Src/custom_bus.c **** 
+ 290:Core/Src/custom_bus.c ****   if (HAL_I2C_IsDeviceReady(&hi2c1, DevAddr, Trials, BUS_I2C1_POLL_TIMEOUT) != HAL_OK)
+ 291:Core/Src/custom_bus.c ****   {
+ 292:Core/Src/custom_bus.c ****     ret = BSP_ERROR_BUSY;
+ 293:Core/Src/custom_bus.c ****   }
+ 294:Core/Src/custom_bus.c **** 
+ 295:Core/Src/custom_bus.c ****   return ret;
+ 296:Core/Src/custom_bus.c **** }
+ 297:Core/Src/custom_bus.c **** 
+ 298:Core/Src/custom_bus.c **** /**
+ 299:Core/Src/custom_bus.c ****   * @brief  Write a value in a register of the device through BUS.
+ 300:Core/Src/custom_bus.c ****   * @param  DevAddr Device address on Bus.
+ 301:Core/Src/custom_bus.c ****   * @param  Reg    The target register address to write
+ 302:Core/Src/custom_bus.c ****   * @param  pData  Pointer to data buffer to write
+ 303:Core/Src/custom_bus.c ****   * @param  Length Data Length
+ 304:Core/Src/custom_bus.c ****   * @retval BSP status
+ 305:Core/Src/custom_bus.c ****   */
+ 306:Core/Src/custom_bus.c **** 
+ 307:Core/Src/custom_bus.c **** int32_t BSP_I2C1_WriteReg(uint16_t DevAddr, uint16_t Reg, uint8_t *pData, uint16_t Length)
+ 308:Core/Src/custom_bus.c **** {
+ 309:Core/Src/custom_bus.c ****   int32_t ret = BSP_ERROR_NONE;
+ 310:Core/Src/custom_bus.c **** 
+ 311:Core/Src/custom_bus.c ****   if (HAL_I2C_Mem_Write(&hi2c1, DevAddr,Reg, I2C_MEMADD_SIZE_8BIT,pData, Length, BUS_I2C1_POLL_TIME
+ 312:Core/Src/custom_bus.c ****   {
+ 313:Core/Src/custom_bus.c ****     if (HAL_I2C_GetError(&hi2c1) == HAL_I2C_ERROR_AF)
+ 314:Core/Src/custom_bus.c ****     {
+ 315:Core/Src/custom_bus.c ****       ret = BSP_ERROR_BUS_ACKNOWLEDGE_FAILURE;
+ARM GAS  /tmp/cc7kTUPi.s 			page 7
+
+
+ 316:Core/Src/custom_bus.c ****     }
+ 317:Core/Src/custom_bus.c ****     else
+ 318:Core/Src/custom_bus.c ****     {
+ 319:Core/Src/custom_bus.c ****       ret =  BSP_ERROR_PERIPH_FAILURE;
+ 320:Core/Src/custom_bus.c ****     }
+ 321:Core/Src/custom_bus.c ****   }
+ 322:Core/Src/custom_bus.c ****   return ret;
+ 323:Core/Src/custom_bus.c **** }
+ 324:Core/Src/custom_bus.c **** 
+ 325:Core/Src/custom_bus.c **** /**
+ 326:Core/Src/custom_bus.c ****   * @brief  Read a register of the device through BUS
+ 327:Core/Src/custom_bus.c ****   * @param  DevAddr Device address on Bus.
+ 328:Core/Src/custom_bus.c ****   * @param  Reg    The target register address to read
+ 329:Core/Src/custom_bus.c ****   * @param  pData  Pointer to data buffer to read
+ 330:Core/Src/custom_bus.c ****   * @param  Length Data Length
+ 331:Core/Src/custom_bus.c ****   * @retval BSP status
+ 332:Core/Src/custom_bus.c ****   */
+ 333:Core/Src/custom_bus.c **** int32_t  BSP_I2C1_ReadReg(uint16_t DevAddr, uint16_t Reg, uint8_t *pData, uint16_t Length)
+ 334:Core/Src/custom_bus.c **** {
+ 335:Core/Src/custom_bus.c ****   int32_t ret = BSP_ERROR_NONE;
+ 336:Core/Src/custom_bus.c **** 
+ 337:Core/Src/custom_bus.c ****   if (HAL_I2C_Mem_Read(&hi2c1, DevAddr, Reg, I2C_MEMADD_SIZE_8BIT, pData, Length, BUS_I2C1_POLL_TIM
+ 338:Core/Src/custom_bus.c ****   {
+ 339:Core/Src/custom_bus.c ****     if (HAL_I2C_GetError(&hi2c1) == HAL_I2C_ERROR_AF)
+ 340:Core/Src/custom_bus.c ****     {
+ 341:Core/Src/custom_bus.c ****       ret = BSP_ERROR_BUS_ACKNOWLEDGE_FAILURE;
+ 342:Core/Src/custom_bus.c ****     }
+ 343:Core/Src/custom_bus.c ****     else
+ 344:Core/Src/custom_bus.c ****     {
+ 345:Core/Src/custom_bus.c ****       ret = BSP_ERROR_PERIPH_FAILURE;
+ 346:Core/Src/custom_bus.c ****     }
+ 347:Core/Src/custom_bus.c ****   }
+ 348:Core/Src/custom_bus.c ****   return ret;
+ 349:Core/Src/custom_bus.c **** }
+ 350:Core/Src/custom_bus.c **** 
+ 351:Core/Src/custom_bus.c **** /**
+ 352:Core/Src/custom_bus.c **** 
+ 353:Core/Src/custom_bus.c ****   * @brief  Write a value in a register of the device through BUS.
+ 354:Core/Src/custom_bus.c ****   * @param  DevAddr Device address on Bus.
+ 355:Core/Src/custom_bus.c ****   * @param  Reg    The target register address to write
+ 356:Core/Src/custom_bus.c **** 
+ 357:Core/Src/custom_bus.c ****   * @param  pData  Pointer to data buffer to write
+ 358:Core/Src/custom_bus.c ****   * @param  Length Data Length
+ 359:Core/Src/custom_bus.c ****   * @retval BSP statu
+ 360:Core/Src/custom_bus.c ****   */
+ 361:Core/Src/custom_bus.c **** int32_t BSP_I2C1_WriteReg16(uint16_t DevAddr, uint16_t Reg, uint8_t *pData, uint16_t Length)
+ 362:Core/Src/custom_bus.c **** {
+ 363:Core/Src/custom_bus.c ****   int32_t ret = BSP_ERROR_NONE;
+ 364:Core/Src/custom_bus.c **** 
+ 365:Core/Src/custom_bus.c ****   if (HAL_I2C_Mem_Write(&hi2c1, DevAddr, Reg, I2C_MEMADD_SIZE_16BIT, pData, Length, BUS_I2C1_POLL_T
+ 366:Core/Src/custom_bus.c ****   {
+ 367:Core/Src/custom_bus.c ****     if (HAL_I2C_GetError(&hi2c1) == HAL_I2C_ERROR_AF)
+ 368:Core/Src/custom_bus.c ****     {
+ 369:Core/Src/custom_bus.c ****       ret = BSP_ERROR_BUS_ACKNOWLEDGE_FAILURE;
+ 370:Core/Src/custom_bus.c ****     }
+ 371:Core/Src/custom_bus.c ****     else
+ 372:Core/Src/custom_bus.c ****     {
+ARM GAS  /tmp/cc7kTUPi.s 			page 8
+
+
+ 373:Core/Src/custom_bus.c ****       ret =  BSP_ERROR_PERIPH_FAILURE;
+ 374:Core/Src/custom_bus.c ****     }
+ 375:Core/Src/custom_bus.c ****   }
+ 376:Core/Src/custom_bus.c ****   return ret;
+ 377:Core/Src/custom_bus.c **** }
+ 378:Core/Src/custom_bus.c **** 
+ 379:Core/Src/custom_bus.c **** /**
+ 380:Core/Src/custom_bus.c ****   * @brief  Read registers through a bus (16 bits)
+ 381:Core/Src/custom_bus.c ****   * @param  DevAddr: Device address on BUS
+ 382:Core/Src/custom_bus.c ****   * @param  Reg: The target register address to read
+ 383:Core/Src/custom_bus.c ****   * @param  Length Data Length
+ 384:Core/Src/custom_bus.c ****   * @retval BSP status
+ 385:Core/Src/custom_bus.c ****   */
+ 386:Core/Src/custom_bus.c **** int32_t  BSP_I2C1_ReadReg16(uint16_t DevAddr, uint16_t Reg, uint8_t *pData, uint16_t Length)
+ 387:Core/Src/custom_bus.c **** {
+ 388:Core/Src/custom_bus.c ****   int32_t ret = BSP_ERROR_NONE;
+ 389:Core/Src/custom_bus.c **** 
+ 390:Core/Src/custom_bus.c ****   if (HAL_I2C_Mem_Read(&hi2c1, DevAddr, Reg, I2C_MEMADD_SIZE_16BIT, pData, Length, BUS_I2C1_POLL_TI
+ 391:Core/Src/custom_bus.c ****   {
+ 392:Core/Src/custom_bus.c ****     if (HAL_I2C_GetError(&hi2c1) != HAL_I2C_ERROR_AF)
+ 393:Core/Src/custom_bus.c ****     {
+ 394:Core/Src/custom_bus.c ****       ret =  BSP_ERROR_BUS_ACKNOWLEDGE_FAILURE;
+ 395:Core/Src/custom_bus.c ****     }
+ 396:Core/Src/custom_bus.c ****     else
+ 397:Core/Src/custom_bus.c ****     {
+ 398:Core/Src/custom_bus.c ****       ret =  BSP_ERROR_PERIPH_FAILURE;
+ 399:Core/Src/custom_bus.c ****     }
+ 400:Core/Src/custom_bus.c ****   }
+ 401:Core/Src/custom_bus.c ****   return ret;
+ 402:Core/Src/custom_bus.c **** }
+ 403:Core/Src/custom_bus.c **** 
+ 404:Core/Src/custom_bus.c **** /**
+ 405:Core/Src/custom_bus.c ****   * @brief  Send an amount width data through bus (Simplex)
+ 406:Core/Src/custom_bus.c ****   * @param  DevAddr: Device address on Bus.
+ 407:Core/Src/custom_bus.c ****   * @param  pData: Data pointer
+ 408:Core/Src/custom_bus.c ****   * @param  Length: Data length
+ 409:Core/Src/custom_bus.c ****   * @retval BSP status
+ 410:Core/Src/custom_bus.c ****   */
+ 411:Core/Src/custom_bus.c **** int32_t BSP_I2C1_Send(uint16_t DevAddr, uint8_t *pData, uint16_t Length) {
+ 412:Core/Src/custom_bus.c ****   int32_t ret = BSP_ERROR_NONE;
+ 413:Core/Src/custom_bus.c **** 
+ 414:Core/Src/custom_bus.c ****   if (HAL_I2C_Master_Transmit(&hi2c1, DevAddr, pData, Length, BUS_I2C1_POLL_TIMEOUT) != HAL_OK)
+ 415:Core/Src/custom_bus.c ****   {
+ 416:Core/Src/custom_bus.c ****     if (HAL_I2C_GetError(&hi2c1) != HAL_I2C_ERROR_AF)
+ 417:Core/Src/custom_bus.c ****     {
+ 418:Core/Src/custom_bus.c ****       ret = BSP_ERROR_BUS_ACKNOWLEDGE_FAILURE;
+ 419:Core/Src/custom_bus.c ****     }
+ 420:Core/Src/custom_bus.c ****     else
+ 421:Core/Src/custom_bus.c ****     {
+ 422:Core/Src/custom_bus.c ****       ret =  BSP_ERROR_PERIPH_FAILURE;
+ 423:Core/Src/custom_bus.c ****     }
+ 424:Core/Src/custom_bus.c ****   }
+ 425:Core/Src/custom_bus.c **** 
+ 426:Core/Src/custom_bus.c ****   return ret;
+ 427:Core/Src/custom_bus.c **** }
+ 428:Core/Src/custom_bus.c **** 
+ 429:Core/Src/custom_bus.c **** /**
+ARM GAS  /tmp/cc7kTUPi.s 			page 9
+
+
+ 430:Core/Src/custom_bus.c ****   * @brief  Receive an amount of data through a bus (Simplex)
+ 431:Core/Src/custom_bus.c ****   * @param  DevAddr: Device address on Bus.
+ 432:Core/Src/custom_bus.c ****   * @param  pData: Data pointer
+ 433:Core/Src/custom_bus.c ****   * @param  Length: Data length
+ 434:Core/Src/custom_bus.c ****   * @retval BSP status
+ 435:Core/Src/custom_bus.c ****   */
+ 436:Core/Src/custom_bus.c **** int32_t BSP_I2C1_Recv(uint16_t DevAddr, uint8_t *pData, uint16_t Length) {
+ 437:Core/Src/custom_bus.c ****   int32_t ret = BSP_ERROR_NONE;
+ 438:Core/Src/custom_bus.c **** 
+ 439:Core/Src/custom_bus.c ****   if (HAL_I2C_Master_Receive(&hi2c1, DevAddr, pData, Length, BUS_I2C1_POLL_TIMEOUT) != HAL_OK)
+ 440:Core/Src/custom_bus.c ****   {
+ 441:Core/Src/custom_bus.c ****     if (HAL_I2C_GetError(&hi2c1) != HAL_I2C_ERROR_AF)
+ 442:Core/Src/custom_bus.c ****     {
+ 443:Core/Src/custom_bus.c ****       ret = BSP_ERROR_BUS_ACKNOWLEDGE_FAILURE;
+ 444:Core/Src/custom_bus.c ****     }
+ 445:Core/Src/custom_bus.c ****     else
+ 446:Core/Src/custom_bus.c ****     {
+ 447:Core/Src/custom_bus.c ****       ret =  BSP_ERROR_PERIPH_FAILURE;
+ 448:Core/Src/custom_bus.c ****     }
+ 449:Core/Src/custom_bus.c ****   }
+ 450:Core/Src/custom_bus.c ****   return ret;
+ 451:Core/Src/custom_bus.c **** }
+ 452:Core/Src/custom_bus.c **** 
+ 453:Core/Src/custom_bus.c **** #if (USE_HAL_I2C_REGISTER_CALLBACKS == 1U)
+ 454:Core/Src/custom_bus.c **** /**
+ 455:Core/Src/custom_bus.c ****   * @brief Register Default BSP I2C1 Bus Msp Callbacks
+ 456:Core/Src/custom_bus.c ****   * @retval BSP status
+ 457:Core/Src/custom_bus.c ****   */
+ 458:Core/Src/custom_bus.c **** int32_t BSP_I2C1_RegisterDefaultMspCallbacks (void)
+ 459:Core/Src/custom_bus.c **** {
+ 460:Core/Src/custom_bus.c **** 
+ 461:Core/Src/custom_bus.c ****   __HAL_I2C_RESET_HANDLE_STATE(&hi2c1);
+ 462:Core/Src/custom_bus.c **** 
+ 463:Core/Src/custom_bus.c ****   /* Register MspInit Callback */
+ 464:Core/Src/custom_bus.c ****   if (HAL_I2C_RegisterCallback(&hi2c1, HAL_I2C_MSPINIT_CB_ID, I2C1_MspInit)  != HAL_OK)
+ 465:Core/Src/custom_bus.c ****   {
+ 466:Core/Src/custom_bus.c ****     return BSP_ERROR_PERIPH_FAILURE;
+ 467:Core/Src/custom_bus.c ****   }
+ 468:Core/Src/custom_bus.c **** 
+ 469:Core/Src/custom_bus.c ****   /* Register MspDeInit Callback */
+ 470:Core/Src/custom_bus.c ****   if (HAL_I2C_RegisterCallback(&hi2c1, HAL_I2C_MSPDEINIT_CB_ID, I2C1_MspDeInit) != HAL_OK)
+ 471:Core/Src/custom_bus.c ****   {
+ 472:Core/Src/custom_bus.c ****     return BSP_ERROR_PERIPH_FAILURE;
+ 473:Core/Src/custom_bus.c ****   }
+ 474:Core/Src/custom_bus.c ****   IsI2C1MspCbValid = 1;
+ 475:Core/Src/custom_bus.c **** 
+ 476:Core/Src/custom_bus.c ****   return BSP_ERROR_NONE;
+ 477:Core/Src/custom_bus.c **** }
+ 478:Core/Src/custom_bus.c **** 
+ 479:Core/Src/custom_bus.c **** /**
+ 480:Core/Src/custom_bus.c ****   * @brief BSP I2C1 Bus Msp Callback registering
+ 481:Core/Src/custom_bus.c ****   * @param Callbacks     pointer to I2C1 MspInit/MspDeInit callback functions
+ 482:Core/Src/custom_bus.c ****   * @retval BSP status
+ 483:Core/Src/custom_bus.c ****   */
+ 484:Core/Src/custom_bus.c **** int32_t BSP_I2C1_RegisterMspCallbacks (BSP_I2C_Cb_t *Callbacks)
+ 485:Core/Src/custom_bus.c **** {
+ 486:Core/Src/custom_bus.c ****   /* Prevent unused argument(s) compilation warning */
+ARM GAS  /tmp/cc7kTUPi.s 			page 10
+
+
+ 487:Core/Src/custom_bus.c ****   __HAL_I2C_RESET_HANDLE_STATE(&hi2c1);
+ 488:Core/Src/custom_bus.c **** 
+ 489:Core/Src/custom_bus.c ****    /* Register MspInit Callback */
+ 490:Core/Src/custom_bus.c ****   if (HAL_I2C_RegisterCallback(&hi2c1, HAL_I2C_MSPINIT_CB_ID, Callbacks->pMspInitCb)  != HAL_OK)
+ 491:Core/Src/custom_bus.c ****   {
+ 492:Core/Src/custom_bus.c ****     return BSP_ERROR_PERIPH_FAILURE;
+ 493:Core/Src/custom_bus.c ****   }
+ 494:Core/Src/custom_bus.c **** 
+ 495:Core/Src/custom_bus.c ****   /* Register MspDeInit Callback */
+ 496:Core/Src/custom_bus.c ****   if (HAL_I2C_RegisterCallback(&hi2c1, HAL_I2C_MSPDEINIT_CB_ID, Callbacks->pMspDeInitCb) != HAL_OK)
+ 497:Core/Src/custom_bus.c ****   {
+ 498:Core/Src/custom_bus.c ****     return BSP_ERROR_PERIPH_FAILURE;
+ 499:Core/Src/custom_bus.c ****   }
+ 500:Core/Src/custom_bus.c **** 
+ 501:Core/Src/custom_bus.c ****   IsI2C1MspCbValid = 1;
+ 502:Core/Src/custom_bus.c **** 
+ 503:Core/Src/custom_bus.c ****   return BSP_ERROR_NONE;
+ 504:Core/Src/custom_bus.c **** }
+ 505:Core/Src/custom_bus.c **** #endif /* USE_HAL_I2C_REGISTER_CALLBACKS */
+ 506:Core/Src/custom_bus.c **** 
+ 507:Core/Src/custom_bus.c **** /**
+ 508:Core/Src/custom_bus.c ****   * @brief  Return system tick in ms
+ 509:Core/Src/custom_bus.c ****   * @retval Current HAL time base time stamp
+ 510:Core/Src/custom_bus.c ****   */
+ 511:Core/Src/custom_bus.c **** int32_t BSP_GetTick(void) {
+ 512:Core/Src/custom_bus.c ****   return HAL_GetTick();
+ 513:Core/Src/custom_bus.c **** }
+ 514:Core/Src/custom_bus.c **** 
+ 515:Core/Src/custom_bus.c **** /* I2C1 init function */
+ 516:Core/Src/custom_bus.c **** 
+ 517:Core/Src/custom_bus.c **** __weak HAL_StatusTypeDef MX_I2C1_Init(I2C_HandleTypeDef* hi2c)
+ 518:Core/Src/custom_bus.c **** {
+ 519:Core/Src/custom_bus.c ****   HAL_StatusTypeDef ret = HAL_OK;
+ 520:Core/Src/custom_bus.c **** 
+ 521:Core/Src/custom_bus.c ****   hi2c->Instance = I2C1;
+ 522:Core/Src/custom_bus.c ****   hi2c->Init.Timing = 0x00805C87;
+ 523:Core/Src/custom_bus.c ****   hi2c->Init.OwnAddress1 = 0;
+ 524:Core/Src/custom_bus.c ****   hi2c->Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+ 525:Core/Src/custom_bus.c ****   hi2c->Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+ 526:Core/Src/custom_bus.c ****   hi2c->Init.OwnAddress2 = 0;
+ 527:Core/Src/custom_bus.c ****   hi2c->Init.OwnAddress2Masks = I2C_OA2_NOMASK;
+ 528:Core/Src/custom_bus.c ****   hi2c->Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+ 529:Core/Src/custom_bus.c ****   hi2c->Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+ 530:Core/Src/custom_bus.c ****   if (HAL_I2C_Init(hi2c) != HAL_OK)
+ 531:Core/Src/custom_bus.c ****   {
+ 532:Core/Src/custom_bus.c ****     ret = HAL_ERROR;
+ 533:Core/Src/custom_bus.c ****   }
+ 534:Core/Src/custom_bus.c **** 
+ 535:Core/Src/custom_bus.c ****   if (HAL_I2CEx_ConfigAnalogFilter(hi2c, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
+ 536:Core/Src/custom_bus.c ****   {
+ 537:Core/Src/custom_bus.c ****     ret = HAL_ERROR;
+ 538:Core/Src/custom_bus.c ****   }
+ 539:Core/Src/custom_bus.c **** 
+ 540:Core/Src/custom_bus.c ****   if (HAL_I2CEx_ConfigDigitalFilter(hi2c, 0) != HAL_OK)
+ 541:Core/Src/custom_bus.c ****   {
+ 542:Core/Src/custom_bus.c ****     ret = HAL_ERROR;
+ 543:Core/Src/custom_bus.c ****   }
+ARM GAS  /tmp/cc7kTUPi.s 			page 11
+
+
+ 544:Core/Src/custom_bus.c **** 
+ 545:Core/Src/custom_bus.c ****   return ret;
+ 546:Core/Src/custom_bus.c **** }
+ 547:Core/Src/custom_bus.c **** 
+ 548:Core/Src/custom_bus.c **** static void I2C1_MspInit(I2C_HandleTypeDef* i2cHandle)
+ 549:Core/Src/custom_bus.c **** {
+  29              		.loc 1 549 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 80
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		.loc 1 549 1 is_stmt 0 view .LVU1
+  34 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 24
+  37              		.cfi_offset 4, -24
+  38              		.cfi_offset 5, -20
+  39              		.cfi_offset 6, -16
+  40              		.cfi_offset 7, -12
+  41              		.cfi_offset 8, -8
+  42              		.cfi_offset 14, -4
+  43 0004 94B0     		sub	sp, sp, #80
+  44              	.LCFI1:
+  45              		.cfi_def_cfa_offset 104
+ 550:Core/Src/custom_bus.c ****   GPIO_InitTypeDef GPIO_InitStruct;
+  46              		.loc 1 550 3 is_stmt 1 view .LVU2
+ 551:Core/Src/custom_bus.c ****   RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
+  47              		.loc 1 551 3 view .LVU3
+  48              		.loc 1 551 28 is_stmt 0 view .LVU4
+  49 0006 3422     		movs	r2, #52
+  50 0008 0021     		movs	r1, #0
+  51 000a 02A8     		add	r0, sp, #8
+  52              	.LVL1:
+  53              		.loc 1 551 28 view .LVU5
+  54 000c FFF7FEFF 		bl	memset
+  55              	.LVL2:
+ 552:Core/Src/custom_bus.c ****   /* USER CODE BEGIN I2C1_MspInit 0 */
+ 553:Core/Src/custom_bus.c **** 
+ 554:Core/Src/custom_bus.c ****   /* USER CODE END I2C1_MspInit 0 */
+ 555:Core/Src/custom_bus.c **** 
+ 556:Core/Src/custom_bus.c ****   /** Initializes the peripherals clock
+ 557:Core/Src/custom_bus.c ****   */
+ 558:Core/Src/custom_bus.c ****     PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_I2C1;
+  56              		.loc 1 558 5 is_stmt 1 view .LVU6
+  57              		.loc 1 558 40 is_stmt 0 view .LVU7
+  58 0010 4023     		movs	r3, #64
+  59 0012 0293     		str	r3, [sp, #8]
+ 559:Core/Src/custom_bus.c ****     PeriphClkInit.I2c1ClockSelection = RCC_I2C1CLKSOURCE_PCLK1;
+  60              		.loc 1 559 5 is_stmt 1 view .LVU8
+ 560:Core/Src/custom_bus.c ****     HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit);
+  61              		.loc 1 560 5 view .LVU9
+  62 0014 02A8     		add	r0, sp, #8
+  63 0016 FFF7FEFF 		bl	HAL_RCCEx_PeriphCLKConfig
+  64              	.LVL3:
+ 561:Core/Src/custom_bus.c **** 
+ 562:Core/Src/custom_bus.c ****     __HAL_RCC_GPIOA_CLK_ENABLE();
+  65              		.loc 1 562 5 view .LVU10
+  66              	.LBB2:
+ARM GAS  /tmp/cc7kTUPi.s 			page 12
+
+
+  67              		.loc 1 562 5 view .LVU11
+  68              		.loc 1 562 5 view .LVU12
+  69 001a 1A4C     		ldr	r4, .L3
+  70 001c E36C     		ldr	r3, [r4, #76]
+  71 001e 43F00103 		orr	r3, r3, #1
+  72 0022 E364     		str	r3, [r4, #76]
+  73              		.loc 1 562 5 view .LVU13
+  74 0024 E36C     		ldr	r3, [r4, #76]
+  75 0026 03F00103 		and	r3, r3, #1
+  76 002a 0093     		str	r3, [sp]
+  77              		.loc 1 562 5 view .LVU14
+  78 002c 009B     		ldr	r3, [sp]
+  79              	.LBE2:
+  80              		.loc 1 562 5 view .LVU15
+ 563:Core/Src/custom_bus.c ****     /**I2C1 GPIO Configuration
+ 564:Core/Src/custom_bus.c ****     PA9     ------> I2C1_SCL
+ 565:Core/Src/custom_bus.c ****     PA10     ------> I2C1_SDA
+ 566:Core/Src/custom_bus.c ****     */
+ 567:Core/Src/custom_bus.c ****     GPIO_InitStruct.Pin = BUS_I2C1_SCL_GPIO_PIN;
+  81              		.loc 1 567 5 view .LVU16
+  82              		.loc 1 567 25 is_stmt 0 view .LVU17
+  83 002e 4FF40073 		mov	r3, #512
+  84 0032 0F93     		str	r3, [sp, #60]
+ 568:Core/Src/custom_bus.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
+  85              		.loc 1 568 5 is_stmt 1 view .LVU18
+  86              		.loc 1 568 26 is_stmt 0 view .LVU19
+  87 0034 4FF01208 		mov	r8, #18
+  88 0038 CDF84080 		str	r8, [sp, #64]
+ 569:Core/Src/custom_bus.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+  89              		.loc 1 569 5 is_stmt 1 view .LVU20
+  90              		.loc 1 569 26 is_stmt 0 view .LVU21
+  91 003c 0027     		movs	r7, #0
+  92 003e 1197     		str	r7, [sp, #68]
+ 570:Core/Src/custom_bus.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  93              		.loc 1 570 5 is_stmt 1 view .LVU22
+  94              		.loc 1 570 27 is_stmt 0 view .LVU23
+  95 0040 0326     		movs	r6, #3
+  96 0042 1296     		str	r6, [sp, #72]
+ 571:Core/Src/custom_bus.c ****     GPIO_InitStruct.Alternate = BUS_I2C1_SCL_GPIO_AF;
+  97              		.loc 1 571 5 is_stmt 1 view .LVU24
+  98              		.loc 1 571 31 is_stmt 0 view .LVU25
+  99 0044 0425     		movs	r5, #4
+ 100 0046 1395     		str	r5, [sp, #76]
+ 572:Core/Src/custom_bus.c ****     HAL_GPIO_Init(BUS_I2C1_SCL_GPIO_PORT, &GPIO_InitStruct);
+ 101              		.loc 1 572 5 is_stmt 1 view .LVU26
+ 102 0048 0FA9     		add	r1, sp, #60
+ 103 004a 4FF09040 		mov	r0, #1207959552
+ 104 004e FFF7FEFF 		bl	HAL_GPIO_Init
+ 105              	.LVL4:
+ 573:Core/Src/custom_bus.c **** 
+ 574:Core/Src/custom_bus.c ****     GPIO_InitStruct.Pin = BUS_I2C1_SDA_GPIO_PIN;
+ 106              		.loc 1 574 5 view .LVU27
+ 107              		.loc 1 574 25 is_stmt 0 view .LVU28
+ 108 0052 4FF48063 		mov	r3, #1024
+ 109 0056 0F93     		str	r3, [sp, #60]
+ 575:Core/Src/custom_bus.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
+ 110              		.loc 1 575 5 is_stmt 1 view .LVU29
+ARM GAS  /tmp/cc7kTUPi.s 			page 13
+
+
+ 111              		.loc 1 575 26 is_stmt 0 view .LVU30
+ 112 0058 CDF84080 		str	r8, [sp, #64]
+ 576:Core/Src/custom_bus.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 113              		.loc 1 576 5 is_stmt 1 view .LVU31
+ 114              		.loc 1 576 26 is_stmt 0 view .LVU32
+ 115 005c 1197     		str	r7, [sp, #68]
+ 577:Core/Src/custom_bus.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 116              		.loc 1 577 5 is_stmt 1 view .LVU33
+ 117              		.loc 1 577 27 is_stmt 0 view .LVU34
+ 118 005e 1296     		str	r6, [sp, #72]
+ 578:Core/Src/custom_bus.c ****     GPIO_InitStruct.Alternate = BUS_I2C1_SDA_GPIO_AF;
+ 119              		.loc 1 578 5 is_stmt 1 view .LVU35
+ 120              		.loc 1 578 31 is_stmt 0 view .LVU36
+ 121 0060 1395     		str	r5, [sp, #76]
+ 579:Core/Src/custom_bus.c ****     HAL_GPIO_Init(BUS_I2C1_SDA_GPIO_PORT, &GPIO_InitStruct);
+ 122              		.loc 1 579 5 is_stmt 1 view .LVU37
+ 123 0062 0FA9     		add	r1, sp, #60
+ 124 0064 4FF09040 		mov	r0, #1207959552
+ 125 0068 FFF7FEFF 		bl	HAL_GPIO_Init
+ 126              	.LVL5:
+ 580:Core/Src/custom_bus.c **** 
+ 581:Core/Src/custom_bus.c ****     /* Peripheral clock enable */
+ 582:Core/Src/custom_bus.c ****     __HAL_RCC_I2C1_CLK_ENABLE();
+ 127              		.loc 1 582 5 view .LVU38
+ 128              	.LBB3:
+ 129              		.loc 1 582 5 view .LVU39
+ 130              		.loc 1 582 5 view .LVU40
+ 131 006c A36D     		ldr	r3, [r4, #88]
+ 132 006e 43F40013 		orr	r3, r3, #2097152
+ 133 0072 A365     		str	r3, [r4, #88]
+ 134              		.loc 1 582 5 view .LVU41
+ 135 0074 A36D     		ldr	r3, [r4, #88]
+ 136 0076 03F40013 		and	r3, r3, #2097152
+ 137 007a 0193     		str	r3, [sp, #4]
+ 138              		.loc 1 582 5 view .LVU42
+ 139 007c 019B     		ldr	r3, [sp, #4]
+ 140              	.LBE3:
+ 141              		.loc 1 582 5 view .LVU43
+ 583:Core/Src/custom_bus.c ****   /* USER CODE BEGIN I2C1_MspInit 1 */
+ 584:Core/Src/custom_bus.c **** 
+ 585:Core/Src/custom_bus.c ****   /* USER CODE END I2C1_MspInit 1 */
+ 586:Core/Src/custom_bus.c **** }
+ 142              		.loc 1 586 1 is_stmt 0 view .LVU44
+ 143 007e 14B0     		add	sp, sp, #80
+ 144              	.LCFI2:
+ 145              		.cfi_def_cfa_offset 24
+ 146              		@ sp needed
+ 147 0080 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 148              	.L4:
+ 149              		.align	2
+ 150              	.L3:
+ 151 0084 00100240 		.word	1073876992
+ 152              		.cfi_endproc
+ 153              	.LFE143:
+ 155              		.section	.text.I2C1_MspDeInit,"ax",%progbits
+ 156              		.align	1
+ 157              		.syntax unified
+ARM GAS  /tmp/cc7kTUPi.s 			page 14
+
+
+ 158              		.thumb
+ 159              		.thumb_func
+ 160              		.fpu fpv4-sp-d16
+ 162              	I2C1_MspDeInit:
+ 163              	.LVL6:
+ 164              	.LFB144:
+ 587:Core/Src/custom_bus.c **** 
+ 588:Core/Src/custom_bus.c **** static void I2C1_MspDeInit(I2C_HandleTypeDef* i2cHandle)
+ 589:Core/Src/custom_bus.c **** {
+ 165              		.loc 1 589 1 is_stmt 1 view -0
+ 166              		.cfi_startproc
+ 167              		@ args = 0, pretend = 0, frame = 0
+ 168              		@ frame_needed = 0, uses_anonymous_args = 0
+ 169              		.loc 1 589 1 is_stmt 0 view .LVU46
+ 170 0000 08B5     		push	{r3, lr}
+ 171              	.LCFI3:
+ 172              		.cfi_def_cfa_offset 8
+ 173              		.cfi_offset 3, -8
+ 174              		.cfi_offset 14, -4
+ 590:Core/Src/custom_bus.c ****   /* USER CODE BEGIN I2C1_MspDeInit 0 */
+ 591:Core/Src/custom_bus.c **** 
+ 592:Core/Src/custom_bus.c ****   /* USER CODE END I2C1_MspDeInit 0 */
+ 593:Core/Src/custom_bus.c ****     /* Peripheral clock disable */
+ 594:Core/Src/custom_bus.c ****     __HAL_RCC_I2C1_CLK_DISABLE();
+ 175              		.loc 1 594 5 is_stmt 1 view .LVU47
+ 176 0002 094A     		ldr	r2, .L7
+ 177 0004 936D     		ldr	r3, [r2, #88]
+ 178 0006 23F40013 		bic	r3, r3, #2097152
+ 179 000a 9365     		str	r3, [r2, #88]
+ 595:Core/Src/custom_bus.c **** 
+ 596:Core/Src/custom_bus.c ****     /**I2C1 GPIO Configuration
+ 597:Core/Src/custom_bus.c ****     PA9     ------> I2C1_SCL
+ 598:Core/Src/custom_bus.c ****     PA10     ------> I2C1_SDA
+ 599:Core/Src/custom_bus.c ****     */
+ 600:Core/Src/custom_bus.c ****     HAL_GPIO_DeInit(BUS_I2C1_SCL_GPIO_PORT, BUS_I2C1_SCL_GPIO_PIN);
+ 180              		.loc 1 600 5 view .LVU48
+ 181 000c 4FF40071 		mov	r1, #512
+ 182 0010 4FF09040 		mov	r0, #1207959552
+ 183              	.LVL7:
+ 184              		.loc 1 600 5 is_stmt 0 view .LVU49
+ 185 0014 FFF7FEFF 		bl	HAL_GPIO_DeInit
+ 186              	.LVL8:
+ 601:Core/Src/custom_bus.c **** 
+ 602:Core/Src/custom_bus.c ****     HAL_GPIO_DeInit(BUS_I2C1_SDA_GPIO_PORT, BUS_I2C1_SDA_GPIO_PIN);
+ 187              		.loc 1 602 5 is_stmt 1 view .LVU50
+ 188 0018 4FF48061 		mov	r1, #1024
+ 189 001c 4FF09040 		mov	r0, #1207959552
+ 190 0020 FFF7FEFF 		bl	HAL_GPIO_DeInit
+ 191              	.LVL9:
+ 603:Core/Src/custom_bus.c **** 
+ 604:Core/Src/custom_bus.c ****   /* USER CODE BEGIN I2C1_MspDeInit 1 */
+ 605:Core/Src/custom_bus.c **** 
+ 606:Core/Src/custom_bus.c ****   /* USER CODE END I2C1_MspDeInit 1 */
+ 607:Core/Src/custom_bus.c **** }
+ 192              		.loc 1 607 1 is_stmt 0 view .LVU51
+ 193 0024 08BD     		pop	{r3, pc}
+ 194              	.L8:
+ARM GAS  /tmp/cc7kTUPi.s 			page 15
+
+
+ 195 0026 00BF     		.align	2
+ 196              	.L7:
+ 197 0028 00100240 		.word	1073876992
+ 198              		.cfi_endproc
+ 199              	.LFE144:
+ 201              		.section	.text.BSP_I2C1_DeInit,"ax",%progbits
+ 202              		.align	1
+ 203              		.global	BSP_I2C1_DeInit
+ 204              		.syntax unified
+ 205              		.thumb
+ 206              		.thumb_func
+ 207              		.fpu fpv4-sp-d16
+ 209              	BSP_I2C1_DeInit:
+ 210              	.LFB133:
+ 259:Core/Src/custom_bus.c ****   int32_t ret = BSP_ERROR_NONE;
+ 211              		.loc 1 259 1 is_stmt 1 view -0
+ 212              		.cfi_startproc
+ 213              		@ args = 0, pretend = 0, frame = 0
+ 214              		@ frame_needed = 0, uses_anonymous_args = 0
+ 260:Core/Src/custom_bus.c **** 
+ 215              		.loc 1 260 3 view .LVU53
+ 216              	.LVL10:
+ 262:Core/Src/custom_bus.c ****   {
+ 217              		.loc 1 262 3 view .LVU54
+ 262:Core/Src/custom_bus.c ****   {
+ 218              		.loc 1 262 23 is_stmt 0 view .LVU55
+ 219 0000 0B4B     		ldr	r3, .L19
+ 220 0002 1B68     		ldr	r3, [r3]
+ 262:Core/Src/custom_bus.c ****   {
+ 221              		.loc 1 262 6 view .LVU56
+ 222 0004 7BB1     		cbz	r3, .L11
+ 264:Core/Src/custom_bus.c ****     {
+ 223              		.loc 1 264 5 is_stmt 1 view .LVU57
+ 264:Core/Src/custom_bus.c ****     {
+ 224              		.loc 1 264 9 is_stmt 0 view .LVU58
+ 225 0006 013B     		subs	r3, r3, #1
+ 264:Core/Src/custom_bus.c ****     {
+ 226              		.loc 1 264 8 view .LVU59
+ 227 0008 094A     		ldr	r2, .L19
+ 228 000a 1360     		str	r3, [r2]
+ 229 000c 0BB1     		cbz	r3, .L18
+ 260:Core/Src/custom_bus.c **** 
+ 230              		.loc 1 260 11 view .LVU60
+ 231 000e 0020     		movs	r0, #0
+ 278:Core/Src/custom_bus.c **** 
+ 232              		.loc 1 278 1 view .LVU61
+ 233 0010 7047     		bx	lr
+ 234              	.L18:
+ 259:Core/Src/custom_bus.c ****   int32_t ret = BSP_ERROR_NONE;
+ 235              		.loc 1 259 1 view .LVU62
+ 236 0012 10B5     		push	{r4, lr}
+ 237              	.LCFI4:
+ 238              		.cfi_def_cfa_offset 8
+ 239              		.cfi_offset 4, -8
+ 240              		.cfi_offset 14, -4
+ 268:Core/Src/custom_bus.c ****   #endif
+ 241              		.loc 1 268 7 is_stmt 1 view .LVU63
+ARM GAS  /tmp/cc7kTUPi.s 			page 16
+
+
+ 242 0014 074C     		ldr	r4, .L19+4
+ 243 0016 2046     		mov	r0, r4
+ 244 0018 FFF7FEFF 		bl	I2C1_MspDeInit
+ 245              	.LVL11:
+ 271:Core/Src/custom_bus.c ****       {
+ 246              		.loc 1 271 7 view .LVU64
+ 271:Core/Src/custom_bus.c ****       {
+ 247              		.loc 1 271 11 is_stmt 0 view .LVU65
+ 248 001c 2046     		mov	r0, r4
+ 249 001e FFF7FEFF 		bl	HAL_I2C_DeInit
+ 250              	.LVL12:
+ 271:Core/Src/custom_bus.c ****       {
+ 251              		.loc 1 271 10 view .LVU66
+ 252 0022 10B9     		cbnz	r0, .L13
+ 253              	.LVL13:
+ 254              	.L9:
+ 278:Core/Src/custom_bus.c **** 
+ 255              		.loc 1 278 1 view .LVU67
+ 256 0024 10BD     		pop	{r4, pc}
+ 257              	.LVL14:
+ 258              	.L11:
+ 259              	.LCFI5:
+ 260              		.cfi_def_cfa_offset 0
+ 261              		.cfi_restore 4
+ 262              		.cfi_restore 14
+ 260:Core/Src/custom_bus.c **** 
+ 263              		.loc 1 260 11 view .LVU68
+ 264 0026 0020     		movs	r0, #0
+ 265 0028 7047     		bx	lr
+ 266              	.L13:
+ 267              	.LCFI6:
+ 268              		.cfi_def_cfa_offset 8
+ 269              		.cfi_offset 4, -8
+ 270              		.cfi_offset 14, -4
+ 273:Core/Src/custom_bus.c ****       }
+ 271              		.loc 1 273 13 view .LVU69
+ 272 002a 6FF00700 		mvn	r0, #7
+ 273              	.LVL15:
+ 277:Core/Src/custom_bus.c **** }
+ 274              		.loc 1 277 3 is_stmt 1 view .LVU70
+ 277:Core/Src/custom_bus.c **** }
+ 275              		.loc 1 277 10 is_stmt 0 view .LVU71
+ 276 002e F9E7     		b	.L9
+ 277              	.L20:
+ 278              		.align	2
+ 279              	.L19:
+ 280 0030 00000000 		.word	.LANCHOR0
+ 281 0034 00000000 		.word	.LANCHOR1
+ 282              		.cfi_endproc
+ 283              	.LFE133:
+ 285              		.section	.text.BSP_I2C1_IsReady,"ax",%progbits
+ 286              		.align	1
+ 287              		.global	BSP_I2C1_IsReady
+ 288              		.syntax unified
+ 289              		.thumb
+ 290              		.thumb_func
+ 291              		.fpu fpv4-sp-d16
+ARM GAS  /tmp/cc7kTUPi.s 			page 17
+
+
+ 293              	BSP_I2C1_IsReady:
+ 294              	.LVL16:
+ 295              	.LFB134:
+ 287:Core/Src/custom_bus.c ****   int32_t ret = BSP_ERROR_NONE;
+ 296              		.loc 1 287 1 is_stmt 1 view -0
+ 297              		.cfi_startproc
+ 298              		@ args = 0, pretend = 0, frame = 0
+ 299              		@ frame_needed = 0, uses_anonymous_args = 0
+ 287:Core/Src/custom_bus.c ****   int32_t ret = BSP_ERROR_NONE;
+ 300              		.loc 1 287 1 is_stmt 0 view .LVU73
+ 301 0000 08B5     		push	{r3, lr}
+ 302              	.LCFI7:
+ 303              		.cfi_def_cfa_offset 8
+ 304              		.cfi_offset 3, -8
+ 305              		.cfi_offset 14, -4
+ 306 0002 0A46     		mov	r2, r1
+ 288:Core/Src/custom_bus.c **** 
+ 307              		.loc 1 288 3 is_stmt 1 view .LVU74
+ 308              	.LVL17:
+ 290:Core/Src/custom_bus.c ****   {
+ 309              		.loc 1 290 3 view .LVU75
+ 290:Core/Src/custom_bus.c ****   {
+ 310              		.loc 1 290 7 is_stmt 0 view .LVU76
+ 311 0004 4FF48053 		mov	r3, #4096
+ 312 0008 0146     		mov	r1, r0
+ 313              	.LVL18:
+ 290:Core/Src/custom_bus.c ****   {
+ 314              		.loc 1 290 7 view .LVU77
+ 315 000a 0448     		ldr	r0, .L26
+ 316              	.LVL19:
+ 290:Core/Src/custom_bus.c ****   {
+ 317              		.loc 1 290 7 view .LVU78
+ 318 000c FFF7FEFF 		bl	HAL_I2C_IsDeviceReady
+ 319              	.LVL20:
+ 290:Core/Src/custom_bus.c ****   {
+ 320              		.loc 1 290 6 view .LVU79
+ 321 0010 00B9     		cbnz	r0, .L25
+ 322              	.LVL21:
+ 323              	.L21:
+ 296:Core/Src/custom_bus.c **** 
+ 324              		.loc 1 296 1 view .LVU80
+ 325 0012 08BD     		pop	{r3, pc}
+ 326              	.LVL22:
+ 327              	.L25:
+ 292:Core/Src/custom_bus.c ****   }
+ 328              		.loc 1 292 9 view .LVU81
+ 329 0014 6FF00200 		mvn	r0, #2
+ 330              	.LVL23:
+ 295:Core/Src/custom_bus.c **** }
+ 331              		.loc 1 295 3 is_stmt 1 view .LVU82
+ 295:Core/Src/custom_bus.c **** }
+ 332              		.loc 1 295 10 is_stmt 0 view .LVU83
+ 333 0018 FBE7     		b	.L21
+ 334              	.L27:
+ 335 001a 00BF     		.align	2
+ 336              	.L26:
+ 337 001c 00000000 		.word	.LANCHOR1
+ARM GAS  /tmp/cc7kTUPi.s 			page 18
+
+
+ 338              		.cfi_endproc
+ 339              	.LFE134:
+ 341              		.section	.text.BSP_I2C1_WriteReg,"ax",%progbits
+ 342              		.align	1
+ 343              		.global	BSP_I2C1_WriteReg
+ 344              		.syntax unified
+ 345              		.thumb
+ 346              		.thumb_func
+ 347              		.fpu fpv4-sp-d16
+ 349              	BSP_I2C1_WriteReg:
+ 350              	.LVL24:
+ 351              	.LFB135:
+ 308:Core/Src/custom_bus.c ****   int32_t ret = BSP_ERROR_NONE;
+ 352              		.loc 1 308 1 is_stmt 1 view -0
+ 353              		.cfi_startproc
+ 354              		@ args = 0, pretend = 0, frame = 0
+ 355              		@ frame_needed = 0, uses_anonymous_args = 0
+ 308:Core/Src/custom_bus.c ****   int32_t ret = BSP_ERROR_NONE;
+ 356              		.loc 1 308 1 is_stmt 0 view .LVU85
+ 357 0000 10B5     		push	{r4, lr}
+ 358              	.LCFI8:
+ 359              		.cfi_def_cfa_offset 8
+ 360              		.cfi_offset 4, -8
+ 361              		.cfi_offset 14, -4
+ 362 0002 84B0     		sub	sp, sp, #16
+ 363              	.LCFI9:
+ 364              		.cfi_def_cfa_offset 24
+ 309:Core/Src/custom_bus.c **** 
+ 365              		.loc 1 309 3 is_stmt 1 view .LVU86
+ 366              	.LVL25:
+ 311:Core/Src/custom_bus.c ****   {
+ 367              		.loc 1 311 3 view .LVU87
+ 311:Core/Src/custom_bus.c ****   {
+ 368              		.loc 1 311 7 is_stmt 0 view .LVU88
+ 369 0004 4FF48054 		mov	r4, #4096
+ 370 0008 0294     		str	r4, [sp, #8]
+ 371 000a 0193     		str	r3, [sp, #4]
+ 372 000c 0092     		str	r2, [sp]
+ 373 000e 0123     		movs	r3, #1
+ 374              	.LVL26:
+ 311:Core/Src/custom_bus.c ****   {
+ 375              		.loc 1 311 7 view .LVU89
+ 376 0010 0A46     		mov	r2, r1
+ 377              	.LVL27:
+ 311:Core/Src/custom_bus.c ****   {
+ 378              		.loc 1 311 7 view .LVU90
+ 379 0012 0146     		mov	r1, r0
+ 380              	.LVL28:
+ 311:Core/Src/custom_bus.c ****   {
+ 381              		.loc 1 311 7 view .LVU91
+ 382 0014 0848     		ldr	r0, .L35
+ 383              	.LVL29:
+ 311:Core/Src/custom_bus.c ****   {
+ 384              		.loc 1 311 7 view .LVU92
+ 385 0016 FFF7FEFF 		bl	HAL_I2C_Mem_Write
+ 386              	.LVL30:
+ 311:Core/Src/custom_bus.c ****   {
+ARM GAS  /tmp/cc7kTUPi.s 			page 19
+
+
+ 387              		.loc 1 311 6 view .LVU93
+ 388 001a 10B9     		cbnz	r0, .L33
+ 309:Core/Src/custom_bus.c **** 
+ 389              		.loc 1 309 11 view .LVU94
+ 390 001c 0020     		movs	r0, #0
+ 391              	.LVL31:
+ 392              	.L28:
+ 323:Core/Src/custom_bus.c **** 
+ 393              		.loc 1 323 1 view .LVU95
+ 394 001e 04B0     		add	sp, sp, #16
+ 395              	.LCFI10:
+ 396              		.cfi_remember_state
+ 397              		.cfi_def_cfa_offset 8
+ 398              		@ sp needed
+ 399 0020 10BD     		pop	{r4, pc}
+ 400              	.LVL32:
+ 401              	.L33:
+ 402              	.LCFI11:
+ 403              		.cfi_restore_state
+ 313:Core/Src/custom_bus.c ****     {
+ 404              		.loc 1 313 5 is_stmt 1 view .LVU96
+ 313:Core/Src/custom_bus.c ****     {
+ 405              		.loc 1 313 9 is_stmt 0 view .LVU97
+ 406 0022 0548     		ldr	r0, .L35
+ 407 0024 FFF7FEFF 		bl	HAL_I2C_GetError
+ 408              	.LVL33:
+ 313:Core/Src/custom_bus.c ****     {
+ 409              		.loc 1 313 8 view .LVU98
+ 410 0028 0428     		cmp	r0, #4
+ 411 002a 02D0     		beq	.L34
+ 319:Core/Src/custom_bus.c ****     }
+ 412              		.loc 1 319 11 view .LVU99
+ 413 002c 6FF00300 		mvn	r0, #3
+ 414              	.LVL34:
+ 322:Core/Src/custom_bus.c **** }
+ 415              		.loc 1 322 3 is_stmt 1 view .LVU100
+ 322:Core/Src/custom_bus.c **** }
+ 416              		.loc 1 322 10 is_stmt 0 view .LVU101
+ 417 0030 F5E7     		b	.L28
+ 418              	.LVL35:
+ 419              	.L34:
+ 315:Core/Src/custom_bus.c ****     }
+ 420              		.loc 1 315 11 view .LVU102
+ 421 0032 6FF06500 		mvn	r0, #101
+ 422 0036 F2E7     		b	.L28
+ 423              	.L36:
+ 424              		.align	2
+ 425              	.L35:
+ 426 0038 00000000 		.word	.LANCHOR1
+ 427              		.cfi_endproc
+ 428              	.LFE135:
+ 430              		.section	.text.BSP_I2C1_ReadReg,"ax",%progbits
+ 431              		.align	1
+ 432              		.global	BSP_I2C1_ReadReg
+ 433              		.syntax unified
+ 434              		.thumb
+ 435              		.thumb_func
+ARM GAS  /tmp/cc7kTUPi.s 			page 20
+
+
+ 436              		.fpu fpv4-sp-d16
+ 438              	BSP_I2C1_ReadReg:
+ 439              	.LVL36:
+ 440              	.LFB136:
+ 334:Core/Src/custom_bus.c ****   int32_t ret = BSP_ERROR_NONE;
+ 441              		.loc 1 334 1 is_stmt 1 view -0
+ 442              		.cfi_startproc
+ 443              		@ args = 0, pretend = 0, frame = 0
+ 444              		@ frame_needed = 0, uses_anonymous_args = 0
+ 334:Core/Src/custom_bus.c ****   int32_t ret = BSP_ERROR_NONE;
+ 445              		.loc 1 334 1 is_stmt 0 view .LVU104
+ 446 0000 10B5     		push	{r4, lr}
+ 447              	.LCFI12:
+ 448              		.cfi_def_cfa_offset 8
+ 449              		.cfi_offset 4, -8
+ 450              		.cfi_offset 14, -4
+ 451 0002 84B0     		sub	sp, sp, #16
+ 452              	.LCFI13:
+ 453              		.cfi_def_cfa_offset 24
+ 335:Core/Src/custom_bus.c **** 
+ 454              		.loc 1 335 3 is_stmt 1 view .LVU105
+ 455              	.LVL37:
+ 337:Core/Src/custom_bus.c ****   {
+ 456              		.loc 1 337 3 view .LVU106
+ 337:Core/Src/custom_bus.c ****   {
+ 457              		.loc 1 337 7 is_stmt 0 view .LVU107
+ 458 0004 4FF48054 		mov	r4, #4096
+ 459 0008 0294     		str	r4, [sp, #8]
+ 460 000a 0193     		str	r3, [sp, #4]
+ 461 000c 0092     		str	r2, [sp]
+ 462 000e 0123     		movs	r3, #1
+ 463              	.LVL38:
+ 337:Core/Src/custom_bus.c ****   {
+ 464              		.loc 1 337 7 view .LVU108
+ 465 0010 0A46     		mov	r2, r1
+ 466              	.LVL39:
+ 337:Core/Src/custom_bus.c ****   {
+ 467              		.loc 1 337 7 view .LVU109
+ 468 0012 0146     		mov	r1, r0
+ 469              	.LVL40:
+ 337:Core/Src/custom_bus.c ****   {
+ 470              		.loc 1 337 7 view .LVU110
+ 471 0014 0848     		ldr	r0, .L44
+ 472              	.LVL41:
+ 337:Core/Src/custom_bus.c ****   {
+ 473              		.loc 1 337 7 view .LVU111
+ 474 0016 FFF7FEFF 		bl	HAL_I2C_Mem_Read
+ 475              	.LVL42:
+ 337:Core/Src/custom_bus.c ****   {
+ 476              		.loc 1 337 6 view .LVU112
+ 477 001a 10B9     		cbnz	r0, .L42
+ 335:Core/Src/custom_bus.c **** 
+ 478              		.loc 1 335 11 view .LVU113
+ 479 001c 0020     		movs	r0, #0
+ 480              	.LVL43:
+ 481              	.L37:
+ 349:Core/Src/custom_bus.c **** 
+ARM GAS  /tmp/cc7kTUPi.s 			page 21
+
+
+ 482              		.loc 1 349 1 view .LVU114
+ 483 001e 04B0     		add	sp, sp, #16
+ 484              	.LCFI14:
+ 485              		.cfi_remember_state
+ 486              		.cfi_def_cfa_offset 8
+ 487              		@ sp needed
+ 488 0020 10BD     		pop	{r4, pc}
+ 489              	.LVL44:
+ 490              	.L42:
+ 491              	.LCFI15:
+ 492              		.cfi_restore_state
+ 339:Core/Src/custom_bus.c ****     {
+ 493              		.loc 1 339 5 is_stmt 1 view .LVU115
+ 339:Core/Src/custom_bus.c ****     {
+ 494              		.loc 1 339 9 is_stmt 0 view .LVU116
+ 495 0022 0548     		ldr	r0, .L44
+ 496 0024 FFF7FEFF 		bl	HAL_I2C_GetError
+ 497              	.LVL45:
+ 339:Core/Src/custom_bus.c ****     {
+ 498              		.loc 1 339 8 view .LVU117
+ 499 0028 0428     		cmp	r0, #4
+ 500 002a 02D0     		beq	.L43
+ 345:Core/Src/custom_bus.c ****     }
+ 501              		.loc 1 345 11 view .LVU118
+ 502 002c 6FF00300 		mvn	r0, #3
+ 503              	.LVL46:
+ 348:Core/Src/custom_bus.c **** }
+ 504              		.loc 1 348 3 is_stmt 1 view .LVU119
+ 348:Core/Src/custom_bus.c **** }
+ 505              		.loc 1 348 10 is_stmt 0 view .LVU120
+ 506 0030 F5E7     		b	.L37
+ 507              	.LVL47:
+ 508              	.L43:
+ 341:Core/Src/custom_bus.c ****     }
+ 509              		.loc 1 341 11 view .LVU121
+ 510 0032 6FF06500 		mvn	r0, #101
+ 511 0036 F2E7     		b	.L37
+ 512              	.L45:
+ 513              		.align	2
+ 514              	.L44:
+ 515 0038 00000000 		.word	.LANCHOR1
+ 516              		.cfi_endproc
+ 517              	.LFE136:
+ 519              		.section	.text.BSP_I2C1_WriteReg16,"ax",%progbits
+ 520              		.align	1
+ 521              		.global	BSP_I2C1_WriteReg16
+ 522              		.syntax unified
+ 523              		.thumb
+ 524              		.thumb_func
+ 525              		.fpu fpv4-sp-d16
+ 527              	BSP_I2C1_WriteReg16:
+ 528              	.LVL48:
+ 529              	.LFB137:
+ 362:Core/Src/custom_bus.c ****   int32_t ret = BSP_ERROR_NONE;
+ 530              		.loc 1 362 1 is_stmt 1 view -0
+ 531              		.cfi_startproc
+ 532              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /tmp/cc7kTUPi.s 			page 22
+
+
+ 533              		@ frame_needed = 0, uses_anonymous_args = 0
+ 362:Core/Src/custom_bus.c ****   int32_t ret = BSP_ERROR_NONE;
+ 534              		.loc 1 362 1 is_stmt 0 view .LVU123
+ 535 0000 10B5     		push	{r4, lr}
+ 536              	.LCFI16:
+ 537              		.cfi_def_cfa_offset 8
+ 538              		.cfi_offset 4, -8
+ 539              		.cfi_offset 14, -4
+ 540 0002 84B0     		sub	sp, sp, #16
+ 541              	.LCFI17:
+ 542              		.cfi_def_cfa_offset 24
+ 363:Core/Src/custom_bus.c **** 
+ 543              		.loc 1 363 3 is_stmt 1 view .LVU124
+ 544              	.LVL49:
+ 365:Core/Src/custom_bus.c ****   {
+ 545              		.loc 1 365 3 view .LVU125
+ 365:Core/Src/custom_bus.c ****   {
+ 546              		.loc 1 365 7 is_stmt 0 view .LVU126
+ 547 0004 4FF48054 		mov	r4, #4096
+ 548 0008 0294     		str	r4, [sp, #8]
+ 549 000a 0193     		str	r3, [sp, #4]
+ 550 000c 0092     		str	r2, [sp]
+ 551 000e 0223     		movs	r3, #2
+ 552              	.LVL50:
+ 365:Core/Src/custom_bus.c ****   {
+ 553              		.loc 1 365 7 view .LVU127
+ 554 0010 0A46     		mov	r2, r1
+ 555              	.LVL51:
+ 365:Core/Src/custom_bus.c ****   {
+ 556              		.loc 1 365 7 view .LVU128
+ 557 0012 0146     		mov	r1, r0
+ 558              	.LVL52:
+ 365:Core/Src/custom_bus.c ****   {
+ 559              		.loc 1 365 7 view .LVU129
+ 560 0014 0848     		ldr	r0, .L53
+ 561              	.LVL53:
+ 365:Core/Src/custom_bus.c ****   {
+ 562              		.loc 1 365 7 view .LVU130
+ 563 0016 FFF7FEFF 		bl	HAL_I2C_Mem_Write
+ 564              	.LVL54:
+ 365:Core/Src/custom_bus.c ****   {
+ 565              		.loc 1 365 6 view .LVU131
+ 566 001a 10B9     		cbnz	r0, .L51
+ 363:Core/Src/custom_bus.c **** 
+ 567              		.loc 1 363 11 view .LVU132
+ 568 001c 0020     		movs	r0, #0
+ 569              	.LVL55:
+ 570              	.L46:
+ 377:Core/Src/custom_bus.c **** 
+ 571              		.loc 1 377 1 view .LVU133
+ 572 001e 04B0     		add	sp, sp, #16
+ 573              	.LCFI18:
+ 574              		.cfi_remember_state
+ 575              		.cfi_def_cfa_offset 8
+ 576              		@ sp needed
+ 577 0020 10BD     		pop	{r4, pc}
+ 578              	.LVL56:
+ARM GAS  /tmp/cc7kTUPi.s 			page 23
+
+
+ 579              	.L51:
+ 580              	.LCFI19:
+ 581              		.cfi_restore_state
+ 367:Core/Src/custom_bus.c ****     {
+ 582              		.loc 1 367 5 is_stmt 1 view .LVU134
+ 367:Core/Src/custom_bus.c ****     {
+ 583              		.loc 1 367 9 is_stmt 0 view .LVU135
+ 584 0022 0548     		ldr	r0, .L53
+ 585 0024 FFF7FEFF 		bl	HAL_I2C_GetError
+ 586              	.LVL57:
+ 367:Core/Src/custom_bus.c ****     {
+ 587              		.loc 1 367 8 view .LVU136
+ 588 0028 0428     		cmp	r0, #4
+ 589 002a 02D0     		beq	.L52
+ 373:Core/Src/custom_bus.c ****     }
+ 590              		.loc 1 373 11 view .LVU137
+ 591 002c 6FF00300 		mvn	r0, #3
+ 592              	.LVL58:
+ 376:Core/Src/custom_bus.c **** }
+ 593              		.loc 1 376 3 is_stmt 1 view .LVU138
+ 376:Core/Src/custom_bus.c **** }
+ 594              		.loc 1 376 10 is_stmt 0 view .LVU139
+ 595 0030 F5E7     		b	.L46
+ 596              	.LVL59:
+ 597              	.L52:
+ 369:Core/Src/custom_bus.c ****     }
+ 598              		.loc 1 369 11 view .LVU140
+ 599 0032 6FF06500 		mvn	r0, #101
+ 600 0036 F2E7     		b	.L46
+ 601              	.L54:
+ 602              		.align	2
+ 603              	.L53:
+ 604 0038 00000000 		.word	.LANCHOR1
+ 605              		.cfi_endproc
+ 606              	.LFE137:
+ 608              		.section	.text.BSP_I2C1_ReadReg16,"ax",%progbits
+ 609              		.align	1
+ 610              		.global	BSP_I2C1_ReadReg16
+ 611              		.syntax unified
+ 612              		.thumb
+ 613              		.thumb_func
+ 614              		.fpu fpv4-sp-d16
+ 616              	BSP_I2C1_ReadReg16:
+ 617              	.LVL60:
+ 618              	.LFB138:
+ 387:Core/Src/custom_bus.c ****   int32_t ret = BSP_ERROR_NONE;
+ 619              		.loc 1 387 1 is_stmt 1 view -0
+ 620              		.cfi_startproc
+ 621              		@ args = 0, pretend = 0, frame = 0
+ 622              		@ frame_needed = 0, uses_anonymous_args = 0
+ 387:Core/Src/custom_bus.c ****   int32_t ret = BSP_ERROR_NONE;
+ 623              		.loc 1 387 1 is_stmt 0 view .LVU142
+ 624 0000 10B5     		push	{r4, lr}
+ 625              	.LCFI20:
+ 626              		.cfi_def_cfa_offset 8
+ 627              		.cfi_offset 4, -8
+ 628              		.cfi_offset 14, -4
+ARM GAS  /tmp/cc7kTUPi.s 			page 24
+
+
+ 629 0002 84B0     		sub	sp, sp, #16
+ 630              	.LCFI21:
+ 631              		.cfi_def_cfa_offset 24
+ 388:Core/Src/custom_bus.c **** 
+ 632              		.loc 1 388 3 is_stmt 1 view .LVU143
+ 633              	.LVL61:
+ 390:Core/Src/custom_bus.c ****   {
+ 634              		.loc 1 390 3 view .LVU144
+ 390:Core/Src/custom_bus.c ****   {
+ 635              		.loc 1 390 7 is_stmt 0 view .LVU145
+ 636 0004 4FF48054 		mov	r4, #4096
+ 637 0008 0294     		str	r4, [sp, #8]
+ 638 000a 0193     		str	r3, [sp, #4]
+ 639 000c 0092     		str	r2, [sp]
+ 640 000e 0223     		movs	r3, #2
+ 641              	.LVL62:
+ 390:Core/Src/custom_bus.c ****   {
+ 642              		.loc 1 390 7 view .LVU146
+ 643 0010 0A46     		mov	r2, r1
+ 644              	.LVL63:
+ 390:Core/Src/custom_bus.c ****   {
+ 645              		.loc 1 390 7 view .LVU147
+ 646 0012 0146     		mov	r1, r0
+ 647              	.LVL64:
+ 390:Core/Src/custom_bus.c ****   {
+ 648              		.loc 1 390 7 view .LVU148
+ 649 0014 0848     		ldr	r0, .L61
+ 650              	.LVL65:
+ 390:Core/Src/custom_bus.c ****   {
+ 651              		.loc 1 390 7 view .LVU149
+ 652 0016 FFF7FEFF 		bl	HAL_I2C_Mem_Read
+ 653              	.LVL66:
+ 390:Core/Src/custom_bus.c ****   {
+ 654              		.loc 1 390 6 view .LVU150
+ 655 001a 10B9     		cbnz	r0, .L60
+ 388:Core/Src/custom_bus.c **** 
+ 656              		.loc 1 388 11 view .LVU151
+ 657 001c 0020     		movs	r0, #0
+ 658              	.LVL67:
+ 659              	.L55:
+ 402:Core/Src/custom_bus.c **** 
+ 660              		.loc 1 402 1 view .LVU152
+ 661 001e 04B0     		add	sp, sp, #16
+ 662              	.LCFI22:
+ 663              		.cfi_remember_state
+ 664              		.cfi_def_cfa_offset 8
+ 665              		@ sp needed
+ 666 0020 10BD     		pop	{r4, pc}
+ 667              	.LVL68:
+ 668              	.L60:
+ 669              	.LCFI23:
+ 670              		.cfi_restore_state
+ 392:Core/Src/custom_bus.c ****     {
+ 671              		.loc 1 392 5 is_stmt 1 view .LVU153
+ 392:Core/Src/custom_bus.c ****     {
+ 672              		.loc 1 392 9 is_stmt 0 view .LVU154
+ 673 0022 0548     		ldr	r0, .L61
+ARM GAS  /tmp/cc7kTUPi.s 			page 25
+
+
+ 674 0024 FFF7FEFF 		bl	HAL_I2C_GetError
+ 675              	.LVL69:
+ 392:Core/Src/custom_bus.c ****     {
+ 676              		.loc 1 392 8 view .LVU155
+ 677 0028 0428     		cmp	r0, #4
+ 678 002a 02D0     		beq	.L58
+ 394:Core/Src/custom_bus.c ****     }
+ 679              		.loc 1 394 11 view .LVU156
+ 680 002c 6FF06500 		mvn	r0, #101
+ 681 0030 F5E7     		b	.L55
+ 682              	.L58:
+ 398:Core/Src/custom_bus.c ****     }
+ 683              		.loc 1 398 11 view .LVU157
+ 684 0032 6FF00300 		mvn	r0, #3
+ 685              	.LVL70:
+ 401:Core/Src/custom_bus.c **** }
+ 686              		.loc 1 401 3 is_stmt 1 view .LVU158
+ 401:Core/Src/custom_bus.c **** }
+ 687              		.loc 1 401 10 is_stmt 0 view .LVU159
+ 688 0036 F2E7     		b	.L55
+ 689              	.L62:
+ 690              		.align	2
+ 691              	.L61:
+ 692 0038 00000000 		.word	.LANCHOR1
+ 693              		.cfi_endproc
+ 694              	.LFE138:
+ 696              		.section	.text.BSP_I2C1_Send,"ax",%progbits
+ 697              		.align	1
+ 698              		.global	BSP_I2C1_Send
+ 699              		.syntax unified
+ 700              		.thumb
+ 701              		.thumb_func
+ 702              		.fpu fpv4-sp-d16
+ 704              	BSP_I2C1_Send:
+ 705              	.LVL71:
+ 706              	.LFB139:
+ 411:Core/Src/custom_bus.c ****   int32_t ret = BSP_ERROR_NONE;
+ 707              		.loc 1 411 74 is_stmt 1 view -0
+ 708              		.cfi_startproc
+ 709              		@ args = 0, pretend = 0, frame = 0
+ 710              		@ frame_needed = 0, uses_anonymous_args = 0
+ 411:Core/Src/custom_bus.c ****   int32_t ret = BSP_ERROR_NONE;
+ 711              		.loc 1 411 74 is_stmt 0 view .LVU161
+ 712 0000 00B5     		push	{lr}
+ 713              	.LCFI24:
+ 714              		.cfi_def_cfa_offset 4
+ 715              		.cfi_offset 14, -4
+ 716 0002 83B0     		sub	sp, sp, #12
+ 717              	.LCFI25:
+ 718              		.cfi_def_cfa_offset 16
+ 719 0004 1346     		mov	r3, r2
+ 412:Core/Src/custom_bus.c **** 
+ 720              		.loc 1 412 3 is_stmt 1 view .LVU162
+ 721              	.LVL72:
+ 414:Core/Src/custom_bus.c ****   {
+ 722              		.loc 1 414 3 view .LVU163
+ 414:Core/Src/custom_bus.c ****   {
+ARM GAS  /tmp/cc7kTUPi.s 			page 26
+
+
+ 723              		.loc 1 414 7 is_stmt 0 view .LVU164
+ 724 0006 4FF48052 		mov	r2, #4096
+ 725              	.LVL73:
+ 414:Core/Src/custom_bus.c ****   {
+ 726              		.loc 1 414 7 view .LVU165
+ 727 000a 0092     		str	r2, [sp]
+ 728 000c 0A46     		mov	r2, r1
+ 729 000e 0146     		mov	r1, r0
+ 730              	.LVL74:
+ 414:Core/Src/custom_bus.c ****   {
+ 731              		.loc 1 414 7 view .LVU166
+ 732 0010 0948     		ldr	r0, .L69
+ 733              	.LVL75:
+ 414:Core/Src/custom_bus.c ****   {
+ 734              		.loc 1 414 7 view .LVU167
+ 735 0012 FFF7FEFF 		bl	HAL_I2C_Master_Transmit
+ 736              	.LVL76:
+ 414:Core/Src/custom_bus.c ****   {
+ 737              		.loc 1 414 6 view .LVU168
+ 738 0016 18B9     		cbnz	r0, .L68
+ 412:Core/Src/custom_bus.c **** 
+ 739              		.loc 1 412 11 view .LVU169
+ 740 0018 0020     		movs	r0, #0
+ 741              	.LVL77:
+ 742              	.L63:
+ 427:Core/Src/custom_bus.c **** 
+ 743              		.loc 1 427 1 view .LVU170
+ 744 001a 03B0     		add	sp, sp, #12
+ 745              	.LCFI26:
+ 746              		.cfi_remember_state
+ 747              		.cfi_def_cfa_offset 4
+ 748              		@ sp needed
+ 749 001c 5DF804FB 		ldr	pc, [sp], #4
+ 750              	.LVL78:
+ 751              	.L68:
+ 752              	.LCFI27:
+ 753              		.cfi_restore_state
+ 416:Core/Src/custom_bus.c ****     {
+ 754              		.loc 1 416 5 is_stmt 1 view .LVU171
+ 416:Core/Src/custom_bus.c ****     {
+ 755              		.loc 1 416 9 is_stmt 0 view .LVU172
+ 756 0020 0548     		ldr	r0, .L69
+ 757 0022 FFF7FEFF 		bl	HAL_I2C_GetError
+ 758              	.LVL79:
+ 416:Core/Src/custom_bus.c ****     {
+ 759              		.loc 1 416 8 view .LVU173
+ 760 0026 0428     		cmp	r0, #4
+ 761 0028 02D0     		beq	.L66
+ 418:Core/Src/custom_bus.c ****     }
+ 762              		.loc 1 418 11 view .LVU174
+ 763 002a 6FF06500 		mvn	r0, #101
+ 764 002e F4E7     		b	.L63
+ 765              	.L66:
+ 422:Core/Src/custom_bus.c ****     }
+ 766              		.loc 1 422 11 view .LVU175
+ 767 0030 6FF00300 		mvn	r0, #3
+ 768              	.LVL80:
+ARM GAS  /tmp/cc7kTUPi.s 			page 27
+
+
+ 426:Core/Src/custom_bus.c **** }
+ 769              		.loc 1 426 3 is_stmt 1 view .LVU176
+ 426:Core/Src/custom_bus.c **** }
+ 770              		.loc 1 426 10 is_stmt 0 view .LVU177
+ 771 0034 F1E7     		b	.L63
+ 772              	.L70:
+ 773 0036 00BF     		.align	2
+ 774              	.L69:
+ 775 0038 00000000 		.word	.LANCHOR1
+ 776              		.cfi_endproc
+ 777              	.LFE139:
+ 779              		.section	.text.BSP_I2C1_Recv,"ax",%progbits
+ 780              		.align	1
+ 781              		.global	BSP_I2C1_Recv
+ 782              		.syntax unified
+ 783              		.thumb
+ 784              		.thumb_func
+ 785              		.fpu fpv4-sp-d16
+ 787              	BSP_I2C1_Recv:
+ 788              	.LVL81:
+ 789              	.LFB140:
+ 436:Core/Src/custom_bus.c ****   int32_t ret = BSP_ERROR_NONE;
+ 790              		.loc 1 436 74 is_stmt 1 view -0
+ 791              		.cfi_startproc
+ 792              		@ args = 0, pretend = 0, frame = 0
+ 793              		@ frame_needed = 0, uses_anonymous_args = 0
+ 436:Core/Src/custom_bus.c ****   int32_t ret = BSP_ERROR_NONE;
+ 794              		.loc 1 436 74 is_stmt 0 view .LVU179
+ 795 0000 00B5     		push	{lr}
+ 796              	.LCFI28:
+ 797              		.cfi_def_cfa_offset 4
+ 798              		.cfi_offset 14, -4
+ 799 0002 83B0     		sub	sp, sp, #12
+ 800              	.LCFI29:
+ 801              		.cfi_def_cfa_offset 16
+ 802 0004 1346     		mov	r3, r2
+ 437:Core/Src/custom_bus.c **** 
+ 803              		.loc 1 437 3 is_stmt 1 view .LVU180
+ 804              	.LVL82:
+ 439:Core/Src/custom_bus.c ****   {
+ 805              		.loc 1 439 3 view .LVU181
+ 439:Core/Src/custom_bus.c ****   {
+ 806              		.loc 1 439 7 is_stmt 0 view .LVU182
+ 807 0006 4FF48052 		mov	r2, #4096
+ 808              	.LVL83:
+ 439:Core/Src/custom_bus.c ****   {
+ 809              		.loc 1 439 7 view .LVU183
+ 810 000a 0092     		str	r2, [sp]
+ 811 000c 0A46     		mov	r2, r1
+ 812 000e 0146     		mov	r1, r0
+ 813              	.LVL84:
+ 439:Core/Src/custom_bus.c ****   {
+ 814              		.loc 1 439 7 view .LVU184
+ 815 0010 0948     		ldr	r0, .L77
+ 816              	.LVL85:
+ 439:Core/Src/custom_bus.c ****   {
+ 817              		.loc 1 439 7 view .LVU185
+ARM GAS  /tmp/cc7kTUPi.s 			page 28
+
+
+ 818 0012 FFF7FEFF 		bl	HAL_I2C_Master_Receive
+ 819              	.LVL86:
+ 439:Core/Src/custom_bus.c ****   {
+ 820              		.loc 1 439 6 view .LVU186
+ 821 0016 18B9     		cbnz	r0, .L76
+ 437:Core/Src/custom_bus.c **** 
+ 822              		.loc 1 437 11 view .LVU187
+ 823 0018 0020     		movs	r0, #0
+ 824              	.LVL87:
+ 825              	.L71:
+ 451:Core/Src/custom_bus.c **** 
+ 826              		.loc 1 451 1 view .LVU188
+ 827 001a 03B0     		add	sp, sp, #12
+ 828              	.LCFI30:
+ 829              		.cfi_remember_state
+ 830              		.cfi_def_cfa_offset 4
+ 831              		@ sp needed
+ 832 001c 5DF804FB 		ldr	pc, [sp], #4
+ 833              	.LVL88:
+ 834              	.L76:
+ 835              	.LCFI31:
+ 836              		.cfi_restore_state
+ 441:Core/Src/custom_bus.c ****     {
+ 837              		.loc 1 441 5 is_stmt 1 view .LVU189
+ 441:Core/Src/custom_bus.c ****     {
+ 838              		.loc 1 441 9 is_stmt 0 view .LVU190
+ 839 0020 0548     		ldr	r0, .L77
+ 840 0022 FFF7FEFF 		bl	HAL_I2C_GetError
+ 841              	.LVL89:
+ 441:Core/Src/custom_bus.c ****     {
+ 842              		.loc 1 441 8 view .LVU191
+ 843 0026 0428     		cmp	r0, #4
+ 844 0028 02D0     		beq	.L74
+ 443:Core/Src/custom_bus.c ****     }
+ 845              		.loc 1 443 11 view .LVU192
+ 846 002a 6FF06500 		mvn	r0, #101
+ 847 002e F4E7     		b	.L71
+ 848              	.L74:
+ 447:Core/Src/custom_bus.c ****     }
+ 849              		.loc 1 447 11 view .LVU193
+ 850 0030 6FF00300 		mvn	r0, #3
+ 851              	.LVL90:
+ 450:Core/Src/custom_bus.c **** }
+ 852              		.loc 1 450 3 is_stmt 1 view .LVU194
+ 450:Core/Src/custom_bus.c **** }
+ 853              		.loc 1 450 10 is_stmt 0 view .LVU195
+ 854 0034 F1E7     		b	.L71
+ 855              	.L78:
+ 856 0036 00BF     		.align	2
+ 857              	.L77:
+ 858 0038 00000000 		.word	.LANCHOR1
+ 859              		.cfi_endproc
+ 860              	.LFE140:
+ 862              		.section	.text.BSP_GetTick,"ax",%progbits
+ 863              		.align	1
+ 864              		.global	BSP_GetTick
+ 865              		.syntax unified
+ARM GAS  /tmp/cc7kTUPi.s 			page 29
+
+
+ 866              		.thumb
+ 867              		.thumb_func
+ 868              		.fpu fpv4-sp-d16
+ 870              	BSP_GetTick:
+ 871              	.LFB141:
+ 511:Core/Src/custom_bus.c ****   return HAL_GetTick();
+ 872              		.loc 1 511 27 is_stmt 1 view -0
+ 873              		.cfi_startproc
+ 874              		@ args = 0, pretend = 0, frame = 0
+ 875              		@ frame_needed = 0, uses_anonymous_args = 0
+ 876 0000 08B5     		push	{r3, lr}
+ 877              	.LCFI32:
+ 878              		.cfi_def_cfa_offset 8
+ 879              		.cfi_offset 3, -8
+ 880              		.cfi_offset 14, -4
+ 512:Core/Src/custom_bus.c **** }
+ 881              		.loc 1 512 3 view .LVU197
+ 512:Core/Src/custom_bus.c **** }
+ 882              		.loc 1 512 10 is_stmt 0 view .LVU198
+ 883 0002 FFF7FEFF 		bl	HAL_GetTick
+ 884              	.LVL91:
+ 513:Core/Src/custom_bus.c **** 
+ 885              		.loc 1 513 1 view .LVU199
+ 886 0006 08BD     		pop	{r3, pc}
+ 887              		.cfi_endproc
+ 888              	.LFE141:
+ 890              		.section	.text.MX_I2C1_Init,"ax",%progbits
+ 891              		.align	1
+ 892              		.weak	MX_I2C1_Init
+ 893              		.syntax unified
+ 894              		.thumb
+ 895              		.thumb_func
+ 896              		.fpu fpv4-sp-d16
+ 898              	MX_I2C1_Init:
+ 899              	.LVL92:
+ 900              	.LFB142:
+ 518:Core/Src/custom_bus.c ****   HAL_StatusTypeDef ret = HAL_OK;
+ 901              		.loc 1 518 1 is_stmt 1 view -0
+ 902              		.cfi_startproc
+ 903              		@ args = 0, pretend = 0, frame = 0
+ 904              		@ frame_needed = 0, uses_anonymous_args = 0
+ 518:Core/Src/custom_bus.c ****   HAL_StatusTypeDef ret = HAL_OK;
+ 905              		.loc 1 518 1 is_stmt 0 view .LVU201
+ 906 0000 38B5     		push	{r3, r4, r5, lr}
+ 907              	.LCFI33:
+ 908              		.cfi_def_cfa_offset 16
+ 909              		.cfi_offset 3, -16
+ 910              		.cfi_offset 4, -12
+ 911              		.cfi_offset 5, -8
+ 912              		.cfi_offset 14, -4
+ 913 0002 0446     		mov	r4, r0
+ 519:Core/Src/custom_bus.c **** 
+ 914              		.loc 1 519 3 is_stmt 1 view .LVU202
+ 915              	.LVL93:
+ 521:Core/Src/custom_bus.c ****   hi2c->Init.Timing = 0x00805C87;
+ 916              		.loc 1 521 3 view .LVU203
+ 521:Core/Src/custom_bus.c ****   hi2c->Init.Timing = 0x00805C87;
+ARM GAS  /tmp/cc7kTUPi.s 			page 30
+
+
+ 917              		.loc 1 521 18 is_stmt 0 view .LVU204
+ 918 0004 0F4B     		ldr	r3, .L89
+ 919 0006 0360     		str	r3, [r0]
+ 522:Core/Src/custom_bus.c ****   hi2c->Init.OwnAddress1 = 0;
+ 920              		.loc 1 522 3 is_stmt 1 view .LVU205
+ 522:Core/Src/custom_bus.c ****   hi2c->Init.OwnAddress1 = 0;
+ 921              		.loc 1 522 21 is_stmt 0 view .LVU206
+ 922 0008 0F4B     		ldr	r3, .L89+4
+ 923 000a 4360     		str	r3, [r0, #4]
+ 523:Core/Src/custom_bus.c ****   hi2c->Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+ 924              		.loc 1 523 3 is_stmt 1 view .LVU207
+ 523:Core/Src/custom_bus.c ****   hi2c->Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+ 925              		.loc 1 523 26 is_stmt 0 view .LVU208
+ 926 000c 0023     		movs	r3, #0
+ 927 000e 8360     		str	r3, [r0, #8]
+ 524:Core/Src/custom_bus.c ****   hi2c->Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+ 928              		.loc 1 524 3 is_stmt 1 view .LVU209
+ 524:Core/Src/custom_bus.c ****   hi2c->Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+ 929              		.loc 1 524 29 is_stmt 0 view .LVU210
+ 930 0010 0122     		movs	r2, #1
+ 931 0012 C260     		str	r2, [r0, #12]
+ 525:Core/Src/custom_bus.c ****   hi2c->Init.OwnAddress2 = 0;
+ 932              		.loc 1 525 3 is_stmt 1 view .LVU211
+ 525:Core/Src/custom_bus.c ****   hi2c->Init.OwnAddress2 = 0;
+ 933              		.loc 1 525 30 is_stmt 0 view .LVU212
+ 934 0014 0361     		str	r3, [r0, #16]
+ 526:Core/Src/custom_bus.c ****   hi2c->Init.OwnAddress2Masks = I2C_OA2_NOMASK;
+ 935              		.loc 1 526 3 is_stmt 1 view .LVU213
+ 526:Core/Src/custom_bus.c ****   hi2c->Init.OwnAddress2Masks = I2C_OA2_NOMASK;
+ 936              		.loc 1 526 26 is_stmt 0 view .LVU214
+ 937 0016 4361     		str	r3, [r0, #20]
+ 527:Core/Src/custom_bus.c ****   hi2c->Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+ 938              		.loc 1 527 3 is_stmt 1 view .LVU215
+ 527:Core/Src/custom_bus.c ****   hi2c->Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+ 939              		.loc 1 527 31 is_stmt 0 view .LVU216
+ 940 0018 8361     		str	r3, [r0, #24]
+ 528:Core/Src/custom_bus.c ****   hi2c->Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+ 941              		.loc 1 528 3 is_stmt 1 view .LVU217
+ 528:Core/Src/custom_bus.c ****   hi2c->Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+ 942              		.loc 1 528 30 is_stmt 0 view .LVU218
+ 943 001a C361     		str	r3, [r0, #28]
+ 529:Core/Src/custom_bus.c ****   if (HAL_I2C_Init(hi2c) != HAL_OK)
+ 944              		.loc 1 529 3 is_stmt 1 view .LVU219
+ 529:Core/Src/custom_bus.c ****   if (HAL_I2C_Init(hi2c) != HAL_OK)
+ 945              		.loc 1 529 28 is_stmt 0 view .LVU220
+ 946 001c 0362     		str	r3, [r0, #32]
+ 530:Core/Src/custom_bus.c ****   {
+ 947              		.loc 1 530 3 is_stmt 1 view .LVU221
+ 530:Core/Src/custom_bus.c ****   {
+ 948              		.loc 1 530 7 is_stmt 0 view .LVU222
+ 949 001e FFF7FEFF 		bl	HAL_I2C_Init
+ 950              	.LVL94:
+ 530:Core/Src/custom_bus.c ****   {
+ 951              		.loc 1 530 6 view .LVU223
+ 952 0022 0546     		mov	r5, r0
+ 953 0024 00B1     		cbz	r0, .L82
+ 532:Core/Src/custom_bus.c ****   }
+ARM GAS  /tmp/cc7kTUPi.s 			page 31
+
+
+ 954              		.loc 1 532 9 view .LVU224
+ 955 0026 0125     		movs	r5, #1
+ 956              	.L82:
+ 957              	.LVL95:
+ 535:Core/Src/custom_bus.c ****   {
+ 958              		.loc 1 535 3 is_stmt 1 view .LVU225
+ 535:Core/Src/custom_bus.c ****   {
+ 959              		.loc 1 535 7 is_stmt 0 view .LVU226
+ 960 0028 0021     		movs	r1, #0
+ 961 002a 2046     		mov	r0, r4
+ 962 002c FFF7FEFF 		bl	HAL_I2CEx_ConfigAnalogFilter
+ 963              	.LVL96:
+ 535:Core/Src/custom_bus.c ****   {
+ 964              		.loc 1 535 6 view .LVU227
+ 965 0030 00B1     		cbz	r0, .L83
+ 537:Core/Src/custom_bus.c ****   }
+ 966              		.loc 1 537 9 view .LVU228
+ 967 0032 0125     		movs	r5, #1
+ 968              	.LVL97:
+ 969              	.L83:
+ 540:Core/Src/custom_bus.c ****   {
+ 970              		.loc 1 540 3 is_stmt 1 view .LVU229
+ 540:Core/Src/custom_bus.c ****   {
+ 971              		.loc 1 540 7 is_stmt 0 view .LVU230
+ 972 0034 0021     		movs	r1, #0
+ 973 0036 2046     		mov	r0, r4
+ 974 0038 FFF7FEFF 		bl	HAL_I2CEx_ConfigDigitalFilter
+ 975              	.LVL98:
+ 540:Core/Src/custom_bus.c ****   {
+ 976              		.loc 1 540 6 view .LVU231
+ 977 003c 00B1     		cbz	r0, .L84
+ 542:Core/Src/custom_bus.c ****   }
+ 978              		.loc 1 542 9 view .LVU232
+ 979 003e 0125     		movs	r5, #1
+ 980              	.LVL99:
+ 981              	.L84:
+ 545:Core/Src/custom_bus.c **** }
+ 982              		.loc 1 545 3 is_stmt 1 view .LVU233
+ 546:Core/Src/custom_bus.c **** 
+ 983              		.loc 1 546 1 is_stmt 0 view .LVU234
+ 984 0040 2846     		mov	r0, r5
+ 985 0042 38BD     		pop	{r3, r4, r5, pc}
+ 986              	.LVL100:
+ 987              	.L90:
+ 546:Core/Src/custom_bus.c **** 
+ 988              		.loc 1 546 1 view .LVU235
+ 989              		.align	2
+ 990              	.L89:
+ 991 0044 00540040 		.word	1073763328
+ 992 0048 875C8000 		.word	8412295
+ 993              		.cfi_endproc
+ 994              	.LFE142:
+ 996              		.section	.text.BSP_I2C1_Init,"ax",%progbits
+ 997              		.align	1
+ 998              		.global	BSP_I2C1_Init
+ 999              		.syntax unified
+ 1000              		.thumb
+ARM GAS  /tmp/cc7kTUPi.s 			page 32
+
+
+ 1001              		.thumb_func
+ 1002              		.fpu fpv4-sp-d16
+ 1004              	BSP_I2C1_Init:
+ 1005              	.LFB132:
+ 211:Core/Src/custom_bus.c **** 
+ 1006              		.loc 1 211 1 is_stmt 1 view -0
+ 1007              		.cfi_startproc
+ 1008              		@ args = 0, pretend = 0, frame = 0
+ 1009              		@ frame_needed = 0, uses_anonymous_args = 0
+ 213:Core/Src/custom_bus.c **** 
+ 1010              		.loc 1 213 3 view .LVU237
+ 1011              	.LVL101:
+ 215:Core/Src/custom_bus.c **** 
+ 1012              		.loc 1 215 3 view .LVU238
+ 215:Core/Src/custom_bus.c **** 
+ 1013              		.loc 1 215 19 is_stmt 0 view .LVU239
+ 1014 0000 124B     		ldr	r3, .L104
+ 1015 0002 134A     		ldr	r2, .L104+4
+ 1016 0004 1A60     		str	r2, [r3]
+ 217:Core/Src/custom_bus.c ****   {
+ 1017              		.loc 1 217 3 is_stmt 1 view .LVU240
+ 217:Core/Src/custom_bus.c ****   {
+ 1018              		.loc 1 217 21 is_stmt 0 view .LVU241
+ 1019 0006 134A     		ldr	r2, .L104+8
+ 1020 0008 1368     		ldr	r3, [r2]
+ 1021 000a 591C     		adds	r1, r3, #1
+ 1022 000c 1160     		str	r1, [r2]
+ 217:Core/Src/custom_bus.c ****   {
+ 1023              		.loc 1 217 5 view .LVU242
+ 1024 000e 0BB1     		cbz	r3, .L101
+ 213:Core/Src/custom_bus.c **** 
+ 1025              		.loc 1 213 11 view .LVU243
+ 1026 0010 0020     		movs	r0, #0
+ 252:Core/Src/custom_bus.c **** 
+ 1027              		.loc 1 252 1 view .LVU244
+ 1028 0012 7047     		bx	lr
+ 1029              	.L101:
+ 211:Core/Src/custom_bus.c **** 
+ 1030              		.loc 1 211 1 view .LVU245
+ 1031 0014 10B5     		push	{r4, lr}
+ 1032              	.LCFI34:
+ 1033              		.cfi_def_cfa_offset 8
+ 1034              		.cfi_offset 4, -8
+ 1035              		.cfi_offset 14, -4
+ 219:Core/Src/custom_bus.c ****     {
+ 1036              		.loc 1 219 5 is_stmt 1 view .LVU246
+ 219:Core/Src/custom_bus.c ****     {
+ 1037              		.loc 1 219 9 is_stmt 0 view .LVU247
+ 1038 0016 0D48     		ldr	r0, .L104
+ 1039 0018 FFF7FEFF 		bl	HAL_I2C_GetState
+ 1040              	.LVL102:
+ 219:Core/Src/custom_bus.c ****     {
+ 1041              		.loc 1 219 8 view .LVU248
+ 1042 001c 08B1     		cbz	r0, .L102
+ 213:Core/Src/custom_bus.c **** 
+ 1043              		.loc 1 213 11 view .LVU249
+ 1044 001e 0020     		movs	r0, #0
+ARM GAS  /tmp/cc7kTUPi.s 			page 33
+
+
+ 1045              	.L91:
+ 252:Core/Src/custom_bus.c **** 
+ 1046              		.loc 1 252 1 view .LVU250
+ 1047 0020 10BD     		pop	{r4, pc}
+ 1048              	.L102:
+ 223:Core/Src/custom_bus.c ****     #else
+ 1049              		.loc 1 223 7 is_stmt 1 view .LVU251
+ 1050 0022 0A4C     		ldr	r4, .L104
+ 1051 0024 2046     		mov	r0, r4
+ 1052 0026 FFF7FEFF 		bl	I2C1_MspInit
+ 1053              	.LVL103:
+ 233:Core/Src/custom_bus.c ****       {
+ 1054              		.loc 1 233 7 view .LVU252
+ 236:Core/Src/custom_bus.c ****         {
+ 1055              		.loc 1 236 9 view .LVU253
+ 236:Core/Src/custom_bus.c ****         {
+ 1056              		.loc 1 236 12 is_stmt 0 view .LVU254
+ 1057 002a 2046     		mov	r0, r4
+ 1058 002c FFF7FEFF 		bl	MX_I2C1_Init
+ 1059              	.LVL104:
+ 236:Core/Src/custom_bus.c ****         {
+ 1060              		.loc 1 236 11 view .LVU255
+ 1061 0030 48B9     		cbnz	r0, .L95
+ 240:Core/Src/custom_bus.c ****         {
+ 1062              		.loc 1 240 14 is_stmt 1 view .LVU256
+ 240:Core/Src/custom_bus.c ****         {
+ 1063              		.loc 1 240 17 is_stmt 0 view .LVU257
+ 1064 0032 0021     		movs	r1, #0
+ 1065 0034 2046     		mov	r0, r4
+ 1066 0036 FFF7FEFF 		bl	HAL_I2CEx_ConfigAnalogFilter
+ 1067              	.LVL105:
+ 240:Core/Src/custom_bus.c ****         {
+ 1068              		.loc 1 240 16 view .LVU258
+ 1069 003a 08B9     		cbnz	r0, .L103
+ 246:Core/Src/custom_bus.c ****         }
+ 1070              		.loc 1 246 15 view .LVU259
+ 1071 003c 0020     		movs	r0, #0
+ 251:Core/Src/custom_bus.c **** }
+ 1072              		.loc 1 251 3 is_stmt 1 view .LVU260
+ 251:Core/Src/custom_bus.c **** }
+ 1073              		.loc 1 251 10 is_stmt 0 view .LVU261
+ 1074 003e EFE7     		b	.L91
+ 1075              	.L103:
+ 242:Core/Src/custom_bus.c ****         }
+ 1076              		.loc 1 242 15 view .LVU262
+ 1077 0040 6FF00700 		mvn	r0, #7
+ 1078 0044 ECE7     		b	.L91
+ 1079              	.L95:
+ 238:Core/Src/custom_bus.c ****         }
+ 1080              		.loc 1 238 15 view .LVU263
+ 1081 0046 6FF00700 		mvn	r0, #7
+ 1082 004a E9E7     		b	.L91
+ 1083              	.L105:
+ 1084              		.align	2
+ 1085              	.L104:
+ 1086 004c 00000000 		.word	.LANCHOR1
+ 1087 0050 00540040 		.word	1073763328
+ARM GAS  /tmp/cc7kTUPi.s 			page 34
+
+
+ 1088 0054 00000000 		.word	.LANCHOR0
+ 1089              		.cfi_endproc
+ 1090              	.LFE132:
+ 1092              		.global	hi2c1
+ 1093              		.section	.bss.I2C1InitCounter,"aw",%nobits
+ 1094              		.align	2
+ 1095              		.set	.LANCHOR0,. + 0
+ 1098              	I2C1InitCounter:
+ 1099 0000 00000000 		.space	4
+ 1100              		.section	.bss.hi2c1,"aw",%nobits
+ 1101              		.align	2
+ 1102              		.set	.LANCHOR1,. + 0
+ 1105              	hi2c1:
+ 1106 0000 00000000 		.space	84
+ 1106      00000000 
+ 1106      00000000 
+ 1106      00000000 
+ 1106      00000000 
+ 1107              		.text
+ 1108              	.Letext0:
+ 1109              		.file 2 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h"
+ 1110              		.file 3 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l412xx.h"
+ 1111              		.file 4 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h"
+ 1112              		.file 5 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc_ex.h"
+ 1113              		.file 6 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_gpio.h"
+ 1114              		.file 7 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_dma.h"
+ 1115              		.file 8 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_i2c.h"
+ 1116              		.file 9 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_i2c_ex.h"
+ 1117              		.file 10 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h"
+ 1118              		.file 11 "Core/Inc/custom_bus.h"
+ 1119              		.file 12 "<built-in>"
+ARM GAS  /tmp/cc7kTUPi.s 			page 35
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 custom_bus.c
+     /tmp/cc7kTUPi.s:18     .text.I2C1_MspInit:0000000000000000 $t
+     /tmp/cc7kTUPi.s:25     .text.I2C1_MspInit:0000000000000000 I2C1_MspInit
+     /tmp/cc7kTUPi.s:151    .text.I2C1_MspInit:0000000000000084 $d
+     /tmp/cc7kTUPi.s:156    .text.I2C1_MspDeInit:0000000000000000 $t
+     /tmp/cc7kTUPi.s:162    .text.I2C1_MspDeInit:0000000000000000 I2C1_MspDeInit
+     /tmp/cc7kTUPi.s:197    .text.I2C1_MspDeInit:0000000000000028 $d
+     /tmp/cc7kTUPi.s:202    .text.BSP_I2C1_DeInit:0000000000000000 $t
+     /tmp/cc7kTUPi.s:209    .text.BSP_I2C1_DeInit:0000000000000000 BSP_I2C1_DeInit
+     /tmp/cc7kTUPi.s:280    .text.BSP_I2C1_DeInit:0000000000000030 $d
+     /tmp/cc7kTUPi.s:286    .text.BSP_I2C1_IsReady:0000000000000000 $t
+     /tmp/cc7kTUPi.s:293    .text.BSP_I2C1_IsReady:0000000000000000 BSP_I2C1_IsReady
+     /tmp/cc7kTUPi.s:337    .text.BSP_I2C1_IsReady:000000000000001c $d
+     /tmp/cc7kTUPi.s:342    .text.BSP_I2C1_WriteReg:0000000000000000 $t
+     /tmp/cc7kTUPi.s:349    .text.BSP_I2C1_WriteReg:0000000000000000 BSP_I2C1_WriteReg
+     /tmp/cc7kTUPi.s:426    .text.BSP_I2C1_WriteReg:0000000000000038 $d
+     /tmp/cc7kTUPi.s:431    .text.BSP_I2C1_ReadReg:0000000000000000 $t
+     /tmp/cc7kTUPi.s:438    .text.BSP_I2C1_ReadReg:0000000000000000 BSP_I2C1_ReadReg
+     /tmp/cc7kTUPi.s:515    .text.BSP_I2C1_ReadReg:0000000000000038 $d
+     /tmp/cc7kTUPi.s:520    .text.BSP_I2C1_WriteReg16:0000000000000000 $t
+     /tmp/cc7kTUPi.s:527    .text.BSP_I2C1_WriteReg16:0000000000000000 BSP_I2C1_WriteReg16
+     /tmp/cc7kTUPi.s:604    .text.BSP_I2C1_WriteReg16:0000000000000038 $d
+     /tmp/cc7kTUPi.s:609    .text.BSP_I2C1_ReadReg16:0000000000000000 $t
+     /tmp/cc7kTUPi.s:616    .text.BSP_I2C1_ReadReg16:0000000000000000 BSP_I2C1_ReadReg16
+     /tmp/cc7kTUPi.s:692    .text.BSP_I2C1_ReadReg16:0000000000000038 $d
+     /tmp/cc7kTUPi.s:697    .text.BSP_I2C1_Send:0000000000000000 $t
+     /tmp/cc7kTUPi.s:704    .text.BSP_I2C1_Send:0000000000000000 BSP_I2C1_Send
+     /tmp/cc7kTUPi.s:775    .text.BSP_I2C1_Send:0000000000000038 $d
+     /tmp/cc7kTUPi.s:780    .text.BSP_I2C1_Recv:0000000000000000 $t
+     /tmp/cc7kTUPi.s:787    .text.BSP_I2C1_Recv:0000000000000000 BSP_I2C1_Recv
+     /tmp/cc7kTUPi.s:858    .text.BSP_I2C1_Recv:0000000000000038 $d
+     /tmp/cc7kTUPi.s:863    .text.BSP_GetTick:0000000000000000 $t
+     /tmp/cc7kTUPi.s:870    .text.BSP_GetTick:0000000000000000 BSP_GetTick
+     /tmp/cc7kTUPi.s:891    .text.MX_I2C1_Init:0000000000000000 $t
+     /tmp/cc7kTUPi.s:898    .text.MX_I2C1_Init:0000000000000000 MX_I2C1_Init
+     /tmp/cc7kTUPi.s:991    .text.MX_I2C1_Init:0000000000000044 $d
+     /tmp/cc7kTUPi.s:997    .text.BSP_I2C1_Init:0000000000000000 $t
+     /tmp/cc7kTUPi.s:1004   .text.BSP_I2C1_Init:0000000000000000 BSP_I2C1_Init
+     /tmp/cc7kTUPi.s:1086   .text.BSP_I2C1_Init:000000000000004c $d
+     /tmp/cc7kTUPi.s:1105   .bss.hi2c1:0000000000000000 hi2c1
+     /tmp/cc7kTUPi.s:1094   .bss.I2C1InitCounter:0000000000000000 $d
+     /tmp/cc7kTUPi.s:1098   .bss.I2C1InitCounter:0000000000000000 I2C1InitCounter
+     /tmp/cc7kTUPi.s:1101   .bss.hi2c1:0000000000000000 $d
+
+UNDEFINED SYMBOLS
+memset
+HAL_RCCEx_PeriphCLKConfig
+HAL_GPIO_Init
+HAL_GPIO_DeInit
+HAL_I2C_DeInit
+HAL_I2C_IsDeviceReady
+HAL_I2C_Mem_Write
+HAL_I2C_GetError
+HAL_I2C_Mem_Read
+HAL_I2C_Master_Transmit
+HAL_I2C_Master_Receive
+ARM GAS  /tmp/cc7kTUPi.s 			page 36
+
+
+HAL_GetTick
+HAL_I2C_Init
+HAL_I2CEx_ConfigAnalogFilter
+HAL_I2CEx_ConfigDigitalFilter
+HAL_I2C_GetState

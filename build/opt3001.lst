@@ -1,0 +1,629 @@
+ARM GAS  /tmp/cc1mzHEh.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"opt3001.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.OPT3001_InitIO,"ax",%progbits
+  18              		.align	1
+  19              		.global	OPT3001_InitIO
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	OPT3001_InitIO:
+  27              	.LVL0:
+  28              	.LFB139:
+  29              		.file 1 "app/drivers/opt3001/opt3001.c"
+   1:app/drivers/opt3001/opt3001.c **** /*!
+   2:app/drivers/opt3001/opt3001.c ****  * @file opt3001.c
+   3:app/drivers/opt3001/opt3001.c ****  * @brief implementation of opt3001
+   4:app/drivers/opt3001/opt3001.c ****  *
+   5:app/drivers/opt3001/opt3001.c ****  * Detailed description of the implementation file.
+   6:app/drivers/opt3001/opt3001.c ****  *
+   7:app/drivers/opt3001/opt3001.c ****  * @date 29/07/2024
+   8:app/drivers/opt3001/opt3001.c ****  * @author artempolisskyi
+   9:app/drivers/opt3001/opt3001.c ****  */
+  10:app/drivers/opt3001/opt3001.c **** 
+  11:app/drivers/opt3001/opt3001.c **** #include "opt3001.h"
+  12:app/drivers/opt3001/opt3001.c **** 
+  13:app/drivers/opt3001/opt3001.c **** OPT3001_IO_t OPT3001_IO = {
+  14:app/drivers/opt3001/opt3001.c ****     .i2cAddress = 0x00,
+  15:app/drivers/opt3001/opt3001.c ****     .writeReg = NULL,
+  16:app/drivers/opt3001/opt3001.c ****     .readReg = NULL
+  17:app/drivers/opt3001/opt3001.c **** };
+  18:app/drivers/opt3001/opt3001.c **** 
+  19:app/drivers/opt3001/opt3001.c **** OPT3001_RESULT OPT3001_InitIO(uint8_t i2cAddress, OPT3001_WriteReg_Func writeReg, OPT3001_ReadReg_F
+  30              		.loc 1 19 113 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  20:app/drivers/opt3001/opt3001.c ****     OPT3001_IO.i2cAddress = i2cAddress;
+  35              		.loc 1 20 5 view .LVU1
+  36              		.loc 1 20 27 is_stmt 0 view .LVU2
+  37 0000 024B     		ldr	r3, .L2
+  38 0002 1870     		strb	r0, [r3]
+ARM GAS  /tmp/cc1mzHEh.s 			page 2
+
+
+  21:app/drivers/opt3001/opt3001.c ****     OPT3001_IO.writeReg = writeReg;
+  39              		.loc 1 21 5 is_stmt 1 view .LVU3
+  40              		.loc 1 21 25 is_stmt 0 view .LVU4
+  41 0004 5960     		str	r1, [r3, #4]
+  22:app/drivers/opt3001/opt3001.c ****     OPT3001_IO.readReg = readReg;
+  42              		.loc 1 22 5 is_stmt 1 view .LVU5
+  43              		.loc 1 22 24 is_stmt 0 view .LVU6
+  44 0006 9A60     		str	r2, [r3, #8]
+  23:app/drivers/opt3001/opt3001.c ****     return OPT3001_OK;
+  45              		.loc 1 23 5 is_stmt 1 view .LVU7
+  24:app/drivers/opt3001/opt3001.c **** }
+  46              		.loc 1 24 1 is_stmt 0 view .LVU8
+  47 0008 0020     		movs	r0, #0
+  48              	.LVL1:
+  49              		.loc 1 24 1 view .LVU9
+  50 000a 7047     		bx	lr
+  51              	.L3:
+  52              		.align	2
+  53              	.L2:
+  54 000c 00000000 		.word	.LANCHOR0
+  55              		.cfi_endproc
+  56              	.LFE139:
+  58              		.section	.text.OPT3001_ReadDeviceID,"ax",%progbits
+  59              		.align	1
+  60              		.global	OPT3001_ReadDeviceID
+  61              		.syntax unified
+  62              		.thumb
+  63              		.thumb_func
+  64              		.fpu fpv4-sp-d16
+  66              	OPT3001_ReadDeviceID:
+  67              	.LVL2:
+  68              	.LFB140:
+  25:app/drivers/opt3001/opt3001.c **** 
+  26:app/drivers/opt3001/opt3001.c **** OPT3001_RESULT OPT3001_ReadDeviceID(uint16_t *id) {
+  69              		.loc 1 26 51 is_stmt 1 view -0
+  70              		.cfi_startproc
+  71              		@ args = 0, pretend = 0, frame = 8
+  72              		@ frame_needed = 0, uses_anonymous_args = 0
+  73              		.loc 1 26 51 is_stmt 0 view .LVU11
+  74 0000 30B5     		push	{r4, r5, lr}
+  75              	.LCFI0:
+  76              		.cfi_def_cfa_offset 12
+  77              		.cfi_offset 4, -12
+  78              		.cfi_offset 5, -8
+  79              		.cfi_offset 14, -4
+  80 0002 83B0     		sub	sp, sp, #12
+  81              	.LCFI1:
+  82              		.cfi_def_cfa_offset 24
+  83 0004 0446     		mov	r4, r0
+  27:app/drivers/opt3001/opt3001.c ****     uint8_t idData[OPT3001_REGISTER_SIZE];
+  84              		.loc 1 27 5 is_stmt 1 view .LVU12
+  28:app/drivers/opt3001/opt3001.c ****     int32_t transferResult = OPT3001_IO.readReg(OPT3001_IO.i2cAddress, OPT3001_DEVICE_ID_REG, idDat
+  85              		.loc 1 28 5 view .LVU13
+  86              		.loc 1 28 40 is_stmt 0 view .LVU14
+  87 0006 0A48     		ldr	r0, .L8
+  88              	.LVL3:
+  89              		.loc 1 28 40 view .LVU15
+ARM GAS  /tmp/cc1mzHEh.s 			page 3
+
+
+  90 0008 8568     		ldr	r5, [r0, #8]
+  91              		.loc 1 28 30 view .LVU16
+  92 000a 0223     		movs	r3, #2
+  93 000c 01AA     		add	r2, sp, #4
+  94 000e 7F21     		movs	r1, #127
+  95 0010 0078     		ldrb	r0, [r0]	@ zero_extendqisi2
+  96 0012 A847     		blx	r5
+  97              	.LVL4:
+  29:app/drivers/opt3001/opt3001.c **** 
+  30:app/drivers/opt3001/opt3001.c ****     if (transferResult != OPT3001_OK)
+  98              		.loc 1 30 5 is_stmt 1 view .LVU17
+  99              		.loc 1 30 8 is_stmt 0 view .LVU18
+ 100 0014 40B9     		cbnz	r0, .L6
+  31:app/drivers/opt3001/opt3001.c ****         return OPT3001_ERROR;
+  32:app/drivers/opt3001/opt3001.c **** 
+  33:app/drivers/opt3001/opt3001.c ****     *id = (idData[0] << 8) | idData[1];
+ 101              		.loc 1 33 5 is_stmt 1 view .LVU19
+ 102              		.loc 1 33 18 is_stmt 0 view .LVU20
+ 103 0016 9DF80420 		ldrb	r2, [sp, #4]	@ zero_extendqisi2
+ 104              		.loc 1 33 36 view .LVU21
+ 105 001a 9DF80530 		ldrb	r3, [sp, #5]	@ zero_extendqisi2
+ 106              		.loc 1 33 28 view .LVU22
+ 107 001e 43EA0223 		orr	r3, r3, r2, lsl #8
+ 108              		.loc 1 33 9 view .LVU23
+ 109 0022 2380     		strh	r3, [r4]	@ movhi
+  34:app/drivers/opt3001/opt3001.c ****     return OPT3001_OK;
+ 110              		.loc 1 34 5 is_stmt 1 view .LVU24
+ 111              	.L4:
+  35:app/drivers/opt3001/opt3001.c **** }
+ 112              		.loc 1 35 1 is_stmt 0 view .LVU25
+ 113 0024 03B0     		add	sp, sp, #12
+ 114              	.LCFI2:
+ 115              		.cfi_remember_state
+ 116              		.cfi_def_cfa_offset 12
+ 117              		@ sp needed
+ 118 0026 30BD     		pop	{r4, r5, pc}
+ 119              	.LVL5:
+ 120              	.L6:
+ 121              	.LCFI3:
+ 122              		.cfi_restore_state
+  31:app/drivers/opt3001/opt3001.c ****         return OPT3001_ERROR;
+ 123              		.loc 1 31 16 view .LVU26
+ 124 0028 4FF0FF30 		mov	r0, #-1
+ 125 002c FAE7     		b	.L4
+ 126              	.L9:
+ 127 002e 00BF     		.align	2
+ 128              	.L8:
+ 129 0030 00000000 		.word	.LANCHOR0
+ 130              		.cfi_endproc
+ 131              	.LFE140:
+ 133              		.section	.text.OPT3001_ReadConfig,"ax",%progbits
+ 134              		.align	1
+ 135              		.global	OPT3001_ReadConfig
+ 136              		.syntax unified
+ 137              		.thumb
+ 138              		.thumb_func
+ 139              		.fpu fpv4-sp-d16
+ARM GAS  /tmp/cc1mzHEh.s 			page 4
+
+
+ 141              	OPT3001_ReadConfig:
+ 142              	.LVL6:
+ 143              	.LFB141:
+  36:app/drivers/opt3001/opt3001.c **** 
+  37:app/drivers/opt3001/opt3001.c **** OPT3001_RESULT OPT3001_ReadConfig(uint16_t *config) {
+ 144              		.loc 1 37 53 is_stmt 1 view -0
+ 145              		.cfi_startproc
+ 146              		@ args = 0, pretend = 0, frame = 8
+ 147              		@ frame_needed = 0, uses_anonymous_args = 0
+ 148              		.loc 1 37 53 is_stmt 0 view .LVU28
+ 149 0000 30B5     		push	{r4, r5, lr}
+ 150              	.LCFI4:
+ 151              		.cfi_def_cfa_offset 12
+ 152              		.cfi_offset 4, -12
+ 153              		.cfi_offset 5, -8
+ 154              		.cfi_offset 14, -4
+ 155 0002 83B0     		sub	sp, sp, #12
+ 156              	.LCFI5:
+ 157              		.cfi_def_cfa_offset 24
+ 158 0004 0446     		mov	r4, r0
+  38:app/drivers/opt3001/opt3001.c ****     uint8_t configData[OPT3001_REGISTER_SIZE];
+ 159              		.loc 1 38 5 is_stmt 1 view .LVU29
+  39:app/drivers/opt3001/opt3001.c ****     int32_t transferResult = OPT3001_IO.readReg(OPT3001_IO.i2cAddress, OPT3001_CONFIG_REG, configDa
+ 160              		.loc 1 39 5 view .LVU30
+ 161              		.loc 1 39 40 is_stmt 0 view .LVU31
+ 162 0006 0A48     		ldr	r0, .L14
+ 163              	.LVL7:
+ 164              		.loc 1 39 40 view .LVU32
+ 165 0008 8568     		ldr	r5, [r0, #8]
+ 166              		.loc 1 39 30 view .LVU33
+ 167 000a 0223     		movs	r3, #2
+ 168 000c 01AA     		add	r2, sp, #4
+ 169 000e 0121     		movs	r1, #1
+ 170 0010 0078     		ldrb	r0, [r0]	@ zero_extendqisi2
+ 171 0012 A847     		blx	r5
+ 172              	.LVL8:
+  40:app/drivers/opt3001/opt3001.c **** 
+  41:app/drivers/opt3001/opt3001.c ****     if (transferResult != OPT3001_OK)
+ 173              		.loc 1 41 5 is_stmt 1 view .LVU34
+ 174              		.loc 1 41 8 is_stmt 0 view .LVU35
+ 175 0014 40B9     		cbnz	r0, .L12
+  42:app/drivers/opt3001/opt3001.c ****         return OPT3001_ERROR;
+  43:app/drivers/opt3001/opt3001.c **** 
+  44:app/drivers/opt3001/opt3001.c ****     *config = (configData[0] << 8) | configData[1];
+ 176              		.loc 1 44 5 is_stmt 1 view .LVU36
+ 177              		.loc 1 44 26 is_stmt 0 view .LVU37
+ 178 0016 9DF80420 		ldrb	r2, [sp, #4]	@ zero_extendqisi2
+ 179              		.loc 1 44 48 view .LVU38
+ 180 001a 9DF80530 		ldrb	r3, [sp, #5]	@ zero_extendqisi2
+ 181              		.loc 1 44 36 view .LVU39
+ 182 001e 43EA0223 		orr	r3, r3, r2, lsl #8
+ 183              		.loc 1 44 13 view .LVU40
+ 184 0022 2380     		strh	r3, [r4]	@ movhi
+  45:app/drivers/opt3001/opt3001.c ****     return OPT3001_OK;
+ 185              		.loc 1 45 5 is_stmt 1 view .LVU41
+ 186              	.L10:
+  46:app/drivers/opt3001/opt3001.c **** }
+ARM GAS  /tmp/cc1mzHEh.s 			page 5
+
+
+ 187              		.loc 1 46 1 is_stmt 0 view .LVU42
+ 188 0024 03B0     		add	sp, sp, #12
+ 189              	.LCFI6:
+ 190              		.cfi_remember_state
+ 191              		.cfi_def_cfa_offset 12
+ 192              		@ sp needed
+ 193 0026 30BD     		pop	{r4, r5, pc}
+ 194              	.LVL9:
+ 195              	.L12:
+ 196              	.LCFI7:
+ 197              		.cfi_restore_state
+  42:app/drivers/opt3001/opt3001.c ****         return OPT3001_ERROR;
+ 198              		.loc 1 42 16 view .LVU43
+ 199 0028 4FF0FF30 		mov	r0, #-1
+ 200 002c FAE7     		b	.L10
+ 201              	.L15:
+ 202 002e 00BF     		.align	2
+ 203              	.L14:
+ 204 0030 00000000 		.word	.LANCHOR0
+ 205              		.cfi_endproc
+ 206              	.LFE141:
+ 208              		.section	.text.OPT3001_WriteConfig,"ax",%progbits
+ 209              		.align	1
+ 210              		.global	OPT3001_WriteConfig
+ 211              		.syntax unified
+ 212              		.thumb
+ 213              		.thumb_func
+ 214              		.fpu fpv4-sp-d16
+ 216              	OPT3001_WriteConfig:
+ 217              	.LVL10:
+ 218              	.LFB142:
+  47:app/drivers/opt3001/opt3001.c **** 
+  48:app/drivers/opt3001/opt3001.c **** OPT3001_RESULT OPT3001_WriteConfig(uint16_t config) {
+ 219              		.loc 1 48 53 is_stmt 1 view -0
+ 220              		.cfi_startproc
+ 221              		@ args = 0, pretend = 0, frame = 8
+ 222              		@ frame_needed = 0, uses_anonymous_args = 0
+ 223              		.loc 1 48 53 is_stmt 0 view .LVU45
+ 224 0000 10B5     		push	{r4, lr}
+ 225              	.LCFI8:
+ 226              		.cfi_def_cfa_offset 8
+ 227              		.cfi_offset 4, -8
+ 228              		.cfi_offset 14, -4
+ 229 0002 82B0     		sub	sp, sp, #8
+ 230              	.LCFI9:
+ 231              		.cfi_def_cfa_offset 16
+  49:app/drivers/opt3001/opt3001.c ****     uint8_t configData[OPT3001_REGISTER_SIZE] = {config >> 8, config & 0xFF};
+ 232              		.loc 1 49 5 is_stmt 1 view .LVU46
+ 233              		.loc 1 49 13 is_stmt 0 view .LVU47
+ 234 0004 030A     		lsrs	r3, r0, #8
+ 235 0006 8DF80430 		strb	r3, [sp, #4]
+ 236 000a 8DF80500 		strb	r0, [sp, #5]
+  50:app/drivers/opt3001/opt3001.c ****     return OPT3001_IO.writeReg(OPT3001_IO.i2cAddress, OPT3001_CONFIG_REG, configData, OPT3001_REGIS
+ 237              		.loc 1 50 5 is_stmt 1 view .LVU48
+ 238              		.loc 1 50 22 is_stmt 0 view .LVU49
+ 239 000e 0448     		ldr	r0, .L18
+ 240              	.LVL11:
+ARM GAS  /tmp/cc1mzHEh.s 			page 6
+
+
+ 241              		.loc 1 50 22 view .LVU50
+ 242 0010 4468     		ldr	r4, [r0, #4]
+ 243              		.loc 1 50 12 view .LVU51
+ 244 0012 0223     		movs	r3, #2
+ 245 0014 01AA     		add	r2, sp, #4
+ 246 0016 0121     		movs	r1, #1
+ 247 0018 0078     		ldrb	r0, [r0]	@ zero_extendqisi2
+ 248 001a A047     		blx	r4
+ 249              	.LVL12:
+  51:app/drivers/opt3001/opt3001.c **** }
+ 250              		.loc 1 51 1 view .LVU52
+ 251 001c 02B0     		add	sp, sp, #8
+ 252              	.LCFI10:
+ 253              		.cfi_def_cfa_offset 8
+ 254              		@ sp needed
+ 255 001e 10BD     		pop	{r4, pc}
+ 256              	.L19:
+ 257              		.align	2
+ 258              	.L18:
+ 259 0020 00000000 		.word	.LANCHOR0
+ 260              		.cfi_endproc
+ 261              	.LFE142:
+ 263              		.section	.text.OPT3001_WriteLowLimit,"ax",%progbits
+ 264              		.align	1
+ 265              		.global	OPT3001_WriteLowLimit
+ 266              		.syntax unified
+ 267              		.thumb
+ 268              		.thumb_func
+ 269              		.fpu fpv4-sp-d16
+ 271              	OPT3001_WriteLowLimit:
+ 272              	.LVL13:
+ 273              	.LFB143:
+  52:app/drivers/opt3001/opt3001.c **** 
+  53:app/drivers/opt3001/opt3001.c **** OPT3001_RESULT OPT3001_WriteLowLimit(uint16_t lowLimitRawLux) {
+ 274              		.loc 1 53 63 is_stmt 1 view -0
+ 275              		.cfi_startproc
+ 276              		@ args = 0, pretend = 0, frame = 8
+ 277              		@ frame_needed = 0, uses_anonymous_args = 0
+ 278              		.loc 1 53 63 is_stmt 0 view .LVU54
+ 279 0000 10B5     		push	{r4, lr}
+ 280              	.LCFI11:
+ 281              		.cfi_def_cfa_offset 8
+ 282              		.cfi_offset 4, -8
+ 283              		.cfi_offset 14, -4
+ 284 0002 82B0     		sub	sp, sp, #8
+ 285              	.LCFI12:
+ 286              		.cfi_def_cfa_offset 16
+  54:app/drivers/opt3001/opt3001.c ****   uint8_t lowLimitData[OPT3001_REGISTER_SIZE] = {lowLimitRawLux >> 8, lowLimitRawLux & 0xFF};
+ 287              		.loc 1 54 3 is_stmt 1 view .LVU55
+ 288              		.loc 1 54 11 is_stmt 0 view .LVU56
+ 289 0004 030A     		lsrs	r3, r0, #8
+ 290 0006 8DF80430 		strb	r3, [sp, #4]
+ 291 000a 8DF80500 		strb	r0, [sp, #5]
+  55:app/drivers/opt3001/opt3001.c ****   return OPT3001_IO.writeReg(OPT3001_IO.i2cAddress, OPT3001_LIMIT_LOW_REG, lowLimitData, OPT3001_RE
+ 292              		.loc 1 55 3 is_stmt 1 view .LVU57
+ 293              		.loc 1 55 20 is_stmt 0 view .LVU58
+ 294 000e 0448     		ldr	r0, .L22
+ARM GAS  /tmp/cc1mzHEh.s 			page 7
+
+
+ 295              	.LVL14:
+ 296              		.loc 1 55 20 view .LVU59
+ 297 0010 4468     		ldr	r4, [r0, #4]
+ 298              		.loc 1 55 10 view .LVU60
+ 299 0012 0223     		movs	r3, #2
+ 300 0014 01AA     		add	r2, sp, #4
+ 301 0016 1946     		mov	r1, r3
+ 302 0018 0078     		ldrb	r0, [r0]	@ zero_extendqisi2
+ 303 001a A047     		blx	r4
+ 304              	.LVL15:
+  56:app/drivers/opt3001/opt3001.c **** }
+ 305              		.loc 1 56 1 view .LVU61
+ 306 001c 02B0     		add	sp, sp, #8
+ 307              	.LCFI13:
+ 308              		.cfi_def_cfa_offset 8
+ 309              		@ sp needed
+ 310 001e 10BD     		pop	{r4, pc}
+ 311              	.L23:
+ 312              		.align	2
+ 313              	.L22:
+ 314 0020 00000000 		.word	.LANCHOR0
+ 315              		.cfi_endproc
+ 316              	.LFE143:
+ 318              		.section	.text.OPT3001_WriteHighLimit,"ax",%progbits
+ 319              		.align	1
+ 320              		.global	OPT3001_WriteHighLimit
+ 321              		.syntax unified
+ 322              		.thumb
+ 323              		.thumb_func
+ 324              		.fpu fpv4-sp-d16
+ 326              	OPT3001_WriteHighLimit:
+ 327              	.LVL16:
+ 328              	.LFB144:
+  57:app/drivers/opt3001/opt3001.c **** 
+  58:app/drivers/opt3001/opt3001.c **** OPT3001_RESULT OPT3001_WriteHighLimit(uint16_t highLimitRawLux) {
+ 329              		.loc 1 58 65 is_stmt 1 view -0
+ 330              		.cfi_startproc
+ 331              		@ args = 0, pretend = 0, frame = 8
+ 332              		@ frame_needed = 0, uses_anonymous_args = 0
+ 333              		.loc 1 58 65 is_stmt 0 view .LVU63
+ 334 0000 10B5     		push	{r4, lr}
+ 335              	.LCFI14:
+ 336              		.cfi_def_cfa_offset 8
+ 337              		.cfi_offset 4, -8
+ 338              		.cfi_offset 14, -4
+ 339 0002 82B0     		sub	sp, sp, #8
+ 340              	.LCFI15:
+ 341              		.cfi_def_cfa_offset 16
+  59:app/drivers/opt3001/opt3001.c ****   uint8_t highLimitData[OPT3001_REGISTER_SIZE] = {highLimitRawLux >> 8, highLimitRawLux & 0xFF};
+ 342              		.loc 1 59 3 is_stmt 1 view .LVU64
+ 343              		.loc 1 59 11 is_stmt 0 view .LVU65
+ 344 0004 030A     		lsrs	r3, r0, #8
+ 345 0006 8DF80430 		strb	r3, [sp, #4]
+ 346 000a 8DF80500 		strb	r0, [sp, #5]
+  60:app/drivers/opt3001/opt3001.c ****   return OPT3001_IO.writeReg(OPT3001_IO.i2cAddress, OPT3001_LIMIT_HIGH_REG, highLimitData, OPT3001_
+ 347              		.loc 1 60 3 is_stmt 1 view .LVU66
+ 348              		.loc 1 60 20 is_stmt 0 view .LVU67
+ARM GAS  /tmp/cc1mzHEh.s 			page 8
+
+
+ 349 000e 0448     		ldr	r0, .L26
+ 350              	.LVL17:
+ 351              		.loc 1 60 20 view .LVU68
+ 352 0010 4468     		ldr	r4, [r0, #4]
+ 353              		.loc 1 60 10 view .LVU69
+ 354 0012 0223     		movs	r3, #2
+ 355 0014 01AA     		add	r2, sp, #4
+ 356 0016 0321     		movs	r1, #3
+ 357 0018 0078     		ldrb	r0, [r0]	@ zero_extendqisi2
+ 358 001a A047     		blx	r4
+ 359              	.LVL18:
+  61:app/drivers/opt3001/opt3001.c **** }
+ 360              		.loc 1 61 1 view .LVU70
+ 361 001c 02B0     		add	sp, sp, #8
+ 362              	.LCFI16:
+ 363              		.cfi_def_cfa_offset 8
+ 364              		@ sp needed
+ 365 001e 10BD     		pop	{r4, pc}
+ 366              	.L27:
+ 367              		.align	2
+ 368              	.L26:
+ 369 0020 00000000 		.word	.LANCHOR0
+ 370              		.cfi_endproc
+ 371              	.LFE144:
+ 373              		.section	.text.OPT3001_ReadResultRawLux,"ax",%progbits
+ 374              		.align	1
+ 375              		.global	OPT3001_ReadResultRawLux
+ 376              		.syntax unified
+ 377              		.thumb
+ 378              		.thumb_func
+ 379              		.fpu fpv4-sp-d16
+ 381              	OPT3001_ReadResultRawLux:
+ 382              	.LVL19:
+ 383              	.LFB145:
+  62:app/drivers/opt3001/opt3001.c **** 
+  63:app/drivers/opt3001/opt3001.c **** OPT3001_RESULT OPT3001_ReadResultRawLux(uint16_t *rawLux) {
+ 384              		.loc 1 63 59 is_stmt 1 view -0
+ 385              		.cfi_startproc
+ 386              		@ args = 0, pretend = 0, frame = 8
+ 387              		@ frame_needed = 0, uses_anonymous_args = 0
+ 388              		.loc 1 63 59 is_stmt 0 view .LVU72
+ 389 0000 30B5     		push	{r4, r5, lr}
+ 390              	.LCFI17:
+ 391              		.cfi_def_cfa_offset 12
+ 392              		.cfi_offset 4, -12
+ 393              		.cfi_offset 5, -8
+ 394              		.cfi_offset 14, -4
+ 395 0002 83B0     		sub	sp, sp, #12
+ 396              	.LCFI18:
+ 397              		.cfi_def_cfa_offset 24
+ 398 0004 0446     		mov	r4, r0
+  64:app/drivers/opt3001/opt3001.c ****     uint8_t rawLuxData[OPT3001_REGISTER_SIZE];
+ 399              		.loc 1 64 5 is_stmt 1 view .LVU73
+  65:app/drivers/opt3001/opt3001.c ****     int32_t transferResult = OPT3001_IO.readReg(OPT3001_IO.i2cAddress, OPT3001_RESULT_REG, rawLuxDa
+ 400              		.loc 1 65 5 view .LVU74
+ 401              		.loc 1 65 40 is_stmt 0 view .LVU75
+ 402 0006 0A48     		ldr	r0, .L32
+ARM GAS  /tmp/cc1mzHEh.s 			page 9
+
+
+ 403              	.LVL20:
+ 404              		.loc 1 65 40 view .LVU76
+ 405 0008 8568     		ldr	r5, [r0, #8]
+ 406              		.loc 1 65 30 view .LVU77
+ 407 000a 0223     		movs	r3, #2
+ 408 000c 01AA     		add	r2, sp, #4
+ 409 000e 0021     		movs	r1, #0
+ 410 0010 0078     		ldrb	r0, [r0]	@ zero_extendqisi2
+ 411 0012 A847     		blx	r5
+ 412              	.LVL21:
+  66:app/drivers/opt3001/opt3001.c **** 
+  67:app/drivers/opt3001/opt3001.c ****     if (transferResult != OPT3001_OK)
+ 413              		.loc 1 67 5 is_stmt 1 view .LVU78
+ 414              		.loc 1 67 8 is_stmt 0 view .LVU79
+ 415 0014 40B9     		cbnz	r0, .L30
+  68:app/drivers/opt3001/opt3001.c ****         return OPT3001_ERROR;
+  69:app/drivers/opt3001/opt3001.c **** 
+  70:app/drivers/opt3001/opt3001.c ****     *rawLux = (rawLuxData[0] << 8) | rawLuxData[1];
+ 416              		.loc 1 70 5 is_stmt 1 view .LVU80
+ 417              		.loc 1 70 26 is_stmt 0 view .LVU81
+ 418 0016 9DF80420 		ldrb	r2, [sp, #4]	@ zero_extendqisi2
+ 419              		.loc 1 70 48 view .LVU82
+ 420 001a 9DF80530 		ldrb	r3, [sp, #5]	@ zero_extendqisi2
+ 421              		.loc 1 70 36 view .LVU83
+ 422 001e 43EA0223 		orr	r3, r3, r2, lsl #8
+ 423              		.loc 1 70 13 view .LVU84
+ 424 0022 2380     		strh	r3, [r4]	@ movhi
+  71:app/drivers/opt3001/opt3001.c ****     return OPT3001_OK;
+ 425              		.loc 1 71 5 is_stmt 1 view .LVU85
+ 426              	.L28:
+  72:app/drivers/opt3001/opt3001.c **** }
+ 427              		.loc 1 72 1 is_stmt 0 view .LVU86
+ 428 0024 03B0     		add	sp, sp, #12
+ 429              	.LCFI19:
+ 430              		.cfi_remember_state
+ 431              		.cfi_def_cfa_offset 12
+ 432              		@ sp needed
+ 433 0026 30BD     		pop	{r4, r5, pc}
+ 434              	.LVL22:
+ 435              	.L30:
+ 436              	.LCFI20:
+ 437              		.cfi_restore_state
+  68:app/drivers/opt3001/opt3001.c ****         return OPT3001_ERROR;
+ 438              		.loc 1 68 16 view .LVU87
+ 439 0028 4FF0FF30 		mov	r0, #-1
+ 440 002c FAE7     		b	.L28
+ 441              	.L33:
+ 442 002e 00BF     		.align	2
+ 443              	.L32:
+ 444 0030 00000000 		.word	.LANCHOR0
+ 445              		.cfi_endproc
+ 446              	.LFE145:
+ 448              		.section	.text.OPT3001_RawToMilliLux,"ax",%progbits
+ 449              		.align	1
+ 450              		.global	OPT3001_RawToMilliLux
+ 451              		.syntax unified
+ 452              		.thumb
+ARM GAS  /tmp/cc1mzHEh.s 			page 10
+
+
+ 453              		.thumb_func
+ 454              		.fpu fpv4-sp-d16
+ 456              	OPT3001_RawToMilliLux:
+ 457              	.LVL23:
+ 458              	.LFB146:
+  73:app/drivers/opt3001/opt3001.c **** 
+  74:app/drivers/opt3001/opt3001.c **** /**
+  75:app/drivers/opt3001/opt3001.c ****  * @brief Convert raw lux value to milli lux
+  76:app/drivers/opt3001/opt3001.c ****  *
+  77:app/drivers/opt3001/opt3001.c ****  * @note the formula is lux = (2^LE[3:0]) * TL[11:0] where LE is the exponent and TL is the mantiss
+  78:app/drivers/opt3001/opt3001.c ****  *
+  79:app/drivers/opt3001/opt3001.c ****  * @param[in] rawLux raw data from sensor
+  80:app/drivers/opt3001/opt3001.c ****  * @return milli lux
+  81:app/drivers/opt3001/opt3001.c ****  */
+  82:app/drivers/opt3001/opt3001.c **** uint32_t OPT3001_RawToMilliLux(uint16_t rawLux) {
+ 459              		.loc 1 82 49 is_stmt 1 view -0
+ 460              		.cfi_startproc
+ 461              		@ args = 0, pretend = 0, frame = 0
+ 462              		@ frame_needed = 0, uses_anonymous_args = 0
+ 463              		@ link register save eliminated.
+  83:app/drivers/opt3001/opt3001.c ****   uint32_t exponent = OPT3001_REG_EXPONENT(rawLux) & 0x0F;
+ 464              		.loc 1 83 3 view .LVU89
+ 465              		.loc 1 83 52 is_stmt 0 view .LVU90
+ 466 0000 030B     		lsrs	r3, r0, #12
+ 467              	.LVL24:
+  84:app/drivers/opt3001/opt3001.c ****   uint32_t mantissa = OPT3001_REG_MANTISSA(rawLux);
+ 468              		.loc 1 84 3 is_stmt 1 view .LVU91
+ 469              		.loc 1 84 12 is_stmt 0 view .LVU92
+ 470 0002 C0F30B00 		ubfx	r0, r0, #0, #12
+ 471              	.LVL25:
+  85:app/drivers/opt3001/opt3001.c **** 
+  86:app/drivers/opt3001/opt3001.c ****   return ((1 << exponent) * mantissa);
+ 472              		.loc 1 86 3 is_stmt 1 view .LVU93
+  87:app/drivers/opt3001/opt3001.c **** }...
+ 473              		.loc 1 87 1 is_stmt 0 view .LVU94
+ 474 0006 9840     		lsls	r0, r0, r3
+ 475              	.LVL26:
+ 476              		.loc 1 87 1 view .LVU95
+ 477 0008 7047     		bx	lr
+ 478              		.cfi_endproc
+ 479              	.LFE146:
+ 481              		.global	OPT3001_IO
+ 482              		.section	.bss.OPT3001_IO,"aw",%nobits
+ 483              		.align	2
+ 484              		.set	.LANCHOR0,. + 0
+ 487              	OPT3001_IO:
+ 488 0000 00000000 		.space	12
+ 488      00000000 
+ 488      00000000 
+ 489              		.text
+ 490              	.Letext0:
+ 491              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 492              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 493              		.file 4 "app/drivers/opt3001/opt3001.h"
+ARM GAS  /tmp/cc1mzHEh.s 			page 11
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 opt3001.c
+     /tmp/cc1mzHEh.s:18     .text.OPT3001_InitIO:0000000000000000 $t
+     /tmp/cc1mzHEh.s:26     .text.OPT3001_InitIO:0000000000000000 OPT3001_InitIO
+     /tmp/cc1mzHEh.s:54     .text.OPT3001_InitIO:000000000000000c $d
+     /tmp/cc1mzHEh.s:59     .text.OPT3001_ReadDeviceID:0000000000000000 $t
+     /tmp/cc1mzHEh.s:66     .text.OPT3001_ReadDeviceID:0000000000000000 OPT3001_ReadDeviceID
+     /tmp/cc1mzHEh.s:129    .text.OPT3001_ReadDeviceID:0000000000000030 $d
+     /tmp/cc1mzHEh.s:134    .text.OPT3001_ReadConfig:0000000000000000 $t
+     /tmp/cc1mzHEh.s:141    .text.OPT3001_ReadConfig:0000000000000000 OPT3001_ReadConfig
+     /tmp/cc1mzHEh.s:204    .text.OPT3001_ReadConfig:0000000000000030 $d
+     /tmp/cc1mzHEh.s:209    .text.OPT3001_WriteConfig:0000000000000000 $t
+     /tmp/cc1mzHEh.s:216    .text.OPT3001_WriteConfig:0000000000000000 OPT3001_WriteConfig
+     /tmp/cc1mzHEh.s:259    .text.OPT3001_WriteConfig:0000000000000020 $d
+     /tmp/cc1mzHEh.s:264    .text.OPT3001_WriteLowLimit:0000000000000000 $t
+     /tmp/cc1mzHEh.s:271    .text.OPT3001_WriteLowLimit:0000000000000000 OPT3001_WriteLowLimit
+     /tmp/cc1mzHEh.s:314    .text.OPT3001_WriteLowLimit:0000000000000020 $d
+     /tmp/cc1mzHEh.s:319    .text.OPT3001_WriteHighLimit:0000000000000000 $t
+     /tmp/cc1mzHEh.s:326    .text.OPT3001_WriteHighLimit:0000000000000000 OPT3001_WriteHighLimit
+     /tmp/cc1mzHEh.s:369    .text.OPT3001_WriteHighLimit:0000000000000020 $d
+     /tmp/cc1mzHEh.s:374    .text.OPT3001_ReadResultRawLux:0000000000000000 $t
+     /tmp/cc1mzHEh.s:381    .text.OPT3001_ReadResultRawLux:0000000000000000 OPT3001_ReadResultRawLux
+     /tmp/cc1mzHEh.s:444    .text.OPT3001_ReadResultRawLux:0000000000000030 $d
+     /tmp/cc1mzHEh.s:449    .text.OPT3001_RawToMilliLux:0000000000000000 $t
+     /tmp/cc1mzHEh.s:456    .text.OPT3001_RawToMilliLux:0000000000000000 OPT3001_RawToMilliLux
+     /tmp/cc1mzHEh.s:487    .bss.OPT3001_IO:0000000000000000 OPT3001_IO
+     /tmp/cc1mzHEh.s:483    .bss.OPT3001_IO:0000000000000000 $d
+
+NO UNDEFINED SYMBOLS

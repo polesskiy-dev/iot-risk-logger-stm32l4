@@ -1,0 +1,161 @@
+ARM GAS  /tmp/cc0SffyP.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"info_led.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.INFO_LED_Init,"ax",%progbits
+  18              		.align	1
+  19              		.global	INFO_LED_Init
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	INFO_LED_Init:
+  27              	.LFB139:
+  28              		.file 1 "app/core/info_led/info_led.c"
+   1:app/core/info_led/info_led.c **** #include "info_led.h"
+   2:app/core/info_led/info_led.c **** 
+   3:app/core/info_led/info_led.c **** void INFO_LED_Init(void) {
+  29              		.loc 1 3 26 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 08B5     		push	{r3, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 3, -8
+  37              		.cfi_offset 14, -4
+   4:app/core/info_led/info_led.c ****   return INFO_LED_OFF;
+  38              		.loc 1 4 3 view .LVU1
+  39              		.loc 1 4 10 is_stmt 0 view .LVU2
+  40 0002 0122     		movs	r2, #1
+  41 0004 4FF40041 		mov	r1, #32768
+  42 0008 4FF09040 		mov	r0, #1207959552
+  43 000c FFF7FEFF 		bl	HAL_GPIO_WritePin
+  44              	.LVL0:
+   5:app/core/info_led/info_led.c **** }
+  45              		.loc 1 5 1 view .LVU3
+  46 0010 08BD     		pop	{r3, pc}
+  47              		.cfi_endproc
+  48              	.LFE139:
+  50              		.section	.text.INFO_LED_HandleMessageCMD,"ax",%progbits
+  51              		.align	1
+  52              		.global	INFO_LED_HandleMessageCMD
+  53              		.syntax unified
+  54              		.thumb
+ARM GAS  /tmp/cc0SffyP.s 			page 2
+
+
+  55              		.thumb_func
+  56              		.fpu fpv4-sp-d16
+  58              	INFO_LED_HandleMessageCMD:
+  59              	.LVL1:
+  60              	.LFB140:
+   6:app/core/info_led/info_led.c **** 
+   7:app/core/info_led/info_led.c **** osStatus_t INFO_LED_HandleMessageCMD(message_t *message) {
+  61              		.loc 1 7 58 is_stmt 1 view -0
+  62              		.cfi_startproc
+  63              		@ args = 0, pretend = 0, frame = 0
+  64              		@ frame_needed = 0, uses_anonymous_args = 0
+  65              		.loc 1 7 58 is_stmt 0 view .LVU5
+  66 0000 08B5     		push	{r3, lr}
+  67              	.LCFI1:
+  68              		.cfi_def_cfa_offset 8
+  69              		.cfi_offset 3, -8
+  70              		.cfi_offset 14, -4
+   8:app/core/info_led/info_led.c ****   switch (message->event) {
+  71              		.loc 1 8 3 is_stmt 1 view .LVU6
+  72              		.loc 1 8 18 is_stmt 0 view .LVU7
+  73 0002 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+  74              		.loc 1 8 3 view .LVU8
+  75 0004 062B     		cmp	r3, #6
+  76 0006 03D0     		beq	.L4
+  77 0008 072B     		cmp	r3, #7
+  78 000a 09D0     		beq	.L5
+  79              	.LVL2:
+  80              	.L6:
+   9:app/core/info_led/info_led.c ****     case GLOBAL_CMD_INFO_LED_ON:
+  10:app/core/info_led/info_led.c ****       INFO_LED_ON;
+  11:app/core/info_led/info_led.c ****       break;
+  12:app/core/info_led/info_led.c ****     case GLOBAL_CMD_INFO_LED_OFF:
+  13:app/core/info_led/info_led.c ****       INFO_LED_OFF;
+  14:app/core/info_led/info_led.c ****       break;
+  15:app/core/info_led/info_led.c ****   }
+  16:app/core/info_led/info_led.c ****   return osOK;
+  81              		.loc 1 16 3 is_stmt 1 view .LVU9
+  17:app/core/info_led/info_led.c **** }
+  82              		.loc 1 17 1 is_stmt 0 view .LVU10
+  83 000c 0020     		movs	r0, #0
+  84 000e 08BD     		pop	{r3, pc}
+  85              	.LVL3:
+  86              	.L4:
+  10:app/core/info_led/info_led.c ****       break;
+  87              		.loc 1 10 7 is_stmt 1 view .LVU11
+  88 0010 0022     		movs	r2, #0
+  89 0012 4FF40041 		mov	r1, #32768
+  90 0016 4FF09040 		mov	r0, #1207959552
+  91              	.LVL4:
+  10:app/core/info_led/info_led.c ****       break;
+  92              		.loc 1 10 7 is_stmt 0 view .LVU12
+  93 001a FFF7FEFF 		bl	HAL_GPIO_WritePin
+  94              	.LVL5:
+  11:app/core/info_led/info_led.c ****     case GLOBAL_CMD_INFO_LED_OFF:
+  95              		.loc 1 11 7 is_stmt 1 view .LVU13
+  96 001e F5E7     		b	.L6
+  97              	.LVL6:
+ARM GAS  /tmp/cc0SffyP.s 			page 3
+
+
+  98              	.L5:
+  13:app/core/info_led/info_led.c ****       break;
+  99              		.loc 1 13 7 view .LVU14
+ 100 0020 0122     		movs	r2, #1
+ 101 0022 4FF40041 		mov	r1, #32768
+ 102 0026 4FF09040 		mov	r0, #1207959552
+ 103              	.LVL7:
+  13:app/core/info_led/info_led.c ****       break;
+ 104              		.loc 1 13 7 is_stmt 0 view .LVU15
+ 105 002a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 106              	.LVL8:
+  14:app/core/info_led/info_led.c ****   }
+ 107              		.loc 1 14 7 is_stmt 1 view .LVU16
+ 108 002e EDE7     		b	.L6
+ 109              		.cfi_endproc
+ 110              	.LFE140:
+ 112              		.text
+ 113              	.Letext0:
+ 114              		.file 2 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h"
+ 115              		.file 3 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l412xx.h"
+ 116              		.file 4 "/usr/include/newlib/sys/_types.h"
+ 117              		.file 5 "/usr/include/newlib/sys/types.h"
+ 118              		.file 6 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_gpio.h"
+ 119              		.file 7 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
+ 120              		.file 8 "app/core/actor/../config/events_list/events_list.h"
+ 121              		.file 9 "app/core/actor/actor.h"
+ARM GAS  /tmp/cc0SffyP.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 info_led.c
+     /tmp/cc0SffyP.s:18     .text.INFO_LED_Init:0000000000000000 $t
+     /tmp/cc0SffyP.s:26     .text.INFO_LED_Init:0000000000000000 INFO_LED_Init
+     /tmp/cc0SffyP.s:51     .text.INFO_LED_HandleMessageCMD:0000000000000000 $t
+     /tmp/cc0SffyP.s:58     .text.INFO_LED_HandleMessageCMD:0000000000000000 INFO_LED_HandleMessageCMD
+
+UNDEFINED SYMBOLS
+HAL_GPIO_WritePin

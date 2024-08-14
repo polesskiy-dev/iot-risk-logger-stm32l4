@@ -1,0 +1,63 @@
+ARM GAS  /tmp/ccudEpuo.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"usbd_msc_data.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.global	MSC_Mode_Sense10_data
+  18              		.global	MSC_Mode_Sense6_data
+  19              		.global	MSC_Page80_Inquiry_Data
+  20              		.global	MSC_Page00_Inquiry_Data
+  21              		.section	.data.MSC_Mode_Sense10_data,"aw"
+  22              		.align	2
+  25              	MSC_Mode_Sense10_data:
+  26 0000 00060000 		.ascii	"\000\006\000\000\000\000\000\000"
+  26      00000000 
+  27              		.section	.data.MSC_Mode_Sense6_data,"aw"
+  28              		.align	2
+  31              	MSC_Mode_Sense6_data:
+  32 0000 03000000 		.ascii	"\003\000\000\000"
+  33              		.section	.data.MSC_Page00_Inquiry_Data,"aw"
+  34              		.align	2
+  37              	MSC_Page00_Inquiry_Data:
+  38 0000 00000002 		.ascii	"\000\000\000\002\000\200"
+  38      0080
+  39              		.section	.data.MSC_Page80_Inquiry_Data,"aw"
+  40              		.align	2
+  43              	MSC_Page80_Inquiry_Data:
+  44 0000 00800008 		.ascii	"\000\200\000\010    "
+  44      20202020 
+  45              		.text
+  46              	.Letext0:
+  47              		.file 1 "/usr/include/newlib/machine/_default_types.h"
+  48              		.file 2 "/usr/include/newlib/sys/_stdint.h"
+  49              		.file 3 "Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc/usbd_msc_data.h"
+  50              		.file 4 "Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Src/usbd_msc_data.c"
+ARM GAS  /tmp/ccudEpuo.s 			page 2
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 usbd_msc_data.c
+     /tmp/ccudEpuo.s:25     .data.MSC_Mode_Sense10_data:0000000000000000 MSC_Mode_Sense10_data
+     /tmp/ccudEpuo.s:31     .data.MSC_Mode_Sense6_data:0000000000000000 MSC_Mode_Sense6_data
+     /tmp/ccudEpuo.s:43     .data.MSC_Page80_Inquiry_Data:0000000000000000 MSC_Page80_Inquiry_Data
+     /tmp/ccudEpuo.s:37     .data.MSC_Page00_Inquiry_Data:0000000000000000 MSC_Page00_Inquiry_Data
+     /tmp/ccudEpuo.s:22     .data.MSC_Mode_Sense10_data:0000000000000000 $d
+     /tmp/ccudEpuo.s:28     .data.MSC_Mode_Sense6_data:0000000000000000 $d
+     /tmp/ccudEpuo.s:34     .data.MSC_Page00_Inquiry_Data:0000000000000000 $d
+     /tmp/ccudEpuo.s:40     .data.MSC_Page80_Inquiry_Data:0000000000000000 $d
+
+NO UNDEFINED SYMBOLS

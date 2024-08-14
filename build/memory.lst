@@ -1,0 +1,561 @@
+ARM GAS  /tmp/ccEYbIos.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"memory.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.handleMemoryFSM,"ax",%progbits
+  18              		.align	1
+  19              		.arch armv7e-m
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv4-sp-d16
+  25              	handleMemoryFSM:
+  26              	.LVL0:
+  27              	.LFB141:
+  28              		.file 1 "app/tasks/memory/memory.c"
+   1:app/tasks/memory/memory.c **** /*!
+   2:app/tasks/memory/memory.c ****  * @file memory.c
+   3:app/tasks/memory/memory.c ****  * @brief implementation of memory
+   4:app/tasks/memory/memory.c ****  *
+   5:app/tasks/memory/memory.c ****  * Detailed description of the implementation file.
+   6:app/tasks/memory/memory.c ****  *
+   7:app/tasks/memory/memory.c ****  * @date 14/08/2024
+   8:app/tasks/memory/memory.c ****  * @author artempolisskyi
+   9:app/tasks/memory/memory.c ****  */
+  10:app/tasks/memory/memory.c **** 
+  11:app/tasks/memory/memory.c **** #include "memory.h"
+  12:app/tasks/memory/memory.c **** 
+  13:app/tasks/memory/memory.c **** static osStatus_t handleMemoryFSM(MEMORY_Actor_t *this, message_t *message);
+  14:app/tasks/memory/memory.c **** 
+  15:app/tasks/memory/memory.c **** MEMORY_Actor_t MEMORY_Actor = {
+  16:app/tasks/memory/memory.c ****         .super = {
+  17:app/tasks/memory/memory.c ****                 .actorId = MEMORY_ACTOR_ID,
+  18:app/tasks/memory/memory.c ****                 .messageHandler = (messageHandler_t) handleMemoryFSM,
+  19:app/tasks/memory/memory.c ****                 .osMessageQueueId = NULL,
+  20:app/tasks/memory/memory.c ****                 .osThreadId = NULL,
+  21:app/tasks/memory/memory.c ****         },
+  22:app/tasks/memory/memory.c ****         .state = MEMORY_NO_STATE
+  23:app/tasks/memory/memory.c **** };
+  24:app/tasks/memory/memory.c **** 
+  25:app/tasks/memory/memory.c **** uint32_t memoryTaskBuffer[DEFAULT_TASK_STACK_SIZE_WORDS];
+  26:app/tasks/memory/memory.c **** StaticTask_t memoryTaskControlBlock;
+  27:app/tasks/memory/memory.c **** const osThreadAttr_t memoryTaskDescription = {
+  28:app/tasks/memory/memory.c ****         .name = "memoryTask",
+  29:app/tasks/memory/memory.c ****         .cb_mem = &memoryTaskControlBlock,
+  30:app/tasks/memory/memory.c ****         .cb_size = sizeof(memoryTaskControlBlock),
+ARM GAS  /tmp/ccEYbIos.s 			page 2
+
+
+  31:app/tasks/memory/memory.c ****         .stack_mem = &memoryTaskBuffer[0],
+  32:app/tasks/memory/memory.c ****         .stack_size = sizeof(memoryTaskBuffer),
+  33:app/tasks/memory/memory.c ****         .priority = (osPriority_t) osPriorityNormal,
+  34:app/tasks/memory/memory.c **** };
+  35:app/tasks/memory/memory.c **** 
+  36:app/tasks/memory/memory.c **** actor_t* MEMORY_TaskInit(void) {
+  37:app/tasks/memory/memory.c ****   MEMORY_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MESSAGE
+  38:app/tasks/memory/memory.c ****           .name = "memoryQueue"
+  39:app/tasks/memory/memory.c ****   });
+  40:app/tasks/memory/memory.c ****   MEMORY_Actor.super.osThreadId = osThreadNew(MEMORY_Task, NULL, &memoryTaskDescription);
+  41:app/tasks/memory/memory.c **** 
+  42:app/tasks/memory/memory.c ****   // TODO move to driver
+  43:app/tasks/memory/memory.c **** 
+  44:app/tasks/memory/memory.c ****   QSPI_CommandTypeDef com;
+  45:app/tasks/memory/memory.c **** 
+  46:app/tasks/memory/memory.c ****   com.InstructionMode = QSPI_INSTRUCTION_1_LINE; // QSPI_INSTRUCTION_...
+  47:app/tasks/memory/memory.c ****   com.Instruction = W25Q_POWERDOWN;	 // Command
+  48:app/tasks/memory/memory.c **** 
+  49:app/tasks/memory/memory.c ****   com.AddressMode = QSPI_ADDRESS_NONE;
+  50:app/tasks/memory/memory.c ****   com.AddressSize = QSPI_ADDRESS_NONE;
+  51:app/tasks/memory/memory.c ****   com.Address = 0x0U;
+  52:app/tasks/memory/memory.c **** 
+  53:app/tasks/memory/memory.c ****   com.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
+  54:app/tasks/memory/memory.c ****   com.AlternateBytes = QSPI_ALTERNATE_BYTES_NONE;
+  55:app/tasks/memory/memory.c ****   com.AlternateBytesSize = QSPI_ALTERNATE_BYTES_NONE;
+  56:app/tasks/memory/memory.c **** 
+  57:app/tasks/memory/memory.c ****   com.DummyCycles = 0;
+  58:app/tasks/memory/memory.c ****   com.DataMode = QSPI_DATA_NONE;
+  59:app/tasks/memory/memory.c ****   com.NbData = 0;
+  60:app/tasks/memory/memory.c **** 
+  61:app/tasks/memory/memory.c ****   com.DdrMode = QSPI_DDR_MODE_DISABLE;
+  62:app/tasks/memory/memory.c ****   com.DdrHoldHalfCycle = QSPI_DDR_HHC_ANALOG_DELAY;
+  63:app/tasks/memory/memory.c ****   com.SIOOMode = QSPI_SIOO_INST_EVERY_CMD;
+  64:app/tasks/memory/memory.c **** 
+  65:app/tasks/memory/memory.c ****   HAL_StatusTypeDef status = HAL_QSPI_Command(&hqspi, &com, HAL_QSPI_TIMEOUT_DEFAULT_VALUE);
+  66:app/tasks/memory/memory.c ****   fprintf(stdout, "Memory put to sleep status: %u\n", status);
+  67:app/tasks/memory/memory.c **** 
+  68:app/tasks/memory/memory.c ****   return &MEMORY_Actor.super;
+  69:app/tasks/memory/memory.c **** }
+  70:app/tasks/memory/memory.c **** 
+  71:app/tasks/memory/memory.c **** void MEMORY_Task(void *argument) {
+  72:app/tasks/memory/memory.c ****   (void) argument; // Avoid unused parameter warning
+  73:app/tasks/memory/memory.c ****   message_t msg;
+  74:app/tasks/memory/memory.c **** 
+  75:app/tasks/memory/memory.c ****   fprintf(stdout, "Memory task initialized\n");
+  76:app/tasks/memory/memory.c **** 
+  77:app/tasks/memory/memory.c ****   for (;;) {
+  78:app/tasks/memory/memory.c ****     // Wait for messages from the queue
+  79:app/tasks/memory/memory.c ****     if (osMessageQueueGet(MEMORY_Actor.super.osMessageQueueId, &msg, NULL, osWaitForever) == osOK) 
+  80:app/tasks/memory/memory.c ****       osStatus_t status = MEMORY_Actor.super.messageHandler((actor_t *) &MEMORY_Actor, &msg);
+  81:app/tasks/memory/memory.c ****       if (status != osOK) {
+  82:app/tasks/memory/memory.c ****         // TODO Handle error, emit common error event and reinitialize module
+  83:app/tasks/memory/memory.c ****         MEMORY_Actor.state = MEMORY_STATE_ERROR;
+  84:app/tasks/memory/memory.c ****       }
+  85:app/tasks/memory/memory.c ****     }
+  86:app/tasks/memory/memory.c ****   }
+  87:app/tasks/memory/memory.c **** }
+ARM GAS  /tmp/ccEYbIos.s 			page 3
+
+
+  88:app/tasks/memory/memory.c **** 
+  89:app/tasks/memory/memory.c **** static osStatus_t handleMemoryFSM(MEMORY_Actor_t *this, message_t *message) {
+  29              		.loc 1 89 77 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  90:app/tasks/memory/memory.c ****   return osOK;
+  34              		.loc 1 90 3 view .LVU1
+  91:app/tasks/memory/memory.c **** }...
+  35              		.loc 1 91 1 is_stmt 0 view .LVU2
+  36 0000 0020     		movs	r0, #0
+  37              	.LVL1:
+  38              		.loc 1 91 1 view .LVU3
+  39 0002 7047     		bx	lr
+  40              		.cfi_endproc
+  41              	.LFE141:
+  43              		.section	.rodata.MEMORY_Task.str1.4,"aMS",%progbits,1
+  44              		.align	2
+  45              	.LC0:
+  46 0000 4D656D6F 		.ascii	"Memory task initialized\012\000"
+  46      72792074 
+  46      61736B20 
+  46      696E6974 
+  46      69616C69 
+  47              		.section	.text.MEMORY_Task,"ax",%progbits
+  48              		.align	1
+  49              		.global	MEMORY_Task
+  50              		.syntax unified
+  51              		.thumb
+  52              		.thumb_func
+  53              		.fpu fpv4-sp-d16
+  55              	MEMORY_Task:
+  56              	.LVL2:
+  57              	.LFB140:
+  71:app/tasks/memory/memory.c **** void MEMORY_Task(void *argument) {
+  58              		.loc 1 71 34 is_stmt 1 view -0
+  59              		.cfi_startproc
+  60              		@ args = 0, pretend = 0, frame = 16
+  61              		@ frame_needed = 0, uses_anonymous_args = 0
+  71:app/tasks/memory/memory.c **** void MEMORY_Task(void *argument) {
+  62              		.loc 1 71 34 is_stmt 0 view .LVU5
+  63 0000 00B5     		push	{lr}
+  64              	.LCFI0:
+  65              		.cfi_def_cfa_offset 4
+  66              		.cfi_offset 14, -4
+  67 0002 85B0     		sub	sp, sp, #20
+  68              	.LCFI1:
+  69              		.cfi_def_cfa_offset 24
+  72:app/tasks/memory/memory.c ****   (void) argument; // Avoid unused parameter warning
+  70              		.loc 1 72 3 is_stmt 1 view .LVU6
+  73:app/tasks/memory/memory.c ****   message_t msg;
+  71              		.loc 1 73 3 view .LVU7
+  75:app/tasks/memory/memory.c ****   fprintf(stdout, "Memory task initialized\n");
+  72              		.loc 1 75 3 view .LVU8
+  75:app/tasks/memory/memory.c ****   fprintf(stdout, "Memory task initialized\n");
+  73              		.loc 1 75 11 is_stmt 0 view .LVU9
+ARM GAS  /tmp/ccEYbIos.s 			page 4
+
+
+  74 0004 0D4B     		ldr	r3, .L7
+  75 0006 1B68     		ldr	r3, [r3]
+  75:app/tasks/memory/memory.c ****   fprintf(stdout, "Memory task initialized\n");
+  76              		.loc 1 75 3 view .LVU10
+  77 0008 9B68     		ldr	r3, [r3, #8]
+  78 000a 1822     		movs	r2, #24
+  79 000c 0121     		movs	r1, #1
+  80 000e 0C48     		ldr	r0, .L7+4
+  81              	.LVL3:
+  75:app/tasks/memory/memory.c ****   fprintf(stdout, "Memory task initialized\n");
+  82              		.loc 1 75 3 view .LVU11
+  83 0010 FFF7FEFF 		bl	fwrite
+  84              	.LVL4:
+  85              	.L3:
+  77:app/tasks/memory/memory.c ****   for (;;) {
+  86              		.loc 1 77 3 is_stmt 1 view .LVU12
+  79:app/tasks/memory/memory.c ****     if (osMessageQueueGet(MEMORY_Actor.super.osMessageQueueId, &msg, NULL, osWaitForever) == osOK) 
+  87              		.loc 1 79 5 view .LVU13
+  79:app/tasks/memory/memory.c ****     if (osMessageQueueGet(MEMORY_Actor.super.osMessageQueueId, &msg, NULL, osWaitForever) == osOK) 
+  88              		.loc 1 79 9 is_stmt 0 view .LVU14
+  89 0014 4FF0FF33 		mov	r3, #-1
+  90 0018 0022     		movs	r2, #0
+  91 001a 01A9     		add	r1, sp, #4
+  92 001c 0948     		ldr	r0, .L7+8
+  93 001e 8068     		ldr	r0, [r0, #8]
+  94 0020 FFF7FEFF 		bl	osMessageQueueGet
+  95              	.LVL5:
+  79:app/tasks/memory/memory.c ****     if (osMessageQueueGet(MEMORY_Actor.super.osMessageQueueId, &msg, NULL, osWaitForever) == osOK) 
+  96              		.loc 1 79 8 view .LVU15
+  97 0024 0028     		cmp	r0, #0
+  98 0026 F5D1     		bne	.L3
+  99              	.LBB2:
+  80:app/tasks/memory/memory.c ****       osStatus_t status = MEMORY_Actor.super.messageHandler((actor_t *) &MEMORY_Actor, &msg);
+ 100              		.loc 1 80 7 is_stmt 1 view .LVU16
+  80:app/tasks/memory/memory.c ****       osStatus_t status = MEMORY_Actor.super.messageHandler((actor_t *) &MEMORY_Actor, &msg);
+ 101              		.loc 1 80 45 is_stmt 0 view .LVU17
+ 102 0028 0648     		ldr	r0, .L7+8
+ 103 002a C368     		ldr	r3, [r0, #12]
+  80:app/tasks/memory/memory.c ****       osStatus_t status = MEMORY_Actor.super.messageHandler((actor_t *) &MEMORY_Actor, &msg);
+ 104              		.loc 1 80 27 view .LVU18
+ 105 002c 01A9     		add	r1, sp, #4
+ 106 002e 9847     		blx	r3
+ 107              	.LVL6:
+  81:app/tasks/memory/memory.c ****       if (status != osOK) {
+ 108              		.loc 1 81 7 is_stmt 1 view .LVU19
+  81:app/tasks/memory/memory.c ****       if (status != osOK) {
+ 109              		.loc 1 81 10 is_stmt 0 view .LVU20
+ 110 0030 0028     		cmp	r0, #0
+ 111 0032 EFD0     		beq	.L3
+  83:app/tasks/memory/memory.c ****         MEMORY_Actor.state = MEMORY_STATE_ERROR;
+ 112              		.loc 1 83 9 is_stmt 1 view .LVU21
+  83:app/tasks/memory/memory.c ****         MEMORY_Actor.state = MEMORY_STATE_ERROR;
+ 113              		.loc 1 83 28 is_stmt 0 view .LVU22
+ 114 0034 034B     		ldr	r3, .L7+8
+ 115 0036 0122     		movs	r2, #1
+ 116 0038 1A74     		strb	r2, [r3, #16]
+ 117 003a EBE7     		b	.L3
+ARM GAS  /tmp/ccEYbIos.s 			page 5
+
+
+ 118              	.L8:
+ 119              		.align	2
+ 120              	.L7:
+ 121 003c 00000000 		.word	_impure_ptr
+ 122 0040 00000000 		.word	.LC0
+ 123 0044 00000000 		.word	.LANCHOR0
+ 124              	.LBE2:
+ 125              		.cfi_endproc
+ 126              	.LFE140:
+ 128              		.section	.rodata.MEMORY_TaskInit.str1.4,"aMS",%progbits,1
+ 129              		.align	2
+ 130              	.LC1:
+ 131 0000 6D656D6F 		.ascii	"memoryQueue\000"
+ 131      72795175 
+ 131      65756500 
+ 132              		.align	2
+ 133              	.LC2:
+ 134 000c 4D656D6F 		.ascii	"Memory put to sleep status: %u\012\000"
+ 134      72792070 
+ 134      75742074 
+ 134      6F20736C 
+ 134      65657020 
+ 135              		.section	.text.MEMORY_TaskInit,"ax",%progbits
+ 136              		.align	1
+ 137              		.global	MEMORY_TaskInit
+ 138              		.syntax unified
+ 139              		.thumb
+ 140              		.thumb_func
+ 141              		.fpu fpv4-sp-d16
+ 143              	MEMORY_TaskInit:
+ 144              	.LFB139:
+  36:app/tasks/memory/memory.c **** actor_t* MEMORY_TaskInit(void) {
+ 145              		.loc 1 36 32 is_stmt 1 view -0
+ 146              		.cfi_startproc
+ 147              		@ args = 0, pretend = 0, frame = 80
+ 148              		@ frame_needed = 0, uses_anonymous_args = 0
+ 149 0000 30B5     		push	{r4, r5, lr}
+ 150              	.LCFI2:
+ 151              		.cfi_def_cfa_offset 12
+ 152              		.cfi_offset 4, -12
+ 153              		.cfi_offset 5, -8
+ 154              		.cfi_offset 14, -4
+ 155 0002 95B0     		sub	sp, sp, #84
+ 156              	.LCFI3:
+ 157              		.cfi_def_cfa_offset 96
+  37:app/tasks/memory/memory.c ****   MEMORY_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MESSAGE
+ 158              		.loc 1 37 3 view .LVU24
+  37:app/tasks/memory/memory.c ****   MEMORY_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MESSAGE
+ 159              		.loc 1 37 130 is_stmt 0 view .LVU25
+ 160 0004 0024     		movs	r4, #0
+ 161 0006 0E94     		str	r4, [sp, #56]
+ 162 0008 0F94     		str	r4, [sp, #60]
+ 163 000a 1094     		str	r4, [sp, #64]
+ 164 000c 1194     		str	r4, [sp, #68]
+ 165 000e 1294     		str	r4, [sp, #72]
+ 166 0010 1394     		str	r4, [sp, #76]
+ 167 0012 184B     		ldr	r3, .L11
+ARM GAS  /tmp/ccEYbIos.s 			page 6
+
+
+ 168 0014 0E93     		str	r3, [sp, #56]
+  37:app/tasks/memory/memory.c ****   MEMORY_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MESSAGE
+ 169              		.loc 1 37 41 view .LVU26
+ 170 0016 0EAA     		add	r2, sp, #56
+ 171 0018 0C21     		movs	r1, #12
+ 172 001a 0820     		movs	r0, #8
+ 173 001c FFF7FEFF 		bl	osMessageQueueNew
+ 174              	.LVL7:
+  37:app/tasks/memory/memory.c ****   MEMORY_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MESSAGE
+ 175              		.loc 1 37 39 view .LVU27
+ 176 0020 154D     		ldr	r5, .L11+4
+ 177 0022 A860     		str	r0, [r5, #8]
+  40:app/tasks/memory/memory.c ****   MEMORY_Actor.super.osThreadId = osThreadNew(MEMORY_Task, NULL, &memoryTaskDescription);
+ 178              		.loc 1 40 3 is_stmt 1 view .LVU28
+  40:app/tasks/memory/memory.c ****   MEMORY_Actor.super.osThreadId = osThreadNew(MEMORY_Task, NULL, &memoryTaskDescription);
+ 179              		.loc 1 40 35 is_stmt 0 view .LVU29
+ 180 0024 154A     		ldr	r2, .L11+8
+ 181 0026 2146     		mov	r1, r4
+ 182 0028 1548     		ldr	r0, .L11+12
+ 183 002a FFF7FEFF 		bl	osThreadNew
+ 184              	.LVL8:
+  40:app/tasks/memory/memory.c ****   MEMORY_Actor.super.osThreadId = osThreadNew(MEMORY_Task, NULL, &memoryTaskDescription);
+ 185              		.loc 1 40 33 view .LVU30
+ 186 002e 6860     		str	r0, [r5, #4]
+  44:app/tasks/memory/memory.c ****   QSPI_CommandTypeDef com;
+ 187              		.loc 1 44 3 is_stmt 1 view .LVU31
+  46:app/tasks/memory/memory.c ****   com.InstructionMode = QSPI_INSTRUCTION_1_LINE; // QSPI_INSTRUCTION_...
+ 188              		.loc 1 46 3 view .LVU32
+  46:app/tasks/memory/memory.c ****   com.InstructionMode = QSPI_INSTRUCTION_1_LINE; // QSPI_INSTRUCTION_...
+ 189              		.loc 1 46 23 is_stmt 0 view .LVU33
+ 190 0030 4FF48073 		mov	r3, #256
+ 191 0034 0693     		str	r3, [sp, #24]
+  47:app/tasks/memory/memory.c ****   com.Instruction = W25Q_POWERDOWN;	 // Command
+ 192              		.loc 1 47 3 is_stmt 1 view .LVU34
+  47:app/tasks/memory/memory.c ****   com.Instruction = W25Q_POWERDOWN;	 // Command
+ 193              		.loc 1 47 19 is_stmt 0 view .LVU35
+ 194 0036 B923     		movs	r3, #185
+ 195 0038 0093     		str	r3, [sp]
+  49:app/tasks/memory/memory.c ****   com.AddressMode = QSPI_ADDRESS_NONE;
+ 196              		.loc 1 49 3 is_stmt 1 view .LVU36
+  49:app/tasks/memory/memory.c ****   com.AddressMode = QSPI_ADDRESS_NONE;
+ 197              		.loc 1 49 19 is_stmt 0 view .LVU37
+ 198 003a 0794     		str	r4, [sp, #28]
+  50:app/tasks/memory/memory.c ****   com.AddressSize = QSPI_ADDRESS_NONE;
+ 199              		.loc 1 50 3 is_stmt 1 view .LVU38
+  50:app/tasks/memory/memory.c ****   com.AddressSize = QSPI_ADDRESS_NONE;
+ 200              		.loc 1 50 19 is_stmt 0 view .LVU39
+ 201 003c 0394     		str	r4, [sp, #12]
+  51:app/tasks/memory/memory.c ****   com.Address = 0x0U;
+ 202              		.loc 1 51 3 is_stmt 1 view .LVU40
+  51:app/tasks/memory/memory.c ****   com.Address = 0x0U;
+ 203              		.loc 1 51 15 is_stmt 0 view .LVU41
+ 204 003e 0194     		str	r4, [sp, #4]
+  53:app/tasks/memory/memory.c ****   com.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
+ 205              		.loc 1 53 3 is_stmt 1 view .LVU42
+  53:app/tasks/memory/memory.c ****   com.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
+ 206              		.loc 1 53 25 is_stmt 0 view .LVU43
+ARM GAS  /tmp/ccEYbIos.s 			page 7
+
+
+ 207 0040 0894     		str	r4, [sp, #32]
+  54:app/tasks/memory/memory.c ****   com.AlternateBytes = QSPI_ALTERNATE_BYTES_NONE;
+ 208              		.loc 1 54 3 is_stmt 1 view .LVU44
+  54:app/tasks/memory/memory.c ****   com.AlternateBytes = QSPI_ALTERNATE_BYTES_NONE;
+ 209              		.loc 1 54 22 is_stmt 0 view .LVU45
+ 210 0042 0294     		str	r4, [sp, #8]
+  55:app/tasks/memory/memory.c ****   com.AlternateBytesSize = QSPI_ALTERNATE_BYTES_NONE;
+ 211              		.loc 1 55 3 is_stmt 1 view .LVU46
+  55:app/tasks/memory/memory.c ****   com.AlternateBytesSize = QSPI_ALTERNATE_BYTES_NONE;
+ 212              		.loc 1 55 26 is_stmt 0 view .LVU47
+ 213 0044 0494     		str	r4, [sp, #16]
+  57:app/tasks/memory/memory.c ****   com.DummyCycles = 0;
+ 214              		.loc 1 57 3 is_stmt 1 view .LVU48
+  57:app/tasks/memory/memory.c ****   com.DummyCycles = 0;
+ 215              		.loc 1 57 19 is_stmt 0 view .LVU49
+ 216 0046 0594     		str	r4, [sp, #20]
+  58:app/tasks/memory/memory.c ****   com.DataMode = QSPI_DATA_NONE;
+ 217              		.loc 1 58 3 is_stmt 1 view .LVU50
+  58:app/tasks/memory/memory.c ****   com.DataMode = QSPI_DATA_NONE;
+ 218              		.loc 1 58 16 is_stmt 0 view .LVU51
+ 219 0048 0994     		str	r4, [sp, #36]
+  59:app/tasks/memory/memory.c ****   com.NbData = 0;
+ 220              		.loc 1 59 3 is_stmt 1 view .LVU52
+  59:app/tasks/memory/memory.c ****   com.NbData = 0;
+ 221              		.loc 1 59 14 is_stmt 0 view .LVU53
+ 222 004a 0A94     		str	r4, [sp, #40]
+  61:app/tasks/memory/memory.c ****   com.DdrMode = QSPI_DDR_MODE_DISABLE;
+ 223              		.loc 1 61 3 is_stmt 1 view .LVU54
+  61:app/tasks/memory/memory.c ****   com.DdrMode = QSPI_DDR_MODE_DISABLE;
+ 224              		.loc 1 61 15 is_stmt 0 view .LVU55
+ 225 004c 0B94     		str	r4, [sp, #44]
+  62:app/tasks/memory/memory.c ****   com.DdrHoldHalfCycle = QSPI_DDR_HHC_ANALOG_DELAY;
+ 226              		.loc 1 62 3 is_stmt 1 view .LVU56
+  62:app/tasks/memory/memory.c ****   com.DdrHoldHalfCycle = QSPI_DDR_HHC_ANALOG_DELAY;
+ 227              		.loc 1 62 24 is_stmt 0 view .LVU57
+ 228 004e 0C94     		str	r4, [sp, #48]
+  63:app/tasks/memory/memory.c ****   com.SIOOMode = QSPI_SIOO_INST_EVERY_CMD;
+ 229              		.loc 1 63 3 is_stmt 1 view .LVU58
+  63:app/tasks/memory/memory.c ****   com.SIOOMode = QSPI_SIOO_INST_EVERY_CMD;
+ 230              		.loc 1 63 16 is_stmt 0 view .LVU59
+ 231 0050 0D94     		str	r4, [sp, #52]
+  65:app/tasks/memory/memory.c ****   HAL_StatusTypeDef status = HAL_QSPI_Command(&hqspi, &com, HAL_QSPI_TIMEOUT_DEFAULT_VALUE);
+ 232              		.loc 1 65 3 is_stmt 1 view .LVU60
+  65:app/tasks/memory/memory.c ****   HAL_StatusTypeDef status = HAL_QSPI_Command(&hqspi, &com, HAL_QSPI_TIMEOUT_DEFAULT_VALUE);
+ 233              		.loc 1 65 30 is_stmt 0 view .LVU61
+ 234 0052 41F28832 		movw	r2, #5000
+ 235 0056 6946     		mov	r1, sp
+ 236 0058 0A48     		ldr	r0, .L11+16
+ 237 005a FFF7FEFF 		bl	HAL_QSPI_Command
+ 238              	.LVL9:
+ 239 005e 0246     		mov	r2, r0
+ 240              	.LVL10:
+  66:app/tasks/memory/memory.c ****   fprintf(stdout, "Memory put to sleep status: %u\n", status);
+ 241              		.loc 1 66 3 is_stmt 1 view .LVU62
+  66:app/tasks/memory/memory.c ****   fprintf(stdout, "Memory put to sleep status: %u\n", status);
+ 242              		.loc 1 66 11 is_stmt 0 view .LVU63
+ 243 0060 094B     		ldr	r3, .L11+20
+ARM GAS  /tmp/ccEYbIos.s 			page 8
+
+
+ 244 0062 1B68     		ldr	r3, [r3]
+  66:app/tasks/memory/memory.c ****   fprintf(stdout, "Memory put to sleep status: %u\n", status);
+ 245              		.loc 1 66 3 view .LVU64
+ 246 0064 0949     		ldr	r1, .L11+24
+ 247 0066 9868     		ldr	r0, [r3, #8]
+ 248 0068 FFF7FEFF 		bl	fprintf
+ 249              	.LVL11:
+  68:app/tasks/memory/memory.c ****   return &MEMORY_Actor.super;
+ 250              		.loc 1 68 3 is_stmt 1 view .LVU65
+  69:app/tasks/memory/memory.c **** }
+ 251              		.loc 1 69 1 is_stmt 0 view .LVU66
+ 252 006c 2846     		mov	r0, r5
+ 253 006e 15B0     		add	sp, sp, #84
+ 254              	.LCFI4:
+ 255              		.cfi_def_cfa_offset 12
+ 256              		@ sp needed
+ 257 0070 30BD     		pop	{r4, r5, pc}
+ 258              	.L12:
+ 259 0072 00BF     		.align	2
+ 260              	.L11:
+ 261 0074 00000000 		.word	.LC1
+ 262 0078 00000000 		.word	.LANCHOR0
+ 263 007c 00000000 		.word	.LANCHOR1
+ 264 0080 00000000 		.word	MEMORY_Task
+ 265 0084 00000000 		.word	hqspi
+ 266 0088 00000000 		.word	_impure_ptr
+ 267 008c 0C000000 		.word	.LC2
+ 268              		.cfi_endproc
+ 269              	.LFE139:
+ 271              		.global	memoryTaskDescription
+ 272              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 273              		.align	2
+ 274              	.LC3:
+ 275 0000 6D656D6F 		.ascii	"memoryTask\000"
+ 275      72795461 
+ 275      736B00
+ 276              		.global	memoryTaskControlBlock
+ 277              		.global	memoryTaskBuffer
+ 278              		.global	MEMORY_Actor
+ 279              		.section	.bss.memoryTaskBuffer,"aw",%nobits
+ 280              		.align	2
+ 283              	memoryTaskBuffer:
+ 284 0000 00000000 		.space	512
+ 284      00000000 
+ 284      00000000 
+ 284      00000000 
+ 284      00000000 
+ 285              		.section	.bss.memoryTaskControlBlock,"aw",%nobits
+ 286              		.align	2
+ 289              	memoryTaskControlBlock:
+ 290 0000 00000000 		.space	92
+ 290      00000000 
+ 290      00000000 
+ 290      00000000 
+ 290      00000000 
+ 291              		.section	.data.MEMORY_Actor,"aw"
+ 292              		.align	2
+ARM GAS  /tmp/ccEYbIos.s 			page 9
+
+
+ 293              		.set	.LANCHOR0,. + 0
+ 296              	MEMORY_Actor:
+ 297 0000 08000000 		.word	8
+ 298 0004 00000000 		.word	0
+ 299 0008 00000000 		.word	0
+ 300 000c 00000000 		.word	handleMemoryFSM
+ 301 0010 00       		.byte	0
+ 302 0011 000000   		.space	3
+ 303              		.section	.rodata.memoryTaskDescription,"a"
+ 304              		.align	2
+ 305              		.set	.LANCHOR1,. + 0
+ 308              	memoryTaskDescription:
+ 309 0000 00000000 		.word	.LC3
+ 310 0004 00000000 		.space	4
+ 311 0008 00000000 		.word	memoryTaskControlBlock
+ 312 000c 5C000000 		.word	92
+ 313 0010 00000000 		.word	memoryTaskBuffer
+ 314 0014 00020000 		.word	512
+ 315 0018 18000000 		.word	24
+ 316 001c 00000000 		.space	8
+ 316      00000000 
+ 317              		.text
+ 318              	.Letext0:
+ 319              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 320              		.file 3 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stddef.h"
+ 321              		.file 4 "/usr/include/newlib/sys/_types.h"
+ 322              		.file 5 "/usr/include/newlib/sys/reent.h"
+ 323              		.file 6 "/usr/include/newlib/sys/lock.h"
+ 324              		.file 7 "/usr/include/newlib/sys/_stdint.h"
+ 325              		.file 8 "/usr/include/newlib/sys/types.h"
+ 326              		.file 9 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l412xx.h"
+ 327              		.file 10 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h"
+ 328              		.file 11 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_dma.h"
+ 329              		.file 12 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_qspi.h"
+ 330              		.file 13 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
+ 331              		.file 14 "app/core/actor/../config/events_list/events_list.h"
+ 332              		.file 15 "app/core/actor/../config/actors_list/actors_list.h"
+ 333              		.file 16 "app/core/actor/actor.h"
+ 334              		.file 17 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h"
+ 335              		.file 18 "Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h"
+ 336              		.file 19 "Core/Inc/quadspi.h"
+ 337              		.file 20 "app/tasks/memory/memory.h"
+ 338              		.file 21 "/usr/include/newlib/stdio.h"
+ 339              		.file 22 "<built-in>"
+ARM GAS  /tmp/ccEYbIos.s 			page 10
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 memory.c
+     /tmp/ccEYbIos.s:18     .text.handleMemoryFSM:0000000000000000 $t
+     /tmp/ccEYbIos.s:25     .text.handleMemoryFSM:0000000000000000 handleMemoryFSM
+     /tmp/ccEYbIos.s:44     .rodata.MEMORY_Task.str1.4:0000000000000000 $d
+     /tmp/ccEYbIos.s:48     .text.MEMORY_Task:0000000000000000 $t
+     /tmp/ccEYbIos.s:55     .text.MEMORY_Task:0000000000000000 MEMORY_Task
+     /tmp/ccEYbIos.s:121    .text.MEMORY_Task:000000000000003c $d
+     /tmp/ccEYbIos.s:129    .rodata.MEMORY_TaskInit.str1.4:0000000000000000 $d
+     /tmp/ccEYbIos.s:136    .text.MEMORY_TaskInit:0000000000000000 $t
+     /tmp/ccEYbIos.s:143    .text.MEMORY_TaskInit:0000000000000000 MEMORY_TaskInit
+     /tmp/ccEYbIos.s:261    .text.MEMORY_TaskInit:0000000000000074 $d
+     /tmp/ccEYbIos.s:308    .rodata.memoryTaskDescription:0000000000000000 memoryTaskDescription
+     /tmp/ccEYbIos.s:273    .rodata.str1.4:0000000000000000 $d
+     /tmp/ccEYbIos.s:289    .bss.memoryTaskControlBlock:0000000000000000 memoryTaskControlBlock
+     /tmp/ccEYbIos.s:283    .bss.memoryTaskBuffer:0000000000000000 memoryTaskBuffer
+     /tmp/ccEYbIos.s:296    .data.MEMORY_Actor:0000000000000000 MEMORY_Actor
+     /tmp/ccEYbIos.s:280    .bss.memoryTaskBuffer:0000000000000000 $d
+     /tmp/ccEYbIos.s:286    .bss.memoryTaskControlBlock:0000000000000000 $d
+     /tmp/ccEYbIos.s:292    .data.MEMORY_Actor:0000000000000000 $d
+     /tmp/ccEYbIos.s:304    .rodata.memoryTaskDescription:0000000000000000 $d
+
+UNDEFINED SYMBOLS
+fwrite
+osMessageQueueGet
+_impure_ptr
+osMessageQueueNew
+osThreadNew
+HAL_QSPI_Command
+fprintf
+hqspi
