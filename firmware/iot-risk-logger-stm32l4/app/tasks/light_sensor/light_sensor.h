@@ -22,7 +22,7 @@ extern "C" {
 #include "actor.h"
 #include "opt3001.h"
 
-#define OPT3001_I2C_ADDRESS (0x45 << 1) // ADDR connected to VDD due to SHT3x 0x44 address conflict
+#define LIGHT_SENS_I2C_ADDRESS (OPT3001_I2C_ADDR_45 << 1) // ADDR connected to VDD due to SHT3x address conflict
 
 typedef enum {
   LIGHT_SENS_NO_STATE = 0,

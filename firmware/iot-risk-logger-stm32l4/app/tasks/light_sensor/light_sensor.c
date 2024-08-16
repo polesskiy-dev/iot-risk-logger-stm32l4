@@ -95,7 +95,7 @@ static osStatus_t handleInit(LIGHT_SENS_Actor_t *this, message_t *message) {
     BSP_I2C1_Init(); // TODO think about proper place to init I2C
 
     // init the driver (io)
-    osStatus_t ioStatus = OPT3001_InitIO(OPT3001_I2C_ADDRESS, BSP_I2C1_WriteReg, BSP_I2C1_ReadReg);
+    osStatus_t ioStatus = OPT3001_InitIO(LIGHT_SENS_I2C_ADDRESS, BSP_I2C1_WriteReg, BSP_I2C1_ReadReg);
 
     if (ioStatus != osOK) return osError;
 
@@ -138,6 +138,7 @@ static osStatus_t handleInit(LIGHT_SENS_Actor_t *this, message_t *message) {
     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
     osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_INITIALIZE_SUCCESS, .payload.value = LIGHT_SENSOR_ACTOR_ID}, 0, 0);
 
+    fprintf(stdout, "Light sensor %ul initialized\n", LIGHT_SENSOR_ACTOR_ID);
     TO_STATE(this, LIGHT_SENS_TURNED_OFF_STATE);
   }
 
@@ -207,7 +208,7 @@ static osStatus_t handleContinuousMeasure(LIGHT_SENS_Actor_t *this, message_t *m
   osStatus_t ioStatus;
 
   switch (message->event) {
-    case LIGHT_SENS_CRON_READ:
+    case GLOBAL_WAKE_N_READ:
       // read the measured rawLux on RTC cron
       ioStatus = OPT3001_ReadResultRawLux(&this->rawLux);
       if (ioStatus != osOK) return osError;
@@ -248,7 +249,7 @@ static osStatus_t handleOutOfRange(LIGHT_SENS_Actor_t *this, message_t *message)
   osStatus_t ioStatus;
 
   switch (message->event) {
-    case LIGHT_SENS_CRON_READ:
+    case GLOBAL_WAKE_N_READ:
       // still read the measured rawLux on RTC cron
       ioStatus = OPT3001_ReadResultRawLux(&this->rawLux);
       if (ioStatus != osOK) return osError;

@@ -19,6 +19,8 @@ extern "C" {
 
 #include "main.h"
 
+#define OPT3001_I2C_ADDR_45 (0x45)
+
 /**
  * @brief Config Conversion time
  */

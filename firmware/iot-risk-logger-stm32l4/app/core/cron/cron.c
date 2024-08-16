@@ -46,7 +46,7 @@ actor_t* CRON_ActorInit(void) {
 void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc) {
   int32_t currentTimestamp = getCurrentUnixTimestamp();
 
-  osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_RTC_WAKE_UP, .payload.value = currentTimestamp}, 0, 0);
+  osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_WAKE_N_READ, .payload.value = currentTimestamp}, 0, 0);
 }
 
 static osStatus_t handleCronMessage(CRON_Actor_t *this, message_t *message) {

@@ -102,7 +102,7 @@ static osStatus_t handleInit(NFC_Actor_t *this, message_t *message) {
   osStatus_t status;
 
   switch (message->event) {
-    case NFC_INITIALIZE:
+    case GLOBAL_CMD_INITIALIZE:
       status = NFC_ST25DVInit(&this->st25dv);
       if (status != NFCTAG_OK)
         return osError;

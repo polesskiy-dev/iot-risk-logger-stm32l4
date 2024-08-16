@@ -16,10 +16,11 @@ extern "C" {
 #endif
 
 #include <stdio.h>
+#include <stdint.h>
+#include <stdbool.h>
 
-#include "main.h"
-
-#define SHT3x_COMMAND_SIZE 2
+#define SHT3x_I2C_ADDR_44 (0x44)
+#define SHT3x_I2C_ADDR_45 (0x45)
 
 #define SHT3x_MEASURE_SINGLE_SHOT_HIGH_REPEATABILITY_CMD_ID                     (0x2400)
 #define SHT3x_MEASURE_SINGLE_SHOT_HIGH_REPEATABILITY_CLOCK_STRETCHING_CMD_ID    (0x2c06)
@@ -50,6 +51,11 @@ extern "C" {
 #define SHT3x_READ_STATUS_REGISTER_CMD_ID                                       (0xf32d)
 #define SHT3x_CLEAR_STATUS_REGISTER_CMD_ID                                      (0x3041)
 #define SHT3x_SOFT_RESET_CMD_ID                                                 (0x30a2)
+#define SHT3x_SERIAL_NUMBER_CMD_ID                                              (0x3682)
+#define SHT3x_SERIAL_NUMBER_CLOCK_STRETCHING_CMD_ID                             (0x3780)
+
+#define SHT3x_COMMAND_SIZE 2
+#define SHT3x_SERIAL_NUMBER_SIZE 6
 
 /**
 * @brief  SHT3x Temperature & Humidity Sensor status enumerator definition.
@@ -65,19 +71,17 @@ extern "C" {
 
 typedef SHT3x_RESULT (*SHT3x_WriteCommand_Func)(uint16_t, uint16_t, uint8_t*, uint16_t);
 typedef SHT3x_RESULT (*SHT3x_ReadCommand_Func) (uint16_t, uint16_t, uint8_t*, uint16_t);
-typedef SHT3x_RESULT (*SHT3x_HardResetPulse_Func) (void);
 typedef uint8_t (*SHT3x_CRC8_Func) (uint8_t*, uint8_t);
 
 typedef struct {
   uint8_t i2cAddress;
   SHT3x_WriteCommand_Func writeCommand;
   SHT3x_ReadCommand_Func readCommand;
-  SHT3x_HardResetPulse_Func hardResetPulse;
   SHT3x_CRC8_Func crc8;
 } SHT3x_IO_t;
 
-SHT3x_RESULT SHT3x_InitIO(uint8_t i2cAddress, SHT3x_WriteCommand_Func writeCommand, SHT3x_ReadCommand_Func readCommand, SHT3x_HardResetPulse_Func hardResetPulse, SHT3x_CRC8_Func crc8);
-SHT3x_RESULT SHT3x_ReadDeviceID(uint16_t *id);
+SHT3x_RESULT SHT3x_InitIO(uint8_t i2cAddress, SHT3x_WriteCommand_Func writeCommand, SHT3x_ReadCommand_Func readCommand, SHT3x_CRC8_Func crc8);
+SHT3x_RESULT SHT3x_ReadDeviceID(uint32_t *id);
 SHT3x_RESULT SHT3x_ReadStatus(uint16_t *status);
 SHT3x_RESULT SHT3x_ClearStatus(void);
 SHT3x_RESULT SHT3x_SingleShotAcquisitionMode(uint16_t modeCondition);

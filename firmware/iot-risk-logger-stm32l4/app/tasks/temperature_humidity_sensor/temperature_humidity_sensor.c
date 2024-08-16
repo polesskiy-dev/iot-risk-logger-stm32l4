@@ -9,20 +9,26 @@
  */
 
 #include "temperature_humidity_sensor.h"
-#include "custom_bus.h"
 
-static osStatus_t handleTHSensorMessage(TH_SENS_Actor_t *this, message_t *message);
-static osStatus_t initTHSensor(TH_SENS_Actor_t *this, message_t *message);
-static osStatus_t startSingleShotRead(TH_SENS_Actor_t *this, message_t *message);
+static osStatus_t handleTHSensorFSM(TH_SENS_Actor_t *this, message_t *message);
+/** states handlers */
+static osStatus_t handleInit(TH_SENS_Actor_t *this, message_t *message);
+static osStatus_t handleIdle(TH_SENS_Actor_t *this, message_t *message);
+static osStatus_t handleContinuousMeasure(TH_SENS_Actor_t *this, message_t *message);
+static osStatus_t handleError(TH_SENS_Actor_t *this, message_t *message);
+
+extern actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS];
 
 TH_SENS_Actor_t TH_SENS_Actor = {
         .super = {
                 .actorId = TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID,
-                .messageHandler = (messageHandler_t) handleTHSensorMessage,
+                .messageHandler = (messageHandler_t) handleTHSensorFSM,
                 .osMessageQueueId = NULL,
                 .osThreadId = NULL,
         },
-        .state = TH_SENS_INIT_STATE
+        .state = TH_SENS_NO_STATE,
+        .rawTemperature = 0x00000000,
+        .rawHumidity = 0x00000000,
 };
 
 uint32_t thSensorTaskBuffer[DEFAULT_TASK_STACK_SIZE_WORDS];
@@ -49,59 +55,98 @@ void TH_SENS_Task(void *argument) {
   (void) argument; // Avoid unused parameter warning
   message_t msg;
 
-  osMessageQueuePut(TH_SENS_Actor.super.osMessageQueueId, &(message_t){TH_SENS_INITIALIZE}, 0, 0);
+  fprintf(stdout, "Task %s started\n", thSensorTaskDescription.name);
 
   for (;;) {
     // Wait for messages from the queue
     if (osMessageQueueGet(TH_SENS_Actor.super.osMessageQueueId, &msg, NULL, osWaitForever) == osOK) {
-      osStatus_t status = TH_SENS_Actor.super.messageHandler((actor_t *) &TH_SENS_Actor, &msg);
-      if (status != osOK) {
-        // TODO Handle error, emit common error event and reinitialize module
-        TH_SENS_Actor.state = TH_SENS_STATE_ERROR;
+      osStatus_t handleMessageStatus = TH_SENS_Actor.super.messageHandler((actor_t *) &TH_SENS_Actor, &msg);
+
+      if (handleMessageStatus != osOK) {
+        fprintf(stderr, "%s: Error handling event %u in state %ul\n", thSensorTaskDescription.name, msg.event, TH_SENS_Actor.state);
+        osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
+        osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID}, 0, 0);
+        TO_STATE(&TH_SENS_Actor, TH_SENS_STATE_ERROR);
       }
     }
   }
 }
 
-static osStatus_t handleTHSensorMessage(TH_SENS_Actor_t *this, message_t *message) {
+static osStatus_t handleTHSensorFSM(TH_SENS_Actor_t *this, message_t *message) {
   switch (this->state) {
-    case TH_SENS_INIT_STATE:
-      return initTHSensor(this, message);
-    case TH_SENS_READY_TO_READ_STATE:
-      return startSingleShotRead(this, message);
-//    case TH_SENS_MEASURE_WAIT_STATE:
-//      return collectMeasurements(this, message);
+    case TH_SENS_NO_STATE:
+      return handleInit(this, message);
+    case TH_SENS_IDLE_STATE:
+      return handleIdle(this, message);
+    case TH_SENS_CONTINUOUS_MEASURE_STATE:
+      return handleContinuousMeasure(this, message);
     case TH_SENS_STATE_ERROR:
-    // TODO handle reinit after error
+      // TODO implement error handling
+      return handleError(this, message);
     default:
-      return osOK; // TODO osError;
+      return osOK;
   }
 }
 
-static osStatus_t initTHSensor(TH_SENS_Actor_t *this, message_t *message) {
-  if (TH_SENS_INITIALIZE == message->event) {
+static osStatus_t handleInit(TH_SENS_Actor_t *this, message_t *message) {
+  if (GLOBAL_CMD_INITIALIZE == message->event) {
     BSP_I2C1_Init(); // TODO think about proper place to init I2C
-    // TODO soft reset of the sensor by pulling down _TEMP_RESET for 1uS minimum
-//    sht3x_init(SHT31_I2C_ADDR_44 << 1);
-    osMessageQueuePut(TH_SENS_Actor.super.osMessageQueueId, &(message_t){TH_SENS_START_SINGLE_SHOT_READ}, 0, 0);
-    // TODO check sensor ID
-    this->state = TH_SENS_READY_TO_READ_STATE;
-    fprintf(stdout, "temperature humidity sensor initialized\n");
-    return osOK;
+
+    // TODO add crc8 function
+    osStatus_t ioStatus = SHT3x_InitIO(TH_SENS_I2C_ADDRESS, BSP_I2C1_WriteReg16, BSP_I2C1_ReadReg16, NULL);
+
+    if (ioStatus != osOK) return osError;
+
+    // reset the sensor by pulling down _TEMP_RESET, at least 1uS duration required
+    HAL_GPIO_WritePin(_TEMP_RESET_GPIO_Port, _TEMP_RESET_Pin, GPIO_PIN_RESET);
+    osDelay(1);
+    HAL_GPIO_WritePin(_TEMP_RESET_GPIO_Port, _TEMP_RESET_Pin, GPIO_PIN_SET);
+
+    // read sensor ID
+    uint32_t sht3xId = 0x00000000;
+    ioStatus = SHT3x_ReadDeviceID(&sht3xId);
+
+    if (ioStatus != osOK) return osError;
+    fprintf(stdout, "SHT3x ID: %lu\n", sht3xId);
+
+    // publish to event manager that the sensor is initialized
+    osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
+    osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_INITIALIZE_SUCCESS, .payload.value = TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID}, 0, 0);
+
+    fprintf(stdout, "Temperature & Humidity sensor %ul initialized\n", TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID);
+    TO_STATE(this, TH_SENS_IDLE_STATE);
   }
-  return osError;
+
+  return osOK;
 }
 
-// TODO implement single shot read
-static osStatus_t startSingleShotRead(TH_SENS_Actor_t *this, message_t *message) {
-  if (TH_SENS_START_SINGLE_SHOT_READ == message->event) {
-    osStatus_t status = 0; //sht3x_measure_single_shot(REPEATABILITY_MEDIUM, false, &this->temperature, &this->humidity);
-    if (status != osOK) return osError;
-
-    fprintf(stdout, "temperature: %ld humidity %ld\n", this->temperature, this->humidity);
-
-    this->state = TH_SENS_READY_TO_READ_STATE;
+static osStatus_t handleIdle(TH_SENS_Actor_t *this, message_t *message) {
+  switch (message->event) {
+    case GLOBAL_CMD_START_CONTINUOUS_SENSING:
+      // TODO start continuous measurement
+      TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
+      return osOK;
+    case TH_SENS_START_SINGLE_SHOT_READ:
+      // TODO start single shot measurement
+      fprintf(stdout, "Raw: temperature: %ld humidity %ld\n", this->rawTemperature, this->rawHumidity);
+      TO_STATE(this, TH_SENS_IDLE_STATE);
+      return osOK;
+    default:
+      return osOK;
   }
+}
 
+static osStatus_t handleContinuousMeasure(TH_SENS_Actor_t *this, message_t *message) {
+  switch (message->event) {
+    case GLOBAL_WAKE_N_READ:
+      // TODO start continuous measurement
+      TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
+      return osOK;
+    default:
+      return osOK;
+  }
+}
+
+static osStatus_t handleError(TH_SENS_Actor_t *this, message_t *message) {
   return osOK;
 }

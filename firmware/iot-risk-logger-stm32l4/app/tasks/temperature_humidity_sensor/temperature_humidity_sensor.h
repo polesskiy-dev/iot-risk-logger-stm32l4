@@ -18,11 +18,16 @@ extern "C" {
 #include <stdio.h>
 
 #include "main.h"
+#include "custom_bus.h"
+#include "sht3x.h"
+
+#define TH_SENS_I2C_ADDRESS (SHT3x_I2C_ADDR_44 << 1) // ADDR connected to GND due to OPT3001 address conflict
 
 typedef enum {
-  TH_SENS_INIT_STATE = 0,
-  TH_SENS_READY_TO_READ_STATE,
+  TH_SENS_NO_STATE = 0,
+  TH_SENS_IDLE_STATE,
   TH_SENS_MEASURE_WAIT_STATE,
+  TH_SENS_CONTINUOUS_MEASURE_STATE,
   TH_SENS_STATE_ERROR,
   TH_SENS_STATE_MAX
 } TH_SENS_State_t;
@@ -30,8 +35,8 @@ typedef enum {
 typedef struct {
   actor_t super;
   TH_SENS_State_t state;
-  int32_t temperature; ///< in milli degrees Celsius
-  int32_t humidity; ///< in milli RH
+  uint32_t rawTemperature; ///< TODO units
+  uint32_t rawHumidity; ///< TODO units
 } TH_SENS_Actor_t;
 
 extern TH_SENS_Actor_t TH_SENS_Actor;
