@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccn0YbBm.s 			page 1
+ARM GAS  /tmp/ccBECB68.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccn0YbBm.s 			page 1
   15:app/tasks/event_manager/event_manager.c **** 
   16:app/tasks/event_manager/event_manager.c **** extern actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS];
   17:app/tasks/event_manager/event_manager.c **** 
-ARM GAS  /tmp/ccn0YbBm.s 			page 2
+ARM GAS  /tmp/ccBECB68.s 			page 2
 
 
   18:app/tasks/event_manager/event_manager.c **** /**
@@ -81,7 +81,7 @@ ARM GAS  /tmp/ccn0YbBm.s 			page 1
   35:app/tasks/event_manager/event_manager.c **** const ACTOR_ID EV_MANAGER_SubscribersIdsMatrix[GLOBAL_EVENTS_MAX][MAX_ACTORS] = {
   36:app/tasks/event_manager/event_manager.c ****   [GLOBAL_CMD_INITIALIZE]                           = {CRON_ACTOR_ID, PWRM_MANAGER_ACTOR_ID, NFC_AC
   37:app/tasks/event_manager/event_manager.c ****   [GLOBAL_INITIALIZE_SUCCESS]                       = {},
-  38:app/tasks/event_manager/event_manager.c ****   [GLOBAL_RTC_WAKE_UP]                              = {TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID, LIGHT_
+  38:app/tasks/event_manager/event_manager.c ****   [GLOBAL_WAKE_N_READ]                              = {TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID, LIGHT_
   39:app/tasks/event_manager/event_manager.c ****   [GLOBAL_TEMPERATURE_HUMIDITY_MEASUREMENTS_READY]  = {MEMORY_ACTOR_ID},
   40:app/tasks/event_manager/event_manager.c ****   [GLOBAL_LIGHT_MEASUREMENTS_READY]                 = {MEMORY_ACTOR_ID},
   41:app/tasks/event_manager/event_manager.c ****   [GLOBAL_CMD_START_CONTINUOUS_SENSING]             = {TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID, LIGHT_
@@ -118,7 +118,7 @@ ARM GAS  /tmp/ccn0YbBm.s 			page 1
   72:app/tasks/event_manager/event_manager.c ****     case GLOBAL_CMD_INITIALIZE:
   73:app/tasks/event_manager/event_manager.c ****       publishEventToSubscribers(message);
   74:app/tasks/event_manager/event_manager.c ****       // TODO handle initialize event
-ARM GAS  /tmp/ccn0YbBm.s 			page 3
+ARM GAS  /tmp/ccBECB68.s 			page 3
 
 
   75:app/tasks/event_manager/event_manager.c ****       // TODO remove from here
@@ -131,7 +131,7 @@ ARM GAS  /tmp/ccn0YbBm.s 			page 1
   82:app/tasks/event_manager/event_manager.c ****       return osOK;
   83:app/tasks/event_manager/event_manager.c ****     case GLOBAL_CMD_SET_TIME_DATE:
   84:app/tasks/event_manager/event_manager.c ****     case GLOBAL_CMD_SET_WAKE_UP_PERIOD:
-  85:app/tasks/event_manager/event_manager.c ****     case GLOBAL_RTC_WAKE_UP:
+  85:app/tasks/event_manager/event_manager.c ****     case GLOBAL_WAKE_N_READ:
   86:app/tasks/event_manager/event_manager.c ****     case GLOBAL_CMD_TURN_OFF:
   87:app/tasks/event_manager/event_manager.c ****     case GLOBAL_CMD_START_CONTINUOUS_SENSING:
   88:app/tasks/event_manager/event_manager.c ****       publishEventToSubscribers(message);
@@ -178,7 +178,7 @@ ARM GAS  /tmp/ccn0YbBm.s 			page 1
   47              		.loc 1 115 3 is_stmt 1 view .LVU2
   48              		.loc 1 115 75 is_stmt 0 view .LVU3
   49 0004 0578     		ldrb	r5, [r0]	@ zero_extendqisi2
-ARM GAS  /tmp/ccn0YbBm.s 			page 4
+ARM GAS  /tmp/ccBECB68.s 			page 4
 
 
   50              		.loc 1 115 19 view .LVU4
@@ -238,7 +238,7 @@ ARM GAS  /tmp/ccn0YbBm.s 			page 1
   85 0026 3146     		mov	r1, r6
   86 0028 9847     		blx	r3
   87              	.LVL7:
-ARM GAS  /tmp/ccn0YbBm.s 			page 5
+ARM GAS  /tmp/ccBECB68.s 			page 5
 
 
  135:app/tasks/event_manager/event_manager.c ****       continue;
@@ -298,7 +298,7 @@ ARM GAS  /tmp/ccn0YbBm.s 			page 1
  125 0042 002B     		cmp	r3, #0
  126 0044 EED0     		beq	.L10
  136:app/tasks/event_manager/event_manager.c ****     }
-ARM GAS  /tmp/ccn0YbBm.s 			page 6
+ARM GAS  /tmp/ccBECB68.s 			page 6
 
 
  137:app/tasks/event_manager/event_manager.c **** 
@@ -358,7 +358,7 @@ ARM GAS  /tmp/ccn0YbBm.s 			page 1
  174              		.loc 1 70 88 is_stmt 1 view -0
  175              		.cfi_startproc
  176              		@ args = 0, pretend = 0, frame = 24
-ARM GAS  /tmp/ccn0YbBm.s 			page 7
+ARM GAS  /tmp/ccBECB68.s 			page 7
 
 
  177              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -418,7 +418,7 @@ ARM GAS  /tmp/ccn0YbBm.s 			page 1
  223 0030 1346     		mov	r3, r2
  224 0032 6946     		mov	r1, sp
  225 0034 0D48     		ldr	r0, .L21
-ARM GAS  /tmp/ccn0YbBm.s 			page 8
+ARM GAS  /tmp/ccBECB68.s 			page 8
 
 
  226 0036 8068     		ldr	r0, [r0, #8]
@@ -478,7 +478,7 @@ ARM GAS  /tmp/ccn0YbBm.s 			page 1
   89:app/tasks/event_manager/event_manager.c ****       return osOK;
  271              		.loc 1 89 7 view .LVU62
   89:app/tasks/event_manager/event_manager.c ****       return osOK;
-ARM GAS  /tmp/ccn0YbBm.s 			page 9
+ARM GAS  /tmp/ccBECB68.s 			page 9
 
 
  272              		.loc 1 89 14 is_stmt 0 view .LVU63
@@ -538,7 +538,7 @@ ARM GAS  /tmp/ccn0YbBm.s 			page 1
   57:app/tasks/event_manager/event_manager.c ****   EV_MANAGER_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MES
  317              		.loc 1 57 134 is_stmt 0 view .LVU67
  318 0006 0024     		movs	r4, #0
-ARM GAS  /tmp/ccn0YbBm.s 			page 10
+ARM GAS  /tmp/ccBECB68.s 			page 10
 
 
  319 0008 0194     		str	r4, [sp, #4]
@@ -598,7 +598,7 @@ ARM GAS  /tmp/ccn0YbBm.s 			page 1
  362 0048 07A9     		add	r1, sp, #28
  363 004a A868     		ldr	r0, [r5, #8]
  364 004c FFF7FEFF 		bl	osMessageQueuePut
-ARM GAS  /tmp/ccn0YbBm.s 			page 11
+ARM GAS  /tmp/ccBECB68.s 			page 11
 
 
  365              	.LVL31:
@@ -658,7 +658,7 @@ ARM GAS  /tmp/ccn0YbBm.s 			page 1
  416      00000000 
  417 0028 08       		.byte	8
  418 0029 00000000 		.space	9
-ARM GAS  /tmp/ccn0YbBm.s 			page 12
+ARM GAS  /tmp/ccBECB68.s 			page 12
 
 
  418      00000000 
@@ -708,29 +708,29 @@ ARM GAS  /tmp/ccn0YbBm.s 			page 1
  447              		.file 13 "app/tasks/event_manager/event_manager.h"
  448              		.file 14 "/usr/include/newlib/stdio.h"
  449              		.file 15 "<built-in>"
-ARM GAS  /tmp/ccn0YbBm.s 			page 13
+ARM GAS  /tmp/ccBECB68.s 			page 13
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 event_manager.c
-     /tmp/ccn0YbBm.s:18     .rodata.publishEventToSubscribers.str1.4:0000000000000000 $d
-     /tmp/ccn0YbBm.s:23     .text.publishEventToSubscribers:0000000000000000 $t
-     /tmp/ccn0YbBm.s:30     .text.publishEventToSubscribers:0000000000000000 publishEventToSubscribers
-     /tmp/ccn0YbBm.s:157    .text.publishEventToSubscribers:0000000000000058 $d
-     /tmp/ccn0YbBm.s:165    .text.handleEvManagerMessage:0000000000000000 $t
-     /tmp/ccn0YbBm.s:171    .text.handleEvManagerMessage:0000000000000000 handleEvManagerMessage
-     /tmp/ccn0YbBm.s:197    .text.handleEvManagerMessage:0000000000000012 $d
-     /tmp/ccn0YbBm.s:277    .text.handleEvManagerMessage:000000000000006c $d
-     /tmp/ccn0YbBm.s:283    .rodata.EV_MANAGER_ActorInit.str1.4:0000000000000000 $d
-     /tmp/ccn0YbBm.s:290    .text.EV_MANAGER_ActorInit:0000000000000000 $t
-     /tmp/ccn0YbBm.s:297    .text.EV_MANAGER_ActorInit:0000000000000000 EV_MANAGER_ActorInit
-     /tmp/ccn0YbBm.s:379    .text.EV_MANAGER_ActorInit:0000000000000058 $d
-     /tmp/ccn0YbBm.s:393    .data.EV_MANAGER_Actor:0000000000000000 EV_MANAGER_Actor
-     /tmp/ccn0YbBm.s:403    .rodata.EV_MANAGER_SubscribersIdsMatrix:0000000000000000 EV_MANAGER_SubscribersIdsMatrix
-     /tmp/ccn0YbBm.s:389    .data.EV_MANAGER_Actor:0000000000000000 $d
-     /tmp/ccn0YbBm.s:399    .rodata.EV_MANAGER_SubscribersIdsMatrix:0000000000000000 $d
-     /tmp/ccn0YbBm.s:208    .text.handleEvManagerMessage:000000000000001d $d
-     /tmp/ccn0YbBm.s:208    .text.handleEvManagerMessage:000000000000001e $t
+     /tmp/ccBECB68.s:18     .rodata.publishEventToSubscribers.str1.4:0000000000000000 $d
+     /tmp/ccBECB68.s:23     .text.publishEventToSubscribers:0000000000000000 $t
+     /tmp/ccBECB68.s:30     .text.publishEventToSubscribers:0000000000000000 publishEventToSubscribers
+     /tmp/ccBECB68.s:157    .text.publishEventToSubscribers:0000000000000058 $d
+     /tmp/ccBECB68.s:165    .text.handleEvManagerMessage:0000000000000000 $t
+     /tmp/ccBECB68.s:171    .text.handleEvManagerMessage:0000000000000000 handleEvManagerMessage
+     /tmp/ccBECB68.s:197    .text.handleEvManagerMessage:0000000000000012 $d
+     /tmp/ccBECB68.s:277    .text.handleEvManagerMessage:000000000000006c $d
+     /tmp/ccBECB68.s:283    .rodata.EV_MANAGER_ActorInit.str1.4:0000000000000000 $d
+     /tmp/ccBECB68.s:290    .text.EV_MANAGER_ActorInit:0000000000000000 $t
+     /tmp/ccBECB68.s:297    .text.EV_MANAGER_ActorInit:0000000000000000 EV_MANAGER_ActorInit
+     /tmp/ccBECB68.s:379    .text.EV_MANAGER_ActorInit:0000000000000058 $d
+     /tmp/ccBECB68.s:393    .data.EV_MANAGER_Actor:0000000000000000 EV_MANAGER_Actor
+     /tmp/ccBECB68.s:403    .rodata.EV_MANAGER_SubscribersIdsMatrix:0000000000000000 EV_MANAGER_SubscribersIdsMatrix
+     /tmp/ccBECB68.s:389    .data.EV_MANAGER_Actor:0000000000000000 $d
+     /tmp/ccBECB68.s:399    .rodata.EV_MANAGER_SubscribersIdsMatrix:0000000000000000 $d
+     /tmp/ccBECB68.s:208    .text.handleEvManagerMessage:000000000000001d $d
+     /tmp/ccBECB68.s:208    .text.handleEvManagerMessage:000000000000001e $t
 
 UNDEFINED SYMBOLS
 fprintf

@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccJxosLc.s 			page 1
+ARM GAS  /tmp/ccwWBNs6.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -17,11 +17,401 @@ ARM GAS  /tmp/ccJxosLc.s 			page 1
   14              		.text
   15              	.Ltext0:
   16              		.cfi_sections	.debug_frame
-  17              	.Letext0:
-ARM GAS  /tmp/ccJxosLc.s 			page 2
+  17              		.section	.text.SHT3x_InitIO,"ax",%progbits
+  18              		.align	1
+  19              		.global	SHT3x_InitIO
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	SHT3x_InitIO:
+  27              	.LVL0:
+  28              	.LFB3:
+  29              		.file 1 "app/drivers/sht3x/sht3x.c"
+   1:app/drivers/sht3x/sht3x.c **** /*!
+   2:app/drivers/sht3x/sht3x.c ****  * @file sht3x.c
+   3:app/drivers/sht3x/sht3x.c ****  * @brief implementation of sht3x
+   4:app/drivers/sht3x/sht3x.c ****  *
+   5:app/drivers/sht3x/sht3x.c ****  * Detailed description of the implementation file.
+   6:app/drivers/sht3x/sht3x.c ****  *
+   7:app/drivers/sht3x/sht3x.c ****  * @date 04/08/2024
+   8:app/drivers/sht3x/sht3x.c ****  * @author artempolisskyi
+   9:app/drivers/sht3x/sht3x.c ****  */
+  10:app/drivers/sht3x/sht3x.c **** 
+  11:app/drivers/sht3x/sht3x.c **** #include "sht3x.h"
+  12:app/drivers/sht3x/sht3x.c **** 
+  13:app/drivers/sht3x/sht3x.c **** SHT3x_IO_t SHT3x_IO = {
+  14:app/drivers/sht3x/sht3x.c ****         .i2cAddress = 0x00,
+  15:app/drivers/sht3x/sht3x.c ****         .writeCommand = NULL,
+  16:app/drivers/sht3x/sht3x.c ****         .readCommand = NULL,
+  17:app/drivers/sht3x/sht3x.c ****         .crc8 = NULL
+  18:app/drivers/sht3x/sht3x.c **** };
+  19:app/drivers/sht3x/sht3x.c **** 
+  20:app/drivers/sht3x/sht3x.c **** SHT3x_RESULT SHT3x_InitIO(uint8_t i2cAddress, SHT3x_WriteCommand_Func writeCommand, SHT3x_ReadComma
+  30              		.loc 1 20 143 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  35              		.loc 1 20 143 is_stmt 0 view .LVU1
+  36 0000 10B4     		push	{r4}
+  37              	.LCFI0:
+  38              		.cfi_def_cfa_offset 4
+ARM GAS  /tmp/ccwWBNs6.s 			page 2
+
+
+  39              		.cfi_offset 4, -4
+  21:app/drivers/sht3x/sht3x.c ****   SHT3x_IO.i2cAddress = i2cAddress;
+  40              		.loc 1 21 3 is_stmt 1 view .LVU2
+  41              		.loc 1 21 23 is_stmt 0 view .LVU3
+  42 0002 044C     		ldr	r4, .L3
+  43 0004 2070     		strb	r0, [r4]
+  22:app/drivers/sht3x/sht3x.c ****   SHT3x_IO.writeCommand = writeCommand;
+  44              		.loc 1 22 3 is_stmt 1 view .LVU4
+  45              		.loc 1 22 25 is_stmt 0 view .LVU5
+  46 0006 6160     		str	r1, [r4, #4]
+  23:app/drivers/sht3x/sht3x.c ****   SHT3x_IO.readCommand = readCommand;
+  47              		.loc 1 23 3 is_stmt 1 view .LVU6
+  48              		.loc 1 23 24 is_stmt 0 view .LVU7
+  49 0008 A260     		str	r2, [r4, #8]
+  24:app/drivers/sht3x/sht3x.c ****   SHT3x_IO.crc8 = crc8;
+  50              		.loc 1 24 3 is_stmt 1 view .LVU8
+  51              		.loc 1 24 17 is_stmt 0 view .LVU9
+  52 000a E360     		str	r3, [r4, #12]
+  25:app/drivers/sht3x/sht3x.c **** 
+  26:app/drivers/sht3x/sht3x.c ****   return SHT3x_OK;
+  53              		.loc 1 26 3 is_stmt 1 view .LVU10
+  27:app/drivers/sht3x/sht3x.c **** }
+  54              		.loc 1 27 1 is_stmt 0 view .LVU11
+  55 000c 0020     		movs	r0, #0
+  56              	.LVL1:
+  57              		.loc 1 27 1 view .LVU12
+  58 000e 5DF8044B 		ldr	r4, [sp], #4
+  59              	.LCFI1:
+  60              		.cfi_restore 4
+  61              		.cfi_def_cfa_offset 0
+  62              		.loc 1 27 1 view .LVU13
+  63 0012 7047     		bx	lr
+  64              	.L4:
+  65              		.align	2
+  66              	.L3:
+  67 0014 00000000 		.word	.LANCHOR0
+  68              		.cfi_endproc
+  69              	.LFE3:
+  71              		.section	.text.SHT3x_ReadDeviceID,"ax",%progbits
+  72              		.align	1
+  73              		.global	SHT3x_ReadDeviceID
+  74              		.syntax unified
+  75              		.thumb
+  76              		.thumb_func
+  77              		.fpu fpv4-sp-d16
+  79              	SHT3x_ReadDeviceID:
+  80              	.LVL2:
+  81              	.LFB4:
+  28:app/drivers/sht3x/sht3x.c **** 
+  29:app/drivers/sht3x/sht3x.c **** /**
+  30:app/drivers/sht3x/sht3x.c ****  * @brief Read the serial number of the SHT3x sensor.
+  31:app/drivers/sht3x/sht3x.c ****  *
+  32:app/drivers/sht3x/sht3x.c ****  * Serial number structure:
+  33:app/drivers/sht3x/sht3x.c ****  * - 2 bytes: Serial number word 1
+  34:app/drivers/sht3x/sht3x.c ****  * - 1 byte: CRC for serial number word 1
+  35:app/drivers/sht3x/sht3x.c ****  * - 2 bytes: Serial number word 2
+  36:app/drivers/sht3x/sht3x.c ****  * - 1 byte: CRC for serial number word 2
+ARM GAS  /tmp/ccwWBNs6.s 			page 3
+
+
+  37:app/drivers/sht3x/sht3x.c ****  *
+  38:app/drivers/sht3x/sht3x.c ****  * @see https://sensirion.com/media/documents/E5762713/63D103C2/Sensirion_electronic_identification
+  39:app/drivers/sht3x/sht3x.c ****  * @param id
+  40:app/drivers/sht3x/sht3x.c ****  * @return
+  41:app/drivers/sht3x/sht3x.c ****  */
+  42:app/drivers/sht3x/sht3x.c **** SHT3x_RESULT SHT3x_ReadDeviceID(uint32_t *id) {
+  82              		.loc 1 42 47 is_stmt 1 view -0
+  83              		.cfi_startproc
+  84              		@ args = 0, pretend = 0, frame = 8
+  85              		@ frame_needed = 0, uses_anonymous_args = 0
+  86              		.loc 1 42 47 is_stmt 0 view .LVU15
+  87 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+  88              	.LCFI2:
+  89              		.cfi_def_cfa_offset 24
+  90              		.cfi_offset 4, -24
+  91              		.cfi_offset 5, -20
+  92              		.cfi_offset 6, -16
+  93              		.cfi_offset 7, -12
+  94              		.cfi_offset 8, -8
+  95              		.cfi_offset 14, -4
+  96 0004 82B0     		sub	sp, sp, #8
+  97              	.LCFI3:
+  98              		.cfi_def_cfa_offset 32
+  99 0006 0446     		mov	r4, r0
+  43:app/drivers/sht3x/sht3x.c ****     uint8_t serialNumberData[SHT3x_SERIAL_NUMBER_SIZE];
+ 100              		.loc 1 43 5 is_stmt 1 view .LVU16
+  44:app/drivers/sht3x/sht3x.c ****     SHT3x_RESULT result = SHT3x_IO.readCommand(SHT3x_IO.i2cAddress, SHT3x_SERIAL_NUMBER_CMD_ID, ser
+ 101              		.loc 1 44 5 view .LVU17
+ 102              		.loc 1 44 35 is_stmt 0 view .LVU18
+ 103 0008 1B48     		ldr	r0, .L11
+ 104              	.LVL3:
+ 105              		.loc 1 44 35 view .LVU19
+ 106 000a 8568     		ldr	r5, [r0, #8]
+ 107              		.loc 1 44 27 view .LVU20
+ 108 000c 0623     		movs	r3, #6
+ 109 000e 6A46     		mov	r2, sp
+ 110 0010 43F28261 		movw	r1, #13954
+ 111 0014 0078     		ldrb	r0, [r0]	@ zero_extendqisi2
+ 112 0016 A847     		blx	r5
+ 113              	.LVL4:
+  45:app/drivers/sht3x/sht3x.c **** 
+  46:app/drivers/sht3x/sht3x.c ****     if (result != SHT3x_OK) {
+ 114              		.loc 1 46 5 is_stmt 1 view .LVU21
+ 115              		.loc 1 46 8 is_stmt 0 view .LVU22
+ 116 0018 0546     		mov	r5, r0
+ 117 001a 18BB     		cbnz	r0, .L5
+  47:app/drivers/sht3x/sht3x.c ****       return result;
+  48:app/drivers/sht3x/sht3x.c ****     }
+  49:app/drivers/sht3x/sht3x.c **** 
+  50:app/drivers/sht3x/sht3x.c ****     // TODO remove this check after the CRC8 function is implemented
+  51:app/drivers/sht3x/sht3x.c ****     if (SHT3x_IO.crc8 != NULL) {
+ 118              		.loc 1 51 5 is_stmt 1 view .LVU23
+ 119              		.loc 1 51 17 is_stmt 0 view .LVU24
+ 120 001c 164B     		ldr	r3, .L11
+ 121 001e DB68     		ldr	r3, [r3, #12]
+ 122              		.loc 1 51 8 view .LVU25
+ 123 0020 8BB1     		cbz	r3, .L7
+ARM GAS  /tmp/ccwWBNs6.s 			page 4
+
+
+ 124              	.LBB2:
+  52:app/drivers/sht3x/sht3x.c ****       // Check CRC
+  53:app/drivers/sht3x/sht3x.c ****       uint8_t word1ReceivedCRC = serialNumberData[2];
+ 125              		.loc 1 53 7 is_stmt 1 view .LVU26
+ 126              		.loc 1 53 15 is_stmt 0 view .LVU27
+ 127 0022 9DF80270 		ldrb	r7, [sp, #2]	@ zero_extendqisi2
+ 128              	.LVL5:
+  54:app/drivers/sht3x/sht3x.c ****       uint8_t word2ReceivedCRC = serialNumberData[5];
+ 129              		.loc 1 54 7 is_stmt 1 view .LVU28
+ 130              		.loc 1 54 15 is_stmt 0 view .LVU29
+ 131 0026 9DF80580 		ldrb	r8, [sp, #5]	@ zero_extendqisi2
+ 132              	.LVL6:
+  55:app/drivers/sht3x/sht3x.c ****       bool word1CRCValid = SHT3x_IO.crc8(serialNumberData, 2) == word1ReceivedCRC;
+ 133              		.loc 1 55 7 is_stmt 1 view .LVU30
+ 134              		.loc 1 55 28 is_stmt 0 view .LVU31
+ 135 002a 0221     		movs	r1, #2
+ 136 002c 6846     		mov	r0, sp
+ 137              	.LVL7:
+ 138              		.loc 1 55 28 view .LVU32
+ 139 002e 9847     		blx	r3
+ 140              	.LVL8:
+ 141 0030 0646     		mov	r6, r0
+ 142              	.LVL9:
+  56:app/drivers/sht3x/sht3x.c ****       bool word2CRCValid = SHT3x_IO.crc8(serialNumberData + 3, 2) == word2ReceivedCRC;
+ 143              		.loc 1 56 7 is_stmt 1 view .LVU33
+ 144              		.loc 1 56 36 is_stmt 0 view .LVU34
+ 145 0032 114B     		ldr	r3, .L11
+ 146 0034 DB68     		ldr	r3, [r3, #12]
+ 147              		.loc 1 56 28 view .LVU35
+ 148 0036 0221     		movs	r1, #2
+ 149 0038 0DF10300 		add	r0, sp, #3
+ 150 003c 9847     		blx	r3
+ 151              	.LVL10:
+  57:app/drivers/sht3x/sht3x.c **** 
+  58:app/drivers/sht3x/sht3x.c ****       if (word1CRCValid == false || word2CRCValid == false) {
+ 152              		.loc 1 58 7 is_stmt 1 view .LVU36
+ 153              		.loc 1 58 10 is_stmt 0 view .LVU37
+ 154 003e BE42     		cmp	r6, r7
+ 155 0040 14D1     		bne	.L8
+ 156              		.loc 1 58 34 discriminator 1 view .LVU38
+ 157 0042 4045     		cmp	r0, r8
+ 158 0044 15D1     		bne	.L9
+ 159              	.LVL11:
+ 160              	.L7:
+ 161              		.loc 1 58 34 discriminator 1 view .LVU39
+ 162              	.LBE2:
+  59:app/drivers/sht3x/sht3x.c ****         return SHT3x_CRC_ERROR;
+  60:app/drivers/sht3x/sht3x.c ****       }
+  61:app/drivers/sht3x/sht3x.c ****     }
+  62:app/drivers/sht3x/sht3x.c **** 
+  63:app/drivers/sht3x/sht3x.c ****     *id = serialNumberData[0] << 24 | serialNumberData[1] << 16 | serialNumberData[3] << 8 | serial
+ 163              		.loc 1 63 5 is_stmt 1 view .LVU40
+ 164              		.loc 1 63 27 is_stmt 0 view .LVU41
+ 165 0046 9DF80020 		ldrb	r2, [sp]	@ zero_extendqisi2
+ 166              		.loc 1 63 55 view .LVU42
+ 167 004a 9DF80130 		ldrb	r3, [sp, #1]	@ zero_extendqisi2
+ 168              		.loc 1 63 59 view .LVU43
+ARM GAS  /tmp/ccwWBNs6.s 			page 5
+
+
+ 169 004e 1B04     		lsls	r3, r3, #16
+ 170              		.loc 1 63 37 view .LVU44
+ 171 0050 43EA0263 		orr	r3, r3, r2, lsl #24
+ 172              		.loc 1 63 83 view .LVU45
+ 173 0054 9DF80320 		ldrb	r2, [sp, #3]	@ zero_extendqisi2
+ 174              		.loc 1 63 65 view .LVU46
+ 175 0058 43EA0223 		orr	r3, r3, r2, lsl #8
+ 176              		.loc 1 63 110 view .LVU47
+ 177 005c 9DF80420 		ldrb	r2, [sp, #4]	@ zero_extendqisi2
+ 178              		.loc 1 63 92 view .LVU48
+ 179 0060 1343     		orrs	r3, r3, r2
+ 180              		.loc 1 63 9 view .LVU49
+ 181 0062 2360     		str	r3, [r4]
+  64:app/drivers/sht3x/sht3x.c **** 
+  65:app/drivers/sht3x/sht3x.c ****     return SHT3x_OK;
+ 182              		.loc 1 65 5 is_stmt 1 view .LVU50
+ 183              	.LVL12:
+ 184              	.L5:
+  66:app/drivers/sht3x/sht3x.c **** }
+ 185              		.loc 1 66 1 is_stmt 0 view .LVU51
+ 186 0064 2846     		mov	r0, r5
+ 187 0066 02B0     		add	sp, sp, #8
+ 188              	.LCFI4:
+ 189              		.cfi_remember_state
+ 190              		.cfi_def_cfa_offset 24
+ 191              		@ sp needed
+ 192 0068 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 193              	.LVL13:
+ 194              	.L8:
+ 195              	.LCFI5:
+ 196              		.cfi_restore_state
+ 197              	.LBB3:
+  59:app/drivers/sht3x/sht3x.c ****         return SHT3x_CRC_ERROR;
+ 198              		.loc 1 59 16 view .LVU52
+ 199 006c 6FF00305 		mvn	r5, #3
+ 200              	.LVL14:
+  59:app/drivers/sht3x/sht3x.c ****         return SHT3x_CRC_ERROR;
+ 201              		.loc 1 59 16 view .LVU53
+ 202 0070 F8E7     		b	.L5
+ 203              	.LVL15:
+ 204              	.L9:
+  59:app/drivers/sht3x/sht3x.c ****         return SHT3x_CRC_ERROR;
+ 205              		.loc 1 59 16 view .LVU54
+ 206 0072 6FF00305 		mvn	r5, #3
+ 207              	.LVL16:
+  59:app/drivers/sht3x/sht3x.c ****         return SHT3x_CRC_ERROR;
+ 208              		.loc 1 59 16 view .LVU55
+ 209 0076 F5E7     		b	.L5
+ 210              	.L12:
+ 211              		.align	2
+ 212              	.L11:
+ 213 0078 00000000 		.word	.LANCHOR0
+ 214              	.LBE3:
+ 215              		.cfi_endproc
+ 216              	.LFE4:
+ 218              		.section	.text.SHT3x_RawToTemperatureC,"ax",%progbits
+ 219              		.align	1
+ARM GAS  /tmp/ccwWBNs6.s 			page 6
+
+
+ 220              		.global	SHT3x_RawToTemperatureC
+ 221              		.syntax unified
+ 222              		.thumb
+ 223              		.thumb_func
+ 224              		.fpu fpv4-sp-d16
+ 226              	SHT3x_RawToTemperatureC:
+ 227              	.LVL17:
+ 228              	.LFB5:
+  67:app/drivers/sht3x/sht3x.c **** 
+  68:app/drivers/sht3x/sht3x.c **** float SHT3x_RawToTemperatureC(uint16_t rawTemperature) {
+ 229              		.loc 1 68 56 is_stmt 1 view -0
+ 230              		.cfi_startproc
+ 231              		@ args = 0, pretend = 0, frame = 0
+ 232              		@ frame_needed = 0, uses_anonymous_args = 0
+ 233              		@ link register save eliminated.
+ 234              		.loc 1 68 56 is_stmt 0 view .LVU57
+ 235 0000 07EE100A 		vmov	s14, r0	@ int
+  69:app/drivers/sht3x/sht3x.c ****   return -45.0f + 175.0f * (rawTemperature / 65535.0f);
+ 236              		.loc 1 69 3 is_stmt 1 view .LVU58
+ 237              		.loc 1 69 44 is_stmt 0 view .LVU59
+ 238 0004 B8EEC77A 		vcvt.f32.s32	s14, s14
+ 239 0008 DFED066A 		vldr.32	s13, .L14
+ 240 000c C7EE267A 		vdiv.f32	s15, s14, s13
+ 241              		.loc 1 69 26 view .LVU60
+ 242 0010 9FED050A 		vldr.32	s0, .L14+4
+ 243 0014 67EE807A 		vmul.f32	s15, s15, s0
+  70:app/drivers/sht3x/sht3x.c **** }
+ 244              		.loc 1 70 1 view .LVU61
+ 245 0018 9FED040A 		vldr.32	s0, .L14+8
+ 246 001c 37EEC00A 		vsub.f32	s0, s15, s0
+ 247 0020 7047     		bx	lr
+ 248              	.L15:
+ 249 0022 00BF     		.align	2
+ 250              	.L14:
+ 251 0024 00FF7F47 		.word	1199570688
+ 252 0028 00002F43 		.word	1127153664
+ 253 002c 00003442 		.word	1110704128
+ 254              		.cfi_endproc
+ 255              	.LFE5:
+ 257              		.section	.text.SHT3x_RawToHumidityRH,"ax",%progbits
+ 258              		.align	1
+ 259              		.global	SHT3x_RawToHumidityRH
+ 260              		.syntax unified
+ 261              		.thumb
+ 262              		.thumb_func
+ 263              		.fpu fpv4-sp-d16
+ 265              	SHT3x_RawToHumidityRH:
+ 266              	.LVL18:
+ 267              	.LFB6:
+  71:app/drivers/sht3x/sht3x.c **** 
+  72:app/drivers/sht3x/sht3x.c **** float SHT3x_RawToHumidityRH(uint16_t rawHumidity) {
+ 268              		.loc 1 72 51 is_stmt 1 view -0
+ 269              		.cfi_startproc
+ 270              		@ args = 0, pretend = 0, frame = 0
+ 271              		@ frame_needed = 0, uses_anonymous_args = 0
+ 272              		@ link register save eliminated.
+ 273              		.loc 1 72 51 is_stmt 0 view .LVU63
+ARM GAS  /tmp/ccwWBNs6.s 			page 7
+
+
+ 274 0000 07EE900A 		vmov	s15, r0	@ int
+  73:app/drivers/sht3x/sht3x.c ****   return 100.0f * (rawHumidity / 65535.0f);
+ 275              		.loc 1 73 3 is_stmt 1 view .LVU64
+ 276              		.loc 1 73 32 is_stmt 0 view .LVU65
+ 277 0004 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 278 0008 9FED047A 		vldr.32	s14, .L17
+ 279 000c 87EE870A 		vdiv.f32	s0, s15, s14
+  74:app/drivers/sht3x/sht3x.c **** }...
+ 280              		.loc 1 74 1 view .LVU66
+ 281 0010 DFED037A 		vldr.32	s15, .L17+4
+ 282 0014 20EE270A 		vmul.f32	s0, s0, s15
+ 283 0018 7047     		bx	lr
+ 284              	.L18:
+ 285 001a 00BF     		.align	2
+ 286              	.L17:
+ 287 001c 00FF7F47 		.word	1199570688
+ 288 0020 0000C842 		.word	1120403456
+ 289              		.cfi_endproc
+ 290              	.LFE6:
+ 292              		.global	SHT3x_IO
+ 293              		.section	.bss.SHT3x_IO,"aw",%nobits
+ 294              		.align	2
+ 295              		.set	.LANCHOR0,. + 0
+ 298              	SHT3x_IO:
+ 299 0000 00000000 		.space	16
+ 299      00000000 
+ 299      00000000 
+ 299      00000000 
+ 300              		.text
+ 301              	.Letext0:
+ 302              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 303              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 304              		.file 4 "app/drivers/sht3x/sht3x.h"
+ARM GAS  /tmp/ccwWBNs6.s 			page 8
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 sht3x.c
+     /tmp/ccwWBNs6.s:18     .text.SHT3x_InitIO:0000000000000000 $t
+     /tmp/ccwWBNs6.s:26     .text.SHT3x_InitIO:0000000000000000 SHT3x_InitIO
+     /tmp/ccwWBNs6.s:67     .text.SHT3x_InitIO:0000000000000014 $d
+     /tmp/ccwWBNs6.s:72     .text.SHT3x_ReadDeviceID:0000000000000000 $t
+     /tmp/ccwWBNs6.s:79     .text.SHT3x_ReadDeviceID:0000000000000000 SHT3x_ReadDeviceID
+     /tmp/ccwWBNs6.s:213    .text.SHT3x_ReadDeviceID:0000000000000078 $d
+     /tmp/ccwWBNs6.s:219    .text.SHT3x_RawToTemperatureC:0000000000000000 $t
+     /tmp/ccwWBNs6.s:226    .text.SHT3x_RawToTemperatureC:0000000000000000 SHT3x_RawToTemperatureC
+     /tmp/ccwWBNs6.s:251    .text.SHT3x_RawToTemperatureC:0000000000000024 $d
+     /tmp/ccwWBNs6.s:258    .text.SHT3x_RawToHumidityRH:0000000000000000 $t
+     /tmp/ccwWBNs6.s:265    .text.SHT3x_RawToHumidityRH:0000000000000000 SHT3x_RawToHumidityRH
+     /tmp/ccwWBNs6.s:287    .text.SHT3x_RawToHumidityRH:000000000000001c $d
+     /tmp/ccwWBNs6.s:298    .bss.SHT3x_IO:0000000000000000 SHT3x_IO
+     /tmp/ccwWBNs6.s:294    .bss.SHT3x_IO:0000000000000000 $d
 
 NO UNDEFINED SYMBOLS

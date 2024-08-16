@@ -57,8 +57,8 @@ build/nfc.o: app/tasks/nfc/nfc.c app/tasks/nfc/nfc.h \
  app/core/power_mode_manager/power_mode_manager.h app/tasks/nfc/nfc.h \
  app/tasks/memory/memory.h Core/Inc/quadspi.h Core/Inc/main.h \
  app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.h \
- app/tasks/light_sensor/light_sensor.h Core/Inc/custom_bus.h \
- Core/Inc/custom_conf.h Core/Inc/custom_errno.h \
+ Core/Inc/custom_bus.h Core/Inc/custom_conf.h Core/Inc/custom_errno.h \
+ app/drivers/sht3x/sht3x.h app/tasks/light_sensor/light_sensor.h \
  app/drivers/opt3001/opt3001.h app/core/cron/cron.h Core/Inc/rtc.h \
  app/core/info_led/info_led.h app/core/retarget/retarget.h \
  Drivers/BSP/Components/ST25DV/st25dv_reg.h \
@@ -129,10 +129,11 @@ app/tasks/memory/memory.h:
 Core/Inc/quadspi.h:
 Core/Inc/main.h:
 app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.h:
-app/tasks/light_sensor/light_sensor.h:
 Core/Inc/custom_bus.h:
 Core/Inc/custom_conf.h:
 Core/Inc/custom_errno.h:
+app/drivers/sht3x/sht3x.h:
+app/tasks/light_sensor/light_sensor.h:
 app/drivers/opt3001/opt3001.h:
 app/core/cron/cron.h:
 Core/Inc/rtc.h:

@@ -61,9 +61,9 @@ build/crc.o: Core/Src/crc.c Core/Inc/crc.h Core/Inc/main.h \
  app/tasks/nfc/nfc_handlers.h app/tasks/nfc/nfc.h \
  app/tasks/memory/memory.h Core/Inc/quadspi.h \
  app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.h \
- app/tasks/light_sensor/light_sensor.h app/drivers/opt3001/opt3001.h \
- app/core/cron/cron.h Core/Inc/rtc.h app/core/info_led/info_led.h \
- app/core/retarget/retarget.h
+ app/drivers/sht3x/sht3x.h app/tasks/light_sensor/light_sensor.h \
+ app/drivers/opt3001/opt3001.h app/core/cron/cron.h Core/Inc/rtc.h \
+ app/core/info_led/info_led.h app/core/retarget/retarget.h
 Core/Inc/crc.h:
 Core/Inc/main.h:
 Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
@@ -137,6 +137,7 @@ app/tasks/nfc/nfc.h:
 app/tasks/memory/memory.h:
 Core/Inc/quadspi.h:
 app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.h:
+app/drivers/sht3x/sht3x.h:
 app/tasks/light_sensor/light_sensor.h:
 app/drivers/opt3001/opt3001.h:
 app/core/cron/cron.h:

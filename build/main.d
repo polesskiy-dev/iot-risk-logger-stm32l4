@@ -61,9 +61,9 @@ build/main.o: Core/Src/main.c Core/Inc/main.h \
  app/tasks/nfc/nfc_handlers.h app/tasks/nfc/nfc.h \
  app/tasks/memory/memory.h Core/Inc/quadspi.h Core/Inc/main.h \
  app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.h \
- app/tasks/light_sensor/light_sensor.h app/drivers/opt3001/opt3001.h \
- app/core/cron/cron.h Core/Inc/rtc.h app/core/info_led/info_led.h \
- app/core/retarget/retarget.h \
+ app/drivers/sht3x/sht3x.h app/tasks/light_sensor/light_sensor.h \
+ app/drivers/opt3001/opt3001.h app/core/cron/cron.h Core/Inc/rtc.h \
+ app/core/info_led/info_led.h app/core/retarget/retarget.h \
  Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/list.h \
@@ -144,6 +144,7 @@ app/tasks/memory/memory.h:
 Core/Inc/quadspi.h:
 Core/Inc/main.h:
 app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.h:
+app/drivers/sht3x/sht3x.h:
 app/tasks/light_sensor/light_sensor.h:
 app/drivers/opt3001/opt3001.h:
 app/core/cron/cron.h:
