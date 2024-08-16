@@ -22,7 +22,8 @@ extern actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS];
  * Each row corresponds to a specific global event, and each column contains the IDs of actors
  * that are interested in that event.
  *
- * @note The array is initialized at compile-time and stored in Flash memory for efficiency.
+ * @note The matrix is initialized at compile-time and stored in Flash memory for efficiency.
+ * @note The matrix includes Actors IDs, not Actors themselves to decouple the event manager from the actors.
  *
  * Example usage:
  * @code

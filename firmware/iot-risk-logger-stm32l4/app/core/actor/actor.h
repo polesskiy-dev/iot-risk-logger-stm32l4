@@ -27,6 +27,30 @@ extern "C" {
 #define DEFAULT_TASK_STACK_SIZE_WORDS (128)
 
 /**
+ * @brief Sets the state of an inherited actor and logs the action.
+ *
+ * @warning inherited actor from actor_t should have a `state` member.
+ *
+ * @param actorPointer A pointer to inherited the actor whose state is to be set.
+ *                     This should be a pointer to a struct that has a `state` member.
+ * @param stateEnum    state to set
+ *
+ * @example
+ * typedef struct {
+ *  actor_t super;
+ *  StateEnum_t state;
+ * } My_Actor_t;
+ *
+ * My_Actor_t myActor;
+ * TO_STATE(&myActor, FIRST_STATE);
+ */
+#define TO_STATE(actorPointer, stateEnum)                                     \
+  do {                                                                        \
+    (actorPointer)->state = (stateEnum);                                      \
+    fprintf(stdout, "%lu: %s\n", (actorPointer)->super.actorId, #stateEnum);  \
+  } while (0);
+
+/**
 * @brief Structure representing a message in the actor framework.
 */
 typedef struct {
