@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccPeWnV7.s 			page 1
+ARM GAS  /tmp/ccamXK4Q.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -17,50 +17,70 @@ ARM GAS  /tmp/ccPeWnV7.s 			page 1
   14              		.text
   15              	.Ltext0:
   16              		.cfi_sections	.debug_frame
-  17              		.section	.rodata.handleTurnedOff.str1.4,"aMS",%progbits,1
+  17              		.section	.rodata.handleInit.str1.4,"aMS",%progbits,1
   18              		.align	2
   19              	.LC0:
-  20 0000 4F505433 		.ascii	"OPT3001 milli Lux: %ld\012\000"
+  20 0000 4F505433 		.ascii	"OPT3001 ID: %x\012\000"
   20      30303120 
-  20      6D696C6C 
-  20      69204C75 
-  20      783A2025 
+  20      49443A20 
+  20      25780A00 
   21              		.align	2
   22              	.LC1:
-  23 0018 4C494748 		.ascii	"LIGHT_SENS_TURNED_OFF_STATE\000"
-  23      545F5345 
-  23      4E535F54 
-  23      55524E45 
-  23      445F4F46 
-  24              		.align	2
+  23 0010 57726974 		.ascii	"Write OPT3001 Config: %x\012\000"
+  23      65204F50 
+  23      54333030 
+  23      3120436F 
+  23      6E666967 
+  24 002a 0000     		.align	2
   25              	.LC2:
-  26 0034 256C753A 		.ascii	"%lu: %s\012\000"
-  26      2025730A 
-  26      00
-  27 003d 000000   		.align	2
+  26 002c 4F505433 		.ascii	"OPT3001 Config: %x\012\000"
+  26      30303120 
+  26      436F6E66 
+  26      69673A20 
+  26      25780A00 
+  27              		.align	2
   28              	.LC3:
-  29 0040 4C494748 		.ascii	"LIGHT_SENS_CONTINUOUS_MEASURE_STATE\000"
-  29      545F5345 
-  29      4E535F43 
-  29      4F4E5449 
-  29      4E554F55 
-  30              		.section	.text.handleTurnedOff,"ax",%progbits
-  31              		.align	1
-  32              		.arch armv7e-m
-  33              		.syntax unified
-  34              		.thumb
-  35              		.thumb_func
-  36              		.fpu fpv4-sp-d16
-  38              	handleTurnedOff:
-  39              	.LVL0:
-  40              	.LFB143:
-  41              		.file 1 "app/tasks/light_sensor/light_sensor.c"
+  29 0040 4F505433 		.ascii	"OPT3001 Config mismatch\012\000"
+  29      30303120 
+  29      436F6E66 
+  29      6967206D 
+  29      69736D61 
+  30 0059 000000   		.align	2
+  31              	.LC4:
+  32 005c 4C696768 		.ascii	"Light sensor %ul initialized\012\000"
+  32      74207365 
+  32      6E736F72 
+  32      2025756C 
+  32      20696E69 
+  33 007a 0000     		.align	2
+  34              	.LC5:
+  35 007c 4C494748 		.ascii	"LIGHT_SENS_TURNED_OFF_STATE\000"
+  35      545F5345 
+  35      4E535F54 
+  35      55524E45 
+ARM GAS  /tmp/ccamXK4Q.s 			page 2
+
+
+  35      445F4F46 
+  36              		.align	2
+  37              	.LC6:
+  38 0098 256C753A 		.ascii	"%lu: %s\012\000"
+  38      2025730A 
+  38      00
+  39              		.section	.text.handleInit,"ax",%progbits
+  40              		.align	1
+  41              		.arch armv7e-m
+  42              		.syntax unified
+  43              		.thumb
+  44              		.thumb_func
+  45              		.fpu fpv4-sp-d16
+  47              	handleInit:
+  48              	.LVL0:
+  49              	.LFB142:
+  50              		.file 1 "app/tasks/light_sensor/light_sensor.c"
    1:app/tasks/light_sensor/light_sensor.c **** /*!
    2:app/tasks/light_sensor/light_sensor.c ****  * @file light_sensor.c
    3:app/tasks/light_sensor/light_sensor.c ****  * @brief implementation of light_sensor
-ARM GAS  /tmp/ccPeWnV7.s 			page 2
-
-
    4:app/tasks/light_sensor/light_sensor.c ****  *
    5:app/tasks/light_sensor/light_sensor.c ****  * Detailed description of the implementation file.
    6:app/tasks/light_sensor/light_sensor.c ****  *
@@ -98,6 +118,9 @@ ARM GAS  /tmp/ccPeWnV7.s 			page 1
   38:app/tasks/light_sensor/light_sensor.c ****         .cb_mem = &lightSensorTaskControlBlock,
   39:app/tasks/light_sensor/light_sensor.c ****         .cb_size = sizeof(lightSensorTaskControlBlock),
   40:app/tasks/light_sensor/light_sensor.c ****         .stack_mem = &lightSensorTaskBuffer[0],
+ARM GAS  /tmp/ccamXK4Q.s 			page 3
+
+
   41:app/tasks/light_sensor/light_sensor.c ****         .stack_size = sizeof(lightSensorTaskBuffer),
   42:app/tasks/light_sensor/light_sensor.c ****         .priority = (osPriority_t) osPriorityNormal,
   43:app/tasks/light_sensor/light_sensor.c **** };
@@ -118,9 +141,6 @@ ARM GAS  /tmp/ccPeWnV7.s 			page 1
   58:app/tasks/light_sensor/light_sensor.c ****   fprintf(stdout, "Task %s started\n", lightSensorTaskDescription.name);
   59:app/tasks/light_sensor/light_sensor.c **** 
   60:app/tasks/light_sensor/light_sensor.c ****   for (;;) {
-ARM GAS  /tmp/ccPeWnV7.s 			page 3
-
-
   61:app/tasks/light_sensor/light_sensor.c ****     // Wait for messages from the queue
   62:app/tasks/light_sensor/light_sensor.c ****     if (osMessageQueueGet(LIGHT_SENS_Actor.super.osMessageQueueId, &msg, NULL, osWaitForever) == os
   63:app/tasks/light_sensor/light_sensor.c ****       osStatus_t handleMessageStatus = LIGHT_SENS_Actor.super.messageHandler((actor_t *) &LIGHT_SEN
@@ -138,1465 +158,1887 @@ ARM GAS  /tmp/ccPeWnV7.s 			page 1
   75:app/tasks/light_sensor/light_sensor.c **** static osStatus_t handleLightSensorFSM(LIGHT_SENS_Actor_t *this, message_t *message) {
   76:app/tasks/light_sensor/light_sensor.c ****   switch (this->state) {
   77:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_NO_STATE:
-  78:app/tasks/light_sensor/light_sensor.c ****       return osOK;
-  79:app/tasks/light_sensor/light_sensor.c **** //      return handleInit(this, message);
-  80:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_TURNED_OFF_STATE:
-  81:app/tasks/light_sensor/light_sensor.c ****       return handleTurnedOff(this, message);
-  82:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_CONTINUOUS_MEASURE_STATE:
-  83:app/tasks/light_sensor/light_sensor.c ****       return handleContinuousMeasure(this, message);
-  84:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_OUT_OF_RANGE_STATE:
-  85:app/tasks/light_sensor/light_sensor.c ****       return handleOutOfRange(this, message);
-  86:app/tasks/light_sensor/light_sensor.c ****   }
-  87:app/tasks/light_sensor/light_sensor.c **** 
-  88:app/tasks/light_sensor/light_sensor.c ****   return osOK;
-  89:app/tasks/light_sensor/light_sensor.c **** }
-  90:app/tasks/light_sensor/light_sensor.c **** /**
-  91:app/tasks/light_sensor/light_sensor.c ****  * @brief Initializes the sensor, configures I2C, writes default settings, and transitions to the T
-  92:app/tasks/light_sensor/light_sensor.c ****  */
-  93:app/tasks/light_sensor/light_sensor.c **** static osStatus_t handleInit(LIGHT_SENS_Actor_t *this, message_t *message) {
-  94:app/tasks/light_sensor/light_sensor.c ****   if (GLOBAL_CMD_INITIALIZE == message->event) {
-  95:app/tasks/light_sensor/light_sensor.c ****     // init the driver (io)
-  96:app/tasks/light_sensor/light_sensor.c ****     osStatus_t ioStatus = OPT3001_InitIO(LIGHT_SENS_I2C_ADDRESS, BSP_I2C1_WriteReg, BSP_I2C1_ReadRe
-  97:app/tasks/light_sensor/light_sensor.c **** 
-  98:app/tasks/light_sensor/light_sensor.c ****     if (ioStatus != osOK) return osError;
-  99:app/tasks/light_sensor/light_sensor.c **** 
- 100:app/tasks/light_sensor/light_sensor.c ****     // test read device id
- 101:app/tasks/light_sensor/light_sensor.c ****     uint16_t opt3001Id = 0x0000;
- 102:app/tasks/light_sensor/light_sensor.c ****     ioStatus = OPT3001_ReadDeviceID(&opt3001Id);
- 103:app/tasks/light_sensor/light_sensor.c **** 
- 104:app/tasks/light_sensor/light_sensor.c ****     if (ioStatus != osOK) return osError;
- 105:app/tasks/light_sensor/light_sensor.c ****     fprintf(stdout, "OPT3001 ID: %x\n", opt3001Id);
- 106:app/tasks/light_sensor/light_sensor.c **** 
- 107:app/tasks/light_sensor/light_sensor.c ****     // write default config (OPT3001 remains in turned off state)
- 108:app/tasks/light_sensor/light_sensor.c ****     uint16_t opt3001Config = OPT3001_CONFIG_DEFAULT;
- 109:app/tasks/light_sensor/light_sensor.c **** 
- 110:app/tasks/light_sensor/light_sensor.c ****     ioStatus = OPT3001_WriteConfig(opt3001Config);
- 111:app/tasks/light_sensor/light_sensor.c **** 
- 112:app/tasks/light_sensor/light_sensor.c ****     if (ioStatus != osOK) return osError;
- 113:app/tasks/light_sensor/light_sensor.c ****     fprintf(stdout, "Write OPT3001 Config: %x\n", opt3001Config);
- 114:app/tasks/light_sensor/light_sensor.c **** 
- 115:app/tasks/light_sensor/light_sensor.c ****     // read existing config to verify equality
- 116:app/tasks/light_sensor/light_sensor.c ****     uint16_t opt3001ConfigFromSensor = 0x0000;
- 117:app/tasks/light_sensor/light_sensor.c ****     ioStatus = OPT3001_ReadConfig(&opt3001ConfigFromSensor);
-ARM GAS  /tmp/ccPeWnV7.s 			page 4
-
-
- 118:app/tasks/light_sensor/light_sensor.c **** 
- 119:app/tasks/light_sensor/light_sensor.c ****     if (ioStatus != osOK) return osError;
- 120:app/tasks/light_sensor/light_sensor.c ****     fprintf(stdout, "OPT3001 Config: %x\n", opt3001ConfigFromSensor);
- 121:app/tasks/light_sensor/light_sensor.c **** 
- 122:app/tasks/light_sensor/light_sensor.c ****     if (opt3001Config != opt3001ConfigFromSensor) {
- 123:app/tasks/light_sensor/light_sensor.c ****       fprintf(stderr, "OPT3001 Config mismatch\n");
- 124:app/tasks/light_sensor/light_sensor.c ****       return osError;
- 125:app/tasks/light_sensor/light_sensor.c ****     }
- 126:app/tasks/light_sensor/light_sensor.c **** 
- 127:app/tasks/light_sensor/light_sensor.c ****     // TODO read it from NOR flash (implement settings manager)
- 128:app/tasks/light_sensor/light_sensor.c ****     // set high limit and minimal low limit so that the sensor never triggers the interrupt on low 
- 129:app/tasks/light_sensor/light_sensor.c ****     ioStatus = OPT3001_WriteHighLimit(this->highLimit);
- 130:app/tasks/light_sensor/light_sensor.c ****     if (ioStatus != osOK) return osError;
- 131:app/tasks/light_sensor/light_sensor.c **** 
- 132:app/tasks/light_sensor/light_sensor.c ****     ioStatus = OPT3001_WriteLowLimit(OPT3001_CONFIG_LIMIT_MIN);
- 133:app/tasks/light_sensor/light_sensor.c ****     if (ioStatus != osOK) return osError;
- 134:app/tasks/light_sensor/light_sensor.c **** 
- 135:app/tasks/light_sensor/light_sensor.c ****     // publish to event manager that the sensor is initialized
- 136:app/tasks/light_sensor/light_sensor.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
- 137:app/tasks/light_sensor/light_sensor.c ****     osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_INITIALIZE_SUCCESS, .payload.value = LIGH
- 138:app/tasks/light_sensor/light_sensor.c **** 
- 139:app/tasks/light_sensor/light_sensor.c ****     fprintf(stdout, "Light sensor %ul initialized\n", LIGHT_SENSOR_ACTOR_ID);
- 140:app/tasks/light_sensor/light_sensor.c ****     TO_STATE(this, LIGHT_SENS_TURNED_OFF_STATE);
- 141:app/tasks/light_sensor/light_sensor.c ****   }
- 142:app/tasks/light_sensor/light_sensor.c **** 
- 143:app/tasks/light_sensor/light_sensor.c ****   return osOK;
- 144:app/tasks/light_sensor/light_sensor.c **** }
- 145:app/tasks/light_sensor/light_sensor.c **** 
- 146:app/tasks/light_sensor/light_sensor.c **** /**
- 147:app/tasks/light_sensor/light_sensor.c ****  * @brief Perform single-shot measurements, set limits, or switch to continuous measurement mode.
- 148:app/tasks/light_sensor/light_sensor.c ****  */
- 149:app/tasks/light_sensor/light_sensor.c **** static osStatus_t handleTurnedOff(LIGHT_SENS_Actor_t *this, message_t *message) {
-  42              		.loc 1 149 81 view -0
-  43              		.cfi_startproc
-  44              		@ args = 0, pretend = 0, frame = 0
-  45              		@ frame_needed = 0, uses_anonymous_args = 0
-  46              		.loc 1 149 81 is_stmt 0 view .LVU1
-  47 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
-  48              	.LCFI0:
-  49              		.cfi_def_cfa_offset 24
-  50              		.cfi_offset 3, -24
-  51              		.cfi_offset 4, -20
-  52              		.cfi_offset 5, -16
-  53              		.cfi_offset 6, -12
-  54              		.cfi_offset 7, -8
-  55              		.cfi_offset 14, -4
-  56 0002 0446     		mov	r4, r0
- 150:app/tasks/light_sensor/light_sensor.c ****   osStatus_t ioStatus;
-  57              		.loc 1 150 3 is_stmt 1 view .LVU2
- 151:app/tasks/light_sensor/light_sensor.c **** 
- 152:app/tasks/light_sensor/light_sensor.c ****   switch (message->event) {
-  58              		.loc 1 152 3 view .LVU3
-  59              		.loc 1 152 18 is_stmt 0 view .LVU4
-  60 0004 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
-  61              		.loc 1 152 3 view .LVU5
-  62 0006 152B     		cmp	r3, #21
-  63 0008 2CD0     		beq	.L2
-ARM GAS  /tmp/ccPeWnV7.s 			page 5
-
-
-  64 000a 162B     		cmp	r3, #22
-  65 000c 3BD0     		beq	.L3
-  66 000e 142B     		cmp	r3, #20
-  67 0010 02D0     		beq	.L11
-  68 0012 0025     		movs	r5, #0
-  69              	.LVL1:
-  70              	.L1:
- 153:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_SINGLE_SHOT_READ:
- 154:app/tasks/light_sensor/light_sensor.c ****       // set single shot mode
- 155:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_WriteConfig(OPT3001_CONFIG_RANGE_NUMBER_AUTO_SCALE | \
- 156:app/tasks/light_sensor/light_sensor.c ****                                     OPT3001_CONFIG_CONVERSION_TIME_800_MS | \
- 157:app/tasks/light_sensor/light_sensor.c ****                                     OPT3001_CONFIG_MODE_SINGLE_SHOT | \
- 158:app/tasks/light_sensor/light_sensor.c ****                                     OPT3001_CONFIG_LATCH_ENABLED);
- 159:app/tasks/light_sensor/light_sensor.c **** 
- 160:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
- 161:app/tasks/light_sensor/light_sensor.c **** 
- 162:app/tasks/light_sensor/light_sensor.c ****       // wait for the sensor to finish the measurement
- 163:app/tasks/light_sensor/light_sensor.c ****       osDelay(1000); // TODO replace with 800ms
- 164:app/tasks/light_sensor/light_sensor.c **** 
- 165:app/tasks/light_sensor/light_sensor.c ****       // read the measured rawLux
- 166:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_ReadResultRawLux(&this->rawLux);
- 167:app/tasks/light_sensor/light_sensor.c **** 
- 168:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
- 169:app/tasks/light_sensor/light_sensor.c **** 
- 170:app/tasks/light_sensor/light_sensor.c ****       // convert rawLux to lux for debug
- 171:app/tasks/light_sensor/light_sensor.c ****       fprintf(stdout, "OPT3001 milli Lux: %ld\n", OPT3001_RawToMilliLux(this->rawLux));
- 172:app/tasks/light_sensor/light_sensor.c **** 
- 173:app/tasks/light_sensor/light_sensor.c ****       // remains in turned off state after successful read, opt3001 turns off automatically after s
- 174:app/tasks/light_sensor/light_sensor.c ****       TO_STATE(this, LIGHT_SENS_TURNED_OFF_STATE);
- 175:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 176:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_MEASURE_CONTINUOUSLY:
- 177:app/tasks/light_sensor/light_sensor.c ****       // set continuous measurements mode
- 178:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_WriteConfig(OPT3001_CONFIG_RANGE_NUMBER_AUTO_SCALE | \
- 179:app/tasks/light_sensor/light_sensor.c ****                                     OPT3001_CONFIG_CONVERSION_TIME_800_MS | \
- 180:app/tasks/light_sensor/light_sensor.c ****                                     OPT3001_CONFIG_MODE_CONTINUOUS | \
- 181:app/tasks/light_sensor/light_sensor.c ****                                     OPT3001_CONFIG_FAULT_COUNT_4 | \
- 182:app/tasks/light_sensor/light_sensor.c ****                                     OPT3001_CONFIG_LATCH_ENABLED);
- 183:app/tasks/light_sensor/light_sensor.c **** 
- 184:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
- 185:app/tasks/light_sensor/light_sensor.c **** 
- 186:app/tasks/light_sensor/light_sensor.c ****       TO_STATE(this, LIGHT_SENS_CONTINUOUS_MEASURE_STATE);
- 187:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 188:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_SET_LIMIT:
- 189:app/tasks/light_sensor/light_sensor.c ****       // set high limit from message payload
- 190:app/tasks/light_sensor/light_sensor.c ****       this->highLimit = message->payload.value;
- 191:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_WriteHighLimit(this->highLimit);
- 192:app/tasks/light_sensor/light_sensor.c **** 
- 193:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
- 194:app/tasks/light_sensor/light_sensor.c **** 
- 195:app/tasks/light_sensor/light_sensor.c ****       TO_STATE(this, LIGHT_SENS_TURNED_OFF_STATE);
- 196:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 197:app/tasks/light_sensor/light_sensor.c ****   }
- 198:app/tasks/light_sensor/light_sensor.c **** 
- 199:app/tasks/light_sensor/light_sensor.c ****   return osOK;
- 200:app/tasks/light_sensor/light_sensor.c **** };
-  71              		.loc 1 200 1 view .LVU6
-  72 0014 2846     		mov	r0, r5
-ARM GAS  /tmp/ccPeWnV7.s 			page 6
-
-
-  73 0016 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
-  74              	.LVL2:
-  75              	.L11:
- 155:app/tasks/light_sensor/light_sensor.c ****                                     OPT3001_CONFIG_CONVERSION_TIME_800_MS | \
-  76              		.loc 1 155 7 is_stmt 1 view .LVU7
- 155:app/tasks/light_sensor/light_sensor.c ****                                     OPT3001_CONFIG_CONVERSION_TIME_800_MS | \
-  77              		.loc 1 155 18 is_stmt 0 view .LVU8
-  78 0018 4CF61020 		movw	r0, #51728
-  79              	.LVL3:
- 155:app/tasks/light_sensor/light_sensor.c ****                                     OPT3001_CONFIG_CONVERSION_TIME_800_MS | \
-  80              		.loc 1 155 18 view .LVU9
-  81 001c FFF7FEFF 		bl	OPT3001_WriteConfig
-  82              	.LVL4:
- 160:app/tasks/light_sensor/light_sensor.c **** 
-  83              		.loc 1 160 7 is_stmt 1 view .LVU10
- 160:app/tasks/light_sensor/light_sensor.c **** 
-  84              		.loc 1 160 10 is_stmt 0 view .LVU11
-  85 0020 0028     		cmp	r0, #0
-  86 0022 41D1     		bne	.L6
- 163:app/tasks/light_sensor/light_sensor.c **** 
-  87              		.loc 1 163 7 is_stmt 1 view .LVU12
-  88 0024 4FF47A70 		mov	r0, #1000
-  89              	.LVL5:
- 163:app/tasks/light_sensor/light_sensor.c **** 
-  90              		.loc 1 163 7 is_stmt 0 view .LVU13
-  91 0028 FFF7FEFF 		bl	osDelay
-  92              	.LVL6:
- 166:app/tasks/light_sensor/light_sensor.c **** 
-  93              		.loc 1 166 7 is_stmt 1 view .LVU14
- 166:app/tasks/light_sensor/light_sensor.c **** 
-  94              		.loc 1 166 18 is_stmt 0 view .LVU15
-  95 002c 04F11200 		add	r0, r4, #18
-  96 0030 FFF7FEFF 		bl	OPT3001_ReadResultRawLux
-  97              	.LVL7:
- 168:app/tasks/light_sensor/light_sensor.c **** 
-  98              		.loc 1 168 7 is_stmt 1 view .LVU16
- 168:app/tasks/light_sensor/light_sensor.c **** 
-  99              		.loc 1 168 10 is_stmt 0 view .LVU17
- 100 0034 0546     		mov	r5, r0
- 101 0036 0028     		cmp	r0, #0
- 102 0038 39D1     		bne	.L7
- 171:app/tasks/light_sensor/light_sensor.c **** 
- 103              		.loc 1 171 7 is_stmt 1 view .LVU18
- 171:app/tasks/light_sensor/light_sensor.c **** 
- 104              		.loc 1 171 15 is_stmt 0 view .LVU19
- 105 003a 214E     		ldr	r6, .L12
- 106 003c 3368     		ldr	r3, [r6]
- 107 003e 9F68     		ldr	r7, [r3, #8]
- 171:app/tasks/light_sensor/light_sensor.c **** 
- 108              		.loc 1 171 7 view .LVU20
- 109 0040 608A     		ldrh	r0, [r4, #18]
- 110              	.LVL8:
- 171:app/tasks/light_sensor/light_sensor.c **** 
- 111              		.loc 1 171 7 view .LVU21
- 112 0042 FFF7FEFF 		bl	OPT3001_RawToMilliLux
- 113              	.LVL9:
- 114 0046 0246     		mov	r2, r0
-ARM GAS  /tmp/ccPeWnV7.s 			page 7
-
-
- 115 0048 1E49     		ldr	r1, .L12+4
- 116 004a 3846     		mov	r0, r7
- 117 004c FFF7FEFF 		bl	fprintf
- 118              	.LVL10:
- 174:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 119              		.loc 1 174 7 is_stmt 1 view .LVU22
- 174:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 120              		.loc 1 174 7 view .LVU23
- 121 0050 0123     		movs	r3, #1
- 122 0052 2374     		strb	r3, [r4, #16]
- 174:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 123              		.loc 1 174 7 view .LVU24
- 124 0054 3068     		ldr	r0, [r6]
- 125 0056 1C4B     		ldr	r3, .L12+8
- 126 0058 2268     		ldr	r2, [r4]
- 127 005a 1C49     		ldr	r1, .L12+12
- 128 005c 8068     		ldr	r0, [r0, #8]
- 129 005e FFF7FEFF 		bl	fprintf
- 130              	.LVL11:
- 174:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 131              		.loc 1 174 7 view .LVU25
- 174:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 132              		.loc 1 174 50 view .LVU26
- 175:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_MEASURE_CONTINUOUSLY:
- 133              		.loc 1 175 7 view .LVU27
- 175:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_MEASURE_CONTINUOUSLY:
- 134              		.loc 1 175 14 is_stmt 0 view .LVU28
- 135 0062 D7E7     		b	.L1
- 136              	.LVL12:
- 137              	.L2:
- 178:app/tasks/light_sensor/light_sensor.c ****                                     OPT3001_CONFIG_CONVERSION_TIME_800_MS | \
- 138              		.loc 1 178 7 is_stmt 1 view .LVU29
- 178:app/tasks/light_sensor/light_sensor.c ****                                     OPT3001_CONFIG_CONVERSION_TIME_800_MS | \
- 139              		.loc 1 178 18 is_stmt 0 view .LVU30
- 140 0064 4CF61260 		movw	r0, #52754
- 141              	.LVL13:
- 178:app/tasks/light_sensor/light_sensor.c ****                                     OPT3001_CONFIG_CONVERSION_TIME_800_MS | \
- 142              		.loc 1 178 18 view .LVU31
- 143 0068 FFF7FEFF 		bl	OPT3001_WriteConfig
- 144              	.LVL14:
- 184:app/tasks/light_sensor/light_sensor.c **** 
- 145              		.loc 1 184 7 is_stmt 1 view .LVU32
- 184:app/tasks/light_sensor/light_sensor.c **** 
- 146              		.loc 1 184 10 is_stmt 0 view .LVU33
- 147 006c 0546     		mov	r5, r0
- 148 006e 08BB     		cbnz	r0, .L8
- 186:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 149              		.loc 1 186 7 is_stmt 1 view .LVU34
- 186:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 150              		.loc 1 186 7 view .LVU35
- 151 0070 0223     		movs	r3, #2
- 152 0072 2374     		strb	r3, [r4, #16]
- 186:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 153              		.loc 1 186 7 view .LVU36
- 154 0074 124B     		ldr	r3, .L12
- 155 0076 1868     		ldr	r0, [r3]
- 156              	.LVL15:
-ARM GAS  /tmp/ccPeWnV7.s 			page 8
-
-
- 186:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 157              		.loc 1 186 7 is_stmt 0 view .LVU37
- 158 0078 154B     		ldr	r3, .L12+16
- 159 007a 2268     		ldr	r2, [r4]
- 160 007c 1349     		ldr	r1, .L12+12
- 161 007e 8068     		ldr	r0, [r0, #8]
- 162 0080 FFF7FEFF 		bl	fprintf
- 163              	.LVL16:
- 186:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 164              		.loc 1 186 7 is_stmt 1 view .LVU38
- 186:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 165              		.loc 1 186 58 view .LVU39
- 187:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_SET_LIMIT:
- 166              		.loc 1 187 7 view .LVU40
- 187:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_SET_LIMIT:
- 167              		.loc 1 187 14 is_stmt 0 view .LVU41
- 168 0084 C6E7     		b	.L1
- 169              	.LVL17:
- 170              	.L3:
- 190:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_WriteHighLimit(this->highLimit);
- 171              		.loc 1 190 7 is_stmt 1 view .LVU42
- 190:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_WriteHighLimit(this->highLimit);
- 172              		.loc 1 190 23 is_stmt 0 view .LVU43
- 173 0086 8888     		ldrh	r0, [r1, #4]
- 174              	.LVL18:
- 190:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_WriteHighLimit(this->highLimit);
- 175              		.loc 1 190 23 view .LVU44
- 176 0088 A082     		strh	r0, [r4, #20]	@ movhi
- 191:app/tasks/light_sensor/light_sensor.c **** 
- 177              		.loc 1 191 7 is_stmt 1 view .LVU45
- 191:app/tasks/light_sensor/light_sensor.c **** 
- 178              		.loc 1 191 18 is_stmt 0 view .LVU46
- 179 008a FFF7FEFF 		bl	OPT3001_WriteHighLimit
- 180              	.LVL19:
- 193:app/tasks/light_sensor/light_sensor.c **** 
- 181              		.loc 1 193 7 is_stmt 1 view .LVU47
- 193:app/tasks/light_sensor/light_sensor.c **** 
- 182              		.loc 1 193 10 is_stmt 0 view .LVU48
- 183 008e 0546     		mov	r5, r0
- 184 0090 98B9     		cbnz	r0, .L9
- 195:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 185              		.loc 1 195 7 is_stmt 1 view .LVU49
- 195:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 186              		.loc 1 195 7 view .LVU50
- 187 0092 0123     		movs	r3, #1
- 188 0094 2374     		strb	r3, [r4, #16]
- 195:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 189              		.loc 1 195 7 view .LVU51
- 190 0096 0A4B     		ldr	r3, .L12
- 191 0098 1868     		ldr	r0, [r3]
- 192              	.LVL20:
- 195:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 193              		.loc 1 195 7 is_stmt 0 view .LVU52
- 194 009a 0B4B     		ldr	r3, .L12+8
- 195 009c 2268     		ldr	r2, [r4]
- 196 009e 0B49     		ldr	r1, .L12+12
- 197 00a0 8068     		ldr	r0, [r0, #8]
-ARM GAS  /tmp/ccPeWnV7.s 			page 9
-
-
- 198 00a2 FFF7FEFF 		bl	fprintf
- 199              	.LVL21:
- 195:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 200              		.loc 1 195 7 is_stmt 1 view .LVU53
- 195:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 201              		.loc 1 195 50 view .LVU54
- 196:app/tasks/light_sensor/light_sensor.c ****   }
- 202              		.loc 1 196 7 view .LVU55
- 196:app/tasks/light_sensor/light_sensor.c ****   }
- 203              		.loc 1 196 14 is_stmt 0 view .LVU56
- 204 00a6 B5E7     		b	.L1
- 205              	.LVL22:
- 206              	.L6:
- 160:app/tasks/light_sensor/light_sensor.c **** 
- 207              		.loc 1 160 36 view .LVU57
- 208 00a8 4FF0FF35 		mov	r5, #-1
- 209 00ac B2E7     		b	.L1
- 210              	.L7:
- 168:app/tasks/light_sensor/light_sensor.c **** 
- 211              		.loc 1 168 36 view .LVU58
- 212 00ae 4FF0FF35 		mov	r5, #-1
- 213 00b2 AFE7     		b	.L1
- 214              	.L8:
- 184:app/tasks/light_sensor/light_sensor.c **** 
- 215              		.loc 1 184 36 view .LVU59
- 216 00b4 4FF0FF35 		mov	r5, #-1
- 217 00b8 ACE7     		b	.L1
- 218              	.L9:
- 193:app/tasks/light_sensor/light_sensor.c **** 
- 219              		.loc 1 193 36 view .LVU60
- 220 00ba 4FF0FF35 		mov	r5, #-1
- 221 00be A9E7     		b	.L1
- 222              	.L13:
- 223              		.align	2
- 224              	.L12:
- 225 00c0 00000000 		.word	_impure_ptr
- 226 00c4 00000000 		.word	.LC0
- 227 00c8 18000000 		.word	.LC1
- 228 00cc 34000000 		.word	.LC2
- 229 00d0 40000000 		.word	.LC3
- 230              		.cfi_endproc
- 231              	.LFE143:
- 233              		.section	.rodata.handleContinuousMeasure.str1.4,"aMS",%progbits,1
- 234              		.align	2
- 235              	.LC4:
- 236 0000 4C494748 		.ascii	"LIGHT_SENS_OUT_OF_RANGE_STATE\000"
- 236      545F5345 
- 236      4E535F4F 
- 236      55545F4F 
- 236      465F5241 
- 237              		.section	.text.handleContinuousMeasure,"ax",%progbits
- 238              		.align	1
- 239              		.syntax unified
- 240              		.thumb
- 241              		.thumb_func
- 242              		.fpu fpv4-sp-d16
- 244              	handleContinuousMeasure:
-ARM GAS  /tmp/ccPeWnV7.s 			page 10
-
-
- 245              	.LVL23:
- 246              	.LFB144:
- 201:app/tasks/light_sensor/light_sensor.c **** 
- 202:app/tasks/light_sensor/light_sensor.c **** /**
- 203:app/tasks/light_sensor/light_sensor.c ****  * @brief Cron read sensor data periodically, handle limit interrupts, or turn off the sensor.
- 204:app/tasks/light_sensor/light_sensor.c ****  */
- 205:app/tasks/light_sensor/light_sensor.c **** static osStatus_t handleContinuousMeasure(LIGHT_SENS_Actor_t *this, message_t *message) {
- 247              		.loc 1 205 89 is_stmt 1 view -0
- 248              		.cfi_startproc
- 249              		@ args = 0, pretend = 0, frame = 0
- 250              		@ frame_needed = 0, uses_anonymous_args = 0
- 251              		.loc 1 205 89 is_stmt 0 view .LVU62
- 252 0000 38B5     		push	{r3, r4, r5, lr}
- 253              	.LCFI1:
- 254              		.cfi_def_cfa_offset 16
- 255              		.cfi_offset 3, -16
- 256              		.cfi_offset 4, -12
- 257              		.cfi_offset 5, -8
- 258              		.cfi_offset 14, -4
- 259 0002 0446     		mov	r4, r0
- 206:app/tasks/light_sensor/light_sensor.c ****   osStatus_t ioStatus;
- 260              		.loc 1 206 3 is_stmt 1 view .LVU63
- 207:app/tasks/light_sensor/light_sensor.c **** 
- 208:app/tasks/light_sensor/light_sensor.c ****   switch (message->event) {
- 261              		.loc 1 208 3 view .LVU64
- 262              		.loc 1 208 18 is_stmt 0 view .LVU65
- 263 0004 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
- 264              		.loc 1 208 3 view .LVU66
- 265 0006 172B     		cmp	r3, #23
- 266 0008 17D0     		beq	.L15
- 267 000a 182B     		cmp	r3, #24
- 268 000c 26D0     		beq	.L16
- 269 000e 032B     		cmp	r3, #3
- 270 0010 02D0     		beq	.L24
- 271 0012 0025     		movs	r5, #0
- 272              	.LVL24:
- 273              	.L14:
- 209:app/tasks/light_sensor/light_sensor.c ****     case GLOBAL_WAKE_N_READ:
- 210:app/tasks/light_sensor/light_sensor.c ****       // read the measured rawLux on RTC cron
- 211:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_ReadResultRawLux(&this->rawLux);
- 212:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
- 213:app/tasks/light_sensor/light_sensor.c **** 
- 214:app/tasks/light_sensor/light_sensor.c ****       TO_STATE(this, LIGHT_SENS_CONTINUOUS_MEASURE_STATE);
- 215:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 216:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_TURN_OFF:
- 217:app/tasks/light_sensor/light_sensor.c ****       // turn off the sensor
- 218:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_WriteConfig(OPT3001_CONFIG_DEFAULT | OPT3001_CONFIG_MODE_SHUTDOWN);
- 219:app/tasks/light_sensor/light_sensor.c **** 
- 220:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
- 221:app/tasks/light_sensor/light_sensor.c **** 
- 222:app/tasks/light_sensor/light_sensor.c ****       TO_STATE(this, LIGHT_SENS_TURNED_OFF_STATE);
- 223:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 224:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_LIMIT_INT:
- 225:app/tasks/light_sensor/light_sensor.c ****       // read the measured rawLux overvalue
- 226:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_ReadResultRawLux(&this->rawLux);
- 227:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
- 228:app/tasks/light_sensor/light_sensor.c **** 
-ARM GAS  /tmp/ccPeWnV7.s 			page 11
-
-
- 229:app/tasks/light_sensor/light_sensor.c ****       // TODO emit to event manager LIGHT_SENS_LIMIT_INT with this->rawLux payload
- 230:app/tasks/light_sensor/light_sensor.c **** 
- 231:app/tasks/light_sensor/light_sensor.c ****       // swap limits to wait for lux returning below the high limit
- 232:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_WriteHighLimit(OPT3001_CONFIG_LIMIT_MAX)
- 233:app/tasks/light_sensor/light_sensor.c ****       | OPT3001_WriteLowLimit(this->highLimit);
- 234:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
- 235:app/tasks/light_sensor/light_sensor.c **** 
- 236:app/tasks/light_sensor/light_sensor.c ****       TO_STATE(this, LIGHT_SENS_OUT_OF_RANGE_STATE);
- 237:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 238:app/tasks/light_sensor/light_sensor.c ****   }
- 239:app/tasks/light_sensor/light_sensor.c **** 
- 240:app/tasks/light_sensor/light_sensor.c ****   return osOK;
- 241:app/tasks/light_sensor/light_sensor.c **** }
- 274              		.loc 1 241 1 view .LVU67
- 275 0014 2846     		mov	r0, r5
- 276 0016 38BD     		pop	{r3, r4, r5, pc}
- 277              	.LVL25:
- 278              	.L24:
- 211:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
- 279              		.loc 1 211 7 is_stmt 1 view .LVU68
- 211:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
- 280              		.loc 1 211 18 is_stmt 0 view .LVU69
- 281 0018 1230     		adds	r0, r0, #18
- 282              	.LVL26:
- 211:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
- 283              		.loc 1 211 18 view .LVU70
- 284 001a FFF7FEFF 		bl	OPT3001_ReadResultRawLux
- 285              	.LVL27:
- 212:app/tasks/light_sensor/light_sensor.c **** 
- 286              		.loc 1 212 7 is_stmt 1 view .LVU71
- 212:app/tasks/light_sensor/light_sensor.c **** 
- 287              		.loc 1 212 10 is_stmt 0 view .LVU72
- 288 001e 0546     		mov	r5, r0
- 289 0020 0028     		cmp	r0, #0
- 290 0022 34D1     		bne	.L19
- 214:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 291              		.loc 1 214 7 is_stmt 1 view .LVU73
- 214:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 292              		.loc 1 214 7 view .LVU74
- 293 0024 0223     		movs	r3, #2
- 294 0026 2374     		strb	r3, [r4, #16]
- 214:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 295              		.loc 1 214 7 view .LVU75
- 296 0028 1F4B     		ldr	r3, .L25
- 297 002a 1868     		ldr	r0, [r3]
- 298              	.LVL28:
- 214:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 299              		.loc 1 214 7 is_stmt 0 view .LVU76
- 300 002c 1F4B     		ldr	r3, .L25+4
- 301 002e 2268     		ldr	r2, [r4]
- 302 0030 1F49     		ldr	r1, .L25+8
- 303 0032 8068     		ldr	r0, [r0, #8]
- 304 0034 FFF7FEFF 		bl	fprintf
- 305              	.LVL29:
- 214:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 306              		.loc 1 214 7 is_stmt 1 view .LVU77
- 214:app/tasks/light_sensor/light_sensor.c ****       return osOK;
-ARM GAS  /tmp/ccPeWnV7.s 			page 12
-
-
- 307              		.loc 1 214 58 view .LVU78
- 215:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_TURN_OFF:
- 308              		.loc 1 215 7 view .LVU79
- 215:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_TURN_OFF:
- 309              		.loc 1 215 14 is_stmt 0 view .LVU80
- 310 0038 ECE7     		b	.L14
- 311              	.LVL30:
- 312              	.L15:
- 218:app/tasks/light_sensor/light_sensor.c **** 
- 313              		.loc 1 218 7 is_stmt 1 view .LVU81
- 218:app/tasks/light_sensor/light_sensor.c **** 
- 314              		.loc 1 218 18 is_stmt 0 view .LVU82
- 315 003a 4CF61000 		movw	r0, #51216
- 316              	.LVL31:
- 218:app/tasks/light_sensor/light_sensor.c **** 
- 317              		.loc 1 218 18 view .LVU83
- 318 003e FFF7FEFF 		bl	OPT3001_WriteConfig
- 319              	.LVL32:
- 220:app/tasks/light_sensor/light_sensor.c **** 
- 320              		.loc 1 220 7 is_stmt 1 view .LVU84
- 220:app/tasks/light_sensor/light_sensor.c **** 
- 321              		.loc 1 220 10 is_stmt 0 view .LVU85
- 322 0042 0546     		mov	r5, r0
- 323 0044 30BB     		cbnz	r0, .L20
- 222:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 324              		.loc 1 222 7 is_stmt 1 view .LVU86
- 222:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 325              		.loc 1 222 7 view .LVU87
- 326 0046 0123     		movs	r3, #1
- 327 0048 2374     		strb	r3, [r4, #16]
- 222:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 328              		.loc 1 222 7 view .LVU88
- 329 004a 174B     		ldr	r3, .L25
- 330 004c 1868     		ldr	r0, [r3]
- 331              	.LVL33:
- 222:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 332              		.loc 1 222 7 is_stmt 0 view .LVU89
- 333 004e 194B     		ldr	r3, .L25+12
- 334 0050 2268     		ldr	r2, [r4]
- 335 0052 1749     		ldr	r1, .L25+8
- 336 0054 8068     		ldr	r0, [r0, #8]
- 337 0056 FFF7FEFF 		bl	fprintf
- 338              	.LVL34:
- 222:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 339              		.loc 1 222 7 is_stmt 1 view .LVU90
- 222:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 340              		.loc 1 222 50 view .LVU91
- 223:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_LIMIT_INT:
- 341              		.loc 1 223 7 view .LVU92
- 223:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_LIMIT_INT:
- 342              		.loc 1 223 14 is_stmt 0 view .LVU93
- 343 005a DBE7     		b	.L14
- 344              	.LVL35:
- 345              	.L16:
- 226:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
- 346              		.loc 1 226 7 is_stmt 1 view .LVU94
- 226:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
-ARM GAS  /tmp/ccPeWnV7.s 			page 13
-
-
- 347              		.loc 1 226 18 is_stmt 0 view .LVU95
- 348 005c 1230     		adds	r0, r0, #18
- 349              	.LVL36:
- 226:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
- 350              		.loc 1 226 18 view .LVU96
- 351 005e FFF7FEFF 		bl	OPT3001_ReadResultRawLux
- 352              	.LVL37:
- 227:app/tasks/light_sensor/light_sensor.c **** 
- 353              		.loc 1 227 7 is_stmt 1 view .LVU97
- 227:app/tasks/light_sensor/light_sensor.c **** 
- 354              		.loc 1 227 10 is_stmt 0 view .LVU98
- 355 0062 D0B9     		cbnz	r0, .L21
- 232:app/tasks/light_sensor/light_sensor.c ****       | OPT3001_WriteLowLimit(this->highLimit);
- 356              		.loc 1 232 7 is_stmt 1 view .LVU99
- 232:app/tasks/light_sensor/light_sensor.c ****       | OPT3001_WriteLowLimit(this->highLimit);
- 357              		.loc 1 232 18 is_stmt 0 view .LVU100
- 358 0064 4FF6FF70 		movw	r0, #65535
- 359              	.LVL38:
- 232:app/tasks/light_sensor/light_sensor.c ****       | OPT3001_WriteLowLimit(this->highLimit);
- 360              		.loc 1 232 18 view .LVU101
- 361 0068 FFF7FEFF 		bl	OPT3001_WriteHighLimit
- 362              	.LVL39:
- 363 006c 0546     		mov	r5, r0
- 233:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
- 364              		.loc 1 233 9 view .LVU102
- 365 006e A08A     		ldrh	r0, [r4, #20]
- 366 0070 FFF7FEFF 		bl	OPT3001_WriteLowLimit
- 367              	.LVL40:
- 234:app/tasks/light_sensor/light_sensor.c **** 
- 368              		.loc 1 234 7 is_stmt 1 view .LVU103
- 234:app/tasks/light_sensor/light_sensor.c **** 
- 369              		.loc 1 234 10 is_stmt 0 view .LVU104
- 370 0074 0543     		orrs	r5, r5, r0
- 371              	.LVL41:
- 234:app/tasks/light_sensor/light_sensor.c **** 
- 372              		.loc 1 234 10 view .LVU105
- 373 0076 13D1     		bne	.L22
- 236:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 374              		.loc 1 236 7 is_stmt 1 view .LVU106
- 236:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 375              		.loc 1 236 7 view .LVU107
- 376 0078 0323     		movs	r3, #3
- 377 007a 2374     		strb	r3, [r4, #16]
- 236:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 378              		.loc 1 236 7 view .LVU108
- 379 007c 0A4B     		ldr	r3, .L25
- 380 007e 1868     		ldr	r0, [r3]
- 381 0080 0D4B     		ldr	r3, .L25+16
- 382 0082 2268     		ldr	r2, [r4]
- 383 0084 0A49     		ldr	r1, .L25+8
- 384 0086 8068     		ldr	r0, [r0, #8]
- 385 0088 FFF7FEFF 		bl	fprintf
- 386              	.LVL42:
- 236:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 387              		.loc 1 236 7 view .LVU109
- 236:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 388              		.loc 1 236 52 view .LVU110
-ARM GAS  /tmp/ccPeWnV7.s 			page 14
-
-
- 237:app/tasks/light_sensor/light_sensor.c ****   }
- 389              		.loc 1 237 7 view .LVU111
- 237:app/tasks/light_sensor/light_sensor.c ****   }
- 390              		.loc 1 237 14 is_stmt 0 view .LVU112
- 391 008c C2E7     		b	.L14
- 392              	.LVL43:
- 393              	.L19:
- 212:app/tasks/light_sensor/light_sensor.c **** 
- 394              		.loc 1 212 36 view .LVU113
- 395 008e 4FF0FF35 		mov	r5, #-1
- 396 0092 BFE7     		b	.L14
- 397              	.L20:
- 220:app/tasks/light_sensor/light_sensor.c **** 
- 398              		.loc 1 220 36 view .LVU114
- 399 0094 4FF0FF35 		mov	r5, #-1
- 400 0098 BCE7     		b	.L14
- 401              	.L21:
- 227:app/tasks/light_sensor/light_sensor.c **** 
- 402              		.loc 1 227 36 view .LVU115
- 403 009a 4FF0FF35 		mov	r5, #-1
- 404 009e B9E7     		b	.L14
- 405              	.LVL44:
- 406              	.L22:
- 234:app/tasks/light_sensor/light_sensor.c **** 
- 407              		.loc 1 234 36 view .LVU116
- 408 00a0 4FF0FF35 		mov	r5, #-1
- 409              	.LVL45:
- 234:app/tasks/light_sensor/light_sensor.c **** 
- 410              		.loc 1 234 36 view .LVU117
- 411 00a4 B6E7     		b	.L14
- 412              	.L26:
- 413 00a6 00BF     		.align	2
- 414              	.L25:
- 415 00a8 00000000 		.word	_impure_ptr
- 416 00ac 40000000 		.word	.LC3
- 417 00b0 34000000 		.word	.LC2
- 418 00b4 18000000 		.word	.LC1
- 419 00b8 00000000 		.word	.LC4
- 420              		.cfi_endproc
- 421              	.LFE144:
- 423              		.section	.text.handleOutOfRange,"ax",%progbits
- 424              		.align	1
- 425              		.syntax unified
- 426              		.thumb
- 427              		.thumb_func
- 428              		.fpu fpv4-sp-d16
- 430              	handleOutOfRange:
- 431              	.LVL46:
- 432              	.LFB145:
- 242:app/tasks/light_sensor/light_sensor.c **** 
- 243:app/tasks/light_sensor/light_sensor.c **** /**
- 244:app/tasks/light_sensor/light_sensor.c ****  * @brief Cron read sensor data, handle limit interrupts, or turn off the sensor.
- 245:app/tasks/light_sensor/light_sensor.c ****  */
- 246:app/tasks/light_sensor/light_sensor.c **** static osStatus_t handleOutOfRange(LIGHT_SENS_Actor_t *this, message_t *message) {
- 433              		.loc 1 246 82 is_stmt 1 view -0
- 434              		.cfi_startproc
- 435              		@ args = 0, pretend = 0, frame = 0
-ARM GAS  /tmp/ccPeWnV7.s 			page 15
-
-
- 436              		@ frame_needed = 0, uses_anonymous_args = 0
- 437              		.loc 1 246 82 is_stmt 0 view .LVU119
- 438 0000 38B5     		push	{r3, r4, r5, lr}
- 439              	.LCFI2:
- 440              		.cfi_def_cfa_offset 16
- 441              		.cfi_offset 3, -16
- 442              		.cfi_offset 4, -12
- 443              		.cfi_offset 5, -8
- 444              		.cfi_offset 14, -4
- 445 0002 0446     		mov	r4, r0
- 247:app/tasks/light_sensor/light_sensor.c ****   osStatus_t ioStatus;
- 446              		.loc 1 247 3 is_stmt 1 view .LVU120
- 248:app/tasks/light_sensor/light_sensor.c **** 
- 249:app/tasks/light_sensor/light_sensor.c ****   switch (message->event) {
- 447              		.loc 1 249 3 view .LVU121
- 448              		.loc 1 249 18 is_stmt 0 view .LVU122
- 449 0004 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
- 450              		.loc 1 249 3 view .LVU123
- 451 0006 172B     		cmp	r3, #23
- 452 0008 17D0     		beq	.L28
- 453 000a 182B     		cmp	r3, #24
- 454 000c 26D0     		beq	.L29
- 455 000e 032B     		cmp	r3, #3
- 456 0010 02D0     		beq	.L37
- 457 0012 0025     		movs	r5, #0
- 458              	.LVL47:
- 459              	.L27:
- 250:app/tasks/light_sensor/light_sensor.c ****     case GLOBAL_WAKE_N_READ:
- 251:app/tasks/light_sensor/light_sensor.c ****       // still read the measured rawLux on RTC cron
- 252:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_ReadResultRawLux(&this->rawLux);
- 253:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
- 254:app/tasks/light_sensor/light_sensor.c **** 
- 255:app/tasks/light_sensor/light_sensor.c ****       TO_STATE(this, LIGHT_SENS_OUT_OF_RANGE_STATE);
- 256:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 257:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_TURN_OFF:
- 258:app/tasks/light_sensor/light_sensor.c ****       // turn off the sensor
- 259:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_WriteConfig(OPT3001_CONFIG_DEFAULT | OPT3001_CONFIG_MODE_SHUTDOWN);
- 260:app/tasks/light_sensor/light_sensor.c **** 
- 261:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
- 262:app/tasks/light_sensor/light_sensor.c **** 
- 263:app/tasks/light_sensor/light_sensor.c ****       TO_STATE(this, LIGHT_SENS_TURNED_OFF_STATE);
- 264:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 265:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_LIMIT_INT:
- 266:app/tasks/light_sensor/light_sensor.c ****       // read the measured rawLux OK overvalue
- 267:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_ReadResultRawLux(&this->rawLux);
- 268:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
- 269:app/tasks/light_sensor/light_sensor.c ****       // TODO emit to event manager LIGHT_SENS_LIMIT_INT with this->rawLux payload, handle that thi
- 270:app/tasks/light_sensor/light_sensor.c **** 
- 271:app/tasks/light_sensor/light_sensor.c ****       // swap limits back to normal
- 272:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_WriteHighLimit(this->highLimit)
- 273:app/tasks/light_sensor/light_sensor.c ****                | OPT3001_WriteLowLimit(OPT3001_CONFIG_LIMIT_MIN);
- 274:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
- 275:app/tasks/light_sensor/light_sensor.c **** 
- 276:app/tasks/light_sensor/light_sensor.c ****       // back to continuous measure state
- 277:app/tasks/light_sensor/light_sensor.c ****       TO_STATE(this, LIGHT_SENS_CONTINUOUS_MEASURE_STATE);
- 278:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 279:app/tasks/light_sensor/light_sensor.c ****   }
-ARM GAS  /tmp/ccPeWnV7.s 			page 16
-
-
- 280:app/tasks/light_sensor/light_sensor.c **** 
- 281:app/tasks/light_sensor/light_sensor.c ****   return osOK;
- 282:app/tasks/light_sensor/light_sensor.c **** }
- 460              		.loc 1 282 1 view .LVU124
- 461 0014 2846     		mov	r0, r5
- 462 0016 38BD     		pop	{r3, r4, r5, pc}
- 463              	.LVL48:
- 464              	.L37:
- 252:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
- 465              		.loc 1 252 7 is_stmt 1 view .LVU125
- 252:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
- 466              		.loc 1 252 18 is_stmt 0 view .LVU126
- 467 0018 1230     		adds	r0, r0, #18
- 468              	.LVL49:
- 252:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
- 469              		.loc 1 252 18 view .LVU127
- 470 001a FFF7FEFF 		bl	OPT3001_ReadResultRawLux
- 471              	.LVL50:
- 253:app/tasks/light_sensor/light_sensor.c **** 
- 472              		.loc 1 253 7 is_stmt 1 view .LVU128
- 253:app/tasks/light_sensor/light_sensor.c **** 
- 473              		.loc 1 253 10 is_stmt 0 view .LVU129
- 474 001e 0546     		mov	r5, r0
- 475 0020 0028     		cmp	r0, #0
- 476 0022 33D1     		bne	.L32
- 255:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 477              		.loc 1 255 7 is_stmt 1 view .LVU130
- 255:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 478              		.loc 1 255 7 view .LVU131
- 479 0024 0323     		movs	r3, #3
- 480 0026 2374     		strb	r3, [r4, #16]
- 255:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 481              		.loc 1 255 7 view .LVU132
- 482 0028 1E4B     		ldr	r3, .L38
- 483 002a 1868     		ldr	r0, [r3]
- 484              	.LVL51:
- 255:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 485              		.loc 1 255 7 is_stmt 0 view .LVU133
- 486 002c 1E4B     		ldr	r3, .L38+4
- 487 002e 2268     		ldr	r2, [r4]
- 488 0030 1E49     		ldr	r1, .L38+8
- 489 0032 8068     		ldr	r0, [r0, #8]
- 490 0034 FFF7FEFF 		bl	fprintf
- 491              	.LVL52:
- 255:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 492              		.loc 1 255 7 is_stmt 1 view .LVU134
- 255:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 493              		.loc 1 255 52 view .LVU135
- 256:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_TURN_OFF:
- 494              		.loc 1 256 7 view .LVU136
- 256:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_TURN_OFF:
- 495              		.loc 1 256 14 is_stmt 0 view .LVU137
- 496 0038 ECE7     		b	.L27
- 497              	.LVL53:
- 498              	.L28:
- 259:app/tasks/light_sensor/light_sensor.c **** 
- 499              		.loc 1 259 7 is_stmt 1 view .LVU138
-ARM GAS  /tmp/ccPeWnV7.s 			page 17
-
-
- 259:app/tasks/light_sensor/light_sensor.c **** 
- 500              		.loc 1 259 18 is_stmt 0 view .LVU139
- 501 003a 4CF61000 		movw	r0, #51216
- 502              	.LVL54:
- 259:app/tasks/light_sensor/light_sensor.c **** 
- 503              		.loc 1 259 18 view .LVU140
- 504 003e FFF7FEFF 		bl	OPT3001_WriteConfig
- 505              	.LVL55:
- 261:app/tasks/light_sensor/light_sensor.c **** 
- 506              		.loc 1 261 7 is_stmt 1 view .LVU141
- 261:app/tasks/light_sensor/light_sensor.c **** 
- 507              		.loc 1 261 10 is_stmt 0 view .LVU142
- 508 0042 0546     		mov	r5, r0
- 509 0044 28BB     		cbnz	r0, .L33
- 263:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 510              		.loc 1 263 7 is_stmt 1 view .LVU143
- 263:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 511              		.loc 1 263 7 view .LVU144
- 512 0046 0123     		movs	r3, #1
- 513 0048 2374     		strb	r3, [r4, #16]
- 263:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 514              		.loc 1 263 7 view .LVU145
- 515 004a 164B     		ldr	r3, .L38
- 516 004c 1868     		ldr	r0, [r3]
- 517              	.LVL56:
- 263:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 518              		.loc 1 263 7 is_stmt 0 view .LVU146
- 519 004e 184B     		ldr	r3, .L38+12
- 520 0050 2268     		ldr	r2, [r4]
- 521 0052 1649     		ldr	r1, .L38+8
- 522 0054 8068     		ldr	r0, [r0, #8]
- 523 0056 FFF7FEFF 		bl	fprintf
- 524              	.LVL57:
- 263:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 525              		.loc 1 263 7 is_stmt 1 view .LVU147
- 263:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 526              		.loc 1 263 50 view .LVU148
- 264:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_LIMIT_INT:
- 527              		.loc 1 264 7 view .LVU149
- 264:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_LIMIT_INT:
- 528              		.loc 1 264 14 is_stmt 0 view .LVU150
- 529 005a DBE7     		b	.L27
- 530              	.LVL58:
- 531              	.L29:
- 267:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
- 532              		.loc 1 267 7 is_stmt 1 view .LVU151
- 267:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
- 533              		.loc 1 267 18 is_stmt 0 view .LVU152
- 534 005c 1230     		adds	r0, r0, #18
- 535              	.LVL59:
- 267:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
- 536              		.loc 1 267 18 view .LVU153
- 537 005e FFF7FEFF 		bl	OPT3001_ReadResultRawLux
- 538              	.LVL60:
- 268:app/tasks/light_sensor/light_sensor.c ****       // TODO emit to event manager LIGHT_SENS_LIMIT_INT with this->rawLux payload, handle that thi
- 539              		.loc 1 268 7 is_stmt 1 view .LVU154
- 268:app/tasks/light_sensor/light_sensor.c ****       // TODO emit to event manager LIGHT_SENS_LIMIT_INT with this->rawLux payload, handle that thi
-ARM GAS  /tmp/ccPeWnV7.s 			page 18
-
-
- 540              		.loc 1 268 10 is_stmt 0 view .LVU155
- 541 0062 C8B9     		cbnz	r0, .L34
- 272:app/tasks/light_sensor/light_sensor.c ****                | OPT3001_WriteLowLimit(OPT3001_CONFIG_LIMIT_MIN);
- 542              		.loc 1 272 7 is_stmt 1 view .LVU156
- 272:app/tasks/light_sensor/light_sensor.c ****                | OPT3001_WriteLowLimit(OPT3001_CONFIG_LIMIT_MIN);
- 543              		.loc 1 272 18 is_stmt 0 view .LVU157
- 544 0064 A08A     		ldrh	r0, [r4, #20]
- 545              	.LVL61:
- 272:app/tasks/light_sensor/light_sensor.c ****                | OPT3001_WriteLowLimit(OPT3001_CONFIG_LIMIT_MIN);
- 546              		.loc 1 272 18 view .LVU158
- 547 0066 FFF7FEFF 		bl	OPT3001_WriteHighLimit
- 548              	.LVL62:
- 549 006a 0546     		mov	r5, r0
- 273:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
- 550              		.loc 1 273 18 view .LVU159
- 551 006c 0020     		movs	r0, #0
- 552 006e FFF7FEFF 		bl	OPT3001_WriteLowLimit
- 553              	.LVL63:
- 274:app/tasks/light_sensor/light_sensor.c **** 
- 554              		.loc 1 274 7 is_stmt 1 view .LVU160
- 274:app/tasks/light_sensor/light_sensor.c **** 
- 555              		.loc 1 274 10 is_stmt 0 view .LVU161
- 556 0072 0543     		orrs	r5, r5, r0
- 557              	.LVL64:
- 274:app/tasks/light_sensor/light_sensor.c **** 
- 558              		.loc 1 274 10 view .LVU162
- 559 0074 13D1     		bne	.L35
- 277:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 560              		.loc 1 277 7 is_stmt 1 view .LVU163
- 277:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 561              		.loc 1 277 7 view .LVU164
- 562 0076 0223     		movs	r3, #2
- 563 0078 2374     		strb	r3, [r4, #16]
- 277:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 564              		.loc 1 277 7 view .LVU165
- 565 007a 0A4B     		ldr	r3, .L38
- 566 007c 1868     		ldr	r0, [r3]
- 567 007e 0D4B     		ldr	r3, .L38+16
- 568 0080 2268     		ldr	r2, [r4]
- 569 0082 0A49     		ldr	r1, .L38+8
- 570 0084 8068     		ldr	r0, [r0, #8]
- 571 0086 FFF7FEFF 		bl	fprintf
- 572              	.LVL65:
- 277:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 573              		.loc 1 277 7 view .LVU166
- 277:app/tasks/light_sensor/light_sensor.c ****       return osOK;
- 574              		.loc 1 277 58 view .LVU167
- 278:app/tasks/light_sensor/light_sensor.c ****   }
- 575              		.loc 1 278 7 view .LVU168
- 278:app/tasks/light_sensor/light_sensor.c ****   }
- 576              		.loc 1 278 14 is_stmt 0 view .LVU169
- 577 008a C3E7     		b	.L27
- 578              	.LVL66:
- 579              	.L32:
- 253:app/tasks/light_sensor/light_sensor.c **** 
- 580              		.loc 1 253 36 view .LVU170
- 581 008c 4FF0FF35 		mov	r5, #-1
-ARM GAS  /tmp/ccPeWnV7.s 			page 19
-
-
- 582 0090 C0E7     		b	.L27
- 583              	.L33:
- 261:app/tasks/light_sensor/light_sensor.c **** 
- 584              		.loc 1 261 36 view .LVU171
- 585 0092 4FF0FF35 		mov	r5, #-1
- 586 0096 BDE7     		b	.L27
- 587              	.L34:
- 268:app/tasks/light_sensor/light_sensor.c ****       // TODO emit to event manager LIGHT_SENS_LIMIT_INT with this->rawLux payload, handle that thi
- 588              		.loc 1 268 36 view .LVU172
- 589 0098 4FF0FF35 		mov	r5, #-1
- 590 009c BAE7     		b	.L27
- 591              	.LVL67:
- 592              	.L35:
- 274:app/tasks/light_sensor/light_sensor.c **** 
- 593              		.loc 1 274 36 view .LVU173
- 594 009e 4FF0FF35 		mov	r5, #-1
- 595              	.LVL68:
- 274:app/tasks/light_sensor/light_sensor.c **** 
- 596              		.loc 1 274 36 view .LVU174
- 597 00a2 B7E7     		b	.L27
- 598              	.L39:
- 599              		.align	2
- 600              	.L38:
- 601 00a4 00000000 		.word	_impure_ptr
- 602 00a8 00000000 		.word	.LC4
- 603 00ac 34000000 		.word	.LC2
- 604 00b0 18000000 		.word	.LC1
- 605 00b4 40000000 		.word	.LC3
- 606              		.cfi_endproc
- 607              	.LFE145:
- 609              		.section	.text.handleLightSensorFSM,"ax",%progbits
- 610              		.align	1
- 611              		.syntax unified
- 612              		.thumb
- 613              		.thumb_func
- 614              		.fpu fpv4-sp-d16
- 616              	handleLightSensorFSM:
- 617              	.LVL69:
- 618              	.LFB141:
-  75:app/tasks/light_sensor/light_sensor.c ****   switch (this->state) {
- 619              		.loc 1 75 86 is_stmt 1 view -0
- 620              		.cfi_startproc
- 621              		@ args = 0, pretend = 0, frame = 0
- 622              		@ frame_needed = 0, uses_anonymous_args = 0
-  75:app/tasks/light_sensor/light_sensor.c ****   switch (this->state) {
- 623              		.loc 1 75 86 is_stmt 0 view .LVU176
- 624 0000 08B5     		push	{r3, lr}
- 625              	.LCFI3:
- 626              		.cfi_def_cfa_offset 8
- 627              		.cfi_offset 3, -8
- 628              		.cfi_offset 14, -4
-  76:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_NO_STATE:
- 629              		.loc 1 76 3 is_stmt 1 view .LVU177
-  76:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_NO_STATE:
- 630              		.loc 1 76 15 is_stmt 0 view .LVU178
- 631 0002 037C     		ldrb	r3, [r0, #16]	@ zero_extendqisi2
-  76:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_NO_STATE:
-ARM GAS  /tmp/ccPeWnV7.s 			page 20
-
-
- 632              		.loc 1 76 3 view .LVU179
- 633 0004 022B     		cmp	r3, #2
- 634 0006 08D0     		beq	.L41
- 635 0008 032B     		cmp	r3, #3
- 636 000a 09D0     		beq	.L42
- 637 000c 012B     		cmp	r3, #1
- 638 000e 01D0     		beq	.L46
- 639 0010 0020     		movs	r0, #0
- 640              	.LVL70:
- 641              	.L40:
+  78:app/tasks/light_sensor/light_sensor.c ****       return handleInit(this, message);
+  79:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_TURNED_OFF_STATE:
+  80:app/tasks/light_sensor/light_sensor.c ****       return handleTurnedOff(this, message);
+  81:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_CONTINUOUS_MEASURE_STATE:
+  82:app/tasks/light_sensor/light_sensor.c ****       return handleContinuousMeasure(this, message);
+  83:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_OUT_OF_RANGE_STATE:
+  84:app/tasks/light_sensor/light_sensor.c ****       return handleOutOfRange(this, message);
+  85:app/tasks/light_sensor/light_sensor.c ****   }
+  86:app/tasks/light_sensor/light_sensor.c **** 
+  87:app/tasks/light_sensor/light_sensor.c ****   return osOK;
+  88:app/tasks/light_sensor/light_sensor.c **** }
   89:app/tasks/light_sensor/light_sensor.c **** /**
- 642              		.loc 1 89 1 view .LVU180
- 643 0012 08BD     		pop	{r3, pc}
- 644              	.LVL71:
- 645              	.L46:
-  81:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_CONTINUOUS_MEASURE_STATE:
- 646              		.loc 1 81 7 is_stmt 1 view .LVU181
-  81:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_CONTINUOUS_MEASURE_STATE:
- 647              		.loc 1 81 14 is_stmt 0 view .LVU182
- 648 0014 FFF7FEFF 		bl	handleTurnedOff
- 649              	.LVL72:
-  81:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_CONTINUOUS_MEASURE_STATE:
- 650              		.loc 1 81 14 view .LVU183
- 651 0018 FBE7     		b	.L40
- 652              	.LVL73:
- 653              	.L41:
-  83:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_OUT_OF_RANGE_STATE:
- 654              		.loc 1 83 7 is_stmt 1 view .LVU184
-  83:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_OUT_OF_RANGE_STATE:
- 655              		.loc 1 83 14 is_stmt 0 view .LVU185
- 656 001a FFF7FEFF 		bl	handleContinuousMeasure
- 657              	.LVL74:
-  83:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_OUT_OF_RANGE_STATE:
- 658              		.loc 1 83 14 view .LVU186
- 659 001e F8E7     		b	.L40
- 660              	.LVL75:
- 661              	.L42:
-  85:app/tasks/light_sensor/light_sensor.c ****   }
- 662              		.loc 1 85 7 is_stmt 1 view .LVU187
-  85:app/tasks/light_sensor/light_sensor.c ****   }
- 663              		.loc 1 85 14 is_stmt 0 view .LVU188
- 664 0020 FFF7FEFF 		bl	handleOutOfRange
- 665              	.LVL76:
-  85:app/tasks/light_sensor/light_sensor.c ****   }
- 666              		.loc 1 85 14 view .LVU189
- 667 0024 F5E7     		b	.L40
- 668              		.cfi_endproc
- 669              	.LFE141:
- 671              		.section	.rodata.LIGHT_SENS_Task.str1.4,"aMS",%progbits,1
- 672              		.align	2
- 673              	.LC5:
- 674 0000 6C696768 		.ascii	"lightSensorTask\000"
- 674      7453656E 
- 674      736F7254 
- 674      61736B00 
- 675              		.align	2
- 676              	.LC6:
-ARM GAS  /tmp/ccPeWnV7.s 			page 21
+  90:app/tasks/light_sensor/light_sensor.c ****  * @brief Initializes the sensor, configures I2C, writes default settings, and transitions to the T
+  91:app/tasks/light_sensor/light_sensor.c ****  */
+  92:app/tasks/light_sensor/light_sensor.c **** static osStatus_t handleInit(LIGHT_SENS_Actor_t *this, message_t *message) {
+  51              		.loc 1 92 76 view -0
+  52              		.cfi_startproc
+  53              		@ args = 0, pretend = 0, frame = 16
+  54              		@ frame_needed = 0, uses_anonymous_args = 0
+  55              		.loc 1 92 76 is_stmt 0 view .LVU1
+ARM GAS  /tmp/ccamXK4Q.s 			page 4
 
 
- 677 0010 5461736B 		.ascii	"Task %s started\012\000"
- 677      20257320 
- 677      73746172 
- 677      7465640A 
- 677      00
- 678 0021 000000   		.align	2
- 679              	.LC7:
- 680 0024 25733A20 		.ascii	"%s: Error handling event %u in state %ul\012\000"
- 680      4572726F 
- 680      72206861 
- 680      6E646C69 
- 680      6E672065 
- 681 004e 0000     		.align	2
- 682              	.LC8:
- 683 0050 4C494748 		.ascii	"LIGHT_SENS_STATE_ERROR\000"
- 683      545F5345 
- 683      4E535F53 
- 683      54415445 
- 683      5F455252 
- 684              		.section	.text.LIGHT_SENS_Task,"ax",%progbits
- 685              		.align	1
- 686              		.global	LIGHT_SENS_Task
- 687              		.syntax unified
- 688              		.thumb
- 689              		.thumb_func
- 690              		.fpu fpv4-sp-d16
- 692              	LIGHT_SENS_Task:
- 693              	.LVL77:
- 694              	.LFB140:
+  56 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+  57              	.LCFI0:
+  58              		.cfi_def_cfa_offset 20
+  59              		.cfi_offset 4, -20
+  60              		.cfi_offset 5, -16
+  61              		.cfi_offset 6, -12
+  62              		.cfi_offset 7, -8
+  63              		.cfi_offset 14, -4
+  64 0002 85B0     		sub	sp, sp, #20
+  65              	.LCFI1:
+  66              		.cfi_def_cfa_offset 40
+  93:app/tasks/light_sensor/light_sensor.c ****   if (GLOBAL_CMD_INITIALIZE == message->event) {
+  67              		.loc 1 93 3 is_stmt 1 view .LVU2
+  68              		.loc 1 93 39 is_stmt 0 view .LVU3
+  69 0004 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
+  70              		.loc 1 93 6 view .LVU4
+  71 0006 012B     		cmp	r3, #1
+  72 0008 03D0     		beq	.L7
+  94:app/tasks/light_sensor/light_sensor.c ****     // init the driver (io)
+  95:app/tasks/light_sensor/light_sensor.c ****     osStatus_t ioStatus = OPT3001_InitIO(LIGHT_SENS_I2C_ADDRESS, BSP_I2C1_WriteReg, BSP_I2C1_ReadRe
+  96:app/tasks/light_sensor/light_sensor.c **** 
+  97:app/tasks/light_sensor/light_sensor.c ****     if (ioStatus != osOK) return osError;
+  98:app/tasks/light_sensor/light_sensor.c **** 
+  99:app/tasks/light_sensor/light_sensor.c ****     // test read device id
+ 100:app/tasks/light_sensor/light_sensor.c ****     uint16_t opt3001Id = 0x0000;
+ 101:app/tasks/light_sensor/light_sensor.c ****     ioStatus = OPT3001_ReadDeviceID(&opt3001Id);
+ 102:app/tasks/light_sensor/light_sensor.c **** 
+ 103:app/tasks/light_sensor/light_sensor.c ****     if (ioStatus != osOK) return osError;
+ 104:app/tasks/light_sensor/light_sensor.c ****     fprintf(stdout, "OPT3001 ID: %x\n", opt3001Id);
+ 105:app/tasks/light_sensor/light_sensor.c **** 
+ 106:app/tasks/light_sensor/light_sensor.c ****     // write default config (OPT3001 remains in turned off state)
+ 107:app/tasks/light_sensor/light_sensor.c ****     uint16_t opt3001Config = OPT3001_CONFIG_DEFAULT;
+ 108:app/tasks/light_sensor/light_sensor.c **** 
+ 109:app/tasks/light_sensor/light_sensor.c ****     ioStatus = OPT3001_WriteConfig(opt3001Config);
+ 110:app/tasks/light_sensor/light_sensor.c **** 
+ 111:app/tasks/light_sensor/light_sensor.c ****     if (ioStatus != osOK) return osError;
+ 112:app/tasks/light_sensor/light_sensor.c ****     fprintf(stdout, "Write OPT3001 Config: %x\n", opt3001Config);
+ 113:app/tasks/light_sensor/light_sensor.c **** 
+ 114:app/tasks/light_sensor/light_sensor.c ****     // read existing config to verify equality
+ 115:app/tasks/light_sensor/light_sensor.c ****     uint16_t opt3001ConfigFromSensor = 0x0000;
+ 116:app/tasks/light_sensor/light_sensor.c ****     ioStatus = OPT3001_ReadConfig(&opt3001ConfigFromSensor);
+ 117:app/tasks/light_sensor/light_sensor.c **** 
+ 118:app/tasks/light_sensor/light_sensor.c ****     if (ioStatus != osOK) return osError;
+ 119:app/tasks/light_sensor/light_sensor.c ****     fprintf(stdout, "OPT3001 Config: %x\n", opt3001ConfigFromSensor);
+ 120:app/tasks/light_sensor/light_sensor.c **** 
+ 121:app/tasks/light_sensor/light_sensor.c ****     if (opt3001Config != opt3001ConfigFromSensor) {
+ 122:app/tasks/light_sensor/light_sensor.c ****       fprintf(stderr, "OPT3001 Config mismatch\n");
+ 123:app/tasks/light_sensor/light_sensor.c ****       return osError;
+ 124:app/tasks/light_sensor/light_sensor.c ****     }
+ 125:app/tasks/light_sensor/light_sensor.c **** 
+ 126:app/tasks/light_sensor/light_sensor.c ****     // TODO read it from NOR flash (implement settings manager)
+ 127:app/tasks/light_sensor/light_sensor.c ****     // set high limit and minimal low limit so that the sensor never triggers the interrupt on low 
+ 128:app/tasks/light_sensor/light_sensor.c ****     ioStatus = OPT3001_WriteHighLimit(this->highLimit);
+ 129:app/tasks/light_sensor/light_sensor.c ****     if (ioStatus != osOK) return osError;
+ 130:app/tasks/light_sensor/light_sensor.c **** 
+ 131:app/tasks/light_sensor/light_sensor.c ****     ioStatus = OPT3001_WriteLowLimit(OPT3001_CONFIG_LIMIT_MIN);
+ 132:app/tasks/light_sensor/light_sensor.c ****     if (ioStatus != osOK) return osError;
+ARM GAS  /tmp/ccamXK4Q.s 			page 5
+
+
+ 133:app/tasks/light_sensor/light_sensor.c **** 
+ 134:app/tasks/light_sensor/light_sensor.c ****     // publish to event manager that the sensor is initialized
+ 135:app/tasks/light_sensor/light_sensor.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
+ 136:app/tasks/light_sensor/light_sensor.c ****     osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_INITIALIZE_SUCCESS, .payload.value = LIGH
+ 137:app/tasks/light_sensor/light_sensor.c **** 
+ 138:app/tasks/light_sensor/light_sensor.c ****     fprintf(stdout, "Light sensor %ul initialized\n", LIGHT_SENSOR_ACTOR_ID);
+ 139:app/tasks/light_sensor/light_sensor.c ****     TO_STATE(this, LIGHT_SENS_TURNED_OFF_STATE);
+ 140:app/tasks/light_sensor/light_sensor.c ****   }
+ 141:app/tasks/light_sensor/light_sensor.c **** 
+ 142:app/tasks/light_sensor/light_sensor.c ****   return osOK;
+  73              		.loc 1 142 10 view .LVU5
+  74 000a 0024     		movs	r4, #0
+  75              	.LVL1:
+  76              	.L1:
+ 143:app/tasks/light_sensor/light_sensor.c **** }
+  77              		.loc 1 143 1 view .LVU6
+  78 000c 2046     		mov	r0, r4
+  79 000e 05B0     		add	sp, sp, #20
+  80              	.LCFI2:
+  81              		.cfi_remember_state
+  82              		.cfi_def_cfa_offset 20
+  83              		@ sp needed
+  84 0010 F0BD     		pop	{r4, r5, r6, r7, pc}
+  85              	.LVL2:
+  86              	.L7:
+  87              	.LCFI3:
+  88              		.cfi_restore_state
+  89              		.loc 1 143 1 view .LVU7
+  90 0012 0546     		mov	r5, r0
+  91              	.LBB2:
+  95:app/tasks/light_sensor/light_sensor.c **** 
+  92              		.loc 1 95 5 is_stmt 1 view .LVU8
+  95:app/tasks/light_sensor/light_sensor.c **** 
+  93              		.loc 1 95 27 is_stmt 0 view .LVU9
+  94 0014 384A     		ldr	r2, .L9
+  95 0016 3949     		ldr	r1, .L9+4
+  96              	.LVL3:
+  95:app/tasks/light_sensor/light_sensor.c **** 
+  97              		.loc 1 95 27 view .LVU10
+  98 0018 8A20     		movs	r0, #138
+  99              	.LVL4:
+  95:app/tasks/light_sensor/light_sensor.c **** 
+ 100              		.loc 1 95 27 view .LVU11
+ 101 001a FFF7FEFF 		bl	OPT3001_InitIO
+ 102              	.LVL5:
+  97:app/tasks/light_sensor/light_sensor.c **** 
+ 103              		.loc 1 97 5 is_stmt 1 view .LVU12
+  97:app/tasks/light_sensor/light_sensor.c **** 
+ 104              		.loc 1 97 8 is_stmt 0 view .LVU13
+ 105 001e 0028     		cmp	r0, #0
+ 106 0020 66D1     		bne	.L3
+ 100:app/tasks/light_sensor/light_sensor.c ****     ioStatus = OPT3001_ReadDeviceID(&opt3001Id);
+ 107              		.loc 1 100 5 is_stmt 1 view .LVU14
+ 100:app/tasks/light_sensor/light_sensor.c ****     ioStatus = OPT3001_ReadDeviceID(&opt3001Id);
+ 108              		.loc 1 100 14 is_stmt 0 view .LVU15
+ 109 0022 0023     		movs	r3, #0
+ 110 0024 ADF80030 		strh	r3, [sp]	@ movhi
+ARM GAS  /tmp/ccamXK4Q.s 			page 6
+
+
+ 101:app/tasks/light_sensor/light_sensor.c **** 
+ 111              		.loc 1 101 5 is_stmt 1 view .LVU16
+ 101:app/tasks/light_sensor/light_sensor.c **** 
+ 112              		.loc 1 101 16 is_stmt 0 view .LVU17
+ 113 0028 6846     		mov	r0, sp
+ 114              	.LVL6:
+ 101:app/tasks/light_sensor/light_sensor.c **** 
+ 115              		.loc 1 101 16 view .LVU18
+ 116 002a FFF7FEFF 		bl	OPT3001_ReadDeviceID
+ 117              	.LVL7:
+ 103:app/tasks/light_sensor/light_sensor.c ****     fprintf(stdout, "OPT3001 ID: %x\n", opt3001Id);
+ 118              		.loc 1 103 5 is_stmt 1 view .LVU19
+ 103:app/tasks/light_sensor/light_sensor.c ****     fprintf(stdout, "OPT3001 ID: %x\n", opt3001Id);
+ 119              		.loc 1 103 8 is_stmt 0 view .LVU20
+ 120 002e 0028     		cmp	r0, #0
+ 121 0030 5ED1     		bne	.L3
+ 104:app/tasks/light_sensor/light_sensor.c **** 
+ 122              		.loc 1 104 5 is_stmt 1 view .LVU21
+ 104:app/tasks/light_sensor/light_sensor.c **** 
+ 123              		.loc 1 104 13 is_stmt 0 view .LVU22
+ 124 0032 334B     		ldr	r3, .L9+8
+ 125 0034 1B68     		ldr	r3, [r3]
+ 104:app/tasks/light_sensor/light_sensor.c **** 
+ 126              		.loc 1 104 5 view .LVU23
+ 127 0036 BDF80020 		ldrh	r2, [sp]
+ 128 003a 3249     		ldr	r1, .L9+12
+ 129 003c 9868     		ldr	r0, [r3, #8]
+ 130              	.LVL8:
+ 104:app/tasks/light_sensor/light_sensor.c **** 
+ 131              		.loc 1 104 5 view .LVU24
+ 132 003e FFF7FEFF 		bl	fprintf
+ 133              	.LVL9:
+ 107:app/tasks/light_sensor/light_sensor.c **** 
+ 134              		.loc 1 107 5 is_stmt 1 view .LVU25
+ 109:app/tasks/light_sensor/light_sensor.c **** 
+ 135              		.loc 1 109 5 view .LVU26
+ 109:app/tasks/light_sensor/light_sensor.c **** 
+ 136              		.loc 1 109 16 is_stmt 0 view .LVU27
+ 137 0042 4CF61000 		movw	r0, #51216
+ 138 0046 FFF7FEFF 		bl	OPT3001_WriteConfig
+ 139              	.LVL10:
+ 111:app/tasks/light_sensor/light_sensor.c ****     fprintf(stdout, "Write OPT3001 Config: %x\n", opt3001Config);
+ 140              		.loc 1 111 5 is_stmt 1 view .LVU28
+ 111:app/tasks/light_sensor/light_sensor.c ****     fprintf(stdout, "Write OPT3001 Config: %x\n", opt3001Config);
+ 141              		.loc 1 111 8 is_stmt 0 view .LVU29
+ 142 004a 0028     		cmp	r0, #0
+ 143 004c 50D1     		bne	.L3
+ 112:app/tasks/light_sensor/light_sensor.c **** 
+ 144              		.loc 1 112 5 is_stmt 1 view .LVU30
+ 112:app/tasks/light_sensor/light_sensor.c **** 
+ 145              		.loc 1 112 13 is_stmt 0 view .LVU31
+ 146 004e 2C4B     		ldr	r3, .L9+8
+ 147 0050 1B68     		ldr	r3, [r3]
+ 112:app/tasks/light_sensor/light_sensor.c **** 
+ 148              		.loc 1 112 5 view .LVU32
+ 149 0052 4CF61002 		movw	r2, #51216
+ 150 0056 2C49     		ldr	r1, .L9+16
+ARM GAS  /tmp/ccamXK4Q.s 			page 7
+
+
+ 151 0058 9868     		ldr	r0, [r3, #8]
+ 152              	.LVL11:
+ 112:app/tasks/light_sensor/light_sensor.c **** 
+ 153              		.loc 1 112 5 view .LVU33
+ 154 005a FFF7FEFF 		bl	fprintf
+ 155              	.LVL12:
+ 115:app/tasks/light_sensor/light_sensor.c ****     ioStatus = OPT3001_ReadConfig(&opt3001ConfigFromSensor);
+ 156              		.loc 1 115 5 is_stmt 1 view .LVU34
+ 115:app/tasks/light_sensor/light_sensor.c ****     ioStatus = OPT3001_ReadConfig(&opt3001ConfigFromSensor);
+ 157              		.loc 1 115 14 is_stmt 0 view .LVU35
+ 158 005e 0023     		movs	r3, #0
+ 159 0060 ADF80230 		strh	r3, [sp, #2]	@ movhi
+ 116:app/tasks/light_sensor/light_sensor.c **** 
+ 160              		.loc 1 116 5 is_stmt 1 view .LVU36
+ 116:app/tasks/light_sensor/light_sensor.c **** 
+ 161              		.loc 1 116 16 is_stmt 0 view .LVU37
+ 162 0064 0DF10200 		add	r0, sp, #2
+ 163 0068 FFF7FEFF 		bl	OPT3001_ReadConfig
+ 164              	.LVL13:
+ 118:app/tasks/light_sensor/light_sensor.c ****     fprintf(stdout, "OPT3001 Config: %x\n", opt3001ConfigFromSensor);
+ 165              		.loc 1 118 5 is_stmt 1 view .LVU38
+ 118:app/tasks/light_sensor/light_sensor.c ****     fprintf(stdout, "OPT3001 Config: %x\n", opt3001ConfigFromSensor);
+ 166              		.loc 1 118 8 is_stmt 0 view .LVU39
+ 167 006c 0028     		cmp	r0, #0
+ 168 006e 3FD1     		bne	.L3
+ 119:app/tasks/light_sensor/light_sensor.c **** 
+ 169              		.loc 1 119 5 is_stmt 1 view .LVU40
+ 119:app/tasks/light_sensor/light_sensor.c **** 
+ 170              		.loc 1 119 13 is_stmt 0 view .LVU41
+ 171 0070 234B     		ldr	r3, .L9+8
+ 172 0072 1B68     		ldr	r3, [r3]
+ 119:app/tasks/light_sensor/light_sensor.c **** 
+ 173              		.loc 1 119 5 view .LVU42
+ 174 0074 BDF80220 		ldrh	r2, [sp, #2]
+ 175 0078 2449     		ldr	r1, .L9+20
+ 176 007a 9868     		ldr	r0, [r3, #8]
+ 177              	.LVL14:
+ 119:app/tasks/light_sensor/light_sensor.c **** 
+ 178              		.loc 1 119 5 view .LVU43
+ 179 007c FFF7FEFF 		bl	fprintf
+ 180              	.LVL15:
+ 121:app/tasks/light_sensor/light_sensor.c ****       fprintf(stderr, "OPT3001 Config mismatch\n");
+ 181              		.loc 1 121 5 is_stmt 1 view .LVU44
+ 121:app/tasks/light_sensor/light_sensor.c ****       fprintf(stderr, "OPT3001 Config mismatch\n");
+ 182              		.loc 1 121 23 is_stmt 0 view .LVU45
+ 183 0080 BDF80220 		ldrh	r2, [sp, #2]
+ 121:app/tasks/light_sensor/light_sensor.c ****       fprintf(stderr, "OPT3001 Config mismatch\n");
+ 184              		.loc 1 121 8 view .LVU46
+ 185 0084 4CF61003 		movw	r3, #51216
+ 186 0088 9A42     		cmp	r2, r3
+ 187 008a 29D1     		bne	.L8
+ 128:app/tasks/light_sensor/light_sensor.c ****     if (ioStatus != osOK) return osError;
+ 188              		.loc 1 128 5 is_stmt 1 view .LVU47
+ 128:app/tasks/light_sensor/light_sensor.c ****     if (ioStatus != osOK) return osError;
+ 189              		.loc 1 128 16 is_stmt 0 view .LVU48
+ 190 008c A88A     		ldrh	r0, [r5, #20]
+ 191 008e FFF7FEFF 		bl	OPT3001_WriteHighLimit
+ARM GAS  /tmp/ccamXK4Q.s 			page 8
+
+
+ 192              	.LVL16:
+ 129:app/tasks/light_sensor/light_sensor.c **** 
+ 193              		.loc 1 129 5 is_stmt 1 view .LVU49
+ 129:app/tasks/light_sensor/light_sensor.c **** 
+ 194              		.loc 1 129 8 is_stmt 0 view .LVU50
+ 195 0092 0028     		cmp	r0, #0
+ 196 0094 2CD1     		bne	.L3
+ 131:app/tasks/light_sensor/light_sensor.c ****     if (ioStatus != osOK) return osError;
+ 197              		.loc 1 131 5 is_stmt 1 view .LVU51
+ 131:app/tasks/light_sensor/light_sensor.c ****     if (ioStatus != osOK) return osError;
+ 198              		.loc 1 131 16 is_stmt 0 view .LVU52
+ 199 0096 FFF7FEFF 		bl	OPT3001_WriteLowLimit
+ 200              	.LVL17:
+ 132:app/tasks/light_sensor/light_sensor.c **** 
+ 201              		.loc 1 132 5 is_stmt 1 view .LVU53
+ 132:app/tasks/light_sensor/light_sensor.c **** 
+ 202              		.loc 1 132 8 is_stmt 0 view .LVU54
+ 203 009a 0446     		mov	r4, r0
+ 204 009c 40BB     		cbnz	r0, .L3
+ 135:app/tasks/light_sensor/light_sensor.c ****     osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_INITIALIZE_SUCCESS, .payload.value = LIGH
+ 205              		.loc 1 135 5 is_stmt 1 view .LVU55
+ 135:app/tasks/light_sensor/light_sensor.c ****     osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_INITIALIZE_SUCCESS, .payload.value = LIGH
+ 206              		.loc 1 135 67 is_stmt 0 view .LVU56
+ 207 009e 1C4B     		ldr	r3, .L9+24
+ 208 00a0 5B68     		ldr	r3, [r3, #4]
+ 135:app/tasks/light_sensor/light_sensor.c ****     osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_INITIALIZE_SUCCESS, .payload.value = LIGH
+ 209              		.loc 1 135 24 view .LVU57
+ 210 00a2 9868     		ldr	r0, [r3, #8]
+ 211              	.LVL18:
+ 136:app/tasks/light_sensor/light_sensor.c **** 
+ 212              		.loc 1 136 5 is_stmt 1 view .LVU58
+ 136:app/tasks/light_sensor/light_sensor.c **** 
+ 213              		.loc 1 136 51 is_stmt 0 view .LVU59
+ 214 00a4 0022     		movs	r2, #0
+ 215 00a6 0192     		str	r2, [sp, #4]
+ 216 00a8 0292     		str	r2, [sp, #8]
+ 217 00aa 0392     		str	r2, [sp, #12]
+ 218 00ac 0223     		movs	r3, #2
+ 219 00ae 8DF80430 		strb	r3, [sp, #4]
+ 220 00b2 0727     		movs	r7, #7
+ 221 00b4 0297     		str	r7, [sp, #8]
+ 136:app/tasks/light_sensor/light_sensor.c **** 
+ 222              		.loc 1 136 5 view .LVU60
+ 223 00b6 1346     		mov	r3, r2
+ 224 00b8 01A9     		add	r1, sp, #4
+ 225 00ba FFF7FEFF 		bl	osMessageQueuePut
+ 226              	.LVL19:
+ 138:app/tasks/light_sensor/light_sensor.c ****     TO_STATE(this, LIGHT_SENS_TURNED_OFF_STATE);
+ 227              		.loc 1 138 5 is_stmt 1 view .LVU61
+ 138:app/tasks/light_sensor/light_sensor.c ****     TO_STATE(this, LIGHT_SENS_TURNED_OFF_STATE);
+ 228              		.loc 1 138 13 is_stmt 0 view .LVU62
+ 229 00be 104E     		ldr	r6, .L9+8
+ 230 00c0 3368     		ldr	r3, [r6]
+ 138:app/tasks/light_sensor/light_sensor.c ****     TO_STATE(this, LIGHT_SENS_TURNED_OFF_STATE);
+ 231              		.loc 1 138 5 view .LVU63
+ 232 00c2 3A46     		mov	r2, r7
+ 233 00c4 1349     		ldr	r1, .L9+28
+ARM GAS  /tmp/ccamXK4Q.s 			page 9
+
+
+ 234 00c6 9868     		ldr	r0, [r3, #8]
+ 235 00c8 FFF7FEFF 		bl	fprintf
+ 236              	.LVL20:
+ 139:app/tasks/light_sensor/light_sensor.c ****   }
+ 237              		.loc 1 139 5 is_stmt 1 view .LVU64
+ 139:app/tasks/light_sensor/light_sensor.c ****   }
+ 238              		.loc 1 139 5 view .LVU65
+ 239 00cc 0123     		movs	r3, #1
+ 240 00ce 2B74     		strb	r3, [r5, #16]
+ 139:app/tasks/light_sensor/light_sensor.c ****   }
+ 241              		.loc 1 139 5 view .LVU66
+ 242 00d0 3068     		ldr	r0, [r6]
+ 243 00d2 114B     		ldr	r3, .L9+32
+ 244 00d4 2A68     		ldr	r2, [r5]
+ 245 00d6 1149     		ldr	r1, .L9+36
+ 246 00d8 8068     		ldr	r0, [r0, #8]
+ 247 00da FFF7FEFF 		bl	fprintf
+ 248              	.LVL21:
+ 139:app/tasks/light_sensor/light_sensor.c ****   }
+ 249              		.loc 1 139 5 view .LVU67
+ 139:app/tasks/light_sensor/light_sensor.c ****   }
+ 250              		.loc 1 139 48 view .LVU68
+ 251 00de 95E7     		b	.L1
+ 252              	.LVL22:
+ 253              	.L8:
+ 122:app/tasks/light_sensor/light_sensor.c ****       return osError;
+ 254              		.loc 1 122 7 view .LVU69
+ 122:app/tasks/light_sensor/light_sensor.c ****       return osError;
+ 255              		.loc 1 122 15 is_stmt 0 view .LVU70
+ 256 00e0 074B     		ldr	r3, .L9+8
+ 257 00e2 1B68     		ldr	r3, [r3]
+ 122:app/tasks/light_sensor/light_sensor.c ****       return osError;
+ 258              		.loc 1 122 7 view .LVU71
+ 259 00e4 DB68     		ldr	r3, [r3, #12]
+ 260 00e6 1822     		movs	r2, #24
+ 261 00e8 0121     		movs	r1, #1
+ 262 00ea 0D48     		ldr	r0, .L9+40
+ 263 00ec FFF7FEFF 		bl	fwrite
+ 264              	.LVL23:
+ 123:app/tasks/light_sensor/light_sensor.c ****     }
+ 265              		.loc 1 123 7 is_stmt 1 view .LVU72
+ 266              	.L3:
+  97:app/tasks/light_sensor/light_sensor.c **** 
+ 267              		.loc 1 97 34 is_stmt 0 discriminator 2 view .LVU73
+ 268 00f0 4FF0FF34 		mov	r4, #-1
+ 269 00f4 8AE7     		b	.L1
+ 270              	.L10:
+ 271 00f6 00BF     		.align	2
+ 272              	.L9:
+ 273 00f8 00000000 		.word	BSP_I2C1_ReadReg
+ 274 00fc 00000000 		.word	BSP_I2C1_WriteReg
+ 275 0100 00000000 		.word	_impure_ptr
+ 276 0104 00000000 		.word	.LC0
+ 277 0108 10000000 		.word	.LC1
+ 278 010c 2C000000 		.word	.LC2
+ 279 0110 00000000 		.word	ACTORS_LIST_SystemRegistry
+ 280 0114 5C000000 		.word	.LC4
+ARM GAS  /tmp/ccamXK4Q.s 			page 10
+
+
+ 281 0118 7C000000 		.word	.LC5
+ 282 011c 98000000 		.word	.LC6
+ 283 0120 40000000 		.word	.LC3
+ 284              	.LBE2:
+ 285              		.cfi_endproc
+ 286              	.LFE142:
+ 288              		.section	.rodata.handleOutOfRange.str1.4,"aMS",%progbits,1
+ 289              		.align	2
+ 290              	.LC7:
+ 291 0000 4C494748 		.ascii	"LIGHT_SENS_OUT_OF_RANGE_STATE\000"
+ 291      545F5345 
+ 291      4E535F4F 
+ 291      55545F4F 
+ 291      465F5241 
+ 292 001e 0000     		.align	2
+ 293              	.LC8:
+ 294 0020 4C494748 		.ascii	"LIGHT_SENS_CONTINUOUS_MEASURE_STATE\000"
+ 294      545F5345 
+ 294      4E535F43 
+ 294      4F4E5449 
+ 294      4E554F55 
+ 295              		.section	.text.handleOutOfRange,"ax",%progbits
+ 296              		.align	1
+ 297              		.syntax unified
+ 298              		.thumb
+ 299              		.thumb_func
+ 300              		.fpu fpv4-sp-d16
+ 302              	handleOutOfRange:
+ 303              	.LVL24:
+ 304              	.LFB145:
+ 144:app/tasks/light_sensor/light_sensor.c **** 
+ 145:app/tasks/light_sensor/light_sensor.c **** /**
+ 146:app/tasks/light_sensor/light_sensor.c ****  * @brief Perform single-shot measurements, set limits, or switch to continuous measurement mode.
+ 147:app/tasks/light_sensor/light_sensor.c ****  */
+ 148:app/tasks/light_sensor/light_sensor.c **** static osStatus_t handleTurnedOff(LIGHT_SENS_Actor_t *this, message_t *message) {
+ 149:app/tasks/light_sensor/light_sensor.c ****   osStatus_t ioStatus;
+ 150:app/tasks/light_sensor/light_sensor.c **** 
+ 151:app/tasks/light_sensor/light_sensor.c ****   switch (message->event) {
+ 152:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_SINGLE_SHOT_READ:
+ 153:app/tasks/light_sensor/light_sensor.c ****       // set single shot mode
+ 154:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_WriteConfig(OPT3001_CONFIG_RANGE_NUMBER_AUTO_SCALE | \
+ 155:app/tasks/light_sensor/light_sensor.c ****                                     OPT3001_CONFIG_CONVERSION_TIME_800_MS | \
+ 156:app/tasks/light_sensor/light_sensor.c ****                                     OPT3001_CONFIG_MODE_SINGLE_SHOT | \
+ 157:app/tasks/light_sensor/light_sensor.c ****                                     OPT3001_CONFIG_LATCH_ENABLED);
+ 158:app/tasks/light_sensor/light_sensor.c **** 
+ 159:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
+ 160:app/tasks/light_sensor/light_sensor.c **** 
+ 161:app/tasks/light_sensor/light_sensor.c ****       // wait for the sensor to finish the measurement
+ 162:app/tasks/light_sensor/light_sensor.c ****       osDelay(1000); // TODO replace with 800ms
+ 163:app/tasks/light_sensor/light_sensor.c **** 
+ 164:app/tasks/light_sensor/light_sensor.c ****       // read the measured rawLux
+ 165:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_ReadResultRawLux(&this->rawLux);
+ 166:app/tasks/light_sensor/light_sensor.c **** 
+ 167:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
+ 168:app/tasks/light_sensor/light_sensor.c **** 
+ 169:app/tasks/light_sensor/light_sensor.c ****       // convert rawLux to lux for debug
+ 170:app/tasks/light_sensor/light_sensor.c ****       fprintf(stdout, "OPT3001 milli Lux: %ld\n", OPT3001_RawToMilliLux(this->rawLux));
+ARM GAS  /tmp/ccamXK4Q.s 			page 11
+
+
+ 171:app/tasks/light_sensor/light_sensor.c **** 
+ 172:app/tasks/light_sensor/light_sensor.c ****       // remains in turned off state after successful read, opt3001 turns off automatically after s
+ 173:app/tasks/light_sensor/light_sensor.c ****       TO_STATE(this, LIGHT_SENS_TURNED_OFF_STATE);
+ 174:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 175:app/tasks/light_sensor/light_sensor.c ****     case GLOBAL_CMD_START_CONTINUOUS_SENSING:
+ 176:app/tasks/light_sensor/light_sensor.c ****       // set continuous measurements mode
+ 177:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_WriteConfig(OPT3001_CONFIG_RANGE_NUMBER_AUTO_SCALE | \
+ 178:app/tasks/light_sensor/light_sensor.c ****                                     OPT3001_CONFIG_CONVERSION_TIME_800_MS | \
+ 179:app/tasks/light_sensor/light_sensor.c ****                                     OPT3001_CONFIG_MODE_CONTINUOUS | \
+ 180:app/tasks/light_sensor/light_sensor.c ****                                     OPT3001_CONFIG_FAULT_COUNT_4 | \
+ 181:app/tasks/light_sensor/light_sensor.c ****                                     OPT3001_CONFIG_LATCH_ENABLED);
+ 182:app/tasks/light_sensor/light_sensor.c **** 
+ 183:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
+ 184:app/tasks/light_sensor/light_sensor.c **** 
+ 185:app/tasks/light_sensor/light_sensor.c ****       TO_STATE(this, LIGHT_SENS_CONTINUOUS_MEASURE_STATE);
+ 186:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 187:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_SET_LIMIT:
+ 188:app/tasks/light_sensor/light_sensor.c ****       // set high limit from message payload
+ 189:app/tasks/light_sensor/light_sensor.c ****       this->highLimit = message->payload.value;
+ 190:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_WriteHighLimit(this->highLimit);
+ 191:app/tasks/light_sensor/light_sensor.c **** 
+ 192:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
+ 193:app/tasks/light_sensor/light_sensor.c **** 
+ 194:app/tasks/light_sensor/light_sensor.c ****       TO_STATE(this, LIGHT_SENS_TURNED_OFF_STATE);
+ 195:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 196:app/tasks/light_sensor/light_sensor.c ****   }
+ 197:app/tasks/light_sensor/light_sensor.c **** 
+ 198:app/tasks/light_sensor/light_sensor.c ****   return osOK;
+ 199:app/tasks/light_sensor/light_sensor.c **** };
+ 200:app/tasks/light_sensor/light_sensor.c **** 
+ 201:app/tasks/light_sensor/light_sensor.c **** /**
+ 202:app/tasks/light_sensor/light_sensor.c ****  * @brief Cron read sensor data periodically, handle limit interrupts, or turn off the sensor.
+ 203:app/tasks/light_sensor/light_sensor.c ****  */
+ 204:app/tasks/light_sensor/light_sensor.c **** static osStatus_t handleContinuousMeasure(LIGHT_SENS_Actor_t *this, message_t *message) {
+ 205:app/tasks/light_sensor/light_sensor.c ****   osStatus_t ioStatus;
+ 206:app/tasks/light_sensor/light_sensor.c **** 
+ 207:app/tasks/light_sensor/light_sensor.c ****   switch (message->event) {
+ 208:app/tasks/light_sensor/light_sensor.c ****     case GLOBAL_WAKE_N_READ:
+ 209:app/tasks/light_sensor/light_sensor.c ****       // read the measured rawLux on RTC cron
+ 210:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_ReadResultRawLux(&this->rawLux);
+ 211:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
+ 212:app/tasks/light_sensor/light_sensor.c **** 
+ 213:app/tasks/light_sensor/light_sensor.c ****       fprintf(stdout, "milliLux %lu\n", OPT3001_RawToMilliLux(this->rawLux));
+ 214:app/tasks/light_sensor/light_sensor.c **** 
+ 215:app/tasks/light_sensor/light_sensor.c ****       TO_STATE(this, LIGHT_SENS_CONTINUOUS_MEASURE_STATE);
+ 216:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 217:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_TURN_OFF:
+ 218:app/tasks/light_sensor/light_sensor.c ****       // turn off the sensor
+ 219:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_WriteConfig(OPT3001_CONFIG_DEFAULT | OPT3001_CONFIG_MODE_SHUTDOWN);
+ 220:app/tasks/light_sensor/light_sensor.c **** 
+ 221:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
+ 222:app/tasks/light_sensor/light_sensor.c **** 
+ 223:app/tasks/light_sensor/light_sensor.c ****       TO_STATE(this, LIGHT_SENS_TURNED_OFF_STATE);
+ 224:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 225:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_LIMIT_INT:
+ 226:app/tasks/light_sensor/light_sensor.c ****       // read the measured rawLux overvalue
+ 227:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_ReadResultRawLux(&this->rawLux);
+ARM GAS  /tmp/ccamXK4Q.s 			page 12
+
+
+ 228:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
+ 229:app/tasks/light_sensor/light_sensor.c **** 
+ 230:app/tasks/light_sensor/light_sensor.c ****       // TODO emit to event manager LIGHT_SENS_LIMIT_INT with this->rawLux payload
+ 231:app/tasks/light_sensor/light_sensor.c **** 
+ 232:app/tasks/light_sensor/light_sensor.c ****       // swap limits to wait for lux returning below the high limit
+ 233:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_WriteHighLimit(OPT3001_CONFIG_LIMIT_MAX)
+ 234:app/tasks/light_sensor/light_sensor.c ****       | OPT3001_WriteLowLimit(this->highLimit);
+ 235:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
+ 236:app/tasks/light_sensor/light_sensor.c **** 
+ 237:app/tasks/light_sensor/light_sensor.c ****       TO_STATE(this, LIGHT_SENS_OUT_OF_RANGE_STATE);
+ 238:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 239:app/tasks/light_sensor/light_sensor.c ****   }
+ 240:app/tasks/light_sensor/light_sensor.c **** 
+ 241:app/tasks/light_sensor/light_sensor.c ****   return osOK;
+ 242:app/tasks/light_sensor/light_sensor.c **** }
+ 243:app/tasks/light_sensor/light_sensor.c **** 
+ 244:app/tasks/light_sensor/light_sensor.c **** /**
+ 245:app/tasks/light_sensor/light_sensor.c ****  * @brief Cron read sensor data, handle limit interrupts, or turn off the sensor.
+ 246:app/tasks/light_sensor/light_sensor.c ****  */
+ 247:app/tasks/light_sensor/light_sensor.c **** static osStatus_t handleOutOfRange(LIGHT_SENS_Actor_t *this, message_t *message) {
+ 305              		.loc 1 247 82 is_stmt 1 view -0
+ 306              		.cfi_startproc
+ 307              		@ args = 0, pretend = 0, frame = 0
+ 308              		@ frame_needed = 0, uses_anonymous_args = 0
+ 309              		.loc 1 247 82 is_stmt 0 view .LVU75
+ 310 0000 38B5     		push	{r3, r4, r5, lr}
+ 311              	.LCFI4:
+ 312              		.cfi_def_cfa_offset 16
+ 313              		.cfi_offset 3, -16
+ 314              		.cfi_offset 4, -12
+ 315              		.cfi_offset 5, -8
+ 316              		.cfi_offset 14, -4
+ 317 0002 0446     		mov	r4, r0
+ 248:app/tasks/light_sensor/light_sensor.c ****   osStatus_t ioStatus;
+ 318              		.loc 1 248 3 is_stmt 1 view .LVU76
+ 249:app/tasks/light_sensor/light_sensor.c **** 
+ 250:app/tasks/light_sensor/light_sensor.c ****   switch (message->event) {
+ 319              		.loc 1 250 3 view .LVU77
+ 320              		.loc 1 250 18 is_stmt 0 view .LVU78
+ 321 0004 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
+ 322              		.loc 1 250 3 view .LVU79
+ 323 0006 172B     		cmp	r3, #23
+ 324 0008 17D0     		beq	.L12
+ 325 000a 182B     		cmp	r3, #24
+ 326 000c 26D0     		beq	.L13
+ 327 000e 032B     		cmp	r3, #3
+ 328 0010 02D0     		beq	.L21
+ 329 0012 0025     		movs	r5, #0
+ 330              	.LVL25:
+ 331              	.L11:
+ 251:app/tasks/light_sensor/light_sensor.c ****     case GLOBAL_WAKE_N_READ:
+ 252:app/tasks/light_sensor/light_sensor.c ****       // still read the measured rawLux on RTC cron
+ 253:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_ReadResultRawLux(&this->rawLux);
+ 254:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
+ 255:app/tasks/light_sensor/light_sensor.c **** 
+ 256:app/tasks/light_sensor/light_sensor.c ****       TO_STATE(this, LIGHT_SENS_OUT_OF_RANGE_STATE);
+ 257:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ARM GAS  /tmp/ccamXK4Q.s 			page 13
+
+
+ 258:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_TURN_OFF:
+ 259:app/tasks/light_sensor/light_sensor.c ****       // turn off the sensor
+ 260:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_WriteConfig(OPT3001_CONFIG_DEFAULT | OPT3001_CONFIG_MODE_SHUTDOWN);
+ 261:app/tasks/light_sensor/light_sensor.c **** 
+ 262:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
+ 263:app/tasks/light_sensor/light_sensor.c **** 
+ 264:app/tasks/light_sensor/light_sensor.c ****       TO_STATE(this, LIGHT_SENS_TURNED_OFF_STATE);
+ 265:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 266:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_LIMIT_INT:
+ 267:app/tasks/light_sensor/light_sensor.c ****       // read the measured rawLux OK overvalue
+ 268:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_ReadResultRawLux(&this->rawLux);
+ 269:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
+ 270:app/tasks/light_sensor/light_sensor.c ****       // TODO emit to event manager LIGHT_SENS_LIMIT_INT with this->rawLux payload, handle that thi
+ 271:app/tasks/light_sensor/light_sensor.c **** 
+ 272:app/tasks/light_sensor/light_sensor.c ****       // swap limits back to normal
+ 273:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_WriteHighLimit(this->highLimit)
+ 274:app/tasks/light_sensor/light_sensor.c ****                | OPT3001_WriteLowLimit(OPT3001_CONFIG_LIMIT_MIN);
+ 275:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
+ 276:app/tasks/light_sensor/light_sensor.c **** 
+ 277:app/tasks/light_sensor/light_sensor.c ****       // back to continuous measure state
+ 278:app/tasks/light_sensor/light_sensor.c ****       TO_STATE(this, LIGHT_SENS_CONTINUOUS_MEASURE_STATE);
+ 279:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 280:app/tasks/light_sensor/light_sensor.c ****   }
+ 281:app/tasks/light_sensor/light_sensor.c **** 
+ 282:app/tasks/light_sensor/light_sensor.c ****   return osOK;
+ 283:app/tasks/light_sensor/light_sensor.c **** }
+ 332              		.loc 1 283 1 view .LVU80
+ 333 0014 2846     		mov	r0, r5
+ 334 0016 38BD     		pop	{r3, r4, r5, pc}
+ 335              	.LVL26:
+ 336              	.L21:
+ 253:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
+ 337              		.loc 1 253 7 is_stmt 1 view .LVU81
+ 253:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
+ 338              		.loc 1 253 18 is_stmt 0 view .LVU82
+ 339 0018 1230     		adds	r0, r0, #18
+ 340              	.LVL27:
+ 253:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
+ 341              		.loc 1 253 18 view .LVU83
+ 342 001a FFF7FEFF 		bl	OPT3001_ReadResultRawLux
+ 343              	.LVL28:
+ 254:app/tasks/light_sensor/light_sensor.c **** 
+ 344              		.loc 1 254 7 is_stmt 1 view .LVU84
+ 254:app/tasks/light_sensor/light_sensor.c **** 
+ 345              		.loc 1 254 10 is_stmt 0 view .LVU85
+ 346 001e 0546     		mov	r5, r0
+ 347 0020 0028     		cmp	r0, #0
+ 348 0022 33D1     		bne	.L16
+ 256:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 349              		.loc 1 256 7 is_stmt 1 view .LVU86
+ 256:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 350              		.loc 1 256 7 view .LVU87
+ 351 0024 0323     		movs	r3, #3
+ 352 0026 2374     		strb	r3, [r4, #16]
+ 256:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 353              		.loc 1 256 7 view .LVU88
+ 354 0028 1E4B     		ldr	r3, .L22
+ARM GAS  /tmp/ccamXK4Q.s 			page 14
+
+
+ 355 002a 1868     		ldr	r0, [r3]
+ 356              	.LVL29:
+ 256:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 357              		.loc 1 256 7 is_stmt 0 view .LVU89
+ 358 002c 1E4B     		ldr	r3, .L22+4
+ 359 002e 2268     		ldr	r2, [r4]
+ 360 0030 1E49     		ldr	r1, .L22+8
+ 361 0032 8068     		ldr	r0, [r0, #8]
+ 362 0034 FFF7FEFF 		bl	fprintf
+ 363              	.LVL30:
+ 256:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 364              		.loc 1 256 7 is_stmt 1 view .LVU90
+ 256:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 365              		.loc 1 256 52 view .LVU91
+ 257:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_TURN_OFF:
+ 366              		.loc 1 257 7 view .LVU92
+ 257:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_TURN_OFF:
+ 367              		.loc 1 257 14 is_stmt 0 view .LVU93
+ 368 0038 ECE7     		b	.L11
+ 369              	.LVL31:
+ 370              	.L12:
+ 260:app/tasks/light_sensor/light_sensor.c **** 
+ 371              		.loc 1 260 7 is_stmt 1 view .LVU94
+ 260:app/tasks/light_sensor/light_sensor.c **** 
+ 372              		.loc 1 260 18 is_stmt 0 view .LVU95
+ 373 003a 4CF61000 		movw	r0, #51216
+ 374              	.LVL32:
+ 260:app/tasks/light_sensor/light_sensor.c **** 
+ 375              		.loc 1 260 18 view .LVU96
+ 376 003e FFF7FEFF 		bl	OPT3001_WriteConfig
+ 377              	.LVL33:
+ 262:app/tasks/light_sensor/light_sensor.c **** 
+ 378              		.loc 1 262 7 is_stmt 1 view .LVU97
+ 262:app/tasks/light_sensor/light_sensor.c **** 
+ 379              		.loc 1 262 10 is_stmt 0 view .LVU98
+ 380 0042 0546     		mov	r5, r0
+ 381 0044 28BB     		cbnz	r0, .L17
+ 264:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 382              		.loc 1 264 7 is_stmt 1 view .LVU99
+ 264:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 383              		.loc 1 264 7 view .LVU100
+ 384 0046 0123     		movs	r3, #1
+ 385 0048 2374     		strb	r3, [r4, #16]
+ 264:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 386              		.loc 1 264 7 view .LVU101
+ 387 004a 164B     		ldr	r3, .L22
+ 388 004c 1868     		ldr	r0, [r3]
+ 389              	.LVL34:
+ 264:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 390              		.loc 1 264 7 is_stmt 0 view .LVU102
+ 391 004e 184B     		ldr	r3, .L22+12
+ 392 0050 2268     		ldr	r2, [r4]
+ 393 0052 1649     		ldr	r1, .L22+8
+ 394 0054 8068     		ldr	r0, [r0, #8]
+ 395 0056 FFF7FEFF 		bl	fprintf
+ 396              	.LVL35:
+ 264:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ARM GAS  /tmp/ccamXK4Q.s 			page 15
+
+
+ 397              		.loc 1 264 7 is_stmt 1 view .LVU103
+ 264:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 398              		.loc 1 264 50 view .LVU104
+ 265:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_LIMIT_INT:
+ 399              		.loc 1 265 7 view .LVU105
+ 265:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_LIMIT_INT:
+ 400              		.loc 1 265 14 is_stmt 0 view .LVU106
+ 401 005a DBE7     		b	.L11
+ 402              	.LVL36:
+ 403              	.L13:
+ 268:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
+ 404              		.loc 1 268 7 is_stmt 1 view .LVU107
+ 268:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
+ 405              		.loc 1 268 18 is_stmt 0 view .LVU108
+ 406 005c 1230     		adds	r0, r0, #18
+ 407              	.LVL37:
+ 268:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
+ 408              		.loc 1 268 18 view .LVU109
+ 409 005e FFF7FEFF 		bl	OPT3001_ReadResultRawLux
+ 410              	.LVL38:
+ 269:app/tasks/light_sensor/light_sensor.c ****       // TODO emit to event manager LIGHT_SENS_LIMIT_INT with this->rawLux payload, handle that thi
+ 411              		.loc 1 269 7 is_stmt 1 view .LVU110
+ 269:app/tasks/light_sensor/light_sensor.c ****       // TODO emit to event manager LIGHT_SENS_LIMIT_INT with this->rawLux payload, handle that thi
+ 412              		.loc 1 269 10 is_stmt 0 view .LVU111
+ 413 0062 C8B9     		cbnz	r0, .L18
+ 273:app/tasks/light_sensor/light_sensor.c ****                | OPT3001_WriteLowLimit(OPT3001_CONFIG_LIMIT_MIN);
+ 414              		.loc 1 273 7 is_stmt 1 view .LVU112
+ 273:app/tasks/light_sensor/light_sensor.c ****                | OPT3001_WriteLowLimit(OPT3001_CONFIG_LIMIT_MIN);
+ 415              		.loc 1 273 18 is_stmt 0 view .LVU113
+ 416 0064 A08A     		ldrh	r0, [r4, #20]
+ 417              	.LVL39:
+ 273:app/tasks/light_sensor/light_sensor.c ****                | OPT3001_WriteLowLimit(OPT3001_CONFIG_LIMIT_MIN);
+ 418              		.loc 1 273 18 view .LVU114
+ 419 0066 FFF7FEFF 		bl	OPT3001_WriteHighLimit
+ 420              	.LVL40:
+ 421 006a 0546     		mov	r5, r0
+ 274:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
+ 422              		.loc 1 274 18 view .LVU115
+ 423 006c 0020     		movs	r0, #0
+ 424 006e FFF7FEFF 		bl	OPT3001_WriteLowLimit
+ 425              	.LVL41:
+ 275:app/tasks/light_sensor/light_sensor.c **** 
+ 426              		.loc 1 275 7 is_stmt 1 view .LVU116
+ 275:app/tasks/light_sensor/light_sensor.c **** 
+ 427              		.loc 1 275 10 is_stmt 0 view .LVU117
+ 428 0072 0543     		orrs	r5, r5, r0
+ 429              	.LVL42:
+ 275:app/tasks/light_sensor/light_sensor.c **** 
+ 430              		.loc 1 275 10 view .LVU118
+ 431 0074 13D1     		bne	.L19
+ 278:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 432              		.loc 1 278 7 is_stmt 1 view .LVU119
+ 278:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 433              		.loc 1 278 7 view .LVU120
+ 434 0076 0223     		movs	r3, #2
+ 435 0078 2374     		strb	r3, [r4, #16]
+ 278:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ARM GAS  /tmp/ccamXK4Q.s 			page 16
+
+
+ 436              		.loc 1 278 7 view .LVU121
+ 437 007a 0A4B     		ldr	r3, .L22
+ 438 007c 1868     		ldr	r0, [r3]
+ 439 007e 0D4B     		ldr	r3, .L22+16
+ 440 0080 2268     		ldr	r2, [r4]
+ 441 0082 0A49     		ldr	r1, .L22+8
+ 442 0084 8068     		ldr	r0, [r0, #8]
+ 443 0086 FFF7FEFF 		bl	fprintf
+ 444              	.LVL43:
+ 278:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 445              		.loc 1 278 7 view .LVU122
+ 278:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 446              		.loc 1 278 58 view .LVU123
+ 279:app/tasks/light_sensor/light_sensor.c ****   }
+ 447              		.loc 1 279 7 view .LVU124
+ 279:app/tasks/light_sensor/light_sensor.c ****   }
+ 448              		.loc 1 279 14 is_stmt 0 view .LVU125
+ 449 008a C3E7     		b	.L11
+ 450              	.LVL44:
+ 451              	.L16:
+ 254:app/tasks/light_sensor/light_sensor.c **** 
+ 452              		.loc 1 254 36 view .LVU126
+ 453 008c 4FF0FF35 		mov	r5, #-1
+ 454 0090 C0E7     		b	.L11
+ 455              	.L17:
+ 262:app/tasks/light_sensor/light_sensor.c **** 
+ 456              		.loc 1 262 36 view .LVU127
+ 457 0092 4FF0FF35 		mov	r5, #-1
+ 458 0096 BDE7     		b	.L11
+ 459              	.L18:
+ 269:app/tasks/light_sensor/light_sensor.c ****       // TODO emit to event manager LIGHT_SENS_LIMIT_INT with this->rawLux payload, handle that thi
+ 460              		.loc 1 269 36 view .LVU128
+ 461 0098 4FF0FF35 		mov	r5, #-1
+ 462 009c BAE7     		b	.L11
+ 463              	.LVL45:
+ 464              	.L19:
+ 275:app/tasks/light_sensor/light_sensor.c **** 
+ 465              		.loc 1 275 36 view .LVU129
+ 466 009e 4FF0FF35 		mov	r5, #-1
+ 467              	.LVL46:
+ 275:app/tasks/light_sensor/light_sensor.c **** 
+ 468              		.loc 1 275 36 view .LVU130
+ 469 00a2 B7E7     		b	.L11
+ 470              	.L23:
+ 471              		.align	2
+ 472              	.L22:
+ 473 00a4 00000000 		.word	_impure_ptr
+ 474 00a8 00000000 		.word	.LC7
+ 475 00ac 98000000 		.word	.LC6
+ 476 00b0 7C000000 		.word	.LC5
+ 477 00b4 20000000 		.word	.LC8
+ 478              		.cfi_endproc
+ 479              	.LFE145:
+ 481              		.section	.rodata.handleTurnedOff.str1.4,"aMS",%progbits,1
+ 482              		.align	2
+ 483              	.LC9:
+ 484 0000 4F505433 		.ascii	"OPT3001 milli Lux: %ld\012\000"
+ARM GAS  /tmp/ccamXK4Q.s 			page 17
+
+
+ 484      30303120 
+ 484      6D696C6C 
+ 484      69204C75 
+ 484      783A2025 
+ 485              		.section	.text.handleTurnedOff,"ax",%progbits
+ 486              		.align	1
+ 487              		.syntax unified
+ 488              		.thumb
+ 489              		.thumb_func
+ 490              		.fpu fpv4-sp-d16
+ 492              	handleTurnedOff:
+ 493              	.LVL47:
+ 494              	.LFB143:
+ 148:app/tasks/light_sensor/light_sensor.c ****   osStatus_t ioStatus;
+ 495              		.loc 1 148 81 is_stmt 1 view -0
+ 496              		.cfi_startproc
+ 497              		@ args = 0, pretend = 0, frame = 0
+ 498              		@ frame_needed = 0, uses_anonymous_args = 0
+ 148:app/tasks/light_sensor/light_sensor.c ****   osStatus_t ioStatus;
+ 499              		.loc 1 148 81 is_stmt 0 view .LVU132
+ 500 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 501              	.LCFI5:
+ 502              		.cfi_def_cfa_offset 24
+ 503              		.cfi_offset 3, -24
+ 504              		.cfi_offset 4, -20
+ 505              		.cfi_offset 5, -16
+ 506              		.cfi_offset 6, -12
+ 507              		.cfi_offset 7, -8
+ 508              		.cfi_offset 14, -4
+ 509 0002 0446     		mov	r4, r0
+ 149:app/tasks/light_sensor/light_sensor.c **** 
+ 510              		.loc 1 149 3 is_stmt 1 view .LVU133
+ 151:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_SINGLE_SHOT_READ:
+ 511              		.loc 1 151 3 view .LVU134
+ 151:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_SINGLE_SHOT_READ:
+ 512              		.loc 1 151 18 is_stmt 0 view .LVU135
+ 513 0004 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
+ 151:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_SINGLE_SHOT_READ:
+ 514              		.loc 1 151 3 view .LVU136
+ 515 0006 142B     		cmp	r3, #20
+ 516 0008 06D0     		beq	.L25
+ 517 000a 162B     		cmp	r3, #22
+ 518 000c 3BD0     		beq	.L26
+ 519 000e 0A2B     		cmp	r3, #10
+ 520 0010 28D0     		beq	.L27
+ 521 0012 0025     		movs	r5, #0
+ 522              	.LVL48:
+ 523              	.L24:
+ 199:app/tasks/light_sensor/light_sensor.c **** 
+ 524              		.loc 1 199 1 view .LVU137
+ 525 0014 2846     		mov	r0, r5
+ 526 0016 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 527              	.LVL49:
+ 528              	.L25:
+ 154:app/tasks/light_sensor/light_sensor.c ****                                     OPT3001_CONFIG_CONVERSION_TIME_800_MS | \
+ 529              		.loc 1 154 7 is_stmt 1 view .LVU138
+ 154:app/tasks/light_sensor/light_sensor.c ****                                     OPT3001_CONFIG_CONVERSION_TIME_800_MS | \
+ARM GAS  /tmp/ccamXK4Q.s 			page 18
+
+
+ 530              		.loc 1 154 18 is_stmt 0 view .LVU139
+ 531 0018 4CF61020 		movw	r0, #51728
+ 532              	.LVL50:
+ 154:app/tasks/light_sensor/light_sensor.c ****                                     OPT3001_CONFIG_CONVERSION_TIME_800_MS | \
+ 533              		.loc 1 154 18 view .LVU140
+ 534 001c FFF7FEFF 		bl	OPT3001_WriteConfig
+ 535              	.LVL51:
+ 159:app/tasks/light_sensor/light_sensor.c **** 
+ 536              		.loc 1 159 7 is_stmt 1 view .LVU141
+ 159:app/tasks/light_sensor/light_sensor.c **** 
+ 537              		.loc 1 159 10 is_stmt 0 view .LVU142
+ 538 0020 0028     		cmp	r0, #0
+ 539 0022 41D1     		bne	.L29
+ 162:app/tasks/light_sensor/light_sensor.c **** 
+ 540              		.loc 1 162 7 is_stmt 1 view .LVU143
+ 541 0024 4FF47A70 		mov	r0, #1000
+ 542              	.LVL52:
+ 162:app/tasks/light_sensor/light_sensor.c **** 
+ 543              		.loc 1 162 7 is_stmt 0 view .LVU144
+ 544 0028 FFF7FEFF 		bl	osDelay
+ 545              	.LVL53:
+ 165:app/tasks/light_sensor/light_sensor.c **** 
+ 546              		.loc 1 165 7 is_stmt 1 view .LVU145
+ 165:app/tasks/light_sensor/light_sensor.c **** 
+ 547              		.loc 1 165 18 is_stmt 0 view .LVU146
+ 548 002c 04F11200 		add	r0, r4, #18
+ 549 0030 FFF7FEFF 		bl	OPT3001_ReadResultRawLux
+ 550              	.LVL54:
+ 167:app/tasks/light_sensor/light_sensor.c **** 
+ 551              		.loc 1 167 7 is_stmt 1 view .LVU147
+ 167:app/tasks/light_sensor/light_sensor.c **** 
+ 552              		.loc 1 167 10 is_stmt 0 view .LVU148
+ 553 0034 0546     		mov	r5, r0
+ 554 0036 0028     		cmp	r0, #0
+ 555 0038 39D1     		bne	.L30
+ 170:app/tasks/light_sensor/light_sensor.c **** 
+ 556              		.loc 1 170 7 is_stmt 1 view .LVU149
+ 170:app/tasks/light_sensor/light_sensor.c **** 
+ 557              		.loc 1 170 15 is_stmt 0 view .LVU150
+ 558 003a 214E     		ldr	r6, .L34
+ 559 003c 3368     		ldr	r3, [r6]
+ 560 003e 9F68     		ldr	r7, [r3, #8]
+ 170:app/tasks/light_sensor/light_sensor.c **** 
+ 561              		.loc 1 170 7 view .LVU151
+ 562 0040 608A     		ldrh	r0, [r4, #18]
+ 563              	.LVL55:
+ 170:app/tasks/light_sensor/light_sensor.c **** 
+ 564              		.loc 1 170 7 view .LVU152
+ 565 0042 FFF7FEFF 		bl	OPT3001_RawToMilliLux
+ 566              	.LVL56:
+ 567 0046 0246     		mov	r2, r0
+ 568 0048 1E49     		ldr	r1, .L34+4
+ 569 004a 3846     		mov	r0, r7
+ 570 004c FFF7FEFF 		bl	fprintf
+ 571              	.LVL57:
+ 173:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 572              		.loc 1 173 7 is_stmt 1 view .LVU153
+ARM GAS  /tmp/ccamXK4Q.s 			page 19
+
+
+ 173:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 573              		.loc 1 173 7 view .LVU154
+ 574 0050 0123     		movs	r3, #1
+ 575 0052 2374     		strb	r3, [r4, #16]
+ 173:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 576              		.loc 1 173 7 view .LVU155
+ 577 0054 3068     		ldr	r0, [r6]
+ 578 0056 1C4B     		ldr	r3, .L34+8
+ 579 0058 2268     		ldr	r2, [r4]
+ 580 005a 1C49     		ldr	r1, .L34+12
+ 581 005c 8068     		ldr	r0, [r0, #8]
+ 582 005e FFF7FEFF 		bl	fprintf
+ 583              	.LVL58:
+ 173:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 584              		.loc 1 173 7 view .LVU156
+ 173:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 585              		.loc 1 173 50 view .LVU157
+ 174:app/tasks/light_sensor/light_sensor.c ****     case GLOBAL_CMD_START_CONTINUOUS_SENSING:
+ 586              		.loc 1 174 7 view .LVU158
+ 174:app/tasks/light_sensor/light_sensor.c ****     case GLOBAL_CMD_START_CONTINUOUS_SENSING:
+ 587              		.loc 1 174 14 is_stmt 0 view .LVU159
+ 588 0062 D7E7     		b	.L24
+ 589              	.LVL59:
+ 590              	.L27:
+ 177:app/tasks/light_sensor/light_sensor.c ****                                     OPT3001_CONFIG_CONVERSION_TIME_800_MS | \
+ 591              		.loc 1 177 7 is_stmt 1 view .LVU160
+ 177:app/tasks/light_sensor/light_sensor.c ****                                     OPT3001_CONFIG_CONVERSION_TIME_800_MS | \
+ 592              		.loc 1 177 18 is_stmt 0 view .LVU161
+ 593 0064 4CF61260 		movw	r0, #52754
+ 594              	.LVL60:
+ 177:app/tasks/light_sensor/light_sensor.c ****                                     OPT3001_CONFIG_CONVERSION_TIME_800_MS | \
+ 595              		.loc 1 177 18 view .LVU162
+ 596 0068 FFF7FEFF 		bl	OPT3001_WriteConfig
+ 597              	.LVL61:
+ 183:app/tasks/light_sensor/light_sensor.c **** 
+ 598              		.loc 1 183 7 is_stmt 1 view .LVU163
+ 183:app/tasks/light_sensor/light_sensor.c **** 
+ 599              		.loc 1 183 10 is_stmt 0 view .LVU164
+ 600 006c 0546     		mov	r5, r0
+ 601 006e 08BB     		cbnz	r0, .L31
+ 185:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 602              		.loc 1 185 7 is_stmt 1 view .LVU165
+ 185:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 603              		.loc 1 185 7 view .LVU166
+ 604 0070 0223     		movs	r3, #2
+ 605 0072 2374     		strb	r3, [r4, #16]
+ 185:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 606              		.loc 1 185 7 view .LVU167
+ 607 0074 124B     		ldr	r3, .L34
+ 608 0076 1868     		ldr	r0, [r3]
+ 609              	.LVL62:
+ 185:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 610              		.loc 1 185 7 is_stmt 0 view .LVU168
+ 611 0078 154B     		ldr	r3, .L34+16
+ 612 007a 2268     		ldr	r2, [r4]
+ 613 007c 1349     		ldr	r1, .L34+12
+ 614 007e 8068     		ldr	r0, [r0, #8]
+ARM GAS  /tmp/ccamXK4Q.s 			page 20
+
+
+ 615 0080 FFF7FEFF 		bl	fprintf
+ 616              	.LVL63:
+ 185:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 617              		.loc 1 185 7 is_stmt 1 view .LVU169
+ 185:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 618              		.loc 1 185 58 view .LVU170
+ 186:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_SET_LIMIT:
+ 619              		.loc 1 186 7 view .LVU171
+ 186:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_SET_LIMIT:
+ 620              		.loc 1 186 14 is_stmt 0 view .LVU172
+ 621 0084 C6E7     		b	.L24
+ 622              	.LVL64:
+ 623              	.L26:
+ 189:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_WriteHighLimit(this->highLimit);
+ 624              		.loc 1 189 7 is_stmt 1 view .LVU173
+ 189:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_WriteHighLimit(this->highLimit);
+ 625              		.loc 1 189 23 is_stmt 0 view .LVU174
+ 626 0086 8888     		ldrh	r0, [r1, #4]
+ 627              	.LVL65:
+ 189:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_WriteHighLimit(this->highLimit);
+ 628              		.loc 1 189 23 view .LVU175
+ 629 0088 A082     		strh	r0, [r4, #20]	@ movhi
+ 190:app/tasks/light_sensor/light_sensor.c **** 
+ 630              		.loc 1 190 7 is_stmt 1 view .LVU176
+ 190:app/tasks/light_sensor/light_sensor.c **** 
+ 631              		.loc 1 190 18 is_stmt 0 view .LVU177
+ 632 008a FFF7FEFF 		bl	OPT3001_WriteHighLimit
+ 633              	.LVL66:
+ 192:app/tasks/light_sensor/light_sensor.c **** 
+ 634              		.loc 1 192 7 is_stmt 1 view .LVU178
+ 192:app/tasks/light_sensor/light_sensor.c **** 
+ 635              		.loc 1 192 10 is_stmt 0 view .LVU179
+ 636 008e 0546     		mov	r5, r0
+ 637 0090 98B9     		cbnz	r0, .L32
+ 194:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 638              		.loc 1 194 7 is_stmt 1 view .LVU180
+ 194:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 639              		.loc 1 194 7 view .LVU181
+ 640 0092 0123     		movs	r3, #1
+ 641 0094 2374     		strb	r3, [r4, #16]
+ 194:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 642              		.loc 1 194 7 view .LVU182
+ 643 0096 0A4B     		ldr	r3, .L34
+ 644 0098 1868     		ldr	r0, [r3]
+ 645              	.LVL67:
+ 194:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 646              		.loc 1 194 7 is_stmt 0 view .LVU183
+ 647 009a 0B4B     		ldr	r3, .L34+8
+ 648 009c 2268     		ldr	r2, [r4]
+ 649 009e 0B49     		ldr	r1, .L34+12
+ 650 00a0 8068     		ldr	r0, [r0, #8]
+ 651 00a2 FFF7FEFF 		bl	fprintf
+ 652              	.LVL68:
+ 194:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 653              		.loc 1 194 7 is_stmt 1 view .LVU184
+ 194:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 654              		.loc 1 194 50 view .LVU185
+ARM GAS  /tmp/ccamXK4Q.s 			page 21
+
+
+ 195:app/tasks/light_sensor/light_sensor.c ****   }
+ 655              		.loc 1 195 7 view .LVU186
+ 195:app/tasks/light_sensor/light_sensor.c ****   }
+ 656              		.loc 1 195 14 is_stmt 0 view .LVU187
+ 657 00a6 B5E7     		b	.L24
+ 658              	.LVL69:
+ 659              	.L29:
+ 159:app/tasks/light_sensor/light_sensor.c **** 
+ 660              		.loc 1 159 36 view .LVU188
+ 661 00a8 4FF0FF35 		mov	r5, #-1
+ 662 00ac B2E7     		b	.L24
+ 663              	.L30:
+ 167:app/tasks/light_sensor/light_sensor.c **** 
+ 664              		.loc 1 167 36 view .LVU189
+ 665 00ae 4FF0FF35 		mov	r5, #-1
+ 666 00b2 AFE7     		b	.L24
+ 667              	.L31:
+ 183:app/tasks/light_sensor/light_sensor.c **** 
+ 668              		.loc 1 183 36 view .LVU190
+ 669 00b4 4FF0FF35 		mov	r5, #-1
+ 670 00b8 ACE7     		b	.L24
+ 671              	.L32:
+ 192:app/tasks/light_sensor/light_sensor.c **** 
+ 672              		.loc 1 192 36 view .LVU191
+ 673 00ba 4FF0FF35 		mov	r5, #-1
+ 674 00be A9E7     		b	.L24
+ 675              	.L35:
+ 676              		.align	2
+ 677              	.L34:
+ 678 00c0 00000000 		.word	_impure_ptr
+ 679 00c4 00000000 		.word	.LC9
+ 680 00c8 7C000000 		.word	.LC5
+ 681 00cc 98000000 		.word	.LC6
+ 682 00d0 20000000 		.word	.LC8
+ 683              		.cfi_endproc
+ 684              	.LFE143:
+ 686              		.section	.rodata.handleContinuousMeasure.str1.4,"aMS",%progbits,1
+ 687              		.align	2
+ 688              	.LC10:
+ 689 0000 6D696C6C 		.ascii	"milliLux %lu\012\000"
+ 689      694C7578 
+ 689      20256C75 
+ 689      0A00
+ 690              		.section	.text.handleContinuousMeasure,"ax",%progbits
+ 691              		.align	1
+ 692              		.syntax unified
+ 693              		.thumb
+ 694              		.thumb_func
+ 695              		.fpu fpv4-sp-d16
+ 697              	handleContinuousMeasure:
+ 698              	.LVL70:
+ 699              	.LFB144:
+ 204:app/tasks/light_sensor/light_sensor.c ****   osStatus_t ioStatus;
+ 700              		.loc 1 204 89 is_stmt 1 view -0
+ 701              		.cfi_startproc
+ 702              		@ args = 0, pretend = 0, frame = 0
+ 703              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /tmp/ccamXK4Q.s 			page 22
+
+
+ 204:app/tasks/light_sensor/light_sensor.c ****   osStatus_t ioStatus;
+ 704              		.loc 1 204 89 is_stmt 0 view .LVU193
+ 705 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 706              	.LCFI6:
+ 707              		.cfi_def_cfa_offset 24
+ 708              		.cfi_offset 3, -24
+ 709              		.cfi_offset 4, -20
+ 710              		.cfi_offset 5, -16
+ 711              		.cfi_offset 6, -12
+ 712              		.cfi_offset 7, -8
+ 713              		.cfi_offset 14, -4
+ 714 0002 0446     		mov	r4, r0
+ 205:app/tasks/light_sensor/light_sensor.c **** 
+ 715              		.loc 1 205 3 is_stmt 1 view .LVU194
+ 207:app/tasks/light_sensor/light_sensor.c ****     case GLOBAL_WAKE_N_READ:
+ 716              		.loc 1 207 3 view .LVU195
+ 207:app/tasks/light_sensor/light_sensor.c ****     case GLOBAL_WAKE_N_READ:
+ 717              		.loc 1 207 18 is_stmt 0 view .LVU196
+ 718 0004 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
+ 207:app/tasks/light_sensor/light_sensor.c ****     case GLOBAL_WAKE_N_READ:
+ 719              		.loc 1 207 3 view .LVU197
+ 720 0006 172B     		cmp	r3, #23
+ 721 0008 21D0     		beq	.L37
+ 722 000a 182B     		cmp	r3, #24
+ 723 000c 30D0     		beq	.L38
+ 724 000e 032B     		cmp	r3, #3
+ 725 0010 02D0     		beq	.L46
+ 726 0012 0025     		movs	r5, #0
+ 727              	.LVL71:
+ 728              	.L36:
+ 242:app/tasks/light_sensor/light_sensor.c **** 
+ 729              		.loc 1 242 1 view .LVU198
+ 730 0014 2846     		mov	r0, r5
+ 731 0016 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 732              	.LVL72:
+ 733              	.L46:
+ 210:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
+ 734              		.loc 1 210 7 is_stmt 1 view .LVU199
+ 210:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
+ 735              		.loc 1 210 18 is_stmt 0 view .LVU200
+ 736 0018 1230     		adds	r0, r0, #18
+ 737              	.LVL73:
+ 210:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
+ 738              		.loc 1 210 18 view .LVU201
+ 739 001a FFF7FEFF 		bl	OPT3001_ReadResultRawLux
+ 740              	.LVL74:
+ 211:app/tasks/light_sensor/light_sensor.c **** 
+ 741              		.loc 1 211 7 is_stmt 1 view .LVU202
+ 211:app/tasks/light_sensor/light_sensor.c **** 
+ 742              		.loc 1 211 10 is_stmt 0 view .LVU203
+ 743 001e 0546     		mov	r5, r0
+ 744 0020 0028     		cmp	r0, #0
+ 745 0022 3ED1     		bne	.L41
+ 213:app/tasks/light_sensor/light_sensor.c **** 
+ 746              		.loc 1 213 7 is_stmt 1 view .LVU204
+ 213:app/tasks/light_sensor/light_sensor.c **** 
+ 747              		.loc 1 213 15 is_stmt 0 view .LVU205
+ARM GAS  /tmp/ccamXK4Q.s 			page 23
+
+
+ 748 0024 254E     		ldr	r6, .L47
+ 749 0026 3368     		ldr	r3, [r6]
+ 750 0028 9F68     		ldr	r7, [r3, #8]
+ 213:app/tasks/light_sensor/light_sensor.c **** 
+ 751              		.loc 1 213 7 view .LVU206
+ 752 002a 608A     		ldrh	r0, [r4, #18]
+ 753              	.LVL75:
+ 213:app/tasks/light_sensor/light_sensor.c **** 
+ 754              		.loc 1 213 7 view .LVU207
+ 755 002c FFF7FEFF 		bl	OPT3001_RawToMilliLux
+ 756              	.LVL76:
+ 757 0030 0246     		mov	r2, r0
+ 758 0032 2349     		ldr	r1, .L47+4
+ 759 0034 3846     		mov	r0, r7
+ 760 0036 FFF7FEFF 		bl	fprintf
+ 761              	.LVL77:
+ 215:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 762              		.loc 1 215 7 is_stmt 1 view .LVU208
+ 215:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 763              		.loc 1 215 7 view .LVU209
+ 764 003a 0223     		movs	r3, #2
+ 765 003c 2374     		strb	r3, [r4, #16]
+ 215:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 766              		.loc 1 215 7 view .LVU210
+ 767 003e 3068     		ldr	r0, [r6]
+ 768 0040 204B     		ldr	r3, .L47+8
+ 769 0042 2268     		ldr	r2, [r4]
+ 770 0044 2049     		ldr	r1, .L47+12
+ 771 0046 8068     		ldr	r0, [r0, #8]
+ 772 0048 FFF7FEFF 		bl	fprintf
+ 773              	.LVL78:
+ 215:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 774              		.loc 1 215 7 view .LVU211
+ 215:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 775              		.loc 1 215 58 view .LVU212
+ 216:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_TURN_OFF:
+ 776              		.loc 1 216 7 view .LVU213
+ 216:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_TURN_OFF:
+ 777              		.loc 1 216 14 is_stmt 0 view .LVU214
+ 778 004c E2E7     		b	.L36
+ 779              	.LVL79:
+ 780              	.L37:
+ 219:app/tasks/light_sensor/light_sensor.c **** 
+ 781              		.loc 1 219 7 is_stmt 1 view .LVU215
+ 219:app/tasks/light_sensor/light_sensor.c **** 
+ 782              		.loc 1 219 18 is_stmt 0 view .LVU216
+ 783 004e 4CF61000 		movw	r0, #51216
+ 784              	.LVL80:
+ 219:app/tasks/light_sensor/light_sensor.c **** 
+ 785              		.loc 1 219 18 view .LVU217
+ 786 0052 FFF7FEFF 		bl	OPT3001_WriteConfig
+ 787              	.LVL81:
+ 221:app/tasks/light_sensor/light_sensor.c **** 
+ 788              		.loc 1 221 7 is_stmt 1 view .LVU218
+ 221:app/tasks/light_sensor/light_sensor.c **** 
+ 789              		.loc 1 221 10 is_stmt 0 view .LVU219
+ 790 0056 0546     		mov	r5, r0
+ARM GAS  /tmp/ccamXK4Q.s 			page 24
+
+
+ 791 0058 30BB     		cbnz	r0, .L42
+ 223:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 792              		.loc 1 223 7 is_stmt 1 view .LVU220
+ 223:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 793              		.loc 1 223 7 view .LVU221
+ 794 005a 0123     		movs	r3, #1
+ 795 005c 2374     		strb	r3, [r4, #16]
+ 223:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 796              		.loc 1 223 7 view .LVU222
+ 797 005e 174B     		ldr	r3, .L47
+ 798 0060 1868     		ldr	r0, [r3]
+ 799              	.LVL82:
+ 223:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 800              		.loc 1 223 7 is_stmt 0 view .LVU223
+ 801 0062 1A4B     		ldr	r3, .L47+16
+ 802 0064 2268     		ldr	r2, [r4]
+ 803 0066 1849     		ldr	r1, .L47+12
+ 804 0068 8068     		ldr	r0, [r0, #8]
+ 805 006a FFF7FEFF 		bl	fprintf
+ 806              	.LVL83:
+ 223:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 807              		.loc 1 223 7 is_stmt 1 view .LVU224
+ 223:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 808              		.loc 1 223 50 view .LVU225
+ 224:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_LIMIT_INT:
+ 809              		.loc 1 224 7 view .LVU226
+ 224:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_LIMIT_INT:
+ 810              		.loc 1 224 14 is_stmt 0 view .LVU227
+ 811 006e D1E7     		b	.L36
+ 812              	.LVL84:
+ 813              	.L38:
+ 227:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
+ 814              		.loc 1 227 7 is_stmt 1 view .LVU228
+ 227:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
+ 815              		.loc 1 227 18 is_stmt 0 view .LVU229
+ 816 0070 1230     		adds	r0, r0, #18
+ 817              	.LVL85:
+ 227:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
+ 818              		.loc 1 227 18 view .LVU230
+ 819 0072 FFF7FEFF 		bl	OPT3001_ReadResultRawLux
+ 820              	.LVL86:
+ 228:app/tasks/light_sensor/light_sensor.c **** 
+ 821              		.loc 1 228 7 is_stmt 1 view .LVU231
+ 228:app/tasks/light_sensor/light_sensor.c **** 
+ 822              		.loc 1 228 10 is_stmt 0 view .LVU232
+ 823 0076 D0B9     		cbnz	r0, .L43
+ 233:app/tasks/light_sensor/light_sensor.c ****       | OPT3001_WriteLowLimit(this->highLimit);
+ 824              		.loc 1 233 7 is_stmt 1 view .LVU233
+ 233:app/tasks/light_sensor/light_sensor.c ****       | OPT3001_WriteLowLimit(this->highLimit);
+ 825              		.loc 1 233 18 is_stmt 0 view .LVU234
+ 826 0078 4FF6FF70 		movw	r0, #65535
+ 827              	.LVL87:
+ 233:app/tasks/light_sensor/light_sensor.c ****       | OPT3001_WriteLowLimit(this->highLimit);
+ 828              		.loc 1 233 18 view .LVU235
+ 829 007c FFF7FEFF 		bl	OPT3001_WriteHighLimit
+ 830              	.LVL88:
+ 831 0080 0546     		mov	r5, r0
+ARM GAS  /tmp/ccamXK4Q.s 			page 25
+
+
+ 234:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
+ 832              		.loc 1 234 9 view .LVU236
+ 833 0082 A08A     		ldrh	r0, [r4, #20]
+ 834 0084 FFF7FEFF 		bl	OPT3001_WriteLowLimit
+ 835              	.LVL89:
+ 235:app/tasks/light_sensor/light_sensor.c **** 
+ 836              		.loc 1 235 7 is_stmt 1 view .LVU237
+ 235:app/tasks/light_sensor/light_sensor.c **** 
+ 837              		.loc 1 235 10 is_stmt 0 view .LVU238
+ 838 0088 0543     		orrs	r5, r5, r0
+ 839              	.LVL90:
+ 235:app/tasks/light_sensor/light_sensor.c **** 
+ 840              		.loc 1 235 10 view .LVU239
+ 841 008a 13D1     		bne	.L44
+ 237:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 842              		.loc 1 237 7 is_stmt 1 view .LVU240
+ 237:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 843              		.loc 1 237 7 view .LVU241
+ 844 008c 0323     		movs	r3, #3
+ 845 008e 2374     		strb	r3, [r4, #16]
+ 237:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 846              		.loc 1 237 7 view .LVU242
+ 847 0090 0A4B     		ldr	r3, .L47
+ 848 0092 1868     		ldr	r0, [r3]
+ 849 0094 0E4B     		ldr	r3, .L47+20
+ 850 0096 2268     		ldr	r2, [r4]
+ 851 0098 0B49     		ldr	r1, .L47+12
+ 852 009a 8068     		ldr	r0, [r0, #8]
+ 853 009c FFF7FEFF 		bl	fprintf
+ 854              	.LVL91:
+ 237:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 855              		.loc 1 237 7 view .LVU243
+ 237:app/tasks/light_sensor/light_sensor.c ****       return osOK;
+ 856              		.loc 1 237 52 view .LVU244
+ 238:app/tasks/light_sensor/light_sensor.c ****   }
+ 857              		.loc 1 238 7 view .LVU245
+ 238:app/tasks/light_sensor/light_sensor.c ****   }
+ 858              		.loc 1 238 14 is_stmt 0 view .LVU246
+ 859 00a0 B8E7     		b	.L36
+ 860              	.LVL92:
+ 861              	.L41:
+ 211:app/tasks/light_sensor/light_sensor.c **** 
+ 862              		.loc 1 211 36 view .LVU247
+ 863 00a2 4FF0FF35 		mov	r5, #-1
+ 864 00a6 B5E7     		b	.L36
+ 865              	.L42:
+ 221:app/tasks/light_sensor/light_sensor.c **** 
+ 866              		.loc 1 221 36 view .LVU248
+ 867 00a8 4FF0FF35 		mov	r5, #-1
+ 868 00ac B2E7     		b	.L36
+ 869              	.L43:
+ 228:app/tasks/light_sensor/light_sensor.c **** 
+ 870              		.loc 1 228 36 view .LVU249
+ 871 00ae 4FF0FF35 		mov	r5, #-1
+ 872 00b2 AFE7     		b	.L36
+ 873              	.LVL93:
+ 874              	.L44:
+ARM GAS  /tmp/ccamXK4Q.s 			page 26
+
+
+ 235:app/tasks/light_sensor/light_sensor.c **** 
+ 875              		.loc 1 235 36 view .LVU250
+ 876 00b4 4FF0FF35 		mov	r5, #-1
+ 877              	.LVL94:
+ 235:app/tasks/light_sensor/light_sensor.c **** 
+ 878              		.loc 1 235 36 view .LVU251
+ 879 00b8 ACE7     		b	.L36
+ 880              	.L48:
+ 881 00ba 00BF     		.align	2
+ 882              	.L47:
+ 883 00bc 00000000 		.word	_impure_ptr
+ 884 00c0 00000000 		.word	.LC10
+ 885 00c4 20000000 		.word	.LC8
+ 886 00c8 98000000 		.word	.LC6
+ 887 00cc 7C000000 		.word	.LC5
+ 888 00d0 00000000 		.word	.LC7
+ 889              		.cfi_endproc
+ 890              	.LFE144:
+ 892              		.section	.text.handleLightSensorFSM,"ax",%progbits
+ 893              		.align	1
+ 894              		.syntax unified
+ 895              		.thumb
+ 896              		.thumb_func
+ 897              		.fpu fpv4-sp-d16
+ 899              	handleLightSensorFSM:
+ 900              	.LVL95:
+ 901              	.LFB141:
+  75:app/tasks/light_sensor/light_sensor.c ****   switch (this->state) {
+ 902              		.loc 1 75 86 is_stmt 1 view -0
+ 903              		.cfi_startproc
+ 904              		@ args = 0, pretend = 0, frame = 0
+ 905              		@ frame_needed = 0, uses_anonymous_args = 0
+  75:app/tasks/light_sensor/light_sensor.c ****   switch (this->state) {
+ 906              		.loc 1 75 86 is_stmt 0 view .LVU253
+ 907 0000 08B5     		push	{r3, lr}
+ 908              	.LCFI7:
+ 909              		.cfi_def_cfa_offset 8
+ 910              		.cfi_offset 3, -8
+ 911              		.cfi_offset 14, -4
+  76:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_NO_STATE:
+ 912              		.loc 1 76 3 is_stmt 1 view .LVU254
+  76:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_NO_STATE:
+ 913              		.loc 1 76 15 is_stmt 0 view .LVU255
+ 914 0002 037C     		ldrb	r3, [r0, #16]	@ zero_extendqisi2
+  76:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_NO_STATE:
+ 915              		.loc 1 76 3 view .LVU256
+ 916 0004 032B     		cmp	r3, #3
+ 917 0006 0FD8     		bhi	.L56
+ 918 0008 DFE803F0 		tbb	[pc, r3]
+ 919              	.L52:
+ 920 000c 02       		.byte	(.L55-.L52)/2
+ 921 000d 05       		.byte	(.L54-.L52)/2
+ 922 000e 08       		.byte	(.L53-.L52)/2
+ 923 000f 0B       		.byte	(.L51-.L52)/2
+ 924              		.p2align 1
+ 925              	.L55:
+  78:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_TURNED_OFF_STATE:
+ARM GAS  /tmp/ccamXK4Q.s 			page 27
+
+
+ 926              		.loc 1 78 7 is_stmt 1 view .LVU257
+  78:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_TURNED_OFF_STATE:
+ 927              		.loc 1 78 14 is_stmt 0 view .LVU258
+ 928 0010 FFF7FEFF 		bl	handleInit
+ 929              	.LVL96:
+ 930              	.L49:
+  88:app/tasks/light_sensor/light_sensor.c **** /**
+ 931              		.loc 1 88 1 view .LVU259
+ 932 0014 08BD     		pop	{r3, pc}
+ 933              	.LVL97:
+ 934              	.L54:
+  80:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_CONTINUOUS_MEASURE_STATE:
+ 935              		.loc 1 80 7 is_stmt 1 view .LVU260
+  80:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_CONTINUOUS_MEASURE_STATE:
+ 936              		.loc 1 80 14 is_stmt 0 view .LVU261
+ 937 0016 FFF7FEFF 		bl	handleTurnedOff
+ 938              	.LVL98:
+  80:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_CONTINUOUS_MEASURE_STATE:
+ 939              		.loc 1 80 14 view .LVU262
+ 940 001a FBE7     		b	.L49
+ 941              	.LVL99:
+ 942              	.L53:
+  82:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_OUT_OF_RANGE_STATE:
+ 943              		.loc 1 82 7 is_stmt 1 view .LVU263
+  82:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_OUT_OF_RANGE_STATE:
+ 944              		.loc 1 82 14 is_stmt 0 view .LVU264
+ 945 001c FFF7FEFF 		bl	handleContinuousMeasure
+ 946              	.LVL100:
+  82:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_OUT_OF_RANGE_STATE:
+ 947              		.loc 1 82 14 view .LVU265
+ 948 0020 F8E7     		b	.L49
+ 949              	.LVL101:
+ 950              	.L51:
+  84:app/tasks/light_sensor/light_sensor.c ****   }
+ 951              		.loc 1 84 7 is_stmt 1 view .LVU266
+  84:app/tasks/light_sensor/light_sensor.c ****   }
+ 952              		.loc 1 84 14 is_stmt 0 view .LVU267
+ 953 0022 FFF7FEFF 		bl	handleOutOfRange
+ 954              	.LVL102:
+  84:app/tasks/light_sensor/light_sensor.c ****   }
+ 955              		.loc 1 84 14 view .LVU268
+ 956 0026 F5E7     		b	.L49
+ 957              	.LVL103:
+ 958              	.L56:
+  76:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_NO_STATE:
+ 959              		.loc 1 76 3 view .LVU269
+ 960 0028 0020     		movs	r0, #0
+ 961              	.LVL104:
+  76:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_NO_STATE:
+ 962              		.loc 1 76 3 view .LVU270
+ 963 002a F3E7     		b	.L49
+ 964              		.cfi_endproc
+ 965              	.LFE141:
+ 967              		.section	.rodata.LIGHT_SENS_Task.str1.4,"aMS",%progbits,1
+ 968              		.align	2
+ 969              	.LC11:
+ 970 0000 6C696768 		.ascii	"lightSensorTask\000"
+ARM GAS  /tmp/ccamXK4Q.s 			page 28
+
+
+ 970      7453656E 
+ 970      736F7254 
+ 970      61736B00 
+ 971              		.align	2
+ 972              	.LC12:
+ 973 0010 5461736B 		.ascii	"Task %s started\012\000"
+ 973      20257320 
+ 973      73746172 
+ 973      7465640A 
+ 973      00
+ 974 0021 000000   		.align	2
+ 975              	.LC13:
+ 976 0024 25733A20 		.ascii	"%s: Error handling event %u in state %ul\012\000"
+ 976      4572726F 
+ 976      72206861 
+ 976      6E646C69 
+ 976      6E672065 
+ 977 004e 0000     		.align	2
+ 978              	.LC14:
+ 979 0050 4C494748 		.ascii	"LIGHT_SENS_STATE_ERROR\000"
+ 979      545F5345 
+ 979      4E535F53 
+ 979      54415445 
+ 979      5F455252 
+ 980              		.section	.text.LIGHT_SENS_Task,"ax",%progbits
+ 981              		.align	1
+ 982              		.global	LIGHT_SENS_Task
+ 983              		.syntax unified
+ 984              		.thumb
+ 985              		.thumb_func
+ 986              		.fpu fpv4-sp-d16
+ 988              	LIGHT_SENS_Task:
+ 989              	.LVL105:
+ 990              	.LFB140:
   54:app/tasks/light_sensor/light_sensor.c ****   (void) argument; // Avoid unused parameter warning
- 695              		.loc 1 54 38 is_stmt 1 view -0
- 696              		.cfi_startproc
- 697              		@ args = 0, pretend = 0, frame = 24
- 698              		@ frame_needed = 0, uses_anonymous_args = 0
+ 991              		.loc 1 54 38 is_stmt 1 view -0
+ 992              		.cfi_startproc
+ 993              		@ args = 0, pretend = 0, frame = 24
+ 994              		@ frame_needed = 0, uses_anonymous_args = 0
   54:app/tasks/light_sensor/light_sensor.c ****   (void) argument; // Avoid unused parameter warning
- 699              		.loc 1 54 38 is_stmt 0 view .LVU191
- 700 0000 30B5     		push	{r4, r5, lr}
- 701              	.LCFI4:
- 702              		.cfi_def_cfa_offset 12
- 703              		.cfi_offset 4, -12
- 704              		.cfi_offset 5, -8
- 705              		.cfi_offset 14, -4
- 706 0002 89B0     		sub	sp, sp, #36
- 707              	.LCFI5:
- 708              		.cfi_def_cfa_offset 48
+ 995              		.loc 1 54 38 is_stmt 0 view .LVU272
+ 996 0000 30B5     		push	{r4, r5, lr}
+ 997              	.LCFI8:
+ 998              		.cfi_def_cfa_offset 12
+ 999              		.cfi_offset 4, -12
+ 1000              		.cfi_offset 5, -8
+ 1001              		.cfi_offset 14, -4
+ 1002 0002 89B0     		sub	sp, sp, #36
+ 1003              	.LCFI9:
+ 1004              		.cfi_def_cfa_offset 48
   55:app/tasks/light_sensor/light_sensor.c ****   message_t msg;
- 709              		.loc 1 55 3 is_stmt 1 view .LVU192
+ 1005              		.loc 1 55 3 is_stmt 1 view .LVU273
   56:app/tasks/light_sensor/light_sensor.c **** 
- 710              		.loc 1 56 3 view .LVU193
+ 1006              		.loc 1 56 3 view .LVU274
   58:app/tasks/light_sensor/light_sensor.c **** 
- 711              		.loc 1 58 3 view .LVU194
+ 1007              		.loc 1 58 3 view .LVU275
   58:app/tasks/light_sensor/light_sensor.c **** 
- 712              		.loc 1 58 11 is_stmt 0 view .LVU195
- 713 0004 1E4B     		ldr	r3, .L52
- 714 0006 1B68     		ldr	r3, [r3]
-  58:app/tasks/light_sensor/light_sensor.c **** 
- 715              		.loc 1 58 3 view .LVU196
-ARM GAS  /tmp/ccPeWnV7.s 			page 22
+ARM GAS  /tmp/ccamXK4Q.s 			page 29
 
 
- 716 0008 1E4A     		ldr	r2, .L52+4
- 717 000a 1F49     		ldr	r1, .L52+8
- 718 000c 9868     		ldr	r0, [r3, #8]
- 719              	.LVL78:
+ 1008              		.loc 1 58 11 is_stmt 0 view .LVU276
+ 1009 0004 1E4B     		ldr	r3, .L63
+ 1010 0006 1B68     		ldr	r3, [r3]
   58:app/tasks/light_sensor/light_sensor.c **** 
- 720              		.loc 1 58 3 view .LVU197
- 721 000e FFF7FEFF 		bl	fprintf
- 722              	.LVL79:
- 723              	.L48:
+ 1011              		.loc 1 58 3 view .LVU277
+ 1012 0008 1E4A     		ldr	r2, .L63+4
+ 1013 000a 1F49     		ldr	r1, .L63+8
+ 1014 000c 9868     		ldr	r0, [r3, #8]
+ 1015              	.LVL106:
+  58:app/tasks/light_sensor/light_sensor.c **** 
+ 1016              		.loc 1 58 3 view .LVU278
+ 1017 000e FFF7FEFF 		bl	fprintf
+ 1018              	.LVL107:
+ 1019              	.L59:
   60:app/tasks/light_sensor/light_sensor.c ****     // Wait for messages from the queue
- 724              		.loc 1 60 3 is_stmt 1 view .LVU198
+ 1020              		.loc 1 60 3 is_stmt 1 view .LVU279
   62:app/tasks/light_sensor/light_sensor.c ****       osStatus_t handleMessageStatus = LIGHT_SENS_Actor.super.messageHandler((actor_t *) &LIGHT_SEN
- 725              		.loc 1 62 5 view .LVU199
+ 1021              		.loc 1 62 5 view .LVU280
   62:app/tasks/light_sensor/light_sensor.c ****       osStatus_t handleMessageStatus = LIGHT_SENS_Actor.super.messageHandler((actor_t *) &LIGHT_SEN
- 726              		.loc 1 62 9 is_stmt 0 view .LVU200
- 727 0012 4FF0FF33 		mov	r3, #-1
- 728 0016 0022     		movs	r2, #0
- 729 0018 02A9     		add	r1, sp, #8
- 730 001a 1C48     		ldr	r0, .L52+12
- 731 001c 8068     		ldr	r0, [r0, #8]
- 732 001e FFF7FEFF 		bl	osMessageQueueGet
- 733              	.LVL80:
+ 1022              		.loc 1 62 9 is_stmt 0 view .LVU281
+ 1023 0012 4FF0FF33 		mov	r3, #-1
+ 1024 0016 0022     		movs	r2, #0
+ 1025 0018 02A9     		add	r1, sp, #8
+ 1026 001a 1C48     		ldr	r0, .L63+12
+ 1027 001c 8068     		ldr	r0, [r0, #8]
+ 1028 001e FFF7FEFF 		bl	osMessageQueueGet
+ 1029              	.LVL108:
   62:app/tasks/light_sensor/light_sensor.c ****       osStatus_t handleMessageStatus = LIGHT_SENS_Actor.super.messageHandler((actor_t *) &LIGHT_SEN
- 734              		.loc 1 62 8 view .LVU201
- 735 0022 0028     		cmp	r0, #0
- 736 0024 F5D1     		bne	.L48
- 737              	.LBB2:
+ 1030              		.loc 1 62 8 view .LVU282
+ 1031 0022 0028     		cmp	r0, #0
+ 1032 0024 F5D1     		bne	.L59
+ 1033              	.LBB3:
   63:app/tasks/light_sensor/light_sensor.c **** 
- 738              		.loc 1 63 7 is_stmt 1 view .LVU202
+ 1034              		.loc 1 63 7 is_stmt 1 view .LVU283
   63:app/tasks/light_sensor/light_sensor.c **** 
- 739              		.loc 1 63 62 is_stmt 0 view .LVU203
- 740 0026 1948     		ldr	r0, .L52+12
- 741 0028 C368     		ldr	r3, [r0, #12]
+ 1035              		.loc 1 63 62 is_stmt 0 view .LVU284
+ 1036 0026 1948     		ldr	r0, .L63+12
+ 1037 0028 C368     		ldr	r3, [r0, #12]
   63:app/tasks/light_sensor/light_sensor.c **** 
- 742              		.loc 1 63 40 view .LVU204
- 743 002a 02A9     		add	r1, sp, #8
- 744 002c 9847     		blx	r3
- 745              	.LVL81:
+ 1038              		.loc 1 63 40 view .LVU285
+ 1039 002a 02A9     		add	r1, sp, #8
+ 1040 002c 9847     		blx	r3
+ 1041              	.LVL109:
   65:app/tasks/light_sensor/light_sensor.c ****         fprintf(stderr, "%s: Error handling event %u in state %ul\n", lightSensorTaskDescription.na
- 746              		.loc 1 65 7 is_stmt 1 view .LVU205
+ 1042              		.loc 1 65 7 is_stmt 1 view .LVU286
   65:app/tasks/light_sensor/light_sensor.c ****         fprintf(stderr, "%s: Error handling event %u in state %ul\n", lightSensorTaskDescription.na
- 747              		.loc 1 65 10 is_stmt 0 view .LVU206
- 748 002e 0028     		cmp	r0, #0
- 749 0030 EFD0     		beq	.L48
- 750              	.LBB3:
+ 1043              		.loc 1 65 10 is_stmt 0 view .LVU287
+ 1044 002e 0028     		cmp	r0, #0
+ 1045 0030 EFD0     		beq	.L59
+ 1046              	.LBB4:
   66:app/tasks/light_sensor/light_sensor.c ****         osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMess
- 751              		.loc 1 66 9 is_stmt 1 view .LVU207
+ 1047              		.loc 1 66 9 is_stmt 1 view .LVU288
   66:app/tasks/light_sensor/light_sensor.c ****         osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMess
- 752              		.loc 1 66 17 is_stmt 0 view .LVU208
- 753 0032 134D     		ldr	r5, .L52
- 754 0034 2B68     		ldr	r3, [r5]
- 755 0036 D868     		ldr	r0, [r3, #12]
- 756              	.LVL82:
-  66:app/tasks/light_sensor/light_sensor.c ****         osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMess
- 757              		.loc 1 66 131 view .LVU209
- 758 0038 144C     		ldr	r4, .L52+12
- 759 003a 237C     		ldrb	r3, [r4, #16]	@ zero_extendqisi2
-ARM GAS  /tmp/ccPeWnV7.s 			page 23
+ 1048              		.loc 1 66 17 is_stmt 0 view .LVU289
+ 1049 0032 134D     		ldr	r5, .L63
+ 1050 0034 2B68     		ldr	r3, [r5]
+ 1051 0036 D868     		ldr	r0, [r3, #12]
+ARM GAS  /tmp/ccamXK4Q.s 			page 30
 
 
+ 1052              	.LVL110:
   66:app/tasks/light_sensor/light_sensor.c ****         osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMess
- 760              		.loc 1 66 9 view .LVU210
- 761 003c 0093     		str	r3, [sp]
- 762 003e 9DF80830 		ldrb	r3, [sp, #8]	@ zero_extendqisi2
- 763 0042 104A     		ldr	r2, .L52+4
- 764 0044 1249     		ldr	r1, .L52+16
- 765 0046 FFF7FEFF 		bl	fprintf
- 766              	.LVL83:
+ 1053              		.loc 1 66 131 view .LVU290
+ 1054 0038 144C     		ldr	r4, .L63+12
+ 1055 003a 237C     		ldrb	r3, [r4, #16]	@ zero_extendqisi2
+  66:app/tasks/light_sensor/light_sensor.c ****         osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMess
+ 1056              		.loc 1 66 9 view .LVU291
+ 1057 003c 0093     		str	r3, [sp]
+ 1058 003e 9DF80830 		ldrb	r3, [sp, #8]	@ zero_extendqisi2
+ 1059 0042 104A     		ldr	r2, .L63+4
+ 1060 0044 1249     		ldr	r1, .L63+16
+ 1061 0046 FFF7FEFF 		bl	fprintf
+ 1062              	.LVL111:
   67:app/tasks/light_sensor/light_sensor.c ****         osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = LIGHT_SENSOR_
- 767              		.loc 1 67 9 is_stmt 1 view .LVU211
+ 1063              		.loc 1 67 9 is_stmt 1 view .LVU292
   67:app/tasks/light_sensor/light_sensor.c ****         osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = LIGHT_SENSOR_
- 768              		.loc 1 67 71 is_stmt 0 view .LVU212
- 769 004a 124B     		ldr	r3, .L52+20
- 770 004c 5B68     		ldr	r3, [r3, #4]
+ 1064              		.loc 1 67 71 is_stmt 0 view .LVU293
+ 1065 004a 124B     		ldr	r3, .L63+20
+ 1066 004c 5B68     		ldr	r3, [r3, #4]
   67:app/tasks/light_sensor/light_sensor.c ****         osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = LIGHT_SENSOR_
- 771              		.loc 1 67 28 view .LVU213
- 772 004e 9868     		ldr	r0, [r3, #8]
- 773              	.LVL84:
+ 1067              		.loc 1 67 28 view .LVU294
+ 1068 004e 9868     		ldr	r0, [r3, #8]
+ 1069              	.LVL112:
   68:app/tasks/light_sensor/light_sensor.c ****         TO_STATE(&LIGHT_SENS_Actor, LIGHT_SENS_STATE_ERROR);
- 774              		.loc 1 68 9 is_stmt 1 view .LVU214
+ 1070              		.loc 1 68 9 is_stmt 1 view .LVU295
   68:app/tasks/light_sensor/light_sensor.c ****         TO_STATE(&LIGHT_SENS_Actor, LIGHT_SENS_STATE_ERROR);
- 775              		.loc 1 68 55 is_stmt 0 view .LVU215
- 776 0050 0022     		movs	r2, #0
- 777 0052 0592     		str	r2, [sp, #20]
- 778 0054 0692     		str	r2, [sp, #24]
- 779 0056 0792     		str	r2, [sp, #28]
- 780 0058 0C23     		movs	r3, #12
- 781 005a 8DF81430 		strb	r3, [sp, #20]
- 782 005e 0723     		movs	r3, #7
- 783 0060 0693     		str	r3, [sp, #24]
+ 1071              		.loc 1 68 55 is_stmt 0 view .LVU296
+ 1072 0050 0022     		movs	r2, #0
+ 1073 0052 0592     		str	r2, [sp, #20]
+ 1074 0054 0692     		str	r2, [sp, #24]
+ 1075 0056 0792     		str	r2, [sp, #28]
+ 1076 0058 0C23     		movs	r3, #12
+ 1077 005a 8DF81430 		strb	r3, [sp, #20]
+ 1078 005e 0723     		movs	r3, #7
+ 1079 0060 0693     		str	r3, [sp, #24]
   68:app/tasks/light_sensor/light_sensor.c ****         TO_STATE(&LIGHT_SENS_Actor, LIGHT_SENS_STATE_ERROR);
- 784              		.loc 1 68 9 view .LVU216
- 785 0062 1346     		mov	r3, r2
- 786 0064 05A9     		add	r1, sp, #20
- 787 0066 FFF7FEFF 		bl	osMessageQueuePut
- 788              	.LVL85:
+ 1080              		.loc 1 68 9 view .LVU297
+ 1081 0062 1346     		mov	r3, r2
+ 1082 0064 05A9     		add	r1, sp, #20
+ 1083 0066 FFF7FEFF 		bl	osMessageQueuePut
+ 1084              	.LVL113:
   69:app/tasks/light_sensor/light_sensor.c ****       }
- 789              		.loc 1 69 9 is_stmt 1 view .LVU217
+ 1085              		.loc 1 69 9 is_stmt 1 view .LVU298
   69:app/tasks/light_sensor/light_sensor.c ****       }
- 790              		.loc 1 69 9 view .LVU218
- 791 006a 0423     		movs	r3, #4
- 792 006c 2374     		strb	r3, [r4, #16]
+ 1086              		.loc 1 69 9 view .LVU299
+ 1087 006a 0423     		movs	r3, #4
+ 1088 006c 2374     		strb	r3, [r4, #16]
   69:app/tasks/light_sensor/light_sensor.c ****       }
- 793              		.loc 1 69 9 view .LVU219
- 794 006e 2868     		ldr	r0, [r5]
- 795 0070 094B     		ldr	r3, .L52+24
- 796 0072 2268     		ldr	r2, [r4]
- 797 0074 0949     		ldr	r1, .L52+28
- 798 0076 8068     		ldr	r0, [r0, #8]
- 799 0078 FFF7FEFF 		bl	fprintf
- 800              	.LVL86:
+ 1089              		.loc 1 69 9 view .LVU300
+ 1090 006e 2868     		ldr	r0, [r5]
+ 1091 0070 094B     		ldr	r3, .L63+24
+ 1092 0072 2268     		ldr	r2, [r4]
+ 1093 0074 0949     		ldr	r1, .L63+28
+ 1094 0076 8068     		ldr	r0, [r0, #8]
+ 1095 0078 FFF7FEFF 		bl	fprintf
+ 1096              	.LVL114:
   69:app/tasks/light_sensor/light_sensor.c ****       }
- 801              		.loc 1 69 9 view .LVU220
-  69:app/tasks/light_sensor/light_sensor.c ****       }
- 802              		.loc 1 69 60 view .LVU221
- 803 007c C9E7     		b	.L48
- 804              	.L53:
-ARM GAS  /tmp/ccPeWnV7.s 			page 24
+ARM GAS  /tmp/ccamXK4Q.s 			page 31
 
 
- 805 007e 00BF     		.align	2
- 806              	.L52:
- 807 0080 00000000 		.word	_impure_ptr
- 808 0084 00000000 		.word	.LC5
- 809 0088 10000000 		.word	.LC6
- 810 008c 00000000 		.word	.LANCHOR0
- 811 0090 24000000 		.word	.LC7
- 812 0094 00000000 		.word	ACTORS_LIST_SystemRegistry
- 813 0098 50000000 		.word	.LC8
- 814 009c 34000000 		.word	.LC2
- 815              	.LBE3:
- 816              	.LBE2:
- 817              		.cfi_endproc
- 818              	.LFE140:
- 820              		.section	.rodata.LIGHT_SENS_TaskInit.str1.4,"aMS",%progbits,1
- 821              		.align	2
- 822              	.LC9:
- 823 0000 6C696768 		.ascii	"lightSensorQueue\000"
- 823      7453656E 
- 823      736F7251 
- 823      75657565 
- 823      00
- 824              		.section	.text.LIGHT_SENS_TaskInit,"ax",%progbits
- 825              		.align	1
- 826              		.global	LIGHT_SENS_TaskInit
- 827              		.syntax unified
- 828              		.thumb
- 829              		.thumb_func
- 830              		.fpu fpv4-sp-d16
- 832              	LIGHT_SENS_TaskInit:
- 833              	.LFB139:
+ 1097              		.loc 1 69 9 view .LVU301
+  69:app/tasks/light_sensor/light_sensor.c ****       }
+ 1098              		.loc 1 69 60 view .LVU302
+ 1099 007c C9E7     		b	.L59
+ 1100              	.L64:
+ 1101 007e 00BF     		.align	2
+ 1102              	.L63:
+ 1103 0080 00000000 		.word	_impure_ptr
+ 1104 0084 00000000 		.word	.LC11
+ 1105 0088 10000000 		.word	.LC12
+ 1106 008c 00000000 		.word	.LANCHOR0
+ 1107 0090 24000000 		.word	.LC13
+ 1108 0094 00000000 		.word	ACTORS_LIST_SystemRegistry
+ 1109 0098 50000000 		.word	.LC14
+ 1110 009c 98000000 		.word	.LC6
+ 1111              	.LBE4:
+ 1112              	.LBE3:
+ 1113              		.cfi_endproc
+ 1114              	.LFE140:
+ 1116              		.section	.rodata.LIGHT_SENS_TaskInit.str1.4,"aMS",%progbits,1
+ 1117              		.align	2
+ 1118              	.LC15:
+ 1119 0000 6C696768 		.ascii	"lightSensorQueue\000"
+ 1119      7453656E 
+ 1119      736F7251 
+ 1119      75657565 
+ 1119      00
+ 1120              		.section	.text.LIGHT_SENS_TaskInit,"ax",%progbits
+ 1121              		.align	1
+ 1122              		.global	LIGHT_SENS_TaskInit
+ 1123              		.syntax unified
+ 1124              		.thumb
+ 1125              		.thumb_func
+ 1126              		.fpu fpv4-sp-d16
+ 1128              	LIGHT_SENS_TaskInit:
+ 1129              	.LFB139:
   45:app/tasks/light_sensor/light_sensor.c ****   LIGHT_SENS_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MES
- 834              		.loc 1 45 36 view -0
- 835              		.cfi_startproc
- 836              		@ args = 0, pretend = 0, frame = 24
- 837              		@ frame_needed = 0, uses_anonymous_args = 0
- 838 0000 30B5     		push	{r4, r5, lr}
- 839              	.LCFI6:
- 840              		.cfi_def_cfa_offset 12
- 841              		.cfi_offset 4, -12
- 842              		.cfi_offset 5, -8
- 843              		.cfi_offset 14, -4
- 844 0002 87B0     		sub	sp, sp, #28
- 845              	.LCFI7:
- 846              		.cfi_def_cfa_offset 40
+ 1130              		.loc 1 45 36 view -0
+ 1131              		.cfi_startproc
+ 1132              		@ args = 0, pretend = 0, frame = 24
+ 1133              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1134 0000 30B5     		push	{r4, r5, lr}
+ 1135              	.LCFI10:
+ 1136              		.cfi_def_cfa_offset 12
+ 1137              		.cfi_offset 4, -12
+ 1138              		.cfi_offset 5, -8
+ 1139              		.cfi_offset 14, -4
+ 1140 0002 87B0     		sub	sp, sp, #28
+ 1141              	.LCFI11:
+ 1142              		.cfi_def_cfa_offset 40
   46:app/tasks/light_sensor/light_sensor.c ****           .name = "lightSensorQueue"
- 847              		.loc 1 46 3 view .LVU223
+ 1143              		.loc 1 46 3 view .LVU304
   46:app/tasks/light_sensor/light_sensor.c ****           .name = "lightSensorQueue"
- 848              		.loc 1 46 134 is_stmt 0 view .LVU224
- 849 0004 0024     		movs	r4, #0
- 850 0006 0094     		str	r4, [sp]
- 851 0008 0194     		str	r4, [sp, #4]
- 852 000a 0294     		str	r4, [sp, #8]
- 853 000c 0394     		str	r4, [sp, #12]
- 854 000e 0494     		str	r4, [sp, #16]
- 855 0010 0594     		str	r4, [sp, #20]
- 856 0012 094B     		ldr	r3, .L56
-ARM GAS  /tmp/ccPeWnV7.s 			page 25
+ 1144              		.loc 1 46 134 is_stmt 0 view .LVU305
+ 1145 0004 0024     		movs	r4, #0
+ 1146 0006 0094     		str	r4, [sp]
+ 1147 0008 0194     		str	r4, [sp, #4]
+ARM GAS  /tmp/ccamXK4Q.s 			page 32
 
 
- 857 0014 0093     		str	r3, [sp]
+ 1148 000a 0294     		str	r4, [sp, #8]
+ 1149 000c 0394     		str	r4, [sp, #12]
+ 1150 000e 0494     		str	r4, [sp, #16]
+ 1151 0010 0594     		str	r4, [sp, #20]
+ 1152 0012 094B     		ldr	r3, .L67
+ 1153 0014 0093     		str	r3, [sp]
   46:app/tasks/light_sensor/light_sensor.c ****           .name = "lightSensorQueue"
- 858              		.loc 1 46 45 view .LVU225
- 859 0016 6A46     		mov	r2, sp
- 860 0018 0C21     		movs	r1, #12
- 861 001a 0820     		movs	r0, #8
- 862 001c FFF7FEFF 		bl	osMessageQueueNew
- 863              	.LVL87:
+ 1154              		.loc 1 46 45 view .LVU306
+ 1155 0016 6A46     		mov	r2, sp
+ 1156 0018 0C21     		movs	r1, #12
+ 1157 001a 0820     		movs	r0, #8
+ 1158 001c FFF7FEFF 		bl	osMessageQueueNew
+ 1159              	.LVL115:
   46:app/tasks/light_sensor/light_sensor.c ****           .name = "lightSensorQueue"
- 864              		.loc 1 46 43 view .LVU226
- 865 0020 064D     		ldr	r5, .L56+4
- 866 0022 A860     		str	r0, [r5, #8]
+ 1160              		.loc 1 46 43 view .LVU307
+ 1161 0020 064D     		ldr	r5, .L67+4
+ 1162 0022 A860     		str	r0, [r5, #8]
   49:app/tasks/light_sensor/light_sensor.c **** 
- 867              		.loc 1 49 3 is_stmt 1 view .LVU227
+ 1163              		.loc 1 49 3 is_stmt 1 view .LVU308
   49:app/tasks/light_sensor/light_sensor.c **** 
- 868              		.loc 1 49 39 is_stmt 0 view .LVU228
- 869 0024 064A     		ldr	r2, .L56+8
- 870 0026 2146     		mov	r1, r4
- 871 0028 0648     		ldr	r0, .L56+12
- 872 002a FFF7FEFF 		bl	osThreadNew
- 873              	.LVL88:
+ 1164              		.loc 1 49 39 is_stmt 0 view .LVU309
+ 1165 0024 064A     		ldr	r2, .L67+8
+ 1166 0026 2146     		mov	r1, r4
+ 1167 0028 0648     		ldr	r0, .L67+12
+ 1168 002a FFF7FEFF 		bl	osThreadNew
+ 1169              	.LVL116:
   49:app/tasks/light_sensor/light_sensor.c **** 
- 874              		.loc 1 49 37 view .LVU229
- 875 002e 6860     		str	r0, [r5, #4]
+ 1170              		.loc 1 49 37 view .LVU310
+ 1171 002e 6860     		str	r0, [r5, #4]
   51:app/tasks/light_sensor/light_sensor.c **** }
- 876              		.loc 1 51 3 is_stmt 1 view .LVU230
+ 1172              		.loc 1 51 3 is_stmt 1 view .LVU311
   52:app/tasks/light_sensor/light_sensor.c **** 
- 877              		.loc 1 52 1 is_stmt 0 view .LVU231
- 878 0030 2846     		mov	r0, r5
- 879 0032 07B0     		add	sp, sp, #28
- 880              	.LCFI8:
- 881              		.cfi_def_cfa_offset 12
- 882              		@ sp needed
- 883 0034 30BD     		pop	{r4, r5, pc}
- 884              	.L57:
- 885 0036 00BF     		.align	2
- 886              	.L56:
- 887 0038 00000000 		.word	.LC9
- 888 003c 00000000 		.word	.LANCHOR0
- 889 0040 00000000 		.word	.LANCHOR1
- 890 0044 00000000 		.word	LIGHT_SENS_Task
- 891              		.cfi_endproc
- 892              	.LFE139:
- 894              		.global	lightSensorTaskDescription
- 895              		.global	lightSensorTaskControlBlock
- 896              		.global	lightSensorTaskBuffer
- 897              		.global	LIGHT_SENS_Actor
- 898              		.section	.bss.lightSensorTaskBuffer,"aw",%nobits
- 899              		.align	2
- 902              	lightSensorTaskBuffer:
- 903 0000 00000000 		.space	512
- 903      00000000 
- 903      00000000 
- 903      00000000 
- 903      00000000 
- 904              		.section	.bss.lightSensorTaskControlBlock,"aw",%nobits
- 905              		.align	2
-ARM GAS  /tmp/ccPeWnV7.s 			page 26
+ 1173              		.loc 1 52 1 is_stmt 0 view .LVU312
+ 1174 0030 2846     		mov	r0, r5
+ 1175 0032 07B0     		add	sp, sp, #28
+ 1176              	.LCFI12:
+ 1177              		.cfi_def_cfa_offset 12
+ 1178              		@ sp needed
+ 1179 0034 30BD     		pop	{r4, r5, pc}
+ 1180              	.L68:
+ 1181 0036 00BF     		.align	2
+ 1182              	.L67:
+ 1183 0038 00000000 		.word	.LC15
+ 1184 003c 00000000 		.word	.LANCHOR0
+ 1185 0040 00000000 		.word	.LANCHOR1
+ 1186 0044 00000000 		.word	LIGHT_SENS_Task
+ 1187              		.cfi_endproc
+ 1188              	.LFE139:
+ 1190              		.global	lightSensorTaskDescription
+ 1191              		.global	lightSensorTaskControlBlock
+ 1192              		.global	lightSensorTaskBuffer
+ 1193              		.global	LIGHT_SENS_Actor
+ 1194              		.section	.bss.lightSensorTaskBuffer,"aw",%nobits
+ 1195              		.align	2
+ 1198              	lightSensorTaskBuffer:
+ 1199 0000 00000000 		.space	512
+ 1199      00000000 
+ARM GAS  /tmp/ccamXK4Q.s 			page 33
 
 
- 908              	lightSensorTaskControlBlock:
- 909 0000 00000000 		.space	92
- 909      00000000 
- 909      00000000 
- 909      00000000 
- 909      00000000 
- 910              		.section	.data.LIGHT_SENS_Actor,"aw"
- 911              		.align	2
- 912              		.set	.LANCHOR0,. + 0
- 915              	LIGHT_SENS_Actor:
- 916 0000 07000000 		.word	7
- 917 0004 00000000 		.word	0
- 918 0008 00000000 		.word	0
- 919 000c 00000000 		.word	handleLightSensorFSM
- 920 0010 00       		.byte	0
- 921 0011 00       		.space	1
- 922 0012 0000     		.short	0
- 923 0014 FFFF     		.short	-1
- 924 0016 0000     		.space	2
- 925              		.section	.rodata.lightSensorTaskDescription,"a"
- 926              		.align	2
- 927              		.set	.LANCHOR1,. + 0
- 930              	lightSensorTaskDescription:
- 931 0000 00000000 		.word	.LC5
- 932 0004 00000000 		.space	4
- 933 0008 00000000 		.word	lightSensorTaskControlBlock
- 934 000c 5C000000 		.word	92
- 935 0010 00000000 		.word	lightSensorTaskBuffer
- 936 0014 00020000 		.word	512
- 937 0018 18000000 		.word	24
- 938 001c 00000000 		.space	8
- 938      00000000 
- 939              		.text
- 940              	.Letext0:
- 941              		.file 2 "/usr/include/newlib/machine/_default_types.h"
- 942              		.file 3 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stddef.h"
- 943              		.file 4 "/usr/include/newlib/sys/_types.h"
- 944              		.file 5 "/usr/include/newlib/sys/reent.h"
- 945              		.file 6 "/usr/include/newlib/sys/lock.h"
- 946              		.file 7 "/usr/include/newlib/sys/_stdint.h"
- 947              		.file 8 "/usr/include/newlib/sys/types.h"
- 948              		.file 9 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
- 949              		.file 10 "app/core/actor/../config/events_list/events_list.h"
- 950              		.file 11 "app/core/actor/../config/actors_list/actors_list.h"
- 951              		.file 12 "app/core/actor/actor.h"
- 952              		.file 13 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h"
- 953              		.file 14 "Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h"
- 954              		.file 15 "app/tasks/light_sensor/light_sensor.h"
- 955              		.file 16 "app/drivers/opt3001/opt3001.h"
- 956              		.file 17 "/usr/include/newlib/stdio.h"
-ARM GAS  /tmp/ccPeWnV7.s 			page 27
+ 1199      00000000 
+ 1199      00000000 
+ 1199      00000000 
+ 1200              		.section	.bss.lightSensorTaskControlBlock,"aw",%nobits
+ 1201              		.align	2
+ 1204              	lightSensorTaskControlBlock:
+ 1205 0000 00000000 		.space	92
+ 1205      00000000 
+ 1205      00000000 
+ 1205      00000000 
+ 1205      00000000 
+ 1206              		.section	.data.LIGHT_SENS_Actor,"aw"
+ 1207              		.align	2
+ 1208              		.set	.LANCHOR0,. + 0
+ 1211              	LIGHT_SENS_Actor:
+ 1212 0000 07000000 		.word	7
+ 1213 0004 00000000 		.word	0
+ 1214 0008 00000000 		.word	0
+ 1215 000c 00000000 		.word	handleLightSensorFSM
+ 1216 0010 00       		.byte	0
+ 1217 0011 00       		.space	1
+ 1218 0012 0000     		.short	0
+ 1219 0014 FFFF     		.short	-1
+ 1220 0016 0000     		.space	2
+ 1221              		.section	.rodata.lightSensorTaskDescription,"a"
+ 1222              		.align	2
+ 1223              		.set	.LANCHOR1,. + 0
+ 1226              	lightSensorTaskDescription:
+ 1227 0000 00000000 		.word	.LC11
+ 1228 0004 00000000 		.space	4
+ 1229 0008 00000000 		.word	lightSensorTaskControlBlock
+ 1230 000c 5C000000 		.word	92
+ 1231 0010 00000000 		.word	lightSensorTaskBuffer
+ 1232 0014 00020000 		.word	512
+ 1233 0018 18000000 		.word	24
+ 1234 001c 00000000 		.space	8
+ 1234      00000000 
+ 1235              		.text
+ 1236              	.Letext0:
+ 1237              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 1238              		.file 3 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stddef.h"
+ 1239              		.file 4 "/usr/include/newlib/sys/_types.h"
+ 1240              		.file 5 "/usr/include/newlib/sys/reent.h"
+ 1241              		.file 6 "/usr/include/newlib/sys/lock.h"
+ 1242              		.file 7 "/usr/include/newlib/sys/_stdint.h"
+ 1243              		.file 8 "/usr/include/newlib/sys/types.h"
+ 1244              		.file 9 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
+ 1245              		.file 10 "app/core/actor/../config/events_list/events_list.h"
+ 1246              		.file 11 "app/core/actor/../config/actors_list/actors_list.h"
+ 1247              		.file 12 "app/core/actor/actor.h"
+ 1248              		.file 13 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h"
+ 1249              		.file 14 "Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h"
+ 1250              		.file 15 "app/tasks/light_sensor/light_sensor.h"
+ 1251              		.file 16 "app/drivers/opt3001/opt3001.h"
+ 1252              		.file 17 "/usr/include/newlib/stdio.h"
+ 1253              		.file 18 "<built-in>"
+ARM GAS  /tmp/ccamXK4Q.s 			page 34
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 light_sensor.c
-     /tmp/ccPeWnV7.s:18     .rodata.handleTurnedOff.str1.4:0000000000000000 $d
-     /tmp/ccPeWnV7.s:31     .text.handleTurnedOff:0000000000000000 $t
-     /tmp/ccPeWnV7.s:38     .text.handleTurnedOff:0000000000000000 handleTurnedOff
-     /tmp/ccPeWnV7.s:225    .text.handleTurnedOff:00000000000000c0 $d
-     /tmp/ccPeWnV7.s:234    .rodata.handleContinuousMeasure.str1.4:0000000000000000 $d
-     /tmp/ccPeWnV7.s:238    .text.handleContinuousMeasure:0000000000000000 $t
-     /tmp/ccPeWnV7.s:244    .text.handleContinuousMeasure:0000000000000000 handleContinuousMeasure
-     /tmp/ccPeWnV7.s:415    .text.handleContinuousMeasure:00000000000000a8 $d
-     /tmp/ccPeWnV7.s:424    .text.handleOutOfRange:0000000000000000 $t
-     /tmp/ccPeWnV7.s:430    .text.handleOutOfRange:0000000000000000 handleOutOfRange
-     /tmp/ccPeWnV7.s:601    .text.handleOutOfRange:00000000000000a4 $d
-     /tmp/ccPeWnV7.s:610    .text.handleLightSensorFSM:0000000000000000 $t
-     /tmp/ccPeWnV7.s:616    .text.handleLightSensorFSM:0000000000000000 handleLightSensorFSM
-     /tmp/ccPeWnV7.s:672    .rodata.LIGHT_SENS_Task.str1.4:0000000000000000 $d
-     /tmp/ccPeWnV7.s:685    .text.LIGHT_SENS_Task:0000000000000000 $t
-     /tmp/ccPeWnV7.s:692    .text.LIGHT_SENS_Task:0000000000000000 LIGHT_SENS_Task
-     /tmp/ccPeWnV7.s:807    .text.LIGHT_SENS_Task:0000000000000080 $d
-     /tmp/ccPeWnV7.s:821    .rodata.LIGHT_SENS_TaskInit.str1.4:0000000000000000 $d
-     /tmp/ccPeWnV7.s:825    .text.LIGHT_SENS_TaskInit:0000000000000000 $t
-     /tmp/ccPeWnV7.s:832    .text.LIGHT_SENS_TaskInit:0000000000000000 LIGHT_SENS_TaskInit
-     /tmp/ccPeWnV7.s:887    .text.LIGHT_SENS_TaskInit:0000000000000038 $d
-     /tmp/ccPeWnV7.s:930    .rodata.lightSensorTaskDescription:0000000000000000 lightSensorTaskDescription
-     /tmp/ccPeWnV7.s:908    .bss.lightSensorTaskControlBlock:0000000000000000 lightSensorTaskControlBlock
-     /tmp/ccPeWnV7.s:902    .bss.lightSensorTaskBuffer:0000000000000000 lightSensorTaskBuffer
-     /tmp/ccPeWnV7.s:915    .data.LIGHT_SENS_Actor:0000000000000000 LIGHT_SENS_Actor
-     /tmp/ccPeWnV7.s:899    .bss.lightSensorTaskBuffer:0000000000000000 $d
-     /tmp/ccPeWnV7.s:905    .bss.lightSensorTaskControlBlock:0000000000000000 $d
-     /tmp/ccPeWnV7.s:911    .data.LIGHT_SENS_Actor:0000000000000000 $d
-     /tmp/ccPeWnV7.s:926    .rodata.lightSensorTaskDescription:0000000000000000 $d
+     /tmp/ccamXK4Q.s:18     .rodata.handleInit.str1.4:0000000000000000 $d
+     /tmp/ccamXK4Q.s:40     .text.handleInit:0000000000000000 $t
+     /tmp/ccamXK4Q.s:47     .text.handleInit:0000000000000000 handleInit
+     /tmp/ccamXK4Q.s:273    .text.handleInit:00000000000000f8 $d
+     /tmp/ccamXK4Q.s:289    .rodata.handleOutOfRange.str1.4:0000000000000000 $d
+     /tmp/ccamXK4Q.s:296    .text.handleOutOfRange:0000000000000000 $t
+     /tmp/ccamXK4Q.s:302    .text.handleOutOfRange:0000000000000000 handleOutOfRange
+     /tmp/ccamXK4Q.s:473    .text.handleOutOfRange:00000000000000a4 $d
+     /tmp/ccamXK4Q.s:482    .rodata.handleTurnedOff.str1.4:0000000000000000 $d
+     /tmp/ccamXK4Q.s:486    .text.handleTurnedOff:0000000000000000 $t
+     /tmp/ccamXK4Q.s:492    .text.handleTurnedOff:0000000000000000 handleTurnedOff
+     /tmp/ccamXK4Q.s:678    .text.handleTurnedOff:00000000000000c0 $d
+     /tmp/ccamXK4Q.s:687    .rodata.handleContinuousMeasure.str1.4:0000000000000000 $d
+     /tmp/ccamXK4Q.s:691    .text.handleContinuousMeasure:0000000000000000 $t
+     /tmp/ccamXK4Q.s:697    .text.handleContinuousMeasure:0000000000000000 handleContinuousMeasure
+     /tmp/ccamXK4Q.s:883    .text.handleContinuousMeasure:00000000000000bc $d
+     /tmp/ccamXK4Q.s:893    .text.handleLightSensorFSM:0000000000000000 $t
+     /tmp/ccamXK4Q.s:899    .text.handleLightSensorFSM:0000000000000000 handleLightSensorFSM
+     /tmp/ccamXK4Q.s:920    .text.handleLightSensorFSM:000000000000000c $d
+     /tmp/ccamXK4Q.s:924    .text.handleLightSensorFSM:0000000000000010 $t
+     /tmp/ccamXK4Q.s:968    .rodata.LIGHT_SENS_Task.str1.4:0000000000000000 $d
+     /tmp/ccamXK4Q.s:981    .text.LIGHT_SENS_Task:0000000000000000 $t
+     /tmp/ccamXK4Q.s:988    .text.LIGHT_SENS_Task:0000000000000000 LIGHT_SENS_Task
+     /tmp/ccamXK4Q.s:1103   .text.LIGHT_SENS_Task:0000000000000080 $d
+     /tmp/ccamXK4Q.s:1117   .rodata.LIGHT_SENS_TaskInit.str1.4:0000000000000000 $d
+     /tmp/ccamXK4Q.s:1121   .text.LIGHT_SENS_TaskInit:0000000000000000 $t
+     /tmp/ccamXK4Q.s:1128   .text.LIGHT_SENS_TaskInit:0000000000000000 LIGHT_SENS_TaskInit
+     /tmp/ccamXK4Q.s:1183   .text.LIGHT_SENS_TaskInit:0000000000000038 $d
+     /tmp/ccamXK4Q.s:1226   .rodata.lightSensorTaskDescription:0000000000000000 lightSensorTaskDescription
+     /tmp/ccamXK4Q.s:1204   .bss.lightSensorTaskControlBlock:0000000000000000 lightSensorTaskControlBlock
+     /tmp/ccamXK4Q.s:1198   .bss.lightSensorTaskBuffer:0000000000000000 lightSensorTaskBuffer
+     /tmp/ccamXK4Q.s:1211   .data.LIGHT_SENS_Actor:0000000000000000 LIGHT_SENS_Actor
+     /tmp/ccamXK4Q.s:1195   .bss.lightSensorTaskBuffer:0000000000000000 $d
+     /tmp/ccamXK4Q.s:1201   .bss.lightSensorTaskControlBlock:0000000000000000 $d
+     /tmp/ccamXK4Q.s:1207   .data.LIGHT_SENS_Actor:0000000000000000 $d
+     /tmp/ccamXK4Q.s:1222   .rodata.lightSensorTaskDescription:0000000000000000 $d
 
 UNDEFINED SYMBOLS
-OPT3001_WriteConfig
-osDelay
-OPT3001_ReadResultRawLux
-OPT3001_RawToMilliLux
+OPT3001_InitIO
+OPT3001_ReadDeviceID
 fprintf
+OPT3001_WriteConfig
+OPT3001_ReadConfig
 OPT3001_WriteHighLimit
-_impure_ptr
 OPT3001_WriteLowLimit
-osMessageQueueGet
 osMessageQueuePut
+fwrite
+BSP_I2C1_ReadReg
+BSP_I2C1_WriteReg
+_impure_ptr
 ACTORS_LIST_SystemRegistry
+OPT3001_ReadResultRawLux
+osDelay
+OPT3001_RawToMilliLux
+osMessageQueueGet
+ARM GAS  /tmp/ccamXK4Q.s 			page 35
+
+
 osMessageQueueNew
 osThreadNew
