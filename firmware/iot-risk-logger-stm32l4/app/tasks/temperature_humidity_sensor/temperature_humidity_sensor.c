@@ -29,8 +29,8 @@ TH_SENS_Actor_t TH_SENS_Actor = {
                 .osThreadId = NULL,
         },
         .state = TH_SENS_NO_STATE,
-        .rawTemperature = 0x00000000,
-        .rawHumidity = 0x00000000,
+        .rawTemperature = 0x0000,
+        .rawHumidity = 0x0000,
 };
 
 uint32_t thSensorTaskBuffer[DEFAULT_TASK_STACK_SIZE_WORDS];
@@ -99,9 +99,9 @@ static osStatus_t handleInit(TH_SENS_Actor_t *this, message_t *message) {
 
     // reset the sensor by pulling down _TEMP_RESET, at least 1uS duration required
     HAL_GPIO_WritePin(_TEMP_RESET_GPIO_Port, _TEMP_RESET_Pin, GPIO_PIN_RESET);
-    osDelay(1);
+    delayMs(1);
     HAL_GPIO_WritePin(_TEMP_RESET_GPIO_Port, _TEMP_RESET_Pin, GPIO_PIN_SET);
-    osDelay(1);
+    delayMs(1);
 
     // read sensor ID
     uint32_t sht3xId = 0x00000000;
@@ -122,14 +122,18 @@ static osStatus_t handleInit(TH_SENS_Actor_t *this, message_t *message) {
 }
 
 static osStatus_t handleIdle(TH_SENS_Actor_t *this, message_t *message) {
+  osStatus_t  ioStatus = osOK;
+
   switch (message->event) {
     case GLOBAL_CMD_START_CONTINUOUS_SENSING:
-      // TODO start continuous measurement
+      ioStatus = SHT3x_PeriodicAcquisitionMode(SHT3x_START_MEASUREMENT_0_5_MPS_LOW_REPEATABILITY_CMD_ID);
+      if (ioStatus != osOK) return osError;
+
       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
       return osOK;
     case TH_SENS_START_SINGLE_SHOT_READ:
-      // TODO start single shot measurement
-      fprintf(stdout, "Raw: temperature: %ld humidity %ld\n", this->rawTemperature, this->rawHumidity);
+      // TODO run single shot measurement
+      fprintf(stdout, "Raw: temperature: %d humidity %d\n", this->rawTemperature, this->rawHumidity);
       TO_STATE(this, TH_SENS_IDLE_STATE);
       return osOK;
     default:
@@ -138,9 +142,17 @@ static osStatus_t handleIdle(TH_SENS_Actor_t *this, message_t *message) {
 }
 
 static osStatus_t handleContinuousMeasure(TH_SENS_Actor_t *this, message_t *message) {
+  osStatus_t  ioStatus = osOK;
+
   switch (message->event) {
     case GLOBAL_WAKE_N_READ:
-      // TODO start continuous measurement
+      ioStatus = SHT3x_ReadMeasurements(&this->rawTemperature, &this->rawHumidity);
+      if (ioStatus != osOK) return osError;
+
+      float t = SHT3x_RawToTemperatureC(this->rawTemperature);
+      float rh = SHT3x_RawToHumidityRH(this->rawHumidity);
+      fprintf(stdout, "Temperature: %.2f humidity %.2f\n", t, rh);
+
       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
       return osOK;
     default:
@@ -153,5 +165,6 @@ static osStatus_t handleError(TH_SENS_Actor_t *this, message_t *message) {
 }
 
 static uint32_t delayMs(uint32_t ms) {
-  return osDelay(ms);
+  uint32_t ticks = (ms * configTICK_RATE_HZ) / 1000;
+  return osDelay(ticks);
 }

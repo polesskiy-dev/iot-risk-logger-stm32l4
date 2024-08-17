@@ -102,6 +102,7 @@ SHT3x_RESULT SHT3x_ReadDeviceID(uint32_t *id) {
     uint8_t word2ReceivedCRC = serialNumberData[5];
     bool word1CRCValid = SHT3x_IO.crc8(serialNumberData, 2) == word1ReceivedCRC;
     bool word2CRCValid = SHT3x_IO.crc8(serialNumberData + 3, 2) == word2ReceivedCRC;
+
     if (word1CRCValid == false || word2CRCValid == false) {
       return SHT3x_CRC_ERROR;
     }
@@ -109,6 +110,43 @@ SHT3x_RESULT SHT3x_ReadDeviceID(uint32_t *id) {
     *id = serialNumberData[0] << 24 | serialNumberData[1] << 16 | serialNumberData[3] << 8 | serialNumberData[4];
 
     return SHT3x_OK;
+}
+
+SHT3x_RESULT SHT3x_PeriodicAcquisitionMode(uint16_t modeCondition) {
+  uint8_t cmd[] = {modeCondition >> 8, modeCondition & 0xFF};
+
+  return SHT3x_IO.write(SHT3x_IO.i2cAddress, cmd, SHT3x_CMD_SIZE);
+}
+
+SHT3x_RESULT SHT3x_ReadMeasurements(uint16_t *rawTemperature, uint16_t *rawHumidity) {
+  uint8_t data[6] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+  uint8_t cmd[] = {SHT3x_READ_MEASUREMENT_CMD_ID >> 8, SHT3x_READ_MEASUREMENT_CMD_ID & 0xFF};
+
+  SHT3x_RESULT result = SHT3x_IO.write(SHT3x_IO.i2cAddress, cmd, SHT3x_CMD_SIZE);
+
+  if (result != SHT3x_OK)
+    return result;
+
+  // TODO handle: If no measurement data is present the I2C read header is responded with a NACK
+  result = SHT3x_IO.read(SHT3x_IO.i2cAddress, data, 6);
+
+  if (result != SHT3x_OK)
+    return result;
+
+  // Check CRC
+  uint8_t temperatureCRC = data[2];
+  uint8_t humidityCRC = data[5];
+  bool temperatureCRCValid = SHT3x_IO.crc8(data, 2) == temperatureCRC;
+  bool humidityCRCValid = SHT3x_IO.crc8(data + 3, 2) == humidityCRC;
+
+  if (temperatureCRCValid == false || humidityCRCValid == false) {
+    return SHT3x_CRC_ERROR;
+  }
+
+  *rawTemperature = data[0] << 8 | data[1];
+  *rawHumidity = data[3] << 8 | data[4];
+
+  return SHT3x_OK;
 }
 
 float SHT3x_RawToTemperatureC(uint16_t rawTemperature) {

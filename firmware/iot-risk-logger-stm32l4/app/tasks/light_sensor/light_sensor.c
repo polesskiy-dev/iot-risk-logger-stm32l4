@@ -75,8 +75,7 @@ void LIGHT_SENS_Task(void *argument) {
 static osStatus_t handleLightSensorFSM(LIGHT_SENS_Actor_t *this, message_t *message) {
   switch (this->state) {
     case LIGHT_SENS_NO_STATE:
-      return osOK;
-//      return handleInit(this, message);
+      return handleInit(this, message);
     case LIGHT_SENS_TURNED_OFF_STATE:
       return handleTurnedOff(this, message);
     case LIGHT_SENS_CONTINUOUS_MEASURE_STATE:
@@ -173,7 +172,7 @@ static osStatus_t handleTurnedOff(LIGHT_SENS_Actor_t *this, message_t *message) 
       // remains in turned off state after successful read, opt3001 turns off automatically after single shot read
       TO_STATE(this, LIGHT_SENS_TURNED_OFF_STATE);
       return osOK;
-    case LIGHT_SENS_MEASURE_CONTINUOUSLY:
+    case GLOBAL_CMD_START_CONTINUOUS_SENSING:
       // set continuous measurements mode
       ioStatus = OPT3001_WriteConfig(OPT3001_CONFIG_RANGE_NUMBER_AUTO_SCALE | \
                                     OPT3001_CONFIG_CONVERSION_TIME_800_MS | \
@@ -210,6 +209,8 @@ static osStatus_t handleContinuousMeasure(LIGHT_SENS_Actor_t *this, message_t *m
       // read the measured rawLux on RTC cron
       ioStatus = OPT3001_ReadResultRawLux(&this->rawLux);
       if (ioStatus != osOK) return osError;
+
+      fprintf(stdout, "milliLux %lu\n", OPT3001_RawToMilliLux(this->rawLux));
 
       TO_STATE(this, LIGHT_SENS_CONTINUOUS_MEASURE_STATE);
       return osOK;
