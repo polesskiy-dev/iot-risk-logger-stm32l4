@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccukiNbs.s 			page 1
+ARM GAS  /tmp/cc1wEvIX.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -46,90 +46,90 @@ ARM GAS  /tmp/ccukiNbs.s 			page 1
   16:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleIdle(TH_SENS_Actor_t *this, message_t *message);
   17:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleContinuousMeasure(TH_SENS_Actor_t *this, message_t *message);
   18:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleError(TH_SENS_Actor_t *this, message_t *message);
-  19:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
-  20:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** extern actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS];
+  19:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** /** utils */
+  20:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static uint32_t delayMs(uint32_t ms);
   21:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
-  22:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** TH_SENS_Actor_t TH_SENS_Actor = {
-  23:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         .super = {
-  24:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****                 .actorId = TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID,
-  25:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****                 .messageHandler = (messageHandler_t) handleTHSensorFSM,
-  26:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****                 .osMessageQueueId = NULL,
-  27:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****                 .osThreadId = NULL,
-  28:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         },
-  29:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         .state = TH_SENS_NO_STATE,
-  30:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         .rawTemperature = 0x00000000,
-ARM GAS  /tmp/ccukiNbs.s 			page 2
+  22:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** extern actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS];
+  23:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
+  24:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** TH_SENS_Actor_t TH_SENS_Actor = {
+  25:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         .super = {
+  26:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****                 .actorId = TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID,
+  27:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****                 .messageHandler = (messageHandler_t) handleTHSensorFSM,
+  28:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****                 .osMessageQueueId = NULL,
+  29:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****                 .osThreadId = NULL,
+  30:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         },
+ARM GAS  /tmp/cc1wEvIX.s 			page 2
 
 
-  31:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         .rawHumidity = 0x00000000,
-  32:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** };
-  33:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
-  34:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** uint32_t thSensorTaskBuffer[DEFAULT_TASK_STACK_SIZE_WORDS];
-  35:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** StaticTask_t thSensorTaskControlBlock;
-  36:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** const osThreadAttr_t thSensorTaskDescription = {
-  37:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         .name = "thSensorTask",
-  38:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         .cb_mem = &thSensorTaskControlBlock,
-  39:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         .cb_size = sizeof(thSensorTaskControlBlock),
-  40:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         .stack_mem = &thSensorTaskBuffer[0],
-  41:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         .stack_size = sizeof(thSensorTaskBuffer),
-  42:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         .priority = (osPriority_t) osPriorityNormal,
-  43:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** };
-  44:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
-  45:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** actor_t* TH_SENS_TaskInit(void) {
-  46:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   TH_SENS_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MESSAG
-  47:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****           .name = "thSensorQueue"
-  48:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   });
-  49:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   TH_SENS_Actor.super.osThreadId = osThreadNew(TH_SENS_Task, NULL, &thSensorTaskDescription);
-  50:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
-  51:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   return (actor_t*) &TH_SENS_Actor;
-  52:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****  }
-  53:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
-  54:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** void TH_SENS_Task(void *argument) {
-  55:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   (void) argument; // Avoid unused parameter warning
-  56:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   message_t msg;
-  57:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
-  58:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   fprintf(stdout, "Task %s started\n", thSensorTaskDescription.name);
+  31:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         .state = TH_SENS_NO_STATE,
+  32:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         .rawTemperature = 0x00000000,
+  33:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         .rawHumidity = 0x00000000,
+  34:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** };
+  35:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
+  36:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** uint32_t thSensorTaskBuffer[DEFAULT_TASK_STACK_SIZE_WORDS];
+  37:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** StaticTask_t thSensorTaskControlBlock;
+  38:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** const osThreadAttr_t thSensorTaskDescription = {
+  39:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         .name = "thSensorTask",
+  40:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         .cb_mem = &thSensorTaskControlBlock,
+  41:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         .cb_size = sizeof(thSensorTaskControlBlock),
+  42:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         .stack_mem = &thSensorTaskBuffer[0],
+  43:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         .stack_size = sizeof(thSensorTaskBuffer),
+  44:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         .priority = (osPriority_t) osPriorityNormal,
+  45:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** };
+  46:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
+  47:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** actor_t* TH_SENS_TaskInit(void) {
+  48:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   TH_SENS_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MESSAG
+  49:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****           .name = "thSensorQueue"
+  50:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   });
+  51:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   TH_SENS_Actor.super.osThreadId = osThreadNew(TH_SENS_Task, NULL, &thSensorTaskDescription);
+  52:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
+  53:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   return (actor_t*) &TH_SENS_Actor;
+  54:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****  }
+  55:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
+  56:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** void TH_SENS_Task(void *argument) {
+  57:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   (void) argument; // Avoid unused parameter warning
+  58:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   message_t msg;
   59:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
-  60:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   for (;;) {
-  61:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     // Wait for messages from the queue
-  62:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     if (osMessageQueueGet(TH_SENS_Actor.super.osMessageQueueId, &msg, NULL, osWaitForever) == osOK)
-  63:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       osStatus_t handleMessageStatus = TH_SENS_Actor.super.messageHandler((actor_t *) &TH_SENS_Acto
-  64:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
-  65:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       if (handleMessageStatus != osOK) {
-  66:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         fprintf(stderr, "%s: Error handling event %u in state %ul\n", thSensorTaskDescription.name,
-  67:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMess
-  68:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = TEMPERATURE_H
-  69:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         TO_STATE(&TH_SENS_Actor, TH_SENS_STATE_ERROR);
-  70:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       }
-  71:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     }
-  72:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   }
-  73:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }
-  74:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
-  75:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleTHSensorFSM(TH_SENS_Actor_t *this, message_t *message) {
-  76:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   switch (this->state) {
-  77:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     case TH_SENS_NO_STATE:
-  78:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleInit(this, message);
-  79:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     case TH_SENS_IDLE_STATE:
-  80:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleIdle(this, message);
-  81:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     case TH_SENS_CONTINUOUS_MEASURE_STATE:
-  82:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleContinuousMeasure(this, message);
-  83:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     case TH_SENS_STATE_ERROR:
-  84:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       // TODO implement error handling
-  85:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleError(this, message);
-  86:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     default:
-  87:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return osOK;
-ARM GAS  /tmp/ccukiNbs.s 			page 3
+  60:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   fprintf(stdout, "Task %s started\n", thSensorTaskDescription.name);
+  61:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
+  62:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   for (;;) {
+  63:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     // Wait for messages from the queue
+  64:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     if (osMessageQueueGet(TH_SENS_Actor.super.osMessageQueueId, &msg, NULL, osWaitForever) == osOK)
+  65:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       osStatus_t handleMessageStatus = TH_SENS_Actor.super.messageHandler((actor_t *) &TH_SENS_Acto
+  66:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
+  67:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       if (handleMessageStatus != osOK) {
+  68:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         fprintf(stderr, "%s: Error handling event %u in state %ul\n", thSensorTaskDescription.name,
+  69:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMess
+  70:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = TEMPERATURE_H
+  71:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         TO_STATE(&TH_SENS_Actor, TH_SENS_STATE_ERROR);
+  72:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       }
+  73:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     }
+  74:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   }
+  75:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }
+  76:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
+  77:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleTHSensorFSM(TH_SENS_Actor_t *this, message_t *message) {
+  78:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   switch (this->state) {
+  79:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     case TH_SENS_NO_STATE:
+  80:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleInit(this, message);
+  81:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     case TH_SENS_IDLE_STATE:
+  82:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleIdle(this, message);
+  83:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     case TH_SENS_CONTINUOUS_MEASURE_STATE:
+  84:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleContinuousMeasure(this, message);
+  85:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     case TH_SENS_STATE_ERROR:
+  86:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       // TODO implement error handling
+  87:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleError(this, message);
+ARM GAS  /tmp/cc1wEvIX.s 			page 3
 
 
-  88:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   }
-  89:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }
-  90:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
-  91:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleInit(TH_SENS_Actor_t *this, message_t *message) {
-  92:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   if (GLOBAL_CMD_INITIALIZE == message->event) {
-  93:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     BSP_I2C1_Init(); // TODO think about proper place to init I2C
-  94:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
-  95:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     // TODO add crc8 function
-  96:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osStatus_t ioStatus = SHT3x_InitIO(TH_SENS_I2C_ADDRESS, BSP_I2C1_WriteReg16, BSP_I2C1_ReadReg16
+  88:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     default:
+  89:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return osOK;
+  90:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   }
+  91:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }
+  92:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
+  93:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleInit(TH_SENS_Actor_t *this, message_t *message) {
+  94:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   if (GLOBAL_CMD_INITIALIZE == message->event) {
+  95:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     // provide IO functions to the sensor driver
+  96:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osStatus_t ioStatus = SHT3x_InitIO(TH_SENS_I2C_ADDRESS, BSP_I2C1_Send, BSP_I2C1_Recv, delayMs, 
   97:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
   98:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     if (ioStatus != osOK) return osError;
   99:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
@@ -137,1072 +137,1114 @@ ARM GAS  /tmp/ccukiNbs.s 			page 1
  101:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     HAL_GPIO_WritePin(_TEMP_RESET_GPIO_Port, _TEMP_RESET_Pin, GPIO_PIN_RESET);
  102:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osDelay(1);
  103:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     HAL_GPIO_WritePin(_TEMP_RESET_GPIO_Port, _TEMP_RESET_Pin, GPIO_PIN_SET);
- 104:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
- 105:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     // read sensor ID
- 106:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     uint32_t sht3xId = 0x00000000;
- 107:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     ioStatus = SHT3x_ReadDeviceID(&sht3xId);
- 108:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
- 109:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     if (ioStatus != osOK) return osError;
- 110:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     fprintf(stdout, "SHT3x ID: %lu\n", sht3xId);
- 111:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
- 112:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     // publish to event manager that the sensor is initialized
- 113:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
- 114:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_INITIALIZE_SUCCESS, .payload.value = TEMP
- 115:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
- 116:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     fprintf(stdout, "Temperature & Humidity sensor %ul initialized\n", TEMPERATURE_HUMIDITY_SENSOR_
- 117:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     TO_STATE(this, TH_SENS_IDLE_STATE);
- 118:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   }
- 119:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
- 120:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   return osOK;
- 121:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }
- 122:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
- 123:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleIdle(TH_SENS_Actor_t *this, message_t *message) {
- 124:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   switch (message->event) {
- 125:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     case GLOBAL_CMD_START_CONTINUOUS_SENSING:
- 126:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       // TODO start continuous measurement
- 127:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
- 128:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return osOK;
- 129:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     case TH_SENS_START_SINGLE_SHOT_READ:
- 130:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       // TODO start single shot measurement
- 131:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       fprintf(stdout, "Raw: temperature: %ld humidity %ld\n", this->rawTemperature, this->rawHumidi
- 132:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_IDLE_STATE);
- 133:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return osOK;
- 134:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     default:
- 135:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return osOK;
- 136:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   }
- 137:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }
- 138:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
- 139:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleContinuousMeasure(TH_SENS_Actor_t *this, message_t *message) {
- 140:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   switch (message->event) {
- 141:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     case GLOBAL_WAKE_N_READ:
- 142:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       // TODO start continuous measurement
- 143:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
- 144:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return osOK;
-ARM GAS  /tmp/ccukiNbs.s 			page 4
+ 104:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osDelay(1);
+ 105:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
+ 106:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     // read sensor ID
+ 107:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     uint32_t sht3xId = 0x00000000;
+ 108:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     ioStatus = SHT3x_ReadDeviceID(&sht3xId);
+ 109:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
+ 110:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     if (ioStatus != osOK) return osError;
+ 111:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     fprintf(stdout, "SHT3x ID: %lu\n", sht3xId);
+ 112:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
+ 113:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     // publish to event manager that the sensor is initialized
+ 114:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
+ 115:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_INITIALIZE_SUCCESS, .payload.value = TEMP
+ 116:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
+ 117:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     fprintf(stdout, "Temperature & Humidity sensor %ul initialized\n", TEMPERATURE_HUMIDITY_SENSOR_
+ 118:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     TO_STATE(this, TH_SENS_IDLE_STATE);
+ 119:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   }
+ 120:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
+ 121:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   return osOK;
+ 122:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }
+ 123:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
+ 124:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleIdle(TH_SENS_Actor_t *this, message_t *message) {
+ 125:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   switch (message->event) {
+ 126:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     case GLOBAL_CMD_START_CONTINUOUS_SENSING:
+ 127:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       // TODO start continuous measurement
+ 128:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
+ 129:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return osOK;
+ 130:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     case TH_SENS_START_SINGLE_SHOT_READ:
+ 131:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       // TODO start single shot measurement
+ 132:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       fprintf(stdout, "Raw: temperature: %ld humidity %ld\n", this->rawTemperature, this->rawHumidi
+ 133:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_IDLE_STATE);
+ 134:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return osOK;
+ 135:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     default:
+ 136:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return osOK;
+ 137:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   }
+ 138:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }
+ 139:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
+ 140:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleContinuousMeasure(TH_SENS_Actor_t *this, message_t *message) {
+ 141:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   switch (message->event) {
+ 142:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     case GLOBAL_WAKE_N_READ:
+ 143:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       // TODO start continuous measurement
+ 144:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
+ARM GAS  /tmp/cc1wEvIX.s 			page 4
 
 
- 145:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     default:
- 146:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return osOK;
- 147:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   }
- 148:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }
- 149:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
- 150:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleError(TH_SENS_Actor_t *this, message_t *message) {
-  29              		.loc 1 150 74 view -0
+ 145:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return osOK;
+ 146:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     default:
+ 147:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return osOK;
+ 148:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   }
+ 149:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }
+ 150:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
+ 151:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleError(TH_SENS_Actor_t *this, message_t *message) {
+  29              		.loc 1 151 74 view -0
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
   32              		@ frame_needed = 0, uses_anonymous_args = 0
   33              		@ link register save eliminated.
- 151:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   return osOK;
-  34              		.loc 1 151 3 view .LVU1
- 152:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }...
-  35              		.loc 1 152 1 is_stmt 0 view .LVU2
+ 152:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   return osOK;
+  34              		.loc 1 152 3 view .LVU1
+ 153:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }
+  35              		.loc 1 153 1 is_stmt 0 view .LVU2
   36 0000 0020     		movs	r0, #0
   37              	.LVL1:
-  38              		.loc 1 152 1 view .LVU3
+  38              		.loc 1 153 1 view .LVU3
   39 0002 7047     		bx	lr
   40              		.cfi_endproc
   41              	.LFE145:
-  43              		.section	.rodata.handleIdle.str1.4,"aMS",%progbits,1
-  44              		.align	2
-  45              	.LC0:
-  46 0000 54485F53 		.ascii	"TH_SENS_CONTINUOUS_MEASURE_STATE\000"
-  46      454E535F 
-  46      434F4E54 
-  46      494E554F 
-  46      55535F4D 
-  47 0021 000000   		.align	2
-  48              	.LC1:
-  49 0024 256C753A 		.ascii	"%lu: %s\012\000"
-  49      2025730A 
-  49      00
-  50 002d 000000   		.align	2
-  51              	.LC2:
-  52 0030 5261773A 		.ascii	"Raw: temperature: %ld humidity %ld\012\000"
-  52      2074656D 
-  52      70657261 
-  52      74757265 
-  52      3A20256C 
-  53              		.align	2
-  54              	.LC3:
-  55 0054 54485F53 		.ascii	"TH_SENS_IDLE_STATE\000"
-  55      454E535F 
-  55      49444C45 
-  55      5F535441 
-  55      544500
-  56              		.section	.text.handleIdle,"ax",%progbits
-  57              		.align	1
-  58              		.syntax unified
-  59              		.thumb
-  60              		.thumb_func
-  61              		.fpu fpv4-sp-d16
-  63              	handleIdle:
-  64              	.LVL2:
-  65              	.LFB143:
-ARM GAS  /tmp/ccukiNbs.s 			page 5
+  43              		.section	.text.delayMs,"ax",%progbits
+  44              		.align	1
+  45              		.syntax unified
+  46              		.thumb
+  47              		.thumb_func
+  48              		.fpu fpv4-sp-d16
+  50              	delayMs:
+  51              	.LVL2:
+  52              	.LFB146:
+ 154:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
+ 155:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static uint32_t delayMs(uint32_t ms) {
+  53              		.loc 1 155 38 is_stmt 1 view -0
+  54              		.cfi_startproc
+  55              		@ args = 0, pretend = 0, frame = 0
+  56              		@ frame_needed = 0, uses_anonymous_args = 0
+  57              		.loc 1 155 38 is_stmt 0 view .LVU5
+  58 0000 08B5     		push	{r3, lr}
+  59              	.LCFI0:
+  60              		.cfi_def_cfa_offset 8
+  61              		.cfi_offset 3, -8
+  62              		.cfi_offset 14, -4
+ 156:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   return osDelay(ms);
+  63              		.loc 1 156 3 is_stmt 1 view .LVU6
+  64              		.loc 1 156 10 is_stmt 0 view .LVU7
+  65 0002 FFF7FEFF 		bl	osDelay
+  66              	.LVL3:
+ 157:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }...
+  67              		.loc 1 157 1 view .LVU8
+  68 0006 08BD     		pop	{r3, pc}
+  69              		.cfi_endproc
+  70              	.LFE146:
+  72              		.section	.rodata.handleIdle.str1.4,"aMS",%progbits,1
+  73              		.align	2
+  74              	.LC0:
+  75 0000 54485F53 		.ascii	"TH_SENS_CONTINUOUS_MEASURE_STATE\000"
+ARM GAS  /tmp/cc1wEvIX.s 			page 5
 
 
- 123:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleIdle(TH_SENS_Actor_t *this, message_t *message) {
-  66              		.loc 1 123 73 is_stmt 1 view -0
-  67              		.cfi_startproc
-  68              		@ args = 0, pretend = 0, frame = 0
-  69              		@ frame_needed = 0, uses_anonymous_args = 0
- 123:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleIdle(TH_SENS_Actor_t *this, message_t *message) {
-  70              		.loc 1 123 73 is_stmt 0 view .LVU5
-  71 0000 38B5     		push	{r3, r4, r5, lr}
-  72              	.LCFI0:
-  73              		.cfi_def_cfa_offset 16
-  74              		.cfi_offset 3, -16
-  75              		.cfi_offset 4, -12
-  76              		.cfi_offset 5, -8
-  77              		.cfi_offset 14, -4
-  78 0002 0446     		mov	r4, r0
- 124:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   switch (message->event) {
-  79              		.loc 1 124 3 is_stmt 1 view .LVU6
- 124:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   switch (message->event) {
-  80              		.loc 1 124 18 is_stmt 0 view .LVU7
-  81 0004 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
- 124:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   switch (message->event) {
-  82              		.loc 1 124 3 view .LVU8
-  83 0006 0A2B     		cmp	r3, #10
-  84 0008 03D0     		beq	.L3
-  85 000a 112B     		cmp	r3, #17
-  86 000c 0CD0     		beq	.L4
-  87              	.LVL3:
-  88              	.L5:
- 137:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }
-  89              		.loc 1 137 1 view .LVU9
-  90 000e 0020     		movs	r0, #0
-  91 0010 38BD     		pop	{r3, r4, r5, pc}
-  92              	.LVL4:
-  93              	.L3:
- 127:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
-  94              		.loc 1 127 7 is_stmt 1 view .LVU10
- 127:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
-  95              		.loc 1 127 7 view .LVU11
-  96 0012 0323     		movs	r3, #3
-  97 0014 0374     		strb	r3, [r0, #16]
- 127:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
-  98              		.loc 1 127 7 view .LVU12
-  99 0016 0D4B     		ldr	r3, .L7
- 100 0018 1868     		ldr	r0, [r3]
- 101              	.LVL5:
- 127:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
- 102              		.loc 1 127 7 is_stmt 0 view .LVU13
- 103 001a 0D4B     		ldr	r3, .L7+4
- 104 001c 2268     		ldr	r2, [r4]
- 105 001e 0D49     		ldr	r1, .L7+8
- 106              	.LVL6:
- 127:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
- 107              		.loc 1 127 7 view .LVU14
- 108 0020 8068     		ldr	r0, [r0, #8]
- 109 0022 FFF7FEFF 		bl	fprintf
- 110              	.LVL7:
- 127:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
-ARM GAS  /tmp/ccukiNbs.s 			page 6
+  75      454E535F 
+  75      434F4E54 
+  75      494E554F 
+  75      55535F4D 
+  76 0021 000000   		.align	2
+  77              	.LC1:
+  78 0024 256C753A 		.ascii	"%lu: %s\012\000"
+  78      2025730A 
+  78      00
+  79 002d 000000   		.align	2
+  80              	.LC2:
+  81 0030 5261773A 		.ascii	"Raw: temperature: %ld humidity %ld\012\000"
+  81      2074656D 
+  81      70657261 
+  81      74757265 
+  81      3A20256C 
+  82              		.align	2
+  83              	.LC3:
+  84 0054 54485F53 		.ascii	"TH_SENS_IDLE_STATE\000"
+  84      454E535F 
+  84      49444C45 
+  84      5F535441 
+  84      544500
+  85              		.section	.text.handleIdle,"ax",%progbits
+  86              		.align	1
+  87              		.syntax unified
+  88              		.thumb
+  89              		.thumb_func
+  90              		.fpu fpv4-sp-d16
+  92              	handleIdle:
+  93              	.LVL4:
+  94              	.LFB143:
+ 124:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleIdle(TH_SENS_Actor_t *this, message_t *message) {
+  95              		.loc 1 124 73 is_stmt 1 view -0
+  96              		.cfi_startproc
+  97              		@ args = 0, pretend = 0, frame = 0
+  98              		@ frame_needed = 0, uses_anonymous_args = 0
+ 124:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleIdle(TH_SENS_Actor_t *this, message_t *message) {
+  99              		.loc 1 124 73 is_stmt 0 view .LVU10
+ 100 0000 38B5     		push	{r3, r4, r5, lr}
+ 101              	.LCFI1:
+ 102              		.cfi_def_cfa_offset 16
+ 103              		.cfi_offset 3, -16
+ 104              		.cfi_offset 4, -12
+ 105              		.cfi_offset 5, -8
+ 106              		.cfi_offset 14, -4
+ 107 0002 0446     		mov	r4, r0
+ 125:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   switch (message->event) {
+ 108              		.loc 1 125 3 is_stmt 1 view .LVU11
+ 125:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   switch (message->event) {
+ 109              		.loc 1 125 18 is_stmt 0 view .LVU12
+ 110 0004 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
+ 125:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   switch (message->event) {
+ 111              		.loc 1 125 3 view .LVU13
+ 112 0006 0A2B     		cmp	r3, #10
+ 113 0008 03D0     		beq	.L5
+ 114 000a 112B     		cmp	r3, #17
+ARM GAS  /tmp/cc1wEvIX.s 			page 6
 
 
- 111              		.loc 1 127 7 is_stmt 1 view .LVU15
- 127:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
- 112              		.loc 1 127 55 view .LVU16
- 128:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return osOK;
- 113              		.loc 1 128 7 view .LVU17
- 128:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return osOK;
- 114              		.loc 1 128 14 is_stmt 0 view .LVU18
- 115 0026 F2E7     		b	.L5
- 116              	.LVL8:
- 117              	.L4:
- 131:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       fprintf(stdout, "Raw: temperature: %ld humidity %ld\n", this->rawTemperature, this->rawHumidi
- 118              		.loc 1 131 7 is_stmt 1 view .LVU19
- 131:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       fprintf(stdout, "Raw: temperature: %ld humidity %ld\n", this->rawTemperature, this->rawHumidi
- 119              		.loc 1 131 15 is_stmt 0 view .LVU20
- 120 0028 084D     		ldr	r5, .L7
- 121 002a 2868     		ldr	r0, [r5]
- 122              	.LVL9:
- 131:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       fprintf(stdout, "Raw: temperature: %ld humidity %ld\n", this->rawTemperature, this->rawHumidi
- 123              		.loc 1 131 7 view .LVU21
- 124 002c A369     		ldr	r3, [r4, #24]
- 125 002e 6269     		ldr	r2, [r4, #20]
- 126 0030 0949     		ldr	r1, .L7+12
- 127              	.LVL10:
- 131:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       fprintf(stdout, "Raw: temperature: %ld humidity %ld\n", this->rawTemperature, this->rawHumidi
- 128              		.loc 1 131 7 view .LVU22
- 129 0032 8068     		ldr	r0, [r0, #8]
- 130 0034 FFF7FEFF 		bl	fprintf
- 131              	.LVL11:
- 132:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_IDLE_STATE);
- 132              		.loc 1 132 7 is_stmt 1 view .LVU23
- 132:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_IDLE_STATE);
- 133              		.loc 1 132 7 view .LVU24
- 134 0038 0123     		movs	r3, #1
- 135 003a 2374     		strb	r3, [r4, #16]
- 132:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_IDLE_STATE);
- 136              		.loc 1 132 7 view .LVU25
- 137 003c 2868     		ldr	r0, [r5]
- 138 003e 074B     		ldr	r3, .L7+16
- 139 0040 2268     		ldr	r2, [r4]
- 140 0042 0449     		ldr	r1, .L7+8
- 141 0044 8068     		ldr	r0, [r0, #8]
- 142 0046 FFF7FEFF 		bl	fprintf
- 143              	.LVL12:
- 132:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_IDLE_STATE);
- 144              		.loc 1 132 7 view .LVU26
- 132:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_IDLE_STATE);
- 145              		.loc 1 132 41 view .LVU27
- 133:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return osOK;
- 146              		.loc 1 133 7 view .LVU28
- 133:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return osOK;
- 147              		.loc 1 133 14 is_stmt 0 view .LVU29
- 148 004a E0E7     		b	.L5
- 149              	.L8:
- 150              		.align	2
- 151              	.L7:
- 152 004c 00000000 		.word	_impure_ptr
- 153 0050 00000000 		.word	.LC0
-ARM GAS  /tmp/ccukiNbs.s 			page 7
+ 115 000c 0CD0     		beq	.L6
+ 116              	.LVL5:
+ 117              	.L7:
+ 138:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }
+ 118              		.loc 1 138 1 view .LVU14
+ 119 000e 0020     		movs	r0, #0
+ 120 0010 38BD     		pop	{r3, r4, r5, pc}
+ 121              	.LVL6:
+ 122              	.L5:
+ 128:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
+ 123              		.loc 1 128 7 is_stmt 1 view .LVU15
+ 128:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
+ 124              		.loc 1 128 7 view .LVU16
+ 125 0012 0323     		movs	r3, #3
+ 126 0014 0374     		strb	r3, [r0, #16]
+ 128:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
+ 127              		.loc 1 128 7 view .LVU17
+ 128 0016 0D4B     		ldr	r3, .L9
+ 129 0018 1868     		ldr	r0, [r3]
+ 130              	.LVL7:
+ 128:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
+ 131              		.loc 1 128 7 is_stmt 0 view .LVU18
+ 132 001a 0D4B     		ldr	r3, .L9+4
+ 133 001c 2268     		ldr	r2, [r4]
+ 134 001e 0D49     		ldr	r1, .L9+8
+ 135              	.LVL8:
+ 128:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
+ 136              		.loc 1 128 7 view .LVU19
+ 137 0020 8068     		ldr	r0, [r0, #8]
+ 138 0022 FFF7FEFF 		bl	fprintf
+ 139              	.LVL9:
+ 128:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
+ 140              		.loc 1 128 7 is_stmt 1 view .LVU20
+ 128:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
+ 141              		.loc 1 128 55 view .LVU21
+ 129:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return osOK;
+ 142              		.loc 1 129 7 view .LVU22
+ 129:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return osOK;
+ 143              		.loc 1 129 14 is_stmt 0 view .LVU23
+ 144 0026 F2E7     		b	.L7
+ 145              	.LVL10:
+ 146              	.L6:
+ 132:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       fprintf(stdout, "Raw: temperature: %ld humidity %ld\n", this->rawTemperature, this->rawHumidi
+ 147              		.loc 1 132 7 is_stmt 1 view .LVU24
+ 132:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       fprintf(stdout, "Raw: temperature: %ld humidity %ld\n", this->rawTemperature, this->rawHumidi
+ 148              		.loc 1 132 15 is_stmt 0 view .LVU25
+ 149 0028 084D     		ldr	r5, .L9
+ 150 002a 2868     		ldr	r0, [r5]
+ 151              	.LVL11:
+ 132:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       fprintf(stdout, "Raw: temperature: %ld humidity %ld\n", this->rawTemperature, this->rawHumidi
+ 152              		.loc 1 132 7 view .LVU26
+ 153 002c A369     		ldr	r3, [r4, #24]
+ 154 002e 6269     		ldr	r2, [r4, #20]
+ 155 0030 0949     		ldr	r1, .L9+12
+ 156              	.LVL12:
+ 132:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       fprintf(stdout, "Raw: temperature: %ld humidity %ld\n", this->rawTemperature, this->rawHumidi
+ 157              		.loc 1 132 7 view .LVU27
+ARM GAS  /tmp/cc1wEvIX.s 			page 7
 
 
- 154 0054 24000000 		.word	.LC1
- 155 0058 30000000 		.word	.LC2
- 156 005c 54000000 		.word	.LC3
- 157              		.cfi_endproc
- 158              	.LFE143:
- 160              		.section	.text.handleContinuousMeasure,"ax",%progbits
- 161              		.align	1
- 162              		.syntax unified
- 163              		.thumb
- 164              		.thumb_func
- 165              		.fpu fpv4-sp-d16
- 167              	handleContinuousMeasure:
- 168              	.LVL13:
- 169              	.LFB144:
- 139:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleContinuousMeasure(TH_SENS_Actor_t *this, message_t *message) {
- 170              		.loc 1 139 86 is_stmt 1 view -0
- 171              		.cfi_startproc
- 172              		@ args = 0, pretend = 0, frame = 0
- 173              		@ frame_needed = 0, uses_anonymous_args = 0
- 140:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   switch (message->event) {
- 174              		.loc 1 140 3 view .LVU31
- 140:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   switch (message->event) {
- 175              		.loc 1 140 18 is_stmt 0 view .LVU32
- 176 0000 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
- 140:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   switch (message->event) {
- 177              		.loc 1 140 3 view .LVU33
- 178 0002 032B     		cmp	r3, #3
- 179 0004 01D0     		beq	.L15
- 148:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }
- 180              		.loc 1 148 1 view .LVU34
- 181 0006 0020     		movs	r0, #0
- 182              	.LVL14:
- 148:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }
- 183              		.loc 1 148 1 view .LVU35
- 184 0008 7047     		bx	lr
- 185              	.LVL15:
- 186              	.L15:
- 139:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleContinuousMeasure(TH_SENS_Actor_t *this, message_t *message) {
- 187              		.loc 1 139 86 view .LVU36
- 188 000a 10B5     		push	{r4, lr}
- 189              	.LCFI1:
- 190              		.cfi_def_cfa_offset 8
- 191              		.cfi_offset 4, -8
- 192              		.cfi_offset 14, -4
- 143:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
- 193              		.loc 1 143 7 is_stmt 1 view .LVU37
- 143:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
- 194              		.loc 1 143 7 view .LVU38
- 195 000c 0374     		strb	r3, [r0, #16]
- 143:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
- 196              		.loc 1 143 7 view .LVU39
- 197 000e 054B     		ldr	r3, .L16
- 198 0010 1C68     		ldr	r4, [r3]
- 199 0012 054B     		ldr	r3, .L16+4
- 200 0014 0268     		ldr	r2, [r0]
- 201 0016 0549     		ldr	r1, .L16+8
- 202              	.LVL16:
-ARM GAS  /tmp/ccukiNbs.s 			page 8
+ 158 0032 8068     		ldr	r0, [r0, #8]
+ 159 0034 FFF7FEFF 		bl	fprintf
+ 160              	.LVL13:
+ 133:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_IDLE_STATE);
+ 161              		.loc 1 133 7 is_stmt 1 view .LVU28
+ 133:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_IDLE_STATE);
+ 162              		.loc 1 133 7 view .LVU29
+ 163 0038 0123     		movs	r3, #1
+ 164 003a 2374     		strb	r3, [r4, #16]
+ 133:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_IDLE_STATE);
+ 165              		.loc 1 133 7 view .LVU30
+ 166 003c 2868     		ldr	r0, [r5]
+ 167 003e 074B     		ldr	r3, .L9+16
+ 168 0040 2268     		ldr	r2, [r4]
+ 169 0042 0449     		ldr	r1, .L9+8
+ 170 0044 8068     		ldr	r0, [r0, #8]
+ 171 0046 FFF7FEFF 		bl	fprintf
+ 172              	.LVL14:
+ 133:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_IDLE_STATE);
+ 173              		.loc 1 133 7 view .LVU31
+ 133:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_IDLE_STATE);
+ 174              		.loc 1 133 41 view .LVU32
+ 134:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return osOK;
+ 175              		.loc 1 134 7 view .LVU33
+ 134:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return osOK;
+ 176              		.loc 1 134 14 is_stmt 0 view .LVU34
+ 177 004a E0E7     		b	.L7
+ 178              	.L10:
+ 179              		.align	2
+ 180              	.L9:
+ 181 004c 00000000 		.word	_impure_ptr
+ 182 0050 00000000 		.word	.LC0
+ 183 0054 24000000 		.word	.LC1
+ 184 0058 30000000 		.word	.LC2
+ 185 005c 54000000 		.word	.LC3
+ 186              		.cfi_endproc
+ 187              	.LFE143:
+ 189              		.section	.text.handleContinuousMeasure,"ax",%progbits
+ 190              		.align	1
+ 191              		.syntax unified
+ 192              		.thumb
+ 193              		.thumb_func
+ 194              		.fpu fpv4-sp-d16
+ 196              	handleContinuousMeasure:
+ 197              	.LVL15:
+ 198              	.LFB144:
+ 140:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleContinuousMeasure(TH_SENS_Actor_t *this, message_t *message) {
+ 199              		.loc 1 140 86 is_stmt 1 view -0
+ 200              		.cfi_startproc
+ 201              		@ args = 0, pretend = 0, frame = 0
+ 202              		@ frame_needed = 0, uses_anonymous_args = 0
+ 141:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   switch (message->event) {
+ 203              		.loc 1 141 3 view .LVU36
+ 141:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   switch (message->event) {
+ 204              		.loc 1 141 18 is_stmt 0 view .LVU37
+ 205 0000 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
+ 141:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   switch (message->event) {
+ARM GAS  /tmp/cc1wEvIX.s 			page 8
 
 
- 143:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
- 203              		.loc 1 143 7 is_stmt 0 view .LVU40
- 204 0018 A068     		ldr	r0, [r4, #8]
- 205              	.LVL17:
- 143:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
- 206              		.loc 1 143 7 view .LVU41
- 207 001a FFF7FEFF 		bl	fprintf
- 208              	.LVL18:
- 143:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
- 209              		.loc 1 143 7 is_stmt 1 view .LVU42
- 143:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
- 210              		.loc 1 143 55 view .LVU43
- 144:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return osOK;
- 211              		.loc 1 144 7 view .LVU44
- 148:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }
- 212              		.loc 1 148 1 is_stmt 0 view .LVU45
- 213 001e 0020     		movs	r0, #0
- 214 0020 10BD     		pop	{r4, pc}
+ 206              		.loc 1 141 3 view .LVU38
+ 207 0002 032B     		cmp	r3, #3
+ 208 0004 01D0     		beq	.L17
+ 149:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }
+ 209              		.loc 1 149 1 view .LVU39
+ 210 0006 0020     		movs	r0, #0
+ 211              	.LVL16:
+ 149:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }
+ 212              		.loc 1 149 1 view .LVU40
+ 213 0008 7047     		bx	lr
+ 214              	.LVL17:
  215              	.L17:
- 216 0022 00BF     		.align	2
- 217              	.L16:
- 218 0024 00000000 		.word	_impure_ptr
- 219 0028 00000000 		.word	.LC0
- 220 002c 24000000 		.word	.LC1
- 221              		.cfi_endproc
- 222              	.LFE144:
- 224              		.section	.rodata.handleInit.str1.4,"aMS",%progbits,1
- 225              		.align	2
- 226              	.LC4:
- 227 0000 53485433 		.ascii	"SHT3x ID: %lu\012\000"
- 227      78204944 
- 227      3A20256C 
- 227      750A00
- 228 000f 00       		.align	2
- 229              	.LC5:
- 230 0010 54656D70 		.ascii	"Temperature & Humidity sensor %ul initialized\012\000"
- 230      65726174 
- 230      75726520 
- 230      26204875 
- 230      6D696469 
- 231              		.section	.text.handleInit,"ax",%progbits
- 232              		.align	1
- 233              		.syntax unified
- 234              		.thumb
- 235              		.thumb_func
- 236              		.fpu fpv4-sp-d16
- 238              	handleInit:
- 239              	.LVL19:
- 240              	.LFB142:
-  91:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleInit(TH_SENS_Actor_t *this, message_t *message) {
- 241              		.loc 1 91 73 is_stmt 1 view -0
- 242              		.cfi_startproc
- 243              		@ args = 0, pretend = 0, frame = 16
- 244              		@ frame_needed = 0, uses_anonymous_args = 0
-  91:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleInit(TH_SENS_Actor_t *this, message_t *message) {
- 245              		.loc 1 91 73 is_stmt 0 view .LVU47
- 246 0000 F0B5     		push	{r4, r5, r6, r7, lr}
-ARM GAS  /tmp/ccukiNbs.s 			page 9
+ 140:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleContinuousMeasure(TH_SENS_Actor_t *this, message_t *message) {
+ 216              		.loc 1 140 86 view .LVU41
+ 217 000a 10B5     		push	{r4, lr}
+ 218              	.LCFI2:
+ 219              		.cfi_def_cfa_offset 8
+ 220              		.cfi_offset 4, -8
+ 221              		.cfi_offset 14, -4
+ 144:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
+ 222              		.loc 1 144 7 is_stmt 1 view .LVU42
+ 144:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
+ 223              		.loc 1 144 7 view .LVU43
+ 224 000c 0374     		strb	r3, [r0, #16]
+ 144:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
+ 225              		.loc 1 144 7 view .LVU44
+ 226 000e 054B     		ldr	r3, .L18
+ 227 0010 1C68     		ldr	r4, [r3]
+ 228 0012 054B     		ldr	r3, .L18+4
+ 229 0014 0268     		ldr	r2, [r0]
+ 230 0016 0549     		ldr	r1, .L18+8
+ 231              	.LVL18:
+ 144:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
+ 232              		.loc 1 144 7 is_stmt 0 view .LVU45
+ 233 0018 A068     		ldr	r0, [r4, #8]
+ 234              	.LVL19:
+ 144:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
+ 235              		.loc 1 144 7 view .LVU46
+ 236 001a FFF7FEFF 		bl	fprintf
+ 237              	.LVL20:
+ 144:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
+ 238              		.loc 1 144 7 is_stmt 1 view .LVU47
+ 144:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
+ 239              		.loc 1 144 55 view .LVU48
+ 145:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return osOK;
+ 240              		.loc 1 145 7 view .LVU49
+ 149:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }
+ 241              		.loc 1 149 1 is_stmt 0 view .LVU50
+ 242 001e 0020     		movs	r0, #0
+ 243 0020 10BD     		pop	{r4, pc}
+ 244              	.L19:
+ 245 0022 00BF     		.align	2
+ 246              	.L18:
+ 247 0024 00000000 		.word	_impure_ptr
+ 248 0028 00000000 		.word	.LC0
+ 249 002c 24000000 		.word	.LC1
+ 250              		.cfi_endproc
+ARM GAS  /tmp/cc1wEvIX.s 			page 9
 
 
- 247              	.LCFI2:
- 248              		.cfi_def_cfa_offset 20
- 249              		.cfi_offset 4, -20
- 250              		.cfi_offset 5, -16
- 251              		.cfi_offset 6, -12
- 252              		.cfi_offset 7, -8
- 253              		.cfi_offset 14, -4
- 254 0002 85B0     		sub	sp, sp, #20
- 255              	.LCFI3:
- 256              		.cfi_def_cfa_offset 40
-  92:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   if (GLOBAL_CMD_INITIALIZE == message->event) {
- 257              		.loc 1 92 3 is_stmt 1 view .LVU48
-  92:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   if (GLOBAL_CMD_INITIALIZE == message->event) {
- 258              		.loc 1 92 39 is_stmt 0 view .LVU49
- 259 0004 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
-  92:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   if (GLOBAL_CMD_INITIALIZE == message->event) {
- 260              		.loc 1 92 6 view .LVU50
- 261 0006 012B     		cmp	r3, #1
- 262 0008 03D0     		beq	.L23
- 120:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   return osOK;
- 263              		.loc 1 120 10 view .LVU51
- 264 000a 0024     		movs	r4, #0
- 265              	.LVL20:
- 266              	.L18:
- 121:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }
- 267              		.loc 1 121 1 view .LVU52
- 268 000c 2046     		mov	r0, r4
- 269 000e 05B0     		add	sp, sp, #20
- 270              	.LCFI4:
- 271              		.cfi_remember_state
- 272              		.cfi_def_cfa_offset 20
- 273              		@ sp needed
- 274 0010 F0BD     		pop	{r4, r5, r6, r7, pc}
- 275              	.LVL21:
- 276              	.L23:
- 277              	.LCFI5:
- 278              		.cfi_restore_state
- 121:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }
- 279              		.loc 1 121 1 view .LVU53
- 280 0012 0546     		mov	r5, r0
- 281              	.LBB2:
-  93:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     BSP_I2C1_Init(); // TODO think about proper place to init I2C
- 282              		.loc 1 93 5 is_stmt 1 view .LVU54
- 283 0014 FFF7FEFF 		bl	BSP_I2C1_Init
- 284              	.LVL22:
-  96:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osStatus_t ioStatus = SHT3x_InitIO(TH_SENS_I2C_ADDRESS, BSP_I2C1_WriteReg16, BSP_I2C1_ReadReg16
- 285              		.loc 1 96 5 view .LVU55
-  96:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osStatus_t ioStatus = SHT3x_InitIO(TH_SENS_I2C_ADDRESS, BSP_I2C1_WriteReg16, BSP_I2C1_ReadReg16
- 286              		.loc 1 96 27 is_stmt 0 view .LVU56
- 287 0018 0023     		movs	r3, #0
- 288 001a 234A     		ldr	r2, .L24
- 289 001c 2349     		ldr	r1, .L24+4
- 290 001e 8820     		movs	r0, #136
- 291 0020 FFF7FEFF 		bl	SHT3x_InitIO
- 292              	.LVL23:
+ 251              	.LFE144:
+ 253              		.section	.rodata.handleInit.str1.4,"aMS",%progbits,1
+ 254              		.align	2
+ 255              	.LC4:
+ 256 0000 53485433 		.ascii	"SHT3x ID: %lu\012\000"
+ 256      78204944 
+ 256      3A20256C 
+ 256      750A00
+ 257 000f 00       		.align	2
+ 258              	.LC5:
+ 259 0010 54656D70 		.ascii	"Temperature & Humidity sensor %ul initialized\012\000"
+ 259      65726174 
+ 259      75726520 
+ 259      26204875 
+ 259      6D696469 
+ 260              		.section	.text.handleInit,"ax",%progbits
+ 261              		.align	1
+ 262              		.syntax unified
+ 263              		.thumb
+ 264              		.thumb_func
+ 265              		.fpu fpv4-sp-d16
+ 267              	handleInit:
+ 268              	.LVL21:
+ 269              	.LFB142:
+  93:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleInit(TH_SENS_Actor_t *this, message_t *message) {
+ 270              		.loc 1 93 73 is_stmt 1 view -0
+ 271              		.cfi_startproc
+ 272              		@ args = 0, pretend = 0, frame = 16
+ 273              		@ frame_needed = 0, uses_anonymous_args = 0
+  93:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleInit(TH_SENS_Actor_t *this, message_t *message) {
+ 274              		.loc 1 93 73 is_stmt 0 view .LVU52
+ 275 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 276              	.LCFI3:
+ 277              		.cfi_def_cfa_offset 20
+ 278              		.cfi_offset 4, -20
+ 279              		.cfi_offset 5, -16
+ 280              		.cfi_offset 6, -12
+ 281              		.cfi_offset 7, -8
+ 282              		.cfi_offset 14, -4
+ 283 0002 87B0     		sub	sp, sp, #28
+ 284              	.LCFI4:
+ 285              		.cfi_def_cfa_offset 48
+  94:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   if (GLOBAL_CMD_INITIALIZE == message->event) {
+ 286              		.loc 1 94 3 is_stmt 1 view .LVU53
+  94:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   if (GLOBAL_CMD_INITIALIZE == message->event) {
+ 287              		.loc 1 94 39 is_stmt 0 view .LVU54
+ 288 0004 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
+  94:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   if (GLOBAL_CMD_INITIALIZE == message->event) {
+ 289              		.loc 1 94 6 view .LVU55
+ 290 0006 012B     		cmp	r3, #1
+ 291 0008 03D0     		beq	.L25
+ 121:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   return osOK;
+ 292              		.loc 1 121 10 view .LVU56
+ 293 000a 0024     		movs	r4, #0
+ 294              	.LVL22:
+ 295              	.L20:
+ 122:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }
+ARM GAS  /tmp/cc1wEvIX.s 			page 10
+
+
+ 296              		.loc 1 122 1 view .LVU57
+ 297 000c 2046     		mov	r0, r4
+ 298 000e 07B0     		add	sp, sp, #28
+ 299              	.LCFI5:
+ 300              		.cfi_remember_state
+ 301              		.cfi_def_cfa_offset 20
+ 302              		@ sp needed
+ 303 0010 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 304              	.LVL23:
+ 305              	.L25:
+ 306              	.LCFI6:
+ 307              		.cfi_restore_state
+ 122:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }
+ 308              		.loc 1 122 1 view .LVU58
+ 309 0012 0546     		mov	r5, r0
+ 310              	.LBB2:
+  96:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osStatus_t ioStatus = SHT3x_InitIO(TH_SENS_I2C_ADDRESS, BSP_I2C1_Send, BSP_I2C1_Recv, delayMs, 
+ 311              		.loc 1 96 5 is_stmt 1 view .LVU59
+  96:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osStatus_t ioStatus = SHT3x_InitIO(TH_SENS_I2C_ADDRESS, BSP_I2C1_Send, BSP_I2C1_Recv, delayMs, 
+ 312              		.loc 1 96 27 is_stmt 0 view .LVU60
+ 313 0014 0023     		movs	r3, #0
+ 314 0016 0093     		str	r3, [sp]
+ 315 0018 244B     		ldr	r3, .L26
+ 316 001a 254A     		ldr	r2, .L26+4
+ 317 001c 2549     		ldr	r1, .L26+8
+ 318              	.LVL24:
+  96:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osStatus_t ioStatus = SHT3x_InitIO(TH_SENS_I2C_ADDRESS, BSP_I2C1_Send, BSP_I2C1_Recv, delayMs, 
+ 319              		.loc 1 96 27 view .LVU61
+ 320 001e 8820     		movs	r0, #136
+ 321              	.LVL25:
+  96:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osStatus_t ioStatus = SHT3x_InitIO(TH_SENS_I2C_ADDRESS, BSP_I2C1_Send, BSP_I2C1_Recv, delayMs, 
+ 322              		.loc 1 96 27 view .LVU62
+ 323 0020 FFF7FEFF 		bl	SHT3x_InitIO
+ 324              	.LVL26:
   98:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     if (ioStatus != osOK) return osError;
- 293              		.loc 1 98 5 is_stmt 1 view .LVU57
-ARM GAS  /tmp/ccukiNbs.s 			page 10
-
-
+ 325              		.loc 1 98 5 is_stmt 1 view .LVU63
   98:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     if (ioStatus != osOK) return osError;
- 294              		.loc 1 98 8 is_stmt 0 view .LVU58
- 295 0024 0028     		cmp	r0, #0
- 296 0026 3BD1     		bne	.L20
+ 326              		.loc 1 98 8 is_stmt 0 view .LVU64
+ 327 0024 0028     		cmp	r0, #0
+ 328 0026 3ED1     		bne	.L22
  101:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     HAL_GPIO_WritePin(_TEMP_RESET_GPIO_Port, _TEMP_RESET_Pin, GPIO_PIN_RESET);
- 297              		.loc 1 101 5 is_stmt 1 view .LVU59
- 298 0028 214C     		ldr	r4, .L24+8
- 299 002a 0022     		movs	r2, #0
- 300 002c 1021     		movs	r1, #16
- 301 002e 2046     		mov	r0, r4
- 302              	.LVL24:
+ 329              		.loc 1 101 5 is_stmt 1 view .LVU65
+ 330 0028 234C     		ldr	r4, .L26+12
+ 331 002a 0022     		movs	r2, #0
+ 332 002c 1021     		movs	r1, #16
+ 333 002e 2046     		mov	r0, r4
+ 334              	.LVL27:
  101:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     HAL_GPIO_WritePin(_TEMP_RESET_GPIO_Port, _TEMP_RESET_Pin, GPIO_PIN_RESET);
- 303              		.loc 1 101 5 is_stmt 0 view .LVU60
- 304 0030 FFF7FEFF 		bl	HAL_GPIO_WritePin
- 305              	.LVL25:
+ 335              		.loc 1 101 5 is_stmt 0 view .LVU66
+ 336 0030 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 337              	.LVL28:
  102:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osDelay(1);
- 306              		.loc 1 102 5 is_stmt 1 view .LVU61
- 307 0034 0120     		movs	r0, #1
- 308 0036 FFF7FEFF 		bl	osDelay
- 309              	.LVL26:
+ 338              		.loc 1 102 5 is_stmt 1 view .LVU67
+ 339 0034 0120     		movs	r0, #1
+ 340 0036 FFF7FEFF 		bl	osDelay
+ 341              	.LVL29:
  103:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     HAL_GPIO_WritePin(_TEMP_RESET_GPIO_Port, _TEMP_RESET_Pin, GPIO_PIN_SET);
- 310              		.loc 1 103 5 view .LVU62
- 311 003a 0122     		movs	r2, #1
- 312 003c 1021     		movs	r1, #16
- 313 003e 2046     		mov	r0, r4
- 314 0040 FFF7FEFF 		bl	HAL_GPIO_WritePin
- 315              	.LVL27:
- 106:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     uint32_t sht3xId = 0x00000000;
- 316              		.loc 1 106 5 view .LVU63
- 106:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     uint32_t sht3xId = 0x00000000;
- 317              		.loc 1 106 14 is_stmt 0 view .LVU64
- 318 0044 0023     		movs	r3, #0
- 319 0046 0093     		str	r3, [sp]
- 107:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     ioStatus = SHT3x_ReadDeviceID(&sht3xId);
- 320              		.loc 1 107 5 is_stmt 1 view .LVU65
- 107:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     ioStatus = SHT3x_ReadDeviceID(&sht3xId);
- 321              		.loc 1 107 16 is_stmt 0 view .LVU66
- 322 0048 6846     		mov	r0, sp
- 323 004a FFF7FEFF 		bl	SHT3x_ReadDeviceID
- 324              	.LVL28:
- 109:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     if (ioStatus != osOK) return osError;
- 325              		.loc 1 109 5 is_stmt 1 view .LVU67
- 109:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     if (ioStatus != osOK) return osError;
- 326              		.loc 1 109 8 is_stmt 0 view .LVU68
- 327 004e 0446     		mov	r4, r0
- 328 0050 30BB     		cbnz	r0, .L20
- 110:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     fprintf(stdout, "SHT3x ID: %lu\n", sht3xId);
- 329              		.loc 1 110 5 is_stmt 1 view .LVU69
- 110:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     fprintf(stdout, "SHT3x ID: %lu\n", sht3xId);
- 330              		.loc 1 110 13 is_stmt 0 view .LVU70
- 331 0052 184E     		ldr	r6, .L24+12
- 332 0054 3368     		ldr	r3, [r6]
- 110:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     fprintf(stdout, "SHT3x ID: %lu\n", sht3xId);
- 333              		.loc 1 110 5 view .LVU71
- 334 0056 009A     		ldr	r2, [sp]
- 335 0058 1749     		ldr	r1, .L24+16
- 336 005a 9868     		ldr	r0, [r3, #8]
-ARM GAS  /tmp/ccukiNbs.s 			page 11
+ARM GAS  /tmp/cc1wEvIX.s 			page 11
 
 
- 337              	.LVL29:
- 110:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     fprintf(stdout, "SHT3x ID: %lu\n", sht3xId);
- 338              		.loc 1 110 5 view .LVU72
- 339 005c FFF7FEFF 		bl	fprintf
- 340              	.LVL30:
- 113:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
- 341              		.loc 1 113 5 is_stmt 1 view .LVU73
- 113:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
- 342              		.loc 1 113 67 is_stmt 0 view .LVU74
- 343 0060 164B     		ldr	r3, .L24+20
- 344 0062 5B68     		ldr	r3, [r3, #4]
- 113:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
- 345              		.loc 1 113 24 view .LVU75
- 346 0064 9868     		ldr	r0, [r3, #8]
- 347              	.LVL31:
- 114:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_INITIALIZE_SUCCESS, .payload.value = TEMP
- 348              		.loc 1 114 5 is_stmt 1 view .LVU76
- 114:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_INITIALIZE_SUCCESS, .payload.value = TEMP
- 349              		.loc 1 114 51 is_stmt 0 view .LVU77
- 350 0066 0022     		movs	r2, #0
- 351 0068 0192     		str	r2, [sp, #4]
- 352 006a 0292     		str	r2, [sp, #8]
- 353 006c 0392     		str	r2, [sp, #12]
- 354 006e 0223     		movs	r3, #2
- 355 0070 8DF80430 		strb	r3, [sp, #4]
- 356 0074 0627     		movs	r7, #6
- 357 0076 0297     		str	r7, [sp, #8]
- 114:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_INITIALIZE_SUCCESS, .payload.value = TEMP
- 358              		.loc 1 114 5 view .LVU78
- 359 0078 1346     		mov	r3, r2
- 360 007a 01A9     		add	r1, sp, #4
- 361 007c FFF7FEFF 		bl	osMessageQueuePut
- 362              	.LVL32:
- 116:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     fprintf(stdout, "Temperature & Humidity sensor %ul initialized\n", TEMPERATURE_HUMIDITY_SENSOR_
- 363              		.loc 1 116 5 is_stmt 1 view .LVU79
- 116:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     fprintf(stdout, "Temperature & Humidity sensor %ul initialized\n", TEMPERATURE_HUMIDITY_SENSOR_
- 364              		.loc 1 116 13 is_stmt 0 view .LVU80
- 365 0080 3368     		ldr	r3, [r6]
- 116:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     fprintf(stdout, "Temperature & Humidity sensor %ul initialized\n", TEMPERATURE_HUMIDITY_SENSOR_
- 366              		.loc 1 116 5 view .LVU81
- 367 0082 3A46     		mov	r2, r7
- 368 0084 0E49     		ldr	r1, .L24+24
- 369 0086 9868     		ldr	r0, [r3, #8]
- 370 0088 FFF7FEFF 		bl	fprintf
- 371              	.LVL33:
- 117:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     TO_STATE(this, TH_SENS_IDLE_STATE);
- 372              		.loc 1 117 5 is_stmt 1 view .LVU82
- 117:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     TO_STATE(this, TH_SENS_IDLE_STATE);
- 373              		.loc 1 117 5 view .LVU83
- 374 008c 0123     		movs	r3, #1
- 375 008e 2B74     		strb	r3, [r5, #16]
- 117:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     TO_STATE(this, TH_SENS_IDLE_STATE);
- 376              		.loc 1 117 5 view .LVU84
- 377 0090 3068     		ldr	r0, [r6]
- 378 0092 0C4B     		ldr	r3, .L24+28
- 379 0094 2A68     		ldr	r2, [r5]
- 380 0096 0C49     		ldr	r1, .L24+32
-ARM GAS  /tmp/ccukiNbs.s 			page 12
+ 342              		.loc 1 103 5 view .LVU68
+ 343 003a 0122     		movs	r2, #1
+ 344 003c 1021     		movs	r1, #16
+ 345 003e 2046     		mov	r0, r4
+ 346 0040 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 347              	.LVL30:
+ 104:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osDelay(1);
+ 348              		.loc 1 104 5 view .LVU69
+ 349 0044 0120     		movs	r0, #1
+ 350 0046 FFF7FEFF 		bl	osDelay
+ 351              	.LVL31:
+ 107:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     uint32_t sht3xId = 0x00000000;
+ 352              		.loc 1 107 5 view .LVU70
+ 107:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     uint32_t sht3xId = 0x00000000;
+ 353              		.loc 1 107 14 is_stmt 0 view .LVU71
+ 354 004a 0023     		movs	r3, #0
+ 355 004c 0293     		str	r3, [sp, #8]
+ 108:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     ioStatus = SHT3x_ReadDeviceID(&sht3xId);
+ 356              		.loc 1 108 5 is_stmt 1 view .LVU72
+ 108:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     ioStatus = SHT3x_ReadDeviceID(&sht3xId);
+ 357              		.loc 1 108 16 is_stmt 0 view .LVU73
+ 358 004e 02A8     		add	r0, sp, #8
+ 359 0050 FFF7FEFF 		bl	SHT3x_ReadDeviceID
+ 360              	.LVL32:
+ 110:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     if (ioStatus != osOK) return osError;
+ 361              		.loc 1 110 5 is_stmt 1 view .LVU74
+ 110:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     if (ioStatus != osOK) return osError;
+ 362              		.loc 1 110 8 is_stmt 0 view .LVU75
+ 363 0054 0446     		mov	r4, r0
+ 364 0056 30BB     		cbnz	r0, .L22
+ 111:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     fprintf(stdout, "SHT3x ID: %lu\n", sht3xId);
+ 365              		.loc 1 111 5 is_stmt 1 view .LVU76
+ 111:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     fprintf(stdout, "SHT3x ID: %lu\n", sht3xId);
+ 366              		.loc 1 111 13 is_stmt 0 view .LVU77
+ 367 0058 184E     		ldr	r6, .L26+16
+ 368 005a 3368     		ldr	r3, [r6]
+ 111:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     fprintf(stdout, "SHT3x ID: %lu\n", sht3xId);
+ 369              		.loc 1 111 5 view .LVU78
+ 370 005c 029A     		ldr	r2, [sp, #8]
+ 371 005e 1849     		ldr	r1, .L26+20
+ 372 0060 9868     		ldr	r0, [r3, #8]
+ 373              	.LVL33:
+ 111:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     fprintf(stdout, "SHT3x ID: %lu\n", sht3xId);
+ 374              		.loc 1 111 5 view .LVU79
+ 375 0062 FFF7FEFF 		bl	fprintf
+ 376              	.LVL34:
+ 114:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
+ 377              		.loc 1 114 5 is_stmt 1 view .LVU80
+ 114:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
+ 378              		.loc 1 114 67 is_stmt 0 view .LVU81
+ 379 0066 174B     		ldr	r3, .L26+24
+ 380 0068 5B68     		ldr	r3, [r3, #4]
+ 114:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
+ 381              		.loc 1 114 24 view .LVU82
+ 382 006a 9868     		ldr	r0, [r3, #8]
+ 383              	.LVL35:
+ 115:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_INITIALIZE_SUCCESS, .payload.value = TEMP
+ARM GAS  /tmp/cc1wEvIX.s 			page 12
 
 
- 381 0098 8068     		ldr	r0, [r0, #8]
- 382 009a FFF7FEFF 		bl	fprintf
- 383              	.LVL34:
- 117:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     TO_STATE(this, TH_SENS_IDLE_STATE);
- 384              		.loc 1 117 5 view .LVU85
- 117:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     TO_STATE(this, TH_SENS_IDLE_STATE);
- 385              		.loc 1 117 39 view .LVU86
- 386 009e B5E7     		b	.L18
- 387              	.LVL35:
- 388              	.L20:
+ 384              		.loc 1 115 5 is_stmt 1 view .LVU83
+ 115:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_INITIALIZE_SUCCESS, .payload.value = TEMP
+ 385              		.loc 1 115 51 is_stmt 0 view .LVU84
+ 386 006c 0022     		movs	r2, #0
+ 387 006e 0392     		str	r2, [sp, #12]
+ 388 0070 0492     		str	r2, [sp, #16]
+ 389 0072 0592     		str	r2, [sp, #20]
+ 390 0074 0223     		movs	r3, #2
+ 391 0076 8DF80C30 		strb	r3, [sp, #12]
+ 392 007a 0627     		movs	r7, #6
+ 393 007c 0497     		str	r7, [sp, #16]
+ 115:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_INITIALIZE_SUCCESS, .payload.value = TEMP
+ 394              		.loc 1 115 5 view .LVU85
+ 395 007e 1346     		mov	r3, r2
+ 396 0080 03A9     		add	r1, sp, #12
+ 397 0082 FFF7FEFF 		bl	osMessageQueuePut
+ 398              	.LVL36:
+ 117:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     fprintf(stdout, "Temperature & Humidity sensor %ul initialized\n", TEMPERATURE_HUMIDITY_SENSOR_
+ 399              		.loc 1 117 5 is_stmt 1 view .LVU86
+ 117:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     fprintf(stdout, "Temperature & Humidity sensor %ul initialized\n", TEMPERATURE_HUMIDITY_SENSOR_
+ 400              		.loc 1 117 13 is_stmt 0 view .LVU87
+ 401 0086 3368     		ldr	r3, [r6]
+ 117:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     fprintf(stdout, "Temperature & Humidity sensor %ul initialized\n", TEMPERATURE_HUMIDITY_SENSOR_
+ 402              		.loc 1 117 5 view .LVU88
+ 403 0088 3A46     		mov	r2, r7
+ 404 008a 0F49     		ldr	r1, .L26+28
+ 405 008c 9868     		ldr	r0, [r3, #8]
+ 406 008e FFF7FEFF 		bl	fprintf
+ 407              	.LVL37:
+ 118:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     TO_STATE(this, TH_SENS_IDLE_STATE);
+ 408              		.loc 1 118 5 is_stmt 1 view .LVU89
+ 118:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     TO_STATE(this, TH_SENS_IDLE_STATE);
+ 409              		.loc 1 118 5 view .LVU90
+ 410 0092 0123     		movs	r3, #1
+ 411 0094 2B74     		strb	r3, [r5, #16]
+ 118:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     TO_STATE(this, TH_SENS_IDLE_STATE);
+ 412              		.loc 1 118 5 view .LVU91
+ 413 0096 3068     		ldr	r0, [r6]
+ 414 0098 0C4B     		ldr	r3, .L26+32
+ 415 009a 2A68     		ldr	r2, [r5]
+ 416 009c 0C49     		ldr	r1, .L26+36
+ 417 009e 8068     		ldr	r0, [r0, #8]
+ 418 00a0 FFF7FEFF 		bl	fprintf
+ 419              	.LVL38:
+ 118:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     TO_STATE(this, TH_SENS_IDLE_STATE);
+ 420              		.loc 1 118 5 view .LVU92
+ 118:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     TO_STATE(this, TH_SENS_IDLE_STATE);
+ 421              		.loc 1 118 39 view .LVU93
+ 422 00a4 B2E7     		b	.L20
+ 423              	.LVL39:
+ 424              	.L22:
   98:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     if (ioStatus != osOK) return osError;
- 389              		.loc 1 98 34 is_stmt 0 discriminator 2 view .LVU87
- 390 00a0 4FF0FF34 		mov	r4, #-1
- 391 00a4 B2E7     		b	.L18
- 392              	.L25:
- 393 00a6 00BF     		.align	2
- 394              	.L24:
- 395 00a8 00000000 		.word	BSP_I2C1_ReadReg16
- 396 00ac 00000000 		.word	BSP_I2C1_WriteReg16
- 397 00b0 00040048 		.word	1207960576
- 398 00b4 00000000 		.word	_impure_ptr
- 399 00b8 00000000 		.word	.LC4
- 400 00bc 00000000 		.word	ACTORS_LIST_SystemRegistry
- 401 00c0 10000000 		.word	.LC5
- 402 00c4 54000000 		.word	.LC3
- 403 00c8 24000000 		.word	.LC1
- 404              	.LBE2:
- 405              		.cfi_endproc
- 406              	.LFE142:
- 408              		.section	.text.handleTHSensorFSM,"ax",%progbits
- 409              		.align	1
- 410              		.syntax unified
- 411              		.thumb
- 412              		.thumb_func
- 413              		.fpu fpv4-sp-d16
- 415              	handleTHSensorFSM:
- 416              	.LVL36:
- 417              	.LFB141:
-  75:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleTHSensorFSM(TH_SENS_Actor_t *this, message_t *message) {
- 418              		.loc 1 75 80 is_stmt 1 view -0
- 419              		.cfi_startproc
- 420              		@ args = 0, pretend = 0, frame = 0
- 421              		@ frame_needed = 0, uses_anonymous_args = 0
-  75:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleTHSensorFSM(TH_SENS_Actor_t *this, message_t *message) {
- 422              		.loc 1 75 80 is_stmt 0 view .LVU89
- 423 0000 08B5     		push	{r3, lr}
- 424              	.LCFI6:
- 425              		.cfi_def_cfa_offset 8
- 426              		.cfi_offset 3, -8
- 427              		.cfi_offset 14, -4
-  76:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   switch (this->state) {
- 428              		.loc 1 76 3 is_stmt 1 view .LVU90
-  76:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   switch (this->state) {
- 429              		.loc 1 76 15 is_stmt 0 view .LVU91
- 430 0002 037C     		ldrb	r3, [r0, #16]	@ zero_extendqisi2
-  76:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   switch (this->state) {
- 431              		.loc 1 76 3 view .LVU92
-ARM GAS  /tmp/ccukiNbs.s 			page 13
+ 425              		.loc 1 98 34 is_stmt 0 discriminator 2 view .LVU94
+ 426 00a6 4FF0FF34 		mov	r4, #-1
+ 427 00aa AFE7     		b	.L20
+ 428              	.L27:
+ 429              		.align	2
+ARM GAS  /tmp/cc1wEvIX.s 			page 13
 
 
- 432 0004 042B     		cmp	r3, #4
- 433 0006 10D8     		bhi	.L33
- 434 0008 DFE803F0 		tbb	[pc, r3]
- 435              	.L29:
- 436 000c 03       		.byte	(.L32-.L29)/2
- 437 000d 06       		.byte	(.L31-.L29)/2
- 438 000e 0F       		.byte	(.L33-.L29)/2
- 439 000f 09       		.byte	(.L30-.L29)/2
- 440 0010 0C       		.byte	(.L28-.L29)/2
- 441 0011 00       		.p2align 1
- 442              	.L32:
-  78:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleInit(this, message);
- 443              		.loc 1 78 7 is_stmt 1 view .LVU93
-  78:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleInit(this, message);
- 444              		.loc 1 78 14 is_stmt 0 view .LVU94
- 445 0012 FFF7FEFF 		bl	handleInit
- 446              	.LVL37:
- 447              	.L26:
-  89:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }
- 448              		.loc 1 89 1 view .LVU95
- 449 0016 08BD     		pop	{r3, pc}
- 450              	.LVL38:
- 451              	.L31:
-  80:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleIdle(this, message);
- 452              		.loc 1 80 7 is_stmt 1 view .LVU96
-  80:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleIdle(this, message);
- 453              		.loc 1 80 14 is_stmt 0 view .LVU97
- 454 0018 FFF7FEFF 		bl	handleIdle
- 455              	.LVL39:
-  80:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleIdle(this, message);
- 456              		.loc 1 80 14 view .LVU98
- 457 001c FBE7     		b	.L26
- 458              	.LVL40:
- 459              	.L30:
-  82:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleContinuousMeasure(this, message);
- 460              		.loc 1 82 7 is_stmt 1 view .LVU99
-  82:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleContinuousMeasure(this, message);
- 461              		.loc 1 82 14 is_stmt 0 view .LVU100
- 462 001e FFF7FEFF 		bl	handleContinuousMeasure
- 463              	.LVL41:
-  82:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleContinuousMeasure(this, message);
- 464              		.loc 1 82 14 view .LVU101
- 465 0022 F8E7     		b	.L26
- 466              	.LVL42:
- 467              	.L28:
-  85:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleError(this, message);
- 468              		.loc 1 85 7 is_stmt 1 view .LVU102
-  85:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleError(this, message);
- 469              		.loc 1 85 14 is_stmt 0 view .LVU103
- 470 0024 FFF7FEFF 		bl	handleError
- 471              	.LVL43:
-  85:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleError(this, message);
- 472              		.loc 1 85 14 view .LVU104
- 473 0028 F5E7     		b	.L26
- 474              	.LVL44:
- 475              	.L33:
-  76:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   switch (this->state) {
-ARM GAS  /tmp/ccukiNbs.s 			page 14
+ 430              	.L26:
+ 431 00ac 00000000 		.word	delayMs
+ 432 00b0 00000000 		.word	BSP_I2C1_Recv
+ 433 00b4 00000000 		.word	BSP_I2C1_Send
+ 434 00b8 00040048 		.word	1207960576
+ 435 00bc 00000000 		.word	_impure_ptr
+ 436 00c0 00000000 		.word	.LC4
+ 437 00c4 00000000 		.word	ACTORS_LIST_SystemRegistry
+ 438 00c8 10000000 		.word	.LC5
+ 439 00cc 54000000 		.word	.LC3
+ 440 00d0 24000000 		.word	.LC1
+ 441              	.LBE2:
+ 442              		.cfi_endproc
+ 443              	.LFE142:
+ 445              		.section	.text.handleTHSensorFSM,"ax",%progbits
+ 446              		.align	1
+ 447              		.syntax unified
+ 448              		.thumb
+ 449              		.thumb_func
+ 450              		.fpu fpv4-sp-d16
+ 452              	handleTHSensorFSM:
+ 453              	.LVL40:
+ 454              	.LFB141:
+  77:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleTHSensorFSM(TH_SENS_Actor_t *this, message_t *message) {
+ 455              		.loc 1 77 80 is_stmt 1 view -0
+ 456              		.cfi_startproc
+ 457              		@ args = 0, pretend = 0, frame = 0
+ 458              		@ frame_needed = 0, uses_anonymous_args = 0
+  77:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleTHSensorFSM(TH_SENS_Actor_t *this, message_t *message) {
+ 459              		.loc 1 77 80 is_stmt 0 view .LVU96
+ 460 0000 08B5     		push	{r3, lr}
+ 461              	.LCFI7:
+ 462              		.cfi_def_cfa_offset 8
+ 463              		.cfi_offset 3, -8
+ 464              		.cfi_offset 14, -4
+  78:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   switch (this->state) {
+ 465              		.loc 1 78 3 is_stmt 1 view .LVU97
+  78:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   switch (this->state) {
+ 466              		.loc 1 78 15 is_stmt 0 view .LVU98
+ 467 0002 037C     		ldrb	r3, [r0, #16]	@ zero_extendqisi2
+  78:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   switch (this->state) {
+ 468              		.loc 1 78 3 view .LVU99
+ 469 0004 042B     		cmp	r3, #4
+ 470 0006 10D8     		bhi	.L35
+ 471 0008 DFE803F0 		tbb	[pc, r3]
+ 472              	.L31:
+ 473 000c 03       		.byte	(.L34-.L31)/2
+ 474 000d 06       		.byte	(.L33-.L31)/2
+ 475 000e 0F       		.byte	(.L35-.L31)/2
+ 476 000f 09       		.byte	(.L32-.L31)/2
+ 477 0010 0C       		.byte	(.L30-.L31)/2
+ 478 0011 00       		.p2align 1
+ 479              	.L34:
+  80:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleInit(this, message);
+ 480              		.loc 1 80 7 is_stmt 1 view .LVU100
+  80:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleInit(this, message);
+ 481              		.loc 1 80 14 is_stmt 0 view .LVU101
+ARM GAS  /tmp/cc1wEvIX.s 			page 14
 
 
- 476              		.loc 1 76 3 view .LVU105
- 477 002a 0020     		movs	r0, #0
- 478              	.LVL45:
-  76:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   switch (this->state) {
- 479              		.loc 1 76 3 view .LVU106
- 480 002c F3E7     		b	.L26
- 481              		.cfi_endproc
- 482              	.LFE141:
- 484              		.section	.rodata.TH_SENS_Task.str1.4,"aMS",%progbits,1
- 485              		.align	2
- 486              	.LC6:
- 487 0000 74685365 		.ascii	"thSensorTask\000"
- 487      6E736F72 
- 487      5461736B 
- 487      00
- 488 000d 000000   		.align	2
- 489              	.LC7:
- 490 0010 5461736B 		.ascii	"Task %s started\012\000"
- 490      20257320 
- 490      73746172 
- 490      7465640A 
- 490      00
- 491 0021 000000   		.align	2
- 492              	.LC8:
- 493 0024 25733A20 		.ascii	"%s: Error handling event %u in state %ul\012\000"
- 493      4572726F 
- 493      72206861 
- 493      6E646C69 
- 493      6E672065 
- 494 004e 0000     		.align	2
- 495              	.LC9:
- 496 0050 54485F53 		.ascii	"TH_SENS_STATE_ERROR\000"
- 496      454E535F 
- 496      53544154 
- 496      455F4552 
- 496      524F5200 
- 497              		.section	.text.TH_SENS_Task,"ax",%progbits
- 498              		.align	1
- 499              		.global	TH_SENS_Task
- 500              		.syntax unified
- 501              		.thumb
- 502              		.thumb_func
- 503              		.fpu fpv4-sp-d16
- 505              	TH_SENS_Task:
- 506              	.LVL46:
- 507              	.LFB140:
-  54:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** void TH_SENS_Task(void *argument) {
- 508              		.loc 1 54 35 is_stmt 1 view -0
- 509              		.cfi_startproc
- 510              		@ args = 0, pretend = 0, frame = 24
- 511              		@ frame_needed = 0, uses_anonymous_args = 0
-  54:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** void TH_SENS_Task(void *argument) {
- 512              		.loc 1 54 35 is_stmt 0 view .LVU108
- 513 0000 30B5     		push	{r4, r5, lr}
- 514              	.LCFI7:
- 515              		.cfi_def_cfa_offset 12
- 516              		.cfi_offset 4, -12
-ARM GAS  /tmp/ccukiNbs.s 			page 15
+ 482 0012 FFF7FEFF 		bl	handleInit
+ 483              	.LVL41:
+ 484              	.L28:
+  91:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }
+ 485              		.loc 1 91 1 view .LVU102
+ 486 0016 08BD     		pop	{r3, pc}
+ 487              	.LVL42:
+ 488              	.L33:
+  82:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleIdle(this, message);
+ 489              		.loc 1 82 7 is_stmt 1 view .LVU103
+  82:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleIdle(this, message);
+ 490              		.loc 1 82 14 is_stmt 0 view .LVU104
+ 491 0018 FFF7FEFF 		bl	handleIdle
+ 492              	.LVL43:
+  82:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleIdle(this, message);
+ 493              		.loc 1 82 14 view .LVU105
+ 494 001c FBE7     		b	.L28
+ 495              	.LVL44:
+ 496              	.L32:
+  84:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleContinuousMeasure(this, message);
+ 497              		.loc 1 84 7 is_stmt 1 view .LVU106
+  84:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleContinuousMeasure(this, message);
+ 498              		.loc 1 84 14 is_stmt 0 view .LVU107
+ 499 001e FFF7FEFF 		bl	handleContinuousMeasure
+ 500              	.LVL45:
+  84:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleContinuousMeasure(this, message);
+ 501              		.loc 1 84 14 view .LVU108
+ 502 0022 F8E7     		b	.L28
+ 503              	.LVL46:
+ 504              	.L30:
+  87:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleError(this, message);
+ 505              		.loc 1 87 7 is_stmt 1 view .LVU109
+  87:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleError(this, message);
+ 506              		.loc 1 87 14 is_stmt 0 view .LVU110
+ 507 0024 FFF7FEFF 		bl	handleError
+ 508              	.LVL47:
+  87:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleError(this, message);
+ 509              		.loc 1 87 14 view .LVU111
+ 510 0028 F5E7     		b	.L28
+ 511              	.LVL48:
+ 512              	.L35:
+  78:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   switch (this->state) {
+ 513              		.loc 1 78 3 view .LVU112
+ 514 002a 0020     		movs	r0, #0
+ 515              	.LVL49:
+  78:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   switch (this->state) {
+ 516              		.loc 1 78 3 view .LVU113
+ 517 002c F3E7     		b	.L28
+ 518              		.cfi_endproc
+ 519              	.LFE141:
+ 521              		.section	.rodata.TH_SENS_Task.str1.4,"aMS",%progbits,1
+ 522              		.align	2
+ 523              	.LC6:
+ 524 0000 74685365 		.ascii	"thSensorTask\000"
+ 524      6E736F72 
+ 524      5461736B 
+ 524      00
+ARM GAS  /tmp/cc1wEvIX.s 			page 15
 
 
- 517              		.cfi_offset 5, -8
- 518              		.cfi_offset 14, -4
- 519 0002 89B0     		sub	sp, sp, #36
- 520              	.LCFI8:
- 521              		.cfi_def_cfa_offset 48
-  55:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   (void) argument; // Avoid unused parameter warning
- 522              		.loc 1 55 3 is_stmt 1 view .LVU109
-  56:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   message_t msg;
- 523              		.loc 1 56 3 view .LVU110
-  58:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   fprintf(stdout, "Task %s started\n", thSensorTaskDescription.name);
- 524              		.loc 1 58 3 view .LVU111
-  58:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   fprintf(stdout, "Task %s started\n", thSensorTaskDescription.name);
- 525              		.loc 1 58 11 is_stmt 0 view .LVU112
- 526 0004 1E4B     		ldr	r3, .L40
- 527 0006 1B68     		ldr	r3, [r3]
-  58:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   fprintf(stdout, "Task %s started\n", thSensorTaskDescription.name);
- 528              		.loc 1 58 3 view .LVU113
- 529 0008 1E4A     		ldr	r2, .L40+4
- 530 000a 1F49     		ldr	r1, .L40+8
- 531 000c 9868     		ldr	r0, [r3, #8]
- 532              	.LVL47:
-  58:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   fprintf(stdout, "Task %s started\n", thSensorTaskDescription.name);
- 533              		.loc 1 58 3 view .LVU114
- 534 000e FFF7FEFF 		bl	fprintf
- 535              	.LVL48:
- 536              	.L36:
-  60:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   for (;;) {
- 537              		.loc 1 60 3 is_stmt 1 view .LVU115
-  62:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     if (osMessageQueueGet(TH_SENS_Actor.super.osMessageQueueId, &msg, NULL, osWaitForever) == osOK)
- 538              		.loc 1 62 5 view .LVU116
-  62:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     if (osMessageQueueGet(TH_SENS_Actor.super.osMessageQueueId, &msg, NULL, osWaitForever) == osOK)
- 539              		.loc 1 62 9 is_stmt 0 view .LVU117
- 540 0012 4FF0FF33 		mov	r3, #-1
- 541 0016 0022     		movs	r2, #0
- 542 0018 02A9     		add	r1, sp, #8
- 543 001a 1C48     		ldr	r0, .L40+12
- 544 001c 8068     		ldr	r0, [r0, #8]
- 545 001e FFF7FEFF 		bl	osMessageQueueGet
- 546              	.LVL49:
-  62:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     if (osMessageQueueGet(TH_SENS_Actor.super.osMessageQueueId, &msg, NULL, osWaitForever) == osOK)
- 547              		.loc 1 62 8 view .LVU118
- 548 0022 0028     		cmp	r0, #0
- 549 0024 F5D1     		bne	.L36
- 550              	.LBB3:
-  63:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       osStatus_t handleMessageStatus = TH_SENS_Actor.super.messageHandler((actor_t *) &TH_SENS_Acto
- 551              		.loc 1 63 7 is_stmt 1 view .LVU119
-  63:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       osStatus_t handleMessageStatus = TH_SENS_Actor.super.messageHandler((actor_t *) &TH_SENS_Acto
- 552              		.loc 1 63 59 is_stmt 0 view .LVU120
- 553 0026 1948     		ldr	r0, .L40+12
- 554 0028 C368     		ldr	r3, [r0, #12]
-  63:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       osStatus_t handleMessageStatus = TH_SENS_Actor.super.messageHandler((actor_t *) &TH_SENS_Acto
- 555              		.loc 1 63 40 view .LVU121
- 556 002a 02A9     		add	r1, sp, #8
- 557 002c 9847     		blx	r3
- 558              	.LVL50:
-  65:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       if (handleMessageStatus != osOK) {
- 559              		.loc 1 65 7 is_stmt 1 view .LVU122
-ARM GAS  /tmp/ccukiNbs.s 			page 16
+ 525 000d 000000   		.align	2
+ 526              	.LC7:
+ 527 0010 5461736B 		.ascii	"Task %s started\012\000"
+ 527      20257320 
+ 527      73746172 
+ 527      7465640A 
+ 527      00
+ 528 0021 000000   		.align	2
+ 529              	.LC8:
+ 530 0024 25733A20 		.ascii	"%s: Error handling event %u in state %ul\012\000"
+ 530      4572726F 
+ 530      72206861 
+ 530      6E646C69 
+ 530      6E672065 
+ 531 004e 0000     		.align	2
+ 532              	.LC9:
+ 533 0050 54485F53 		.ascii	"TH_SENS_STATE_ERROR\000"
+ 533      454E535F 
+ 533      53544154 
+ 533      455F4552 
+ 533      524F5200 
+ 534              		.section	.text.TH_SENS_Task,"ax",%progbits
+ 535              		.align	1
+ 536              		.global	TH_SENS_Task
+ 537              		.syntax unified
+ 538              		.thumb
+ 539              		.thumb_func
+ 540              		.fpu fpv4-sp-d16
+ 542              	TH_SENS_Task:
+ 543              	.LVL50:
+ 544              	.LFB140:
+  56:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** void TH_SENS_Task(void *argument) {
+ 545              		.loc 1 56 35 is_stmt 1 view -0
+ 546              		.cfi_startproc
+ 547              		@ args = 0, pretend = 0, frame = 24
+ 548              		@ frame_needed = 0, uses_anonymous_args = 0
+  56:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** void TH_SENS_Task(void *argument) {
+ 549              		.loc 1 56 35 is_stmt 0 view .LVU115
+ 550 0000 30B5     		push	{r4, r5, lr}
+ 551              	.LCFI8:
+ 552              		.cfi_def_cfa_offset 12
+ 553              		.cfi_offset 4, -12
+ 554              		.cfi_offset 5, -8
+ 555              		.cfi_offset 14, -4
+ 556 0002 89B0     		sub	sp, sp, #36
+ 557              	.LCFI9:
+ 558              		.cfi_def_cfa_offset 48
+  57:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   (void) argument; // Avoid unused parameter warning
+ 559              		.loc 1 57 3 is_stmt 1 view .LVU116
+  58:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   message_t msg;
+ 560              		.loc 1 58 3 view .LVU117
+  60:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   fprintf(stdout, "Task %s started\n", thSensorTaskDescription.name);
+ 561              		.loc 1 60 3 view .LVU118
+  60:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   fprintf(stdout, "Task %s started\n", thSensorTaskDescription.name);
+ 562              		.loc 1 60 11 is_stmt 0 view .LVU119
+ 563 0004 1E4B     		ldr	r3, .L42
+ 564 0006 1B68     		ldr	r3, [r3]
+ARM GAS  /tmp/cc1wEvIX.s 			page 16
 
 
-  65:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       if (handleMessageStatus != osOK) {
- 560              		.loc 1 65 10 is_stmt 0 view .LVU123
- 561 002e 0028     		cmp	r0, #0
- 562 0030 EFD0     		beq	.L36
- 563              	.LBB4:
-  66:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         fprintf(stderr, "%s: Error handling event %u in state %ul\n", thSensorTaskDescription.name,
- 564              		.loc 1 66 9 is_stmt 1 view .LVU124
-  66:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         fprintf(stderr, "%s: Error handling event %u in state %ul\n", thSensorTaskDescription.name,
- 565              		.loc 1 66 17 is_stmt 0 view .LVU125
- 566 0032 134D     		ldr	r5, .L40
- 567 0034 2B68     		ldr	r3, [r5]
- 568 0036 D868     		ldr	r0, [r3, #12]
+  60:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   fprintf(stdout, "Task %s started\n", thSensorTaskDescription.name);
+ 565              		.loc 1 60 3 view .LVU120
+ 566 0008 1E4A     		ldr	r2, .L42+4
+ 567 000a 1F49     		ldr	r1, .L42+8
+ 568 000c 9868     		ldr	r0, [r3, #8]
  569              	.LVL51:
-  66:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         fprintf(stderr, "%s: Error handling event %u in state %ul\n", thSensorTaskDescription.name,
- 570              		.loc 1 66 125 view .LVU126
- 571 0038 144C     		ldr	r4, .L40+12
- 572 003a 237C     		ldrb	r3, [r4, #16]	@ zero_extendqisi2
-  66:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         fprintf(stderr, "%s: Error handling event %u in state %ul\n", thSensorTaskDescription.name,
- 573              		.loc 1 66 9 view .LVU127
- 574 003c 0093     		str	r3, [sp]
- 575 003e 9DF80830 		ldrb	r3, [sp, #8]	@ zero_extendqisi2
- 576 0042 104A     		ldr	r2, .L40+4
- 577 0044 1249     		ldr	r1, .L40+16
- 578 0046 FFF7FEFF 		bl	fprintf
- 579              	.LVL52:
-  67:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMess
- 580              		.loc 1 67 9 is_stmt 1 view .LVU128
-  67:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMess
- 581              		.loc 1 67 71 is_stmt 0 view .LVU129
- 582 004a 124B     		ldr	r3, .L40+20
- 583 004c 5B68     		ldr	r3, [r3, #4]
-  67:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMess
- 584              		.loc 1 67 28 view .LVU130
- 585 004e 9868     		ldr	r0, [r3, #8]
- 586              	.LVL53:
-  68:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = TEMPERATURE_H
- 587              		.loc 1 68 9 is_stmt 1 view .LVU131
-  68:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = TEMPERATURE_H
- 588              		.loc 1 68 55 is_stmt 0 view .LVU132
- 589 0050 0022     		movs	r2, #0
- 590 0052 0592     		str	r2, [sp, #20]
- 591 0054 0692     		str	r2, [sp, #24]
- 592 0056 0792     		str	r2, [sp, #28]
- 593 0058 0C23     		movs	r3, #12
- 594 005a 8DF81430 		strb	r3, [sp, #20]
- 595 005e 0623     		movs	r3, #6
- 596 0060 0693     		str	r3, [sp, #24]
-  68:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = TEMPERATURE_H
- 597              		.loc 1 68 9 view .LVU133
- 598 0062 1346     		mov	r3, r2
- 599 0064 05A9     		add	r1, sp, #20
- 600 0066 FFF7FEFF 		bl	osMessageQueuePut
- 601              	.LVL54:
-  69:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         TO_STATE(&TH_SENS_Actor, TH_SENS_STATE_ERROR);
- 602              		.loc 1 69 9 is_stmt 1 view .LVU134
-  69:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         TO_STATE(&TH_SENS_Actor, TH_SENS_STATE_ERROR);
- 603              		.loc 1 69 9 view .LVU135
-ARM GAS  /tmp/ccukiNbs.s 			page 17
+  60:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   fprintf(stdout, "Task %s started\n", thSensorTaskDescription.name);
+ 570              		.loc 1 60 3 view .LVU121
+ 571 000e FFF7FEFF 		bl	fprintf
+ 572              	.LVL52:
+ 573              	.L38:
+  62:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   for (;;) {
+ 574              		.loc 1 62 3 is_stmt 1 view .LVU122
+  64:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     if (osMessageQueueGet(TH_SENS_Actor.super.osMessageQueueId, &msg, NULL, osWaitForever) == osOK)
+ 575              		.loc 1 64 5 view .LVU123
+  64:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     if (osMessageQueueGet(TH_SENS_Actor.super.osMessageQueueId, &msg, NULL, osWaitForever) == osOK)
+ 576              		.loc 1 64 9 is_stmt 0 view .LVU124
+ 577 0012 4FF0FF33 		mov	r3, #-1
+ 578 0016 0022     		movs	r2, #0
+ 579 0018 02A9     		add	r1, sp, #8
+ 580 001a 1C48     		ldr	r0, .L42+12
+ 581 001c 8068     		ldr	r0, [r0, #8]
+ 582 001e FFF7FEFF 		bl	osMessageQueueGet
+ 583              	.LVL53:
+  64:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     if (osMessageQueueGet(TH_SENS_Actor.super.osMessageQueueId, &msg, NULL, osWaitForever) == osOK)
+ 584              		.loc 1 64 8 view .LVU125
+ 585 0022 0028     		cmp	r0, #0
+ 586 0024 F5D1     		bne	.L38
+ 587              	.LBB3:
+  65:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       osStatus_t handleMessageStatus = TH_SENS_Actor.super.messageHandler((actor_t *) &TH_SENS_Acto
+ 588              		.loc 1 65 7 is_stmt 1 view .LVU126
+  65:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       osStatus_t handleMessageStatus = TH_SENS_Actor.super.messageHandler((actor_t *) &TH_SENS_Acto
+ 589              		.loc 1 65 59 is_stmt 0 view .LVU127
+ 590 0026 1948     		ldr	r0, .L42+12
+ 591 0028 C368     		ldr	r3, [r0, #12]
+  65:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       osStatus_t handleMessageStatus = TH_SENS_Actor.super.messageHandler((actor_t *) &TH_SENS_Acto
+ 592              		.loc 1 65 40 view .LVU128
+ 593 002a 02A9     		add	r1, sp, #8
+ 594 002c 9847     		blx	r3
+ 595              	.LVL54:
+  67:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       if (handleMessageStatus != osOK) {
+ 596              		.loc 1 67 7 is_stmt 1 view .LVU129
+  67:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       if (handleMessageStatus != osOK) {
+ 597              		.loc 1 67 10 is_stmt 0 view .LVU130
+ 598 002e 0028     		cmp	r0, #0
+ 599 0030 EFD0     		beq	.L38
+ 600              	.LBB4:
+  68:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         fprintf(stderr, "%s: Error handling event %u in state %ul\n", thSensorTaskDescription.name,
+ 601              		.loc 1 68 9 is_stmt 1 view .LVU131
+  68:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         fprintf(stderr, "%s: Error handling event %u in state %ul\n", thSensorTaskDescription.name,
+ 602              		.loc 1 68 17 is_stmt 0 view .LVU132
+ 603 0032 134D     		ldr	r5, .L42
+ 604 0034 2B68     		ldr	r3, [r5]
+ 605 0036 D868     		ldr	r0, [r3, #12]
+ 606              	.LVL55:
+  68:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         fprintf(stderr, "%s: Error handling event %u in state %ul\n", thSensorTaskDescription.name,
+ 607              		.loc 1 68 125 view .LVU133
+ARM GAS  /tmp/cc1wEvIX.s 			page 17
 
 
- 604 006a 0423     		movs	r3, #4
- 605 006c 2374     		strb	r3, [r4, #16]
-  69:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         TO_STATE(&TH_SENS_Actor, TH_SENS_STATE_ERROR);
- 606              		.loc 1 69 9 view .LVU136
- 607 006e 2868     		ldr	r0, [r5]
- 608 0070 094B     		ldr	r3, .L40+24
- 609 0072 2268     		ldr	r2, [r4]
- 610 0074 0949     		ldr	r1, .L40+28
- 611 0076 8068     		ldr	r0, [r0, #8]
- 612 0078 FFF7FEFF 		bl	fprintf
- 613              	.LVL55:
-  69:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         TO_STATE(&TH_SENS_Actor, TH_SENS_STATE_ERROR);
- 614              		.loc 1 69 9 view .LVU137
-  69:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         TO_STATE(&TH_SENS_Actor, TH_SENS_STATE_ERROR);
- 615              		.loc 1 69 54 view .LVU138
- 616 007c C9E7     		b	.L36
- 617              	.L41:
- 618 007e 00BF     		.align	2
- 619              	.L40:
- 620 0080 00000000 		.word	_impure_ptr
- 621 0084 00000000 		.word	.LC6
- 622 0088 10000000 		.word	.LC7
- 623 008c 00000000 		.word	.LANCHOR0
- 624 0090 24000000 		.word	.LC8
- 625 0094 00000000 		.word	ACTORS_LIST_SystemRegistry
- 626 0098 50000000 		.word	.LC9
- 627 009c 24000000 		.word	.LC1
- 628              	.LBE4:
- 629              	.LBE3:
- 630              		.cfi_endproc
- 631              	.LFE140:
- 633              		.section	.rodata.TH_SENS_TaskInit.str1.4,"aMS",%progbits,1
- 634              		.align	2
- 635              	.LC10:
- 636 0000 74685365 		.ascii	"thSensorQueue\000"
- 636      6E736F72 
- 636      51756575 
- 636      6500
- 637              		.section	.text.TH_SENS_TaskInit,"ax",%progbits
- 638              		.align	1
- 639              		.global	TH_SENS_TaskInit
- 640              		.syntax unified
- 641              		.thumb
- 642              		.thumb_func
- 643              		.fpu fpv4-sp-d16
- 645              	TH_SENS_TaskInit:
- 646              	.LFB139:
-  45:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** actor_t* TH_SENS_TaskInit(void) {
- 647              		.loc 1 45 33 view -0
- 648              		.cfi_startproc
- 649              		@ args = 0, pretend = 0, frame = 24
- 650              		@ frame_needed = 0, uses_anonymous_args = 0
- 651 0000 30B5     		push	{r4, r5, lr}
- 652              	.LCFI9:
- 653              		.cfi_def_cfa_offset 12
- 654              		.cfi_offset 4, -12
- 655              		.cfi_offset 5, -8
-ARM GAS  /tmp/ccukiNbs.s 			page 18
+ 608 0038 144C     		ldr	r4, .L42+12
+ 609 003a 237C     		ldrb	r3, [r4, #16]	@ zero_extendqisi2
+  68:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         fprintf(stderr, "%s: Error handling event %u in state %ul\n", thSensorTaskDescription.name,
+ 610              		.loc 1 68 9 view .LVU134
+ 611 003c 0093     		str	r3, [sp]
+ 612 003e 9DF80830 		ldrb	r3, [sp, #8]	@ zero_extendqisi2
+ 613 0042 104A     		ldr	r2, .L42+4
+ 614 0044 1249     		ldr	r1, .L42+16
+ 615 0046 FFF7FEFF 		bl	fprintf
+ 616              	.LVL56:
+  69:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMess
+ 617              		.loc 1 69 9 is_stmt 1 view .LVU135
+  69:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMess
+ 618              		.loc 1 69 71 is_stmt 0 view .LVU136
+ 619 004a 124B     		ldr	r3, .L42+20
+ 620 004c 5B68     		ldr	r3, [r3, #4]
+  69:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMess
+ 621              		.loc 1 69 28 view .LVU137
+ 622 004e 9868     		ldr	r0, [r3, #8]
+ 623              	.LVL57:
+  70:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = TEMPERATURE_H
+ 624              		.loc 1 70 9 is_stmt 1 view .LVU138
+  70:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = TEMPERATURE_H
+ 625              		.loc 1 70 55 is_stmt 0 view .LVU139
+ 626 0050 0022     		movs	r2, #0
+ 627 0052 0592     		str	r2, [sp, #20]
+ 628 0054 0692     		str	r2, [sp, #24]
+ 629 0056 0792     		str	r2, [sp, #28]
+ 630 0058 0C23     		movs	r3, #12
+ 631 005a 8DF81430 		strb	r3, [sp, #20]
+ 632 005e 0623     		movs	r3, #6
+ 633 0060 0693     		str	r3, [sp, #24]
+  70:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = TEMPERATURE_H
+ 634              		.loc 1 70 9 view .LVU140
+ 635 0062 1346     		mov	r3, r2
+ 636 0064 05A9     		add	r1, sp, #20
+ 637 0066 FFF7FEFF 		bl	osMessageQueuePut
+ 638              	.LVL58:
+  71:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         TO_STATE(&TH_SENS_Actor, TH_SENS_STATE_ERROR);
+ 639              		.loc 1 71 9 is_stmt 1 view .LVU141
+  71:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         TO_STATE(&TH_SENS_Actor, TH_SENS_STATE_ERROR);
+ 640              		.loc 1 71 9 view .LVU142
+ 641 006a 0423     		movs	r3, #4
+ 642 006c 2374     		strb	r3, [r4, #16]
+  71:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         TO_STATE(&TH_SENS_Actor, TH_SENS_STATE_ERROR);
+ 643              		.loc 1 71 9 view .LVU143
+ 644 006e 2868     		ldr	r0, [r5]
+ 645 0070 094B     		ldr	r3, .L42+24
+ 646 0072 2268     		ldr	r2, [r4]
+ 647 0074 0949     		ldr	r1, .L42+28
+ 648 0076 8068     		ldr	r0, [r0, #8]
+ 649 0078 FFF7FEFF 		bl	fprintf
+ 650              	.LVL59:
+  71:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         TO_STATE(&TH_SENS_Actor, TH_SENS_STATE_ERROR);
+ 651              		.loc 1 71 9 view .LVU144
+  71:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         TO_STATE(&TH_SENS_Actor, TH_SENS_STATE_ERROR);
+ 652              		.loc 1 71 54 view .LVU145
+ARM GAS  /tmp/cc1wEvIX.s 			page 18
 
 
- 656              		.cfi_offset 14, -4
- 657 0002 87B0     		sub	sp, sp, #28
- 658              	.LCFI10:
- 659              		.cfi_def_cfa_offset 40
-  46:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   TH_SENS_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MESSAG
- 660              		.loc 1 46 3 view .LVU140
-  46:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   TH_SENS_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MESSAG
- 661              		.loc 1 46 131 is_stmt 0 view .LVU141
- 662 0004 0024     		movs	r4, #0
- 663 0006 0094     		str	r4, [sp]
- 664 0008 0194     		str	r4, [sp, #4]
- 665 000a 0294     		str	r4, [sp, #8]
- 666 000c 0394     		str	r4, [sp, #12]
- 667 000e 0494     		str	r4, [sp, #16]
- 668 0010 0594     		str	r4, [sp, #20]
- 669 0012 094B     		ldr	r3, .L44
- 670 0014 0093     		str	r3, [sp]
-  46:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   TH_SENS_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MESSAG
- 671              		.loc 1 46 42 view .LVU142
- 672 0016 6A46     		mov	r2, sp
- 673 0018 0C21     		movs	r1, #12
- 674 001a 0820     		movs	r0, #8
- 675 001c FFF7FEFF 		bl	osMessageQueueNew
- 676              	.LVL56:
-  46:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   TH_SENS_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MESSAG
- 677              		.loc 1 46 40 view .LVU143
- 678 0020 064D     		ldr	r5, .L44+4
- 679 0022 A860     		str	r0, [r5, #8]
-  49:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   TH_SENS_Actor.super.osThreadId = osThreadNew(TH_SENS_Task, NULL, &thSensorTaskDescription);
- 680              		.loc 1 49 3 is_stmt 1 view .LVU144
-  49:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   TH_SENS_Actor.super.osThreadId = osThreadNew(TH_SENS_Task, NULL, &thSensorTaskDescription);
- 681              		.loc 1 49 36 is_stmt 0 view .LVU145
- 682 0024 064A     		ldr	r2, .L44+8
- 683 0026 2146     		mov	r1, r4
- 684 0028 0648     		ldr	r0, .L44+12
- 685 002a FFF7FEFF 		bl	osThreadNew
- 686              	.LVL57:
-  49:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   TH_SENS_Actor.super.osThreadId = osThreadNew(TH_SENS_Task, NULL, &thSensorTaskDescription);
- 687              		.loc 1 49 34 view .LVU146
- 688 002e 6860     		str	r0, [r5, #4]
-  51:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   return (actor_t*) &TH_SENS_Actor;
- 689              		.loc 1 51 3 is_stmt 1 view .LVU147
-  52:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****  }
- 690              		.loc 1 52 2 is_stmt 0 view .LVU148
- 691 0030 2846     		mov	r0, r5
- 692 0032 07B0     		add	sp, sp, #28
- 693              	.LCFI11:
- 694              		.cfi_def_cfa_offset 12
- 695              		@ sp needed
- 696 0034 30BD     		pop	{r4, r5, pc}
- 697              	.L45:
- 698 0036 00BF     		.align	2
- 699              	.L44:
- 700 0038 00000000 		.word	.LC10
- 701 003c 00000000 		.word	.LANCHOR0
- 702 0040 00000000 		.word	.LANCHOR1
- 703 0044 00000000 		.word	TH_SENS_Task
-ARM GAS  /tmp/ccukiNbs.s 			page 19
+ 653 007c C9E7     		b	.L38
+ 654              	.L43:
+ 655 007e 00BF     		.align	2
+ 656              	.L42:
+ 657 0080 00000000 		.word	_impure_ptr
+ 658 0084 00000000 		.word	.LC6
+ 659 0088 10000000 		.word	.LC7
+ 660 008c 00000000 		.word	.LANCHOR0
+ 661 0090 24000000 		.word	.LC8
+ 662 0094 00000000 		.word	ACTORS_LIST_SystemRegistry
+ 663 0098 50000000 		.word	.LC9
+ 664 009c 24000000 		.word	.LC1
+ 665              	.LBE4:
+ 666              	.LBE3:
+ 667              		.cfi_endproc
+ 668              	.LFE140:
+ 670              		.section	.rodata.TH_SENS_TaskInit.str1.4,"aMS",%progbits,1
+ 671              		.align	2
+ 672              	.LC10:
+ 673 0000 74685365 		.ascii	"thSensorQueue\000"
+ 673      6E736F72 
+ 673      51756575 
+ 673      6500
+ 674              		.section	.text.TH_SENS_TaskInit,"ax",%progbits
+ 675              		.align	1
+ 676              		.global	TH_SENS_TaskInit
+ 677              		.syntax unified
+ 678              		.thumb
+ 679              		.thumb_func
+ 680              		.fpu fpv4-sp-d16
+ 682              	TH_SENS_TaskInit:
+ 683              	.LFB139:
+  47:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** actor_t* TH_SENS_TaskInit(void) {
+ 684              		.loc 1 47 33 view -0
+ 685              		.cfi_startproc
+ 686              		@ args = 0, pretend = 0, frame = 24
+ 687              		@ frame_needed = 0, uses_anonymous_args = 0
+ 688 0000 30B5     		push	{r4, r5, lr}
+ 689              	.LCFI10:
+ 690              		.cfi_def_cfa_offset 12
+ 691              		.cfi_offset 4, -12
+ 692              		.cfi_offset 5, -8
+ 693              		.cfi_offset 14, -4
+ 694 0002 87B0     		sub	sp, sp, #28
+ 695              	.LCFI11:
+ 696              		.cfi_def_cfa_offset 40
+  48:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   TH_SENS_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MESSAG
+ 697              		.loc 1 48 3 view .LVU147
+  48:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   TH_SENS_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MESSAG
+ 698              		.loc 1 48 131 is_stmt 0 view .LVU148
+ 699 0004 0024     		movs	r4, #0
+ 700 0006 0094     		str	r4, [sp]
+ 701 0008 0194     		str	r4, [sp, #4]
+ 702 000a 0294     		str	r4, [sp, #8]
+ 703 000c 0394     		str	r4, [sp, #12]
+ 704 000e 0494     		str	r4, [sp, #16]
+ 705 0010 0594     		str	r4, [sp, #20]
+ARM GAS  /tmp/cc1wEvIX.s 			page 19
 
 
- 704              		.cfi_endproc
- 705              	.LFE139:
- 707              		.global	thSensorTaskDescription
- 708              		.global	thSensorTaskControlBlock
- 709              		.global	thSensorTaskBuffer
- 710              		.global	TH_SENS_Actor
- 711              		.section	.bss.thSensorTaskBuffer,"aw",%nobits
- 712              		.align	2
- 715              	thSensorTaskBuffer:
- 716 0000 00000000 		.space	512
- 716      00000000 
- 716      00000000 
- 716      00000000 
- 716      00000000 
- 717              		.section	.bss.thSensorTaskControlBlock,"aw",%nobits
- 718              		.align	2
- 721              	thSensorTaskControlBlock:
- 722 0000 00000000 		.space	92
- 722      00000000 
- 722      00000000 
- 722      00000000 
- 722      00000000 
- 723              		.section	.data.TH_SENS_Actor,"aw"
- 724              		.align	2
- 725              		.set	.LANCHOR0,. + 0
- 728              	TH_SENS_Actor:
- 729 0000 06000000 		.word	6
- 730 0004 00000000 		.word	0
- 731 0008 00000000 		.word	0
- 732 000c 00000000 		.word	handleTHSensorFSM
- 733 0010 00       		.byte	0
- 734 0011 000000   		.space	3
- 735 0014 00000000 		.word	0
- 736 0018 00000000 		.word	0
- 737              		.section	.rodata.thSensorTaskDescription,"a"
- 738              		.align	2
- 739              		.set	.LANCHOR1,. + 0
- 742              	thSensorTaskDescription:
- 743 0000 00000000 		.word	.LC6
- 744 0004 00000000 		.space	4
- 745 0008 00000000 		.word	thSensorTaskControlBlock
- 746 000c 5C000000 		.word	92
- 747 0010 00000000 		.word	thSensorTaskBuffer
- 748 0014 00020000 		.word	512
- 749 0018 18000000 		.word	24
- 750 001c 00000000 		.space	8
- 750      00000000 
- 751              		.text
- 752              	.Letext0:
- 753              		.file 2 "/usr/include/newlib/machine/_default_types.h"
- 754              		.file 3 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stddef.h"
- 755              		.file 4 "/usr/include/newlib/sys/_types.h"
- 756              		.file 5 "/usr/include/newlib/sys/reent.h"
- 757              		.file 6 "/usr/include/newlib/sys/lock.h"
- 758              		.file 7 "/usr/include/newlib/sys/_stdint.h"
- 759              		.file 8 "/usr/include/newlib/sys/types.h"
- 760              		.file 9 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l412xx.h"
-ARM GAS  /tmp/ccukiNbs.s 			page 20
+ 706 0012 094B     		ldr	r3, .L46
+ 707 0014 0093     		str	r3, [sp]
+  48:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   TH_SENS_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MESSAG
+ 708              		.loc 1 48 42 view .LVU149
+ 709 0016 6A46     		mov	r2, sp
+ 710 0018 0C21     		movs	r1, #12
+ 711 001a 0820     		movs	r0, #8
+ 712 001c FFF7FEFF 		bl	osMessageQueueNew
+ 713              	.LVL60:
+  48:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   TH_SENS_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MESSAG
+ 714              		.loc 1 48 40 view .LVU150
+ 715 0020 064D     		ldr	r5, .L46+4
+ 716 0022 A860     		str	r0, [r5, #8]
+  51:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   TH_SENS_Actor.super.osThreadId = osThreadNew(TH_SENS_Task, NULL, &thSensorTaskDescription);
+ 717              		.loc 1 51 3 is_stmt 1 view .LVU151
+  51:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   TH_SENS_Actor.super.osThreadId = osThreadNew(TH_SENS_Task, NULL, &thSensorTaskDescription);
+ 718              		.loc 1 51 36 is_stmt 0 view .LVU152
+ 719 0024 064A     		ldr	r2, .L46+8
+ 720 0026 2146     		mov	r1, r4
+ 721 0028 0648     		ldr	r0, .L46+12
+ 722 002a FFF7FEFF 		bl	osThreadNew
+ 723              	.LVL61:
+  51:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   TH_SENS_Actor.super.osThreadId = osThreadNew(TH_SENS_Task, NULL, &thSensorTaskDescription);
+ 724              		.loc 1 51 34 view .LVU153
+ 725 002e 6860     		str	r0, [r5, #4]
+  53:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   return (actor_t*) &TH_SENS_Actor;
+ 726              		.loc 1 53 3 is_stmt 1 view .LVU154
+  54:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****  }
+ 727              		.loc 1 54 2 is_stmt 0 view .LVU155
+ 728 0030 2846     		mov	r0, r5
+ 729 0032 07B0     		add	sp, sp, #28
+ 730              	.LCFI12:
+ 731              		.cfi_def_cfa_offset 12
+ 732              		@ sp needed
+ 733 0034 30BD     		pop	{r4, r5, pc}
+ 734              	.L47:
+ 735 0036 00BF     		.align	2
+ 736              	.L46:
+ 737 0038 00000000 		.word	.LC10
+ 738 003c 00000000 		.word	.LANCHOR0
+ 739 0040 00000000 		.word	.LANCHOR1
+ 740 0044 00000000 		.word	TH_SENS_Task
+ 741              		.cfi_endproc
+ 742              	.LFE139:
+ 744              		.global	thSensorTaskDescription
+ 745              		.global	thSensorTaskControlBlock
+ 746              		.global	thSensorTaskBuffer
+ 747              		.global	TH_SENS_Actor
+ 748              		.section	.bss.thSensorTaskBuffer,"aw",%nobits
+ 749              		.align	2
+ 752              	thSensorTaskBuffer:
+ 753 0000 00000000 		.space	512
+ 753      00000000 
+ 753      00000000 
+ 753      00000000 
+ 753      00000000 
+ 754              		.section	.bss.thSensorTaskControlBlock,"aw",%nobits
+ARM GAS  /tmp/cc1wEvIX.s 			page 20
 
 
- 761              		.file 10 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_gpio.h"
- 762              		.file 11 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
- 763              		.file 12 "app/core/actor/../config/events_list/events_list.h"
- 764              		.file 13 "app/core/actor/../config/actors_list/actors_list.h"
- 765              		.file 14 "app/core/actor/actor.h"
- 766              		.file 15 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h"
- 767              		.file 16 "Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h"
- 768              		.file 17 "app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.h"
- 769              		.file 18 "/usr/include/newlib/stdio.h"
- 770              		.file 19 "Core/Inc/custom_bus.h"
- 771              		.file 20 "app/drivers/sht3x/sht3x.h"
-ARM GAS  /tmp/ccukiNbs.s 			page 21
+ 755              		.align	2
+ 758              	thSensorTaskControlBlock:
+ 759 0000 00000000 		.space	92
+ 759      00000000 
+ 759      00000000 
+ 759      00000000 
+ 759      00000000 
+ 760              		.section	.data.TH_SENS_Actor,"aw"
+ 761              		.align	2
+ 762              		.set	.LANCHOR0,. + 0
+ 765              	TH_SENS_Actor:
+ 766 0000 06000000 		.word	6
+ 767 0004 00000000 		.word	0
+ 768 0008 00000000 		.word	0
+ 769 000c 00000000 		.word	handleTHSensorFSM
+ 770 0010 00       		.byte	0
+ 771 0011 000000   		.space	3
+ 772 0014 00000000 		.word	0
+ 773 0018 00000000 		.word	0
+ 774              		.section	.rodata.thSensorTaskDescription,"a"
+ 775              		.align	2
+ 776              		.set	.LANCHOR1,. + 0
+ 779              	thSensorTaskDescription:
+ 780 0000 00000000 		.word	.LC6
+ 781 0004 00000000 		.space	4
+ 782 0008 00000000 		.word	thSensorTaskControlBlock
+ 783 000c 5C000000 		.word	92
+ 784 0010 00000000 		.word	thSensorTaskBuffer
+ 785 0014 00020000 		.word	512
+ 786 0018 18000000 		.word	24
+ 787 001c 00000000 		.space	8
+ 787      00000000 
+ 788              		.text
+ 789              	.Letext0:
+ 790              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 791              		.file 3 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stddef.h"
+ 792              		.file 4 "/usr/include/newlib/sys/_types.h"
+ 793              		.file 5 "/usr/include/newlib/sys/reent.h"
+ 794              		.file 6 "/usr/include/newlib/sys/lock.h"
+ 795              		.file 7 "/usr/include/newlib/sys/_stdint.h"
+ 796              		.file 8 "/usr/include/newlib/sys/types.h"
+ 797              		.file 9 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l412xx.h"
+ 798              		.file 10 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_gpio.h"
+ 799              		.file 11 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
+ 800              		.file 12 "app/core/actor/../config/events_list/events_list.h"
+ 801              		.file 13 "app/core/actor/../config/actors_list/actors_list.h"
+ 802              		.file 14 "app/core/actor/actor.h"
+ 803              		.file 15 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h"
+ 804              		.file 16 "Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h"
+ 805              		.file 17 "app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.h"
+ 806              		.file 18 "/usr/include/newlib/stdio.h"
+ 807              		.file 19 "app/drivers/sht3x/sht3x.h"
+ARM GAS  /tmp/cc1wEvIX.s 			page 21
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 temperature_humidity_sensor.c
-     /tmp/ccukiNbs.s:18     .text.handleError:0000000000000000 $t
-     /tmp/ccukiNbs.s:25     .text.handleError:0000000000000000 handleError
-     /tmp/ccukiNbs.s:44     .rodata.handleIdle.str1.4:0000000000000000 $d
-     /tmp/ccukiNbs.s:57     .text.handleIdle:0000000000000000 $t
-     /tmp/ccukiNbs.s:63     .text.handleIdle:0000000000000000 handleIdle
-     /tmp/ccukiNbs.s:152    .text.handleIdle:000000000000004c $d
-     /tmp/ccukiNbs.s:161    .text.handleContinuousMeasure:0000000000000000 $t
-     /tmp/ccukiNbs.s:167    .text.handleContinuousMeasure:0000000000000000 handleContinuousMeasure
-     /tmp/ccukiNbs.s:218    .text.handleContinuousMeasure:0000000000000024 $d
-     /tmp/ccukiNbs.s:225    .rodata.handleInit.str1.4:0000000000000000 $d
-     /tmp/ccukiNbs.s:232    .text.handleInit:0000000000000000 $t
-     /tmp/ccukiNbs.s:238    .text.handleInit:0000000000000000 handleInit
-     /tmp/ccukiNbs.s:395    .text.handleInit:00000000000000a8 $d
-     /tmp/ccukiNbs.s:409    .text.handleTHSensorFSM:0000000000000000 $t
-     /tmp/ccukiNbs.s:415    .text.handleTHSensorFSM:0000000000000000 handleTHSensorFSM
-     /tmp/ccukiNbs.s:436    .text.handleTHSensorFSM:000000000000000c $d
-     /tmp/ccukiNbs.s:485    .rodata.TH_SENS_Task.str1.4:0000000000000000 $d
-     /tmp/ccukiNbs.s:498    .text.TH_SENS_Task:0000000000000000 $t
-     /tmp/ccukiNbs.s:505    .text.TH_SENS_Task:0000000000000000 TH_SENS_Task
-     /tmp/ccukiNbs.s:620    .text.TH_SENS_Task:0000000000000080 $d
-     /tmp/ccukiNbs.s:634    .rodata.TH_SENS_TaskInit.str1.4:0000000000000000 $d
-     /tmp/ccukiNbs.s:638    .text.TH_SENS_TaskInit:0000000000000000 $t
-     /tmp/ccukiNbs.s:645    .text.TH_SENS_TaskInit:0000000000000000 TH_SENS_TaskInit
-     /tmp/ccukiNbs.s:700    .text.TH_SENS_TaskInit:0000000000000038 $d
-     /tmp/ccukiNbs.s:742    .rodata.thSensorTaskDescription:0000000000000000 thSensorTaskDescription
-     /tmp/ccukiNbs.s:721    .bss.thSensorTaskControlBlock:0000000000000000 thSensorTaskControlBlock
-     /tmp/ccukiNbs.s:715    .bss.thSensorTaskBuffer:0000000000000000 thSensorTaskBuffer
-     /tmp/ccukiNbs.s:728    .data.TH_SENS_Actor:0000000000000000 TH_SENS_Actor
-     /tmp/ccukiNbs.s:712    .bss.thSensorTaskBuffer:0000000000000000 $d
-     /tmp/ccukiNbs.s:718    .bss.thSensorTaskControlBlock:0000000000000000 $d
-     /tmp/ccukiNbs.s:724    .data.TH_SENS_Actor:0000000000000000 $d
-     /tmp/ccukiNbs.s:738    .rodata.thSensorTaskDescription:0000000000000000 $d
-     /tmp/ccukiNbs.s:441    .text.handleTHSensorFSM:0000000000000011 $d
-     /tmp/ccukiNbs.s:441    .text.handleTHSensorFSM:0000000000000012 $t
+     /tmp/cc1wEvIX.s:18     .text.handleError:0000000000000000 $t
+     /tmp/cc1wEvIX.s:25     .text.handleError:0000000000000000 handleError
+     /tmp/cc1wEvIX.s:44     .text.delayMs:0000000000000000 $t
+     /tmp/cc1wEvIX.s:50     .text.delayMs:0000000000000000 delayMs
+     /tmp/cc1wEvIX.s:73     .rodata.handleIdle.str1.4:0000000000000000 $d
+     /tmp/cc1wEvIX.s:86     .text.handleIdle:0000000000000000 $t
+     /tmp/cc1wEvIX.s:92     .text.handleIdle:0000000000000000 handleIdle
+     /tmp/cc1wEvIX.s:181    .text.handleIdle:000000000000004c $d
+     /tmp/cc1wEvIX.s:190    .text.handleContinuousMeasure:0000000000000000 $t
+     /tmp/cc1wEvIX.s:196    .text.handleContinuousMeasure:0000000000000000 handleContinuousMeasure
+     /tmp/cc1wEvIX.s:247    .text.handleContinuousMeasure:0000000000000024 $d
+     /tmp/cc1wEvIX.s:254    .rodata.handleInit.str1.4:0000000000000000 $d
+     /tmp/cc1wEvIX.s:261    .text.handleInit:0000000000000000 $t
+     /tmp/cc1wEvIX.s:267    .text.handleInit:0000000000000000 handleInit
+     /tmp/cc1wEvIX.s:431    .text.handleInit:00000000000000ac $d
+     /tmp/cc1wEvIX.s:446    .text.handleTHSensorFSM:0000000000000000 $t
+     /tmp/cc1wEvIX.s:452    .text.handleTHSensorFSM:0000000000000000 handleTHSensorFSM
+     /tmp/cc1wEvIX.s:473    .text.handleTHSensorFSM:000000000000000c $d
+     /tmp/cc1wEvIX.s:522    .rodata.TH_SENS_Task.str1.4:0000000000000000 $d
+     /tmp/cc1wEvIX.s:535    .text.TH_SENS_Task:0000000000000000 $t
+     /tmp/cc1wEvIX.s:542    .text.TH_SENS_Task:0000000000000000 TH_SENS_Task
+     /tmp/cc1wEvIX.s:657    .text.TH_SENS_Task:0000000000000080 $d
+     /tmp/cc1wEvIX.s:671    .rodata.TH_SENS_TaskInit.str1.4:0000000000000000 $d
+     /tmp/cc1wEvIX.s:675    .text.TH_SENS_TaskInit:0000000000000000 $t
+     /tmp/cc1wEvIX.s:682    .text.TH_SENS_TaskInit:0000000000000000 TH_SENS_TaskInit
+     /tmp/cc1wEvIX.s:737    .text.TH_SENS_TaskInit:0000000000000038 $d
+     /tmp/cc1wEvIX.s:779    .rodata.thSensorTaskDescription:0000000000000000 thSensorTaskDescription
+     /tmp/cc1wEvIX.s:758    .bss.thSensorTaskControlBlock:0000000000000000 thSensorTaskControlBlock
+     /tmp/cc1wEvIX.s:752    .bss.thSensorTaskBuffer:0000000000000000 thSensorTaskBuffer
+     /tmp/cc1wEvIX.s:765    .data.TH_SENS_Actor:0000000000000000 TH_SENS_Actor
+     /tmp/cc1wEvIX.s:749    .bss.thSensorTaskBuffer:0000000000000000 $d
+     /tmp/cc1wEvIX.s:755    .bss.thSensorTaskControlBlock:0000000000000000 $d
+     /tmp/cc1wEvIX.s:761    .data.TH_SENS_Actor:0000000000000000 $d
+     /tmp/cc1wEvIX.s:775    .rodata.thSensorTaskDescription:0000000000000000 $d
+     /tmp/cc1wEvIX.s:478    .text.handleTHSensorFSM:0000000000000011 $d
+     /tmp/cc1wEvIX.s:478    .text.handleTHSensorFSM:0000000000000012 $t
 
 UNDEFINED SYMBOLS
+osDelay
 fprintf
 _impure_ptr
-BSP_I2C1_Init
 SHT3x_InitIO
 HAL_GPIO_WritePin
-osDelay
 SHT3x_ReadDeviceID
 osMessageQueuePut
-BSP_I2C1_ReadReg16
-BSP_I2C1_WriteReg16
+BSP_I2C1_Recv
+BSP_I2C1_Send
 ACTORS_LIST_SystemRegistry
 osMessageQueueGet
 osMessageQueueNew
