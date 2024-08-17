@@ -16,6 +16,8 @@ static osStatus_t handleInit(TH_SENS_Actor_t *this, message_t *message);
 static osStatus_t handleIdle(TH_SENS_Actor_t *this, message_t *message);
 static osStatus_t handleContinuousMeasure(TH_SENS_Actor_t *this, message_t *message);
 static osStatus_t handleError(TH_SENS_Actor_t *this, message_t *message);
+/** utils */
+static uint32_t delayMs(uint32_t ms);
 
 extern actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS];
 
@@ -90,10 +92,8 @@ static osStatus_t handleTHSensorFSM(TH_SENS_Actor_t *this, message_t *message) {
 
 static osStatus_t handleInit(TH_SENS_Actor_t *this, message_t *message) {
   if (GLOBAL_CMD_INITIALIZE == message->event) {
-    BSP_I2C1_Init(); // TODO think about proper place to init I2C
-
-    // TODO add crc8 function
-    osStatus_t ioStatus = SHT3x_InitIO(TH_SENS_I2C_ADDRESS, BSP_I2C1_WriteReg16, BSP_I2C1_ReadReg16, NULL);
+    // provide IO functions to the sensor driver
+    osStatus_t ioStatus = SHT3x_InitIO(TH_SENS_I2C_ADDRESS, BSP_I2C1_Send, BSP_I2C1_Recv, delayMs, NULL);
 
     if (ioStatus != osOK) return osError;
 
@@ -101,6 +101,7 @@ static osStatus_t handleInit(TH_SENS_Actor_t *this, message_t *message) {
     HAL_GPIO_WritePin(_TEMP_RESET_GPIO_Port, _TEMP_RESET_Pin, GPIO_PIN_RESET);
     osDelay(1);
     HAL_GPIO_WritePin(_TEMP_RESET_GPIO_Port, _TEMP_RESET_Pin, GPIO_PIN_SET);
+    osDelay(1);
 
     // read sensor ID
     uint32_t sht3xId = 0x00000000;
@@ -149,4 +150,8 @@ static osStatus_t handleContinuousMeasure(TH_SENS_Actor_t *this, message_t *mess
 
 static osStatus_t handleError(TH_SENS_Actor_t *this, message_t *message) {
   return osOK;
+}
+
+static uint32_t delayMs(uint32_t ms) {
+  return osDelay(ms);
 }

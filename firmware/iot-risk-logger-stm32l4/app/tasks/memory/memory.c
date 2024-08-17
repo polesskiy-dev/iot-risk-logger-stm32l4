@@ -41,29 +41,29 @@ actor_t* MEMORY_TaskInit(void) {
 
   // TODO move to driver
 
-  QSPI_CommandTypeDef com;
-
-  com.InstructionMode = QSPI_INSTRUCTION_1_LINE; // QSPI_INSTRUCTION_...
-  com.Instruction = W25Q_POWERDOWN;	 // Command
-
-  com.AddressMode = QSPI_ADDRESS_NONE;
-  com.AddressSize = QSPI_ADDRESS_NONE;
-  com.Address = 0x0U;
-
-  com.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
-  com.AlternateBytes = QSPI_ALTERNATE_BYTES_NONE;
-  com.AlternateBytesSize = QSPI_ALTERNATE_BYTES_NONE;
-
-  com.DummyCycles = 0;
-  com.DataMode = QSPI_DATA_NONE;
-  com.NbData = 0;
-
-  com.DdrMode = QSPI_DDR_MODE_DISABLE;
-  com.DdrHoldHalfCycle = QSPI_DDR_HHC_ANALOG_DELAY;
-  com.SIOOMode = QSPI_SIOO_INST_EVERY_CMD;
-
-  HAL_StatusTypeDef status = HAL_QSPI_Command(&hqspi, &com, HAL_QSPI_TIMEOUT_DEFAULT_VALUE);
-  fprintf(stdout, "Memory put to sleep status: %u\n", status);
+//  QSPI_CommandTypeDef com;
+//
+//  com.InstructionMode = QSPI_INSTRUCTION_1_LINE; // QSPI_INSTRUCTION_...
+//  com.Instruction = W25Q_POWERDOWN;	 // Command
+//
+//  com.AddressMode = QSPI_ADDRESS_NONE;
+//  com.AddressSize = QSPI_ADDRESS_NONE;
+//  com.Address = 0x0U;
+//
+//  com.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
+//  com.AlternateBytes = QSPI_ALTERNATE_BYTES_NONE;
+//  com.AlternateBytesSize = QSPI_ALTERNATE_BYTES_NONE;
+//
+//  com.DummyCycles = 0;
+//  com.DataMode = QSPI_DATA_NONE;
+//  com.NbData = 0;
+//
+//  com.DdrMode = QSPI_DDR_MODE_DISABLE;
+//  com.DdrHoldHalfCycle = QSPI_DDR_HHC_ANALOG_DELAY;
+//  com.SIOOMode = QSPI_SIOO_INST_EVERY_CMD;
+//
+//  HAL_StatusTypeDef status = HAL_QSPI_Command(&hqspi, &com, HAL_QSPI_TIMEOUT_DEFAULT_VALUE);
+//  fprintf(stdout, "Memory put to sleep status: %u\n", status);
 
   return &MEMORY_Actor.super;
 }

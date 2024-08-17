@@ -99,6 +99,8 @@ int main(void)
   MX_CRC_Init();
   MX_RNG_Init();
   /* USER CODE BEGIN 2 */
+  BSP_I2C1_Init(); // init i2c
+
   RETARGET_Init(); // init stdio, debug
   INFO_LED_Init();
 

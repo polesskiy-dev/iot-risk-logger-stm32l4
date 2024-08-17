@@ -75,7 +75,8 @@ void LIGHT_SENS_Task(void *argument) {
 static osStatus_t handleLightSensorFSM(LIGHT_SENS_Actor_t *this, message_t *message) {
   switch (this->state) {
     case LIGHT_SENS_NO_STATE:
-      return handleInit(this, message);
+      return osOK;
+//      return handleInit(this, message);
     case LIGHT_SENS_TURNED_OFF_STATE:
       return handleTurnedOff(this, message);
     case LIGHT_SENS_CONTINUOUS_MEASURE_STATE:
@@ -91,9 +92,6 @@ static osStatus_t handleLightSensorFSM(LIGHT_SENS_Actor_t *this, message_t *mess
  */
 static osStatus_t handleInit(LIGHT_SENS_Actor_t *this, message_t *message) {
   if (GLOBAL_CMD_INITIALIZE == message->event) {
-    // init BSP I2C
-    BSP_I2C1_Init(); // TODO think about proper place to init I2C
-
     // init the driver (io)
     osStatus_t ioStatus = OPT3001_InitIO(LIGHT_SENS_I2C_ADDRESS, BSP_I2C1_WriteReg, BSP_I2C1_ReadReg);
 
