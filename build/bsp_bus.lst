@@ -1,0 +1,662 @@
+ARM GAS  /tmp/ccsh7Kvr.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"bsp_bus.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.I2C_WriteReg,"ax",%progbits
+  18              		.align	1
+  19              		.global	I2C_WriteReg
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	I2C_WriteReg:
+  27              	.LVL0:
+  28              	.LFB139:
+  29              		.file 1 "app/config/bsp_bus/bsp_bus.c"
+   1:app/config/bsp_bus/bsp_bus.c **** /*!
+   2:app/config/bsp_bus/bsp_bus.c ****  * @file bsp_bus.c
+   3:app/config/bsp_bus/bsp_bus.c ****  * @brief implementation of bsp_bus
+   4:app/config/bsp_bus/bsp_bus.c ****  *
+   5:app/config/bsp_bus/bsp_bus.c ****  * Detailed description of the implementation file.
+   6:app/config/bsp_bus/bsp_bus.c ****  *
+   7:app/config/bsp_bus/bsp_bus.c ****  * @date 18/08/2024
+   8:app/config/bsp_bus/bsp_bus.c ****  * @author artempolisskyi
+   9:app/config/bsp_bus/bsp_bus.c ****  */
+  10:app/config/bsp_bus/bsp_bus.c **** 
+  11:app/config/bsp_bus/bsp_bus.c **** #include "bsp_bus.h"
+  12:app/config/bsp_bus/bsp_bus.c **** 
+  13:app/config/bsp_bus/bsp_bus.c **** extern osMutexId_t i2cMutexHandle;
+  14:app/config/bsp_bus/bsp_bus.c **** 
+  15:app/config/bsp_bus/bsp_bus.c **** int32_t I2C_WriteReg(uint16_t Addr, uint16_t Reg, uint8_t *pData, uint16_t Length) {
+  30              		.loc 1 15 84 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 15 84 is_stmt 0 view .LVU1
+  35 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 24
+  38              		.cfi_offset 3, -24
+  39              		.cfi_offset 4, -20
+  40              		.cfi_offset 5, -16
+  41              		.cfi_offset 6, -12
+  42              		.cfi_offset 7, -8
+  43              		.cfi_offset 14, -4
+ARM GAS  /tmp/ccsh7Kvr.s 			page 2
+
+
+  44 0002 0446     		mov	r4, r0
+  45 0004 0D46     		mov	r5, r1
+  46 0006 1646     		mov	r6, r2
+  47 0008 1F46     		mov	r7, r3
+  16:app/config/bsp_bus/bsp_bus.c ****   int32_t ret;
+  48              		.loc 1 16 3 is_stmt 1 view .LVU2
+  17:app/config/bsp_bus/bsp_bus.c **** 
+  18:app/config/bsp_bus/bsp_bus.c ****   if (osMutexAcquire(i2cMutexHandle, osWaitForever) == osOK) {
+  49              		.loc 1 18 3 view .LVU3
+  50              		.loc 1 18 7 is_stmt 0 view .LVU4
+  51 000a 4FF0FF31 		mov	r1, #-1
+  52              	.LVL1:
+  53              		.loc 1 18 7 view .LVU5
+  54 000e 0A4B     		ldr	r3, .L5
+  55              	.LVL2:
+  56              		.loc 1 18 7 view .LVU6
+  57 0010 1868     		ldr	r0, [r3]
+  58              	.LVL3:
+  59              		.loc 1 18 7 view .LVU7
+  60 0012 FFF7FEFF 		bl	osMutexAcquire
+  61              	.LVL4:
+  62              		.loc 1 18 6 view .LVU8
+  63 0016 60B9     		cbnz	r0, .L3
+  19:app/config/bsp_bus/bsp_bus.c ****     ret = BSP_I2C1_WriteReg(Addr, Reg, pData, Length);
+  64              		.loc 1 19 5 is_stmt 1 view .LVU9
+  65              		.loc 1 19 11 is_stmt 0 view .LVU10
+  66 0018 3B46     		mov	r3, r7
+  67 001a 3246     		mov	r2, r6
+  68 001c 2946     		mov	r1, r5
+  69 001e 2046     		mov	r0, r4
+  70 0020 FFF7FEFF 		bl	BSP_I2C1_WriteReg
+  71              	.LVL5:
+  72 0024 0446     		mov	r4, r0
+  73              	.LVL6:
+  20:app/config/bsp_bus/bsp_bus.c ****     osMutexRelease(i2cMutexHandle);
+  74              		.loc 1 20 5 is_stmt 1 view .LVU11
+  75 0026 044B     		ldr	r3, .L5
+  76 0028 1868     		ldr	r0, [r3]
+  77              	.LVL7:
+  78              		.loc 1 20 5 is_stmt 0 view .LVU12
+  79 002a FFF7FEFF 		bl	osMutexRelease
+  80              	.LVL8:
+  81              	.L1:
+  21:app/config/bsp_bus/bsp_bus.c ****   } else {
+  22:app/config/bsp_bus/bsp_bus.c ****     ret = BSP_ERROR_BUSY; // or another appropriate error code
+  23:app/config/bsp_bus/bsp_bus.c ****   }
+  24:app/config/bsp_bus/bsp_bus.c **** 
+  25:app/config/bsp_bus/bsp_bus.c ****   return ret;
+  26:app/config/bsp_bus/bsp_bus.c **** }
+  82              		.loc 1 26 1 view .LVU13
+  83 002e 2046     		mov	r0, r4
+  84 0030 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+  85              	.LVL9:
+  86              	.L3:
+  22:app/config/bsp_bus/bsp_bus.c ****   }
+  87              		.loc 1 22 9 view .LVU14
+  88 0032 6FF00204 		mvn	r4, #2
+ARM GAS  /tmp/ccsh7Kvr.s 			page 3
+
+
+  89              	.LVL10:
+  25:app/config/bsp_bus/bsp_bus.c **** }
+  90              		.loc 1 25 3 is_stmt 1 view .LVU15
+  25:app/config/bsp_bus/bsp_bus.c **** }
+  91              		.loc 1 25 10 is_stmt 0 view .LVU16
+  92 0036 FAE7     		b	.L1
+  93              	.L6:
+  94              		.align	2
+  95              	.L5:
+  96 0038 00000000 		.word	i2cMutexHandle
+  97              		.cfi_endproc
+  98              	.LFE139:
+ 100              		.section	.text.I2C_ReadReg,"ax",%progbits
+ 101              		.align	1
+ 102              		.global	I2C_ReadReg
+ 103              		.syntax unified
+ 104              		.thumb
+ 105              		.thumb_func
+ 106              		.fpu fpv4-sp-d16
+ 108              	I2C_ReadReg:
+ 109              	.LVL11:
+ 110              	.LFB140:
+  27:app/config/bsp_bus/bsp_bus.c **** 
+  28:app/config/bsp_bus/bsp_bus.c **** int32_t I2C_ReadReg(uint16_t Addr, uint16_t Reg, uint8_t *pData, uint16_t Length) {
+ 111              		.loc 1 28 83 is_stmt 1 view -0
+ 112              		.cfi_startproc
+ 113              		@ args = 0, pretend = 0, frame = 0
+ 114              		@ frame_needed = 0, uses_anonymous_args = 0
+ 115              		.loc 1 28 83 is_stmt 0 view .LVU18
+ 116 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 117              	.LCFI1:
+ 118              		.cfi_def_cfa_offset 24
+ 119              		.cfi_offset 3, -24
+ 120              		.cfi_offset 4, -20
+ 121              		.cfi_offset 5, -16
+ 122              		.cfi_offset 6, -12
+ 123              		.cfi_offset 7, -8
+ 124              		.cfi_offset 14, -4
+ 125 0002 0446     		mov	r4, r0
+ 126 0004 0D46     		mov	r5, r1
+ 127 0006 1646     		mov	r6, r2
+ 128 0008 1F46     		mov	r7, r3
+  29:app/config/bsp_bus/bsp_bus.c ****   int32_t ret;
+ 129              		.loc 1 29 3 is_stmt 1 view .LVU19
+  30:app/config/bsp_bus/bsp_bus.c **** 
+  31:app/config/bsp_bus/bsp_bus.c ****   if (osMutexAcquire(i2cMutexHandle, osWaitForever) == osOK) {
+ 130              		.loc 1 31 3 view .LVU20
+ 131              		.loc 1 31 7 is_stmt 0 view .LVU21
+ 132 000a 4FF0FF31 		mov	r1, #-1
+ 133              	.LVL12:
+ 134              		.loc 1 31 7 view .LVU22
+ 135 000e 0A4B     		ldr	r3, .L11
+ 136              	.LVL13:
+ 137              		.loc 1 31 7 view .LVU23
+ 138 0010 1868     		ldr	r0, [r3]
+ 139              	.LVL14:
+ 140              		.loc 1 31 7 view .LVU24
+ARM GAS  /tmp/ccsh7Kvr.s 			page 4
+
+
+ 141 0012 FFF7FEFF 		bl	osMutexAcquire
+ 142              	.LVL15:
+ 143              		.loc 1 31 6 view .LVU25
+ 144 0016 60B9     		cbnz	r0, .L9
+  32:app/config/bsp_bus/bsp_bus.c ****     ret = BSP_I2C1_ReadReg(Addr, Reg, pData, Length);
+ 145              		.loc 1 32 5 is_stmt 1 view .LVU26
+ 146              		.loc 1 32 11 is_stmt 0 view .LVU27
+ 147 0018 3B46     		mov	r3, r7
+ 148 001a 3246     		mov	r2, r6
+ 149 001c 2946     		mov	r1, r5
+ 150 001e 2046     		mov	r0, r4
+ 151 0020 FFF7FEFF 		bl	BSP_I2C1_ReadReg
+ 152              	.LVL16:
+ 153 0024 0446     		mov	r4, r0
+ 154              	.LVL17:
+  33:app/config/bsp_bus/bsp_bus.c ****     osMutexRelease(i2cMutexHandle);
+ 155              		.loc 1 33 5 is_stmt 1 view .LVU28
+ 156 0026 044B     		ldr	r3, .L11
+ 157 0028 1868     		ldr	r0, [r3]
+ 158              	.LVL18:
+ 159              		.loc 1 33 5 is_stmt 0 view .LVU29
+ 160 002a FFF7FEFF 		bl	osMutexRelease
+ 161              	.LVL19:
+ 162              	.L7:
+  34:app/config/bsp_bus/bsp_bus.c ****   } else {
+  35:app/config/bsp_bus/bsp_bus.c ****     ret = BSP_ERROR_BUSY; // or another appropriate error code
+  36:app/config/bsp_bus/bsp_bus.c ****   }
+  37:app/config/bsp_bus/bsp_bus.c **** 
+  38:app/config/bsp_bus/bsp_bus.c ****   return ret;
+  39:app/config/bsp_bus/bsp_bus.c **** }
+ 163              		.loc 1 39 1 view .LVU30
+ 164 002e 2046     		mov	r0, r4
+ 165 0030 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 166              	.LVL20:
+ 167              	.L9:
+  35:app/config/bsp_bus/bsp_bus.c ****   }
+ 168              		.loc 1 35 9 view .LVU31
+ 169 0032 6FF00204 		mvn	r4, #2
+ 170              	.LVL21:
+  38:app/config/bsp_bus/bsp_bus.c **** }
+ 171              		.loc 1 38 3 is_stmt 1 view .LVU32
+  38:app/config/bsp_bus/bsp_bus.c **** }
+ 172              		.loc 1 38 10 is_stmt 0 view .LVU33
+ 173 0036 FAE7     		b	.L7
+ 174              	.L12:
+ 175              		.align	2
+ 176              	.L11:
+ 177 0038 00000000 		.word	i2cMutexHandle
+ 178              		.cfi_endproc
+ 179              	.LFE140:
+ 181              		.section	.text.I2C_WriteReg16,"ax",%progbits
+ 182              		.align	1
+ 183              		.global	I2C_WriteReg16
+ 184              		.syntax unified
+ 185              		.thumb
+ 186              		.thumb_func
+ 187              		.fpu fpv4-sp-d16
+ARM GAS  /tmp/ccsh7Kvr.s 			page 5
+
+
+ 189              	I2C_WriteReg16:
+ 190              	.LVL22:
+ 191              	.LFB141:
+  40:app/config/bsp_bus/bsp_bus.c **** 
+  41:app/config/bsp_bus/bsp_bus.c **** int32_t I2C_WriteReg16(uint16_t Addr, uint16_t Reg, uint8_t *pData, uint16_t Length) {
+ 192              		.loc 1 41 86 is_stmt 1 view -0
+ 193              		.cfi_startproc
+ 194              		@ args = 0, pretend = 0, frame = 0
+ 195              		@ frame_needed = 0, uses_anonymous_args = 0
+ 196              		.loc 1 41 86 is_stmt 0 view .LVU35
+ 197 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 198              	.LCFI2:
+ 199              		.cfi_def_cfa_offset 24
+ 200              		.cfi_offset 3, -24
+ 201              		.cfi_offset 4, -20
+ 202              		.cfi_offset 5, -16
+ 203              		.cfi_offset 6, -12
+ 204              		.cfi_offset 7, -8
+ 205              		.cfi_offset 14, -4
+ 206 0002 0446     		mov	r4, r0
+ 207 0004 0D46     		mov	r5, r1
+ 208 0006 1646     		mov	r6, r2
+ 209 0008 1F46     		mov	r7, r3
+  42:app/config/bsp_bus/bsp_bus.c ****   int32_t ret;
+ 210              		.loc 1 42 3 is_stmt 1 view .LVU36
+  43:app/config/bsp_bus/bsp_bus.c **** 
+  44:app/config/bsp_bus/bsp_bus.c ****   if (osMutexAcquire(i2cMutexHandle, osWaitForever) == osOK) {
+ 211              		.loc 1 44 3 view .LVU37
+ 212              		.loc 1 44 7 is_stmt 0 view .LVU38
+ 213 000a 4FF0FF31 		mov	r1, #-1
+ 214              	.LVL23:
+ 215              		.loc 1 44 7 view .LVU39
+ 216 000e 0A4B     		ldr	r3, .L17
+ 217              	.LVL24:
+ 218              		.loc 1 44 7 view .LVU40
+ 219 0010 1868     		ldr	r0, [r3]
+ 220              	.LVL25:
+ 221              		.loc 1 44 7 view .LVU41
+ 222 0012 FFF7FEFF 		bl	osMutexAcquire
+ 223              	.LVL26:
+ 224              		.loc 1 44 6 view .LVU42
+ 225 0016 60B9     		cbnz	r0, .L15
+  45:app/config/bsp_bus/bsp_bus.c ****     ret = BSP_I2C1_WriteReg16(Addr, Reg, pData, Length);
+ 226              		.loc 1 45 5 is_stmt 1 view .LVU43
+ 227              		.loc 1 45 11 is_stmt 0 view .LVU44
+ 228 0018 3B46     		mov	r3, r7
+ 229 001a 3246     		mov	r2, r6
+ 230 001c 2946     		mov	r1, r5
+ 231 001e 2046     		mov	r0, r4
+ 232 0020 FFF7FEFF 		bl	BSP_I2C1_WriteReg16
+ 233              	.LVL27:
+ 234 0024 0446     		mov	r4, r0
+ 235              	.LVL28:
+  46:app/config/bsp_bus/bsp_bus.c ****     osMutexRelease(i2cMutexHandle);
+ 236              		.loc 1 46 5 is_stmt 1 view .LVU45
+ 237 0026 044B     		ldr	r3, .L17
+ 238 0028 1868     		ldr	r0, [r3]
+ARM GAS  /tmp/ccsh7Kvr.s 			page 6
+
+
+ 239              	.LVL29:
+ 240              		.loc 1 46 5 is_stmt 0 view .LVU46
+ 241 002a FFF7FEFF 		bl	osMutexRelease
+ 242              	.LVL30:
+ 243              	.L13:
+  47:app/config/bsp_bus/bsp_bus.c ****   } else {
+  48:app/config/bsp_bus/bsp_bus.c ****     ret = BSP_ERROR_BUSY; // or another appropriate error code
+  49:app/config/bsp_bus/bsp_bus.c ****   }
+  50:app/config/bsp_bus/bsp_bus.c **** 
+  51:app/config/bsp_bus/bsp_bus.c ****   return ret;
+  52:app/config/bsp_bus/bsp_bus.c **** }
+ 244              		.loc 1 52 1 view .LVU47
+ 245 002e 2046     		mov	r0, r4
+ 246 0030 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 247              	.LVL31:
+ 248              	.L15:
+  48:app/config/bsp_bus/bsp_bus.c ****   }
+ 249              		.loc 1 48 9 view .LVU48
+ 250 0032 6FF00204 		mvn	r4, #2
+ 251              	.LVL32:
+  51:app/config/bsp_bus/bsp_bus.c **** }
+ 252              		.loc 1 51 3 is_stmt 1 view .LVU49
+  51:app/config/bsp_bus/bsp_bus.c **** }
+ 253              		.loc 1 51 10 is_stmt 0 view .LVU50
+ 254 0036 FAE7     		b	.L13
+ 255              	.L18:
+ 256              		.align	2
+ 257              	.L17:
+ 258 0038 00000000 		.word	i2cMutexHandle
+ 259              		.cfi_endproc
+ 260              	.LFE141:
+ 262              		.section	.text.I2C_ReadReg16,"ax",%progbits
+ 263              		.align	1
+ 264              		.global	I2C_ReadReg16
+ 265              		.syntax unified
+ 266              		.thumb
+ 267              		.thumb_func
+ 268              		.fpu fpv4-sp-d16
+ 270              	I2C_ReadReg16:
+ 271              	.LVL33:
+ 272              	.LFB142:
+  53:app/config/bsp_bus/bsp_bus.c **** 
+  54:app/config/bsp_bus/bsp_bus.c **** int32_t I2C_ReadReg16(uint16_t Addr, uint16_t Reg, uint8_t *pData, uint16_t Length) {
+ 273              		.loc 1 54 85 is_stmt 1 view -0
+ 274              		.cfi_startproc
+ 275              		@ args = 0, pretend = 0, frame = 0
+ 276              		@ frame_needed = 0, uses_anonymous_args = 0
+ 277              		.loc 1 54 85 is_stmt 0 view .LVU52
+ 278 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 279              	.LCFI3:
+ 280              		.cfi_def_cfa_offset 24
+ 281              		.cfi_offset 3, -24
+ 282              		.cfi_offset 4, -20
+ 283              		.cfi_offset 5, -16
+ 284              		.cfi_offset 6, -12
+ 285              		.cfi_offset 7, -8
+ 286              		.cfi_offset 14, -4
+ARM GAS  /tmp/ccsh7Kvr.s 			page 7
+
+
+ 287 0002 0446     		mov	r4, r0
+ 288 0004 0D46     		mov	r5, r1
+ 289 0006 1646     		mov	r6, r2
+ 290 0008 1F46     		mov	r7, r3
+  55:app/config/bsp_bus/bsp_bus.c ****   int32_t ret;
+ 291              		.loc 1 55 3 is_stmt 1 view .LVU53
+  56:app/config/bsp_bus/bsp_bus.c **** 
+  57:app/config/bsp_bus/bsp_bus.c ****   if (osMutexAcquire(i2cMutexHandle, osWaitForever) == osOK) {
+ 292              		.loc 1 57 3 view .LVU54
+ 293              		.loc 1 57 7 is_stmt 0 view .LVU55
+ 294 000a 4FF0FF31 		mov	r1, #-1
+ 295              	.LVL34:
+ 296              		.loc 1 57 7 view .LVU56
+ 297 000e 0A4B     		ldr	r3, .L23
+ 298              	.LVL35:
+ 299              		.loc 1 57 7 view .LVU57
+ 300 0010 1868     		ldr	r0, [r3]
+ 301              	.LVL36:
+ 302              		.loc 1 57 7 view .LVU58
+ 303 0012 FFF7FEFF 		bl	osMutexAcquire
+ 304              	.LVL37:
+ 305              		.loc 1 57 6 view .LVU59
+ 306 0016 60B9     		cbnz	r0, .L21
+  58:app/config/bsp_bus/bsp_bus.c ****     ret = BSP_I2C1_ReadReg16(Addr, Reg, pData, Length);
+ 307              		.loc 1 58 5 is_stmt 1 view .LVU60
+ 308              		.loc 1 58 11 is_stmt 0 view .LVU61
+ 309 0018 3B46     		mov	r3, r7
+ 310 001a 3246     		mov	r2, r6
+ 311 001c 2946     		mov	r1, r5
+ 312 001e 2046     		mov	r0, r4
+ 313 0020 FFF7FEFF 		bl	BSP_I2C1_ReadReg16
+ 314              	.LVL38:
+ 315 0024 0446     		mov	r4, r0
+ 316              	.LVL39:
+  59:app/config/bsp_bus/bsp_bus.c ****     osMutexRelease(i2cMutexHandle);
+ 317              		.loc 1 59 5 is_stmt 1 view .LVU62
+ 318 0026 044B     		ldr	r3, .L23
+ 319 0028 1868     		ldr	r0, [r3]
+ 320              	.LVL40:
+ 321              		.loc 1 59 5 is_stmt 0 view .LVU63
+ 322 002a FFF7FEFF 		bl	osMutexRelease
+ 323              	.LVL41:
+ 324              	.L19:
+  60:app/config/bsp_bus/bsp_bus.c ****   } else {
+  61:app/config/bsp_bus/bsp_bus.c ****     ret = BSP_ERROR_BUSY; // or another appropriate error code
+  62:app/config/bsp_bus/bsp_bus.c ****   }
+  63:app/config/bsp_bus/bsp_bus.c **** 
+  64:app/config/bsp_bus/bsp_bus.c ****   return ret;
+  65:app/config/bsp_bus/bsp_bus.c **** }
+ 325              		.loc 1 65 1 view .LVU64
+ 326 002e 2046     		mov	r0, r4
+ 327 0030 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 328              	.LVL42:
+ 329              	.L21:
+  61:app/config/bsp_bus/bsp_bus.c ****   }
+ 330              		.loc 1 61 9 view .LVU65
+ 331 0032 6FF00204 		mvn	r4, #2
+ARM GAS  /tmp/ccsh7Kvr.s 			page 8
+
+
+ 332              	.LVL43:
+  64:app/config/bsp_bus/bsp_bus.c **** }
+ 333              		.loc 1 64 3 is_stmt 1 view .LVU66
+  64:app/config/bsp_bus/bsp_bus.c **** }
+ 334              		.loc 1 64 10 is_stmt 0 view .LVU67
+ 335 0036 FAE7     		b	.L19
+ 336              	.L24:
+ 337              		.align	2
+ 338              	.L23:
+ 339 0038 00000000 		.word	i2cMutexHandle
+ 340              		.cfi_endproc
+ 341              	.LFE142:
+ 343              		.section	.text.I2C_Send,"ax",%progbits
+ 344              		.align	1
+ 345              		.global	I2C_Send
+ 346              		.syntax unified
+ 347              		.thumb
+ 348              		.thumb_func
+ 349              		.fpu fpv4-sp-d16
+ 351              	I2C_Send:
+ 352              	.LVL44:
+ 353              	.LFB143:
+  66:app/config/bsp_bus/bsp_bus.c **** 
+  67:app/config/bsp_bus/bsp_bus.c **** int32_t I2C_Send(uint16_t DevAddr, uint8_t *pData, uint16_t Length) {
+ 354              		.loc 1 67 69 is_stmt 1 view -0
+ 355              		.cfi_startproc
+ 356              		@ args = 0, pretend = 0, frame = 0
+ 357              		@ frame_needed = 0, uses_anonymous_args = 0
+ 358              		.loc 1 67 69 is_stmt 0 view .LVU69
+ 359 0000 70B5     		push	{r4, r5, r6, lr}
+ 360              	.LCFI4:
+ 361              		.cfi_def_cfa_offset 16
+ 362              		.cfi_offset 4, -16
+ 363              		.cfi_offset 5, -12
+ 364              		.cfi_offset 6, -8
+ 365              		.cfi_offset 14, -4
+ 366 0002 0446     		mov	r4, r0
+ 367 0004 0D46     		mov	r5, r1
+ 368 0006 1646     		mov	r6, r2
+  68:app/config/bsp_bus/bsp_bus.c ****   int32_t ret;
+ 369              		.loc 1 68 3 is_stmt 1 view .LVU70
+  69:app/config/bsp_bus/bsp_bus.c **** 
+  70:app/config/bsp_bus/bsp_bus.c ****   if (osMutexAcquire(i2cMutexHandle, osWaitForever) == osOK) {
+ 370              		.loc 1 70 3 view .LVU71
+ 371              		.loc 1 70 7 is_stmt 0 view .LVU72
+ 372 0008 4FF0FF31 		mov	r1, #-1
+ 373              	.LVL45:
+ 374              		.loc 1 70 7 view .LVU73
+ 375 000c 094B     		ldr	r3, .L29
+ 376 000e 1868     		ldr	r0, [r3]
+ 377              	.LVL46:
+ 378              		.loc 1 70 7 view .LVU74
+ 379 0010 FFF7FEFF 		bl	osMutexAcquire
+ 380              	.LVL47:
+ 381              		.loc 1 70 6 view .LVU75
+ 382 0014 58B9     		cbnz	r0, .L27
+  71:app/config/bsp_bus/bsp_bus.c ****     ret = BSP_I2C1_Send(DevAddr, pData, Length);
+ARM GAS  /tmp/ccsh7Kvr.s 			page 9
+
+
+ 383              		.loc 1 71 5 is_stmt 1 view .LVU76
+ 384              		.loc 1 71 11 is_stmt 0 view .LVU77
+ 385 0016 3246     		mov	r2, r6
+ 386 0018 2946     		mov	r1, r5
+ 387 001a 2046     		mov	r0, r4
+ 388 001c FFF7FEFF 		bl	BSP_I2C1_Send
+ 389              	.LVL48:
+ 390 0020 0446     		mov	r4, r0
+ 391              	.LVL49:
+  72:app/config/bsp_bus/bsp_bus.c ****     osMutexRelease(i2cMutexHandle);
+ 392              		.loc 1 72 5 is_stmt 1 view .LVU78
+ 393 0022 044B     		ldr	r3, .L29
+ 394 0024 1868     		ldr	r0, [r3]
+ 395              	.LVL50:
+ 396              		.loc 1 72 5 is_stmt 0 view .LVU79
+ 397 0026 FFF7FEFF 		bl	osMutexRelease
+ 398              	.LVL51:
+ 399              	.L25:
+  73:app/config/bsp_bus/bsp_bus.c ****   } else {
+  74:app/config/bsp_bus/bsp_bus.c ****     ret = BSP_ERROR_BUSY; // or another appropriate error code
+  75:app/config/bsp_bus/bsp_bus.c ****   }
+  76:app/config/bsp_bus/bsp_bus.c **** 
+  77:app/config/bsp_bus/bsp_bus.c ****   return ret;
+  78:app/config/bsp_bus/bsp_bus.c **** }
+ 400              		.loc 1 78 1 view .LVU80
+ 401 002a 2046     		mov	r0, r4
+ 402 002c 70BD     		pop	{r4, r5, r6, pc}
+ 403              	.LVL52:
+ 404              	.L27:
+  74:app/config/bsp_bus/bsp_bus.c ****   }
+ 405              		.loc 1 74 9 view .LVU81
+ 406 002e 6FF00204 		mvn	r4, #2
+ 407              	.LVL53:
+  77:app/config/bsp_bus/bsp_bus.c **** }
+ 408              		.loc 1 77 3 is_stmt 1 view .LVU82
+  77:app/config/bsp_bus/bsp_bus.c **** }
+ 409              		.loc 1 77 10 is_stmt 0 view .LVU83
+ 410 0032 FAE7     		b	.L25
+ 411              	.L30:
+ 412              		.align	2
+ 413              	.L29:
+ 414 0034 00000000 		.word	i2cMutexHandle
+ 415              		.cfi_endproc
+ 416              	.LFE143:
+ 418              		.section	.text.I2C_Recv,"ax",%progbits
+ 419              		.align	1
+ 420              		.global	I2C_Recv
+ 421              		.syntax unified
+ 422              		.thumb
+ 423              		.thumb_func
+ 424              		.fpu fpv4-sp-d16
+ 426              	I2C_Recv:
+ 427              	.LVL54:
+ 428              	.LFB144:
+  79:app/config/bsp_bus/bsp_bus.c **** 
+  80:app/config/bsp_bus/bsp_bus.c **** int32_t I2C_Recv(uint16_t DevAddr, uint8_t *pData, uint16_t Length) {
+ 429              		.loc 1 80 69 is_stmt 1 view -0
+ARM GAS  /tmp/ccsh7Kvr.s 			page 10
+
+
+ 430              		.cfi_startproc
+ 431              		@ args = 0, pretend = 0, frame = 0
+ 432              		@ frame_needed = 0, uses_anonymous_args = 0
+ 433              		.loc 1 80 69 is_stmt 0 view .LVU85
+ 434 0000 70B5     		push	{r4, r5, r6, lr}
+ 435              	.LCFI5:
+ 436              		.cfi_def_cfa_offset 16
+ 437              		.cfi_offset 4, -16
+ 438              		.cfi_offset 5, -12
+ 439              		.cfi_offset 6, -8
+ 440              		.cfi_offset 14, -4
+ 441 0002 0446     		mov	r4, r0
+ 442 0004 0D46     		mov	r5, r1
+ 443 0006 1646     		mov	r6, r2
+  81:app/config/bsp_bus/bsp_bus.c ****   int32_t ret;
+ 444              		.loc 1 81 3 is_stmt 1 view .LVU86
+  82:app/config/bsp_bus/bsp_bus.c **** 
+  83:app/config/bsp_bus/bsp_bus.c ****   if (osMutexAcquire(i2cMutexHandle, osWaitForever) == osOK) {
+ 445              		.loc 1 83 3 view .LVU87
+ 446              		.loc 1 83 7 is_stmt 0 view .LVU88
+ 447 0008 4FF0FF31 		mov	r1, #-1
+ 448              	.LVL55:
+ 449              		.loc 1 83 7 view .LVU89
+ 450 000c 094B     		ldr	r3, .L35
+ 451 000e 1868     		ldr	r0, [r3]
+ 452              	.LVL56:
+ 453              		.loc 1 83 7 view .LVU90
+ 454 0010 FFF7FEFF 		bl	osMutexAcquire
+ 455              	.LVL57:
+ 456              		.loc 1 83 6 view .LVU91
+ 457 0014 58B9     		cbnz	r0, .L33
+  84:app/config/bsp_bus/bsp_bus.c ****     ret = BSP_I2C1_Recv(DevAddr, pData, Length);
+ 458              		.loc 1 84 5 is_stmt 1 view .LVU92
+ 459              		.loc 1 84 11 is_stmt 0 view .LVU93
+ 460 0016 3246     		mov	r2, r6
+ 461 0018 2946     		mov	r1, r5
+ 462 001a 2046     		mov	r0, r4
+ 463 001c FFF7FEFF 		bl	BSP_I2C1_Recv
+ 464              	.LVL58:
+ 465 0020 0446     		mov	r4, r0
+ 466              	.LVL59:
+  85:app/config/bsp_bus/bsp_bus.c ****     osMutexRelease(i2cMutexHandle);
+ 467              		.loc 1 85 5 is_stmt 1 view .LVU94
+ 468 0022 044B     		ldr	r3, .L35
+ 469 0024 1868     		ldr	r0, [r3]
+ 470              	.LVL60:
+ 471              		.loc 1 85 5 is_stmt 0 view .LVU95
+ 472 0026 FFF7FEFF 		bl	osMutexRelease
+ 473              	.LVL61:
+ 474              	.L31:
+  86:app/config/bsp_bus/bsp_bus.c ****   } else {
+  87:app/config/bsp_bus/bsp_bus.c ****     ret = BSP_ERROR_BUSY; // or another appropriate error code
+  88:app/config/bsp_bus/bsp_bus.c ****   }
+  89:app/config/bsp_bus/bsp_bus.c **** 
+  90:app/config/bsp_bus/bsp_bus.c ****   return ret;
+  91:app/config/bsp_bus/bsp_bus.c **** }...
+ 475              		.loc 1 91 1 view .LVU96
+ARM GAS  /tmp/ccsh7Kvr.s 			page 11
+
+
+ 476 002a 2046     		mov	r0, r4
+ 477 002c 70BD     		pop	{r4, r5, r6, pc}
+ 478              	.LVL62:
+ 479              	.L33:
+  87:app/config/bsp_bus/bsp_bus.c ****     ret = BSP_ERROR_BUSY; // or another appropriate error code
+ 480              		.loc 1 87 9 view .LVU97
+ 481 002e 6FF00204 		mvn	r4, #2
+ 482              	.LVL63:
+  90:app/config/bsp_bus/bsp_bus.c ****   return ret;
+ 483              		.loc 1 90 3 is_stmt 1 view .LVU98
+  90:app/config/bsp_bus/bsp_bus.c ****   return ret;
+ 484              		.loc 1 90 10 is_stmt 0 view .LVU99
+ 485 0032 FAE7     		b	.L31
+ 486              	.L36:
+ 487              		.align	2
+ 488              	.L35:
+ 489 0034 00000000 		.word	i2cMutexHandle
+ 490              		.cfi_endproc
+ 491              	.LFE144:
+ 493              		.text
+ 494              	.Letext0:
+ 495              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 496              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 497              		.file 4 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
+ 498              		.file 5 "Core/Inc/custom_bus.h"
+ARM GAS  /tmp/ccsh7Kvr.s 			page 12
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 bsp_bus.c
+     /tmp/ccsh7Kvr.s:18     .text.I2C_WriteReg:0000000000000000 $t
+     /tmp/ccsh7Kvr.s:26     .text.I2C_WriteReg:0000000000000000 I2C_WriteReg
+     /tmp/ccsh7Kvr.s:96     .text.I2C_WriteReg:0000000000000038 $d
+     /tmp/ccsh7Kvr.s:101    .text.I2C_ReadReg:0000000000000000 $t
+     /tmp/ccsh7Kvr.s:108    .text.I2C_ReadReg:0000000000000000 I2C_ReadReg
+     /tmp/ccsh7Kvr.s:177    .text.I2C_ReadReg:0000000000000038 $d
+     /tmp/ccsh7Kvr.s:182    .text.I2C_WriteReg16:0000000000000000 $t
+     /tmp/ccsh7Kvr.s:189    .text.I2C_WriteReg16:0000000000000000 I2C_WriteReg16
+     /tmp/ccsh7Kvr.s:258    .text.I2C_WriteReg16:0000000000000038 $d
+     /tmp/ccsh7Kvr.s:263    .text.I2C_ReadReg16:0000000000000000 $t
+     /tmp/ccsh7Kvr.s:270    .text.I2C_ReadReg16:0000000000000000 I2C_ReadReg16
+     /tmp/ccsh7Kvr.s:339    .text.I2C_ReadReg16:0000000000000038 $d
+     /tmp/ccsh7Kvr.s:344    .text.I2C_Send:0000000000000000 $t
+     /tmp/ccsh7Kvr.s:351    .text.I2C_Send:0000000000000000 I2C_Send
+     /tmp/ccsh7Kvr.s:414    .text.I2C_Send:0000000000000034 $d
+     /tmp/ccsh7Kvr.s:419    .text.I2C_Recv:0000000000000000 $t
+     /tmp/ccsh7Kvr.s:426    .text.I2C_Recv:0000000000000000 I2C_Recv
+     /tmp/ccsh7Kvr.s:489    .text.I2C_Recv:0000000000000034 $d
+
+UNDEFINED SYMBOLS
+osMutexAcquire
+BSP_I2C1_WriteReg
+osMutexRelease
+i2cMutexHandle
+BSP_I2C1_ReadReg
+BSP_I2C1_WriteReg16
+BSP_I2C1_ReadReg16
+BSP_I2C1_Send
+BSP_I2C1_Recv

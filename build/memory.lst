@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccwhM0Iy.s 			page 1
+ARM GAS  /tmp/ccLaH3W0.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccwhM0Iy.s 			page 1
   28:app/tasks/memory/memory.c ****         .name = "memoryTask",
   29:app/tasks/memory/memory.c ****         .cb_mem = &memoryTaskControlBlock,
   30:app/tasks/memory/memory.c ****         .cb_size = sizeof(memoryTaskControlBlock),
-ARM GAS  /tmp/ccwhM0Iy.s 			page 2
+ARM GAS  /tmp/ccLaH3W0.s 			page 2
 
 
   31:app/tasks/memory/memory.c ****         .stack_mem = &memoryTaskBuffer[0],
@@ -118,7 +118,7 @@ ARM GAS  /tmp/ccwhM0Iy.s 			page 1
   85:app/tasks/memory/memory.c ****     }
   86:app/tasks/memory/memory.c ****   }
   87:app/tasks/memory/memory.c **** }
-ARM GAS  /tmp/ccwhM0Iy.s 			page 3
+ARM GAS  /tmp/ccLaH3W0.s 			page 3
 
 
   88:app/tasks/memory/memory.c **** 
@@ -178,7 +178,7 @@ ARM GAS  /tmp/ccwhM0Iy.s 			page 1
   72              		.loc 1 75 3 view .LVU8
   75:app/tasks/memory/memory.c ****   fprintf(stdout, "Memory task initialized\n");
   73              		.loc 1 75 11 is_stmt 0 view .LVU9
-ARM GAS  /tmp/ccwhM0Iy.s 			page 4
+ARM GAS  /tmp/ccLaH3W0.s 			page 4
 
 
   74 0004 0D4B     		ldr	r3, .L7
@@ -238,7 +238,7 @@ ARM GAS  /tmp/ccwhM0Iy.s 			page 1
  115 0036 0122     		movs	r2, #1
  116 0038 1A74     		strb	r2, [r3, #16]
  117 003a EBE7     		b	.L3
-ARM GAS  /tmp/ccwhM0Iy.s 			page 5
+ARM GAS  /tmp/ccLaH3W0.s 			page 5
 
 
  118              	.L8:
@@ -298,7 +298,7 @@ ARM GAS  /tmp/ccwhM0Iy.s 			page 1
  168 0018 0C21     		movs	r1, #12
  169 001a 0820     		movs	r0, #8
  170 001c FFF7FEFF 		bl	osMessageQueueNew
-ARM GAS  /tmp/ccwhM0Iy.s 			page 6
+ARM GAS  /tmp/ccLaH3W0.s 			page 6
 
 
  171              	.LVL7:
@@ -358,7 +358,7 @@ ARM GAS  /tmp/ccwhM0Iy.s 			page 1
  216              		.section	.bss.memoryTaskControlBlock,"aw",%nobits
  217              		.align	2
  220              	memoryTaskControlBlock:
-ARM GAS  /tmp/ccwhM0Iy.s 			page 7
+ARM GAS  /tmp/ccLaH3W0.s 			page 7
 
 
  221 0000 00000000 		.space	92
@@ -399,37 +399,37 @@ ARM GAS  /tmp/ccwhM0Iy.s 			page 1
  255              		.file 7 "/usr/include/newlib/sys/_stdint.h"
  256              		.file 8 "/usr/include/newlib/sys/types.h"
  257              		.file 9 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
- 258              		.file 10 "app/core/actor/../config/events_list/events_list.h"
- 259              		.file 11 "app/core/actor/../config/actors_list/actors_list.h"
+ 258              		.file 10 "app/core/actor/../../config/events_list/events_list.h"
+ 259              		.file 11 "app/core/actor/../../config/actors_list/actors_list.h"
  260              		.file 12 "app/core/actor/actor.h"
  261              		.file 13 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h"
  262              		.file 14 "Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h"
  263              		.file 15 "app/tasks/memory/memory.h"
  264              		.file 16 "<built-in>"
-ARM GAS  /tmp/ccwhM0Iy.s 			page 8
+ARM GAS  /tmp/ccLaH3W0.s 			page 8
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 memory.c
-     /tmp/ccwhM0Iy.s:18     .text.handleMemoryFSM:0000000000000000 $t
-     /tmp/ccwhM0Iy.s:25     .text.handleMemoryFSM:0000000000000000 handleMemoryFSM
-     /tmp/ccwhM0Iy.s:44     .rodata.MEMORY_Task.str1.4:0000000000000000 $d
-     /tmp/ccwhM0Iy.s:48     .text.MEMORY_Task:0000000000000000 $t
-     /tmp/ccwhM0Iy.s:55     .text.MEMORY_Task:0000000000000000 MEMORY_Task
-     /tmp/ccwhM0Iy.s:121    .text.MEMORY_Task:000000000000003c $d
-     /tmp/ccwhM0Iy.s:129    .rodata.MEMORY_TaskInit.str1.4:0000000000000000 $d
-     /tmp/ccwhM0Iy.s:133    .text.MEMORY_TaskInit:0000000000000000 $t
-     /tmp/ccwhM0Iy.s:140    .text.MEMORY_TaskInit:0000000000000000 MEMORY_TaskInit
-     /tmp/ccwhM0Iy.s:195    .text.MEMORY_TaskInit:0000000000000038 $d
-     /tmp/ccwhM0Iy.s:239    .rodata.memoryTaskDescription:0000000000000000 memoryTaskDescription
-     /tmp/ccwhM0Iy.s:204    .rodata.str1.4:0000000000000000 $d
-     /tmp/ccwhM0Iy.s:220    .bss.memoryTaskControlBlock:0000000000000000 memoryTaskControlBlock
-     /tmp/ccwhM0Iy.s:214    .bss.memoryTaskBuffer:0000000000000000 memoryTaskBuffer
-     /tmp/ccwhM0Iy.s:227    .data.MEMORY_Actor:0000000000000000 MEMORY_Actor
-     /tmp/ccwhM0Iy.s:211    .bss.memoryTaskBuffer:0000000000000000 $d
-     /tmp/ccwhM0Iy.s:217    .bss.memoryTaskControlBlock:0000000000000000 $d
-     /tmp/ccwhM0Iy.s:223    .data.MEMORY_Actor:0000000000000000 $d
-     /tmp/ccwhM0Iy.s:235    .rodata.memoryTaskDescription:0000000000000000 $d
+     /tmp/ccLaH3W0.s:18     .text.handleMemoryFSM:0000000000000000 $t
+     /tmp/ccLaH3W0.s:25     .text.handleMemoryFSM:0000000000000000 handleMemoryFSM
+     /tmp/ccLaH3W0.s:44     .rodata.MEMORY_Task.str1.4:0000000000000000 $d
+     /tmp/ccLaH3W0.s:48     .text.MEMORY_Task:0000000000000000 $t
+     /tmp/ccLaH3W0.s:55     .text.MEMORY_Task:0000000000000000 MEMORY_Task
+     /tmp/ccLaH3W0.s:121    .text.MEMORY_Task:000000000000003c $d
+     /tmp/ccLaH3W0.s:129    .rodata.MEMORY_TaskInit.str1.4:0000000000000000 $d
+     /tmp/ccLaH3W0.s:133    .text.MEMORY_TaskInit:0000000000000000 $t
+     /tmp/ccLaH3W0.s:140    .text.MEMORY_TaskInit:0000000000000000 MEMORY_TaskInit
+     /tmp/ccLaH3W0.s:195    .text.MEMORY_TaskInit:0000000000000038 $d
+     /tmp/ccLaH3W0.s:239    .rodata.memoryTaskDescription:0000000000000000 memoryTaskDescription
+     /tmp/ccLaH3W0.s:204    .rodata.str1.4:0000000000000000 $d
+     /tmp/ccLaH3W0.s:220    .bss.memoryTaskControlBlock:0000000000000000 memoryTaskControlBlock
+     /tmp/ccLaH3W0.s:214    .bss.memoryTaskBuffer:0000000000000000 memoryTaskBuffer
+     /tmp/ccLaH3W0.s:227    .data.MEMORY_Actor:0000000000000000 MEMORY_Actor
+     /tmp/ccLaH3W0.s:211    .bss.memoryTaskBuffer:0000000000000000 $d
+     /tmp/ccLaH3W0.s:217    .bss.memoryTaskControlBlock:0000000000000000 $d
+     /tmp/ccLaH3W0.s:223    .data.MEMORY_Actor:0000000000000000 $d
+     /tmp/ccLaH3W0.s:235    .rodata.memoryTaskDescription:0000000000000000 $d
 
 UNDEFINED SYMBOLS
 fwrite

@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccamXK4Q.s 			page 1
+ARM GAS  /tmp/cctdrW9s.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
   35      545F5345 
   35      4E535F54 
   35      55524E45 
-ARM GAS  /tmp/ccamXK4Q.s 			page 2
+ARM GAS  /tmp/cctdrW9s.s 			page 2
 
 
   35      445F4F46 
@@ -118,7 +118,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
   38:app/tasks/light_sensor/light_sensor.c ****         .cb_mem = &lightSensorTaskControlBlock,
   39:app/tasks/light_sensor/light_sensor.c ****         .cb_size = sizeof(lightSensorTaskControlBlock),
   40:app/tasks/light_sensor/light_sensor.c ****         .stack_mem = &lightSensorTaskBuffer[0],
-ARM GAS  /tmp/ccamXK4Q.s 			page 3
+ARM GAS  /tmp/cctdrW9s.s 			page 3
 
 
   41:app/tasks/light_sensor/light_sensor.c ****         .stack_size = sizeof(lightSensorTaskBuffer),
@@ -178,7 +178,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
   53              		@ args = 0, pretend = 0, frame = 16
   54              		@ frame_needed = 0, uses_anonymous_args = 0
   55              		.loc 1 92 76 is_stmt 0 view .LVU1
-ARM GAS  /tmp/ccamXK4Q.s 			page 4
+ARM GAS  /tmp/cctdrW9s.s 			page 4
 
 
   56 0000 F0B5     		push	{r4, r5, r6, r7, lr}
@@ -200,7 +200,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
   71 0006 012B     		cmp	r3, #1
   72 0008 03D0     		beq	.L7
   94:app/tasks/light_sensor/light_sensor.c ****     // init the driver (io)
-  95:app/tasks/light_sensor/light_sensor.c ****     osStatus_t ioStatus = OPT3001_InitIO(LIGHT_SENS_I2C_ADDRESS, BSP_I2C1_WriteReg, BSP_I2C1_ReadRe
+  95:app/tasks/light_sensor/light_sensor.c ****     osStatus_t ioStatus = OPT3001_InitIO(LIGHT_SENS_I2C_ADDRESS, I2C_WriteReg, I2C_ReadReg);
   96:app/tasks/light_sensor/light_sensor.c **** 
   97:app/tasks/light_sensor/light_sensor.c ****     if (ioStatus != osOK) return osError;
   98:app/tasks/light_sensor/light_sensor.c **** 
@@ -238,7 +238,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  130:app/tasks/light_sensor/light_sensor.c **** 
  131:app/tasks/light_sensor/light_sensor.c ****     ioStatus = OPT3001_WriteLowLimit(OPT3001_CONFIG_LIMIT_MIN);
  132:app/tasks/light_sensor/light_sensor.c ****     if (ioStatus != osOK) return osError;
-ARM GAS  /tmp/ccamXK4Q.s 			page 5
+ARM GAS  /tmp/cctdrW9s.s 			page 5
 
 
  133:app/tasks/light_sensor/light_sensor.c **** 
@@ -298,7 +298,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  108              		.loc 1 100 14 is_stmt 0 view .LVU15
  109 0022 0023     		movs	r3, #0
  110 0024 ADF80030 		strh	r3, [sp]	@ movhi
-ARM GAS  /tmp/ccamXK4Q.s 			page 6
+ARM GAS  /tmp/cctdrW9s.s 			page 6
 
 
  101:app/tasks/light_sensor/light_sensor.c **** 
@@ -358,7 +358,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  148              		.loc 1 112 5 view .LVU32
  149 0052 4CF61002 		movw	r2, #51216
  150 0056 2C49     		ldr	r1, .L9+16
-ARM GAS  /tmp/ccamXK4Q.s 			page 7
+ARM GAS  /tmp/cctdrW9s.s 			page 7
 
 
  151 0058 9868     		ldr	r0, [r3, #8]
@@ -418,7 +418,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  189              		.loc 1 128 16 is_stmt 0 view .LVU48
  190 008c A88A     		ldrh	r0, [r5, #20]
  191 008e FFF7FEFF 		bl	OPT3001_WriteHighLimit
-ARM GAS  /tmp/ccamXK4Q.s 			page 8
+ARM GAS  /tmp/cctdrW9s.s 			page 8
 
 
  192              	.LVL16:
@@ -478,7 +478,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  231              		.loc 1 138 5 view .LVU63
  232 00c2 3A46     		mov	r2, r7
  233 00c4 1349     		ldr	r1, .L9+28
-ARM GAS  /tmp/ccamXK4Q.s 			page 9
+ARM GAS  /tmp/cctdrW9s.s 			page 9
 
 
  234 00c6 9868     		ldr	r0, [r3, #8]
@@ -530,15 +530,15 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  270              	.L10:
  271 00f6 00BF     		.align	2
  272              	.L9:
- 273 00f8 00000000 		.word	BSP_I2C1_ReadReg
- 274 00fc 00000000 		.word	BSP_I2C1_WriteReg
+ 273 00f8 00000000 		.word	I2C_ReadReg
+ 274 00fc 00000000 		.word	I2C_WriteReg
  275 0100 00000000 		.word	_impure_ptr
  276 0104 00000000 		.word	.LC0
  277 0108 10000000 		.word	.LC1
  278 010c 2C000000 		.word	.LC2
  279 0110 00000000 		.word	ACTORS_LIST_SystemRegistry
  280 0114 5C000000 		.word	.LC4
-ARM GAS  /tmp/ccamXK4Q.s 			page 10
+ARM GAS  /tmp/cctdrW9s.s 			page 10
 
 
  281 0118 7C000000 		.word	.LC5
@@ -598,7 +598,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  168:app/tasks/light_sensor/light_sensor.c **** 
  169:app/tasks/light_sensor/light_sensor.c ****       // convert rawLux to lux for debug
  170:app/tasks/light_sensor/light_sensor.c ****       fprintf(stdout, "OPT3001 milli Lux: %ld\n", OPT3001_RawToMilliLux(this->rawLux));
-ARM GAS  /tmp/ccamXK4Q.s 			page 11
+ARM GAS  /tmp/cctdrW9s.s 			page 11
 
 
  171:app/tasks/light_sensor/light_sensor.c **** 
@@ -658,7 +658,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  225:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_LIMIT_INT:
  226:app/tasks/light_sensor/light_sensor.c ****       // read the measured rawLux overvalue
  227:app/tasks/light_sensor/light_sensor.c ****       ioStatus = OPT3001_ReadResultRawLux(&this->rawLux);
-ARM GAS  /tmp/ccamXK4Q.s 			page 12
+ARM GAS  /tmp/cctdrW9s.s 			page 12
 
 
  228:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
@@ -718,7 +718,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  255:app/tasks/light_sensor/light_sensor.c **** 
  256:app/tasks/light_sensor/light_sensor.c ****       TO_STATE(this, LIGHT_SENS_OUT_OF_RANGE_STATE);
  257:app/tasks/light_sensor/light_sensor.c ****       return osOK;
-ARM GAS  /tmp/ccamXK4Q.s 			page 13
+ARM GAS  /tmp/cctdrW9s.s 			page 13
 
 
  258:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_TURN_OFF:
@@ -778,7 +778,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  256:app/tasks/light_sensor/light_sensor.c ****       return osOK;
  353              		.loc 1 256 7 view .LVU88
  354 0028 1E4B     		ldr	r3, .L22
-ARM GAS  /tmp/ccamXK4Q.s 			page 14
+ARM GAS  /tmp/cctdrW9s.s 			page 14
 
 
  355 002a 1868     		ldr	r0, [r3]
@@ -838,7 +838,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  395 0056 FFF7FEFF 		bl	fprintf
  396              	.LVL35:
  264:app/tasks/light_sensor/light_sensor.c ****       return osOK;
-ARM GAS  /tmp/ccamXK4Q.s 			page 15
+ARM GAS  /tmp/cctdrW9s.s 			page 15
 
 
  397              		.loc 1 264 7 is_stmt 1 view .LVU103
@@ -898,7 +898,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  434 0076 0223     		movs	r3, #2
  435 0078 2374     		strb	r3, [r4, #16]
  278:app/tasks/light_sensor/light_sensor.c ****       return osOK;
-ARM GAS  /tmp/ccamXK4Q.s 			page 16
+ARM GAS  /tmp/cctdrW9s.s 			page 16
 
 
  436              		.loc 1 278 7 view .LVU121
@@ -958,7 +958,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  482              		.align	2
  483              	.LC9:
  484 0000 4F505433 		.ascii	"OPT3001 milli Lux: %ld\012\000"
-ARM GAS  /tmp/ccamXK4Q.s 			page 17
+ARM GAS  /tmp/cctdrW9s.s 			page 17
 
 
  484      30303120 
@@ -1018,7 +1018,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  154:app/tasks/light_sensor/light_sensor.c ****                                     OPT3001_CONFIG_CONVERSION_TIME_800_MS | \
  529              		.loc 1 154 7 is_stmt 1 view .LVU138
  154:app/tasks/light_sensor/light_sensor.c ****                                     OPT3001_CONFIG_CONVERSION_TIME_800_MS | \
-ARM GAS  /tmp/ccamXK4Q.s 			page 18
+ARM GAS  /tmp/cctdrW9s.s 			page 18
 
 
  530              		.loc 1 154 18 is_stmt 0 view .LVU139
@@ -1078,7 +1078,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  571              	.LVL57:
  173:app/tasks/light_sensor/light_sensor.c ****       return osOK;
  572              		.loc 1 173 7 is_stmt 1 view .LVU153
-ARM GAS  /tmp/ccamXK4Q.s 			page 19
+ARM GAS  /tmp/cctdrW9s.s 			page 19
 
 
  173:app/tasks/light_sensor/light_sensor.c ****       return osOK;
@@ -1138,7 +1138,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  612 007a 2268     		ldr	r2, [r4]
  613 007c 1349     		ldr	r1, .L34+12
  614 007e 8068     		ldr	r0, [r0, #8]
-ARM GAS  /tmp/ccamXK4Q.s 			page 20
+ARM GAS  /tmp/cctdrW9s.s 			page 20
 
 
  615 0080 FFF7FEFF 		bl	fprintf
@@ -1198,7 +1198,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  653              		.loc 1 194 7 is_stmt 1 view .LVU184
  194:app/tasks/light_sensor/light_sensor.c ****       return osOK;
  654              		.loc 1 194 50 view .LVU185
-ARM GAS  /tmp/ccamXK4Q.s 			page 21
+ARM GAS  /tmp/cctdrW9s.s 			page 21
 
 
  195:app/tasks/light_sensor/light_sensor.c ****   }
@@ -1258,7 +1258,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  701              		.cfi_startproc
  702              		@ args = 0, pretend = 0, frame = 0
  703              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  /tmp/ccamXK4Q.s 			page 22
+ARM GAS  /tmp/cctdrW9s.s 			page 22
 
 
  204:app/tasks/light_sensor/light_sensor.c ****   osStatus_t ioStatus;
@@ -1318,7 +1318,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  746              		.loc 1 213 7 is_stmt 1 view .LVU204
  213:app/tasks/light_sensor/light_sensor.c **** 
  747              		.loc 1 213 15 is_stmt 0 view .LVU205
-ARM GAS  /tmp/ccamXK4Q.s 			page 23
+ARM GAS  /tmp/cctdrW9s.s 			page 23
 
 
  748 0024 254E     		ldr	r6, .L47
@@ -1378,7 +1378,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  221:app/tasks/light_sensor/light_sensor.c **** 
  789              		.loc 1 221 10 is_stmt 0 view .LVU219
  790 0056 0546     		mov	r5, r0
-ARM GAS  /tmp/ccamXK4Q.s 			page 24
+ARM GAS  /tmp/cctdrW9s.s 			page 24
 
 
  791 0058 30BB     		cbnz	r0, .L42
@@ -1438,7 +1438,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  829 007c FFF7FEFF 		bl	OPT3001_WriteHighLimit
  830              	.LVL88:
  831 0080 0546     		mov	r5, r0
-ARM GAS  /tmp/ccamXK4Q.s 			page 25
+ARM GAS  /tmp/cctdrW9s.s 			page 25
 
 
  234:app/tasks/light_sensor/light_sensor.c ****       if (ioStatus != osOK) return osError;
@@ -1498,7 +1498,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  872 00b2 AFE7     		b	.L36
  873              	.LVL93:
  874              	.L44:
-ARM GAS  /tmp/ccamXK4Q.s 			page 26
+ARM GAS  /tmp/cctdrW9s.s 			page 26
 
 
  235:app/tasks/light_sensor/light_sensor.c **** 
@@ -1558,7 +1558,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  924              		.p2align 1
  925              	.L55:
   78:app/tasks/light_sensor/light_sensor.c ****     case LIGHT_SENS_TURNED_OFF_STATE:
-ARM GAS  /tmp/ccamXK4Q.s 			page 27
+ARM GAS  /tmp/cctdrW9s.s 			page 27
 
 
  926              		.loc 1 78 7 is_stmt 1 view .LVU257
@@ -1618,7 +1618,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  968              		.align	2
  969              	.LC11:
  970 0000 6C696768 		.ascii	"lightSensorTask\000"
-ARM GAS  /tmp/ccamXK4Q.s 			page 28
+ARM GAS  /tmp/cctdrW9s.s 			page 28
 
 
  970      7453656E 
@@ -1678,7 +1678,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
   58:app/tasks/light_sensor/light_sensor.c **** 
  1007              		.loc 1 58 3 view .LVU275
   58:app/tasks/light_sensor/light_sensor.c **** 
-ARM GAS  /tmp/ccamXK4Q.s 			page 29
+ARM GAS  /tmp/cctdrW9s.s 			page 29
 
 
  1008              		.loc 1 58 11 is_stmt 0 view .LVU276
@@ -1738,7 +1738,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  1049 0032 134D     		ldr	r5, .L63
  1050 0034 2B68     		ldr	r3, [r5]
  1051 0036 D868     		ldr	r0, [r3, #12]
-ARM GAS  /tmp/ccamXK4Q.s 			page 30
+ARM GAS  /tmp/cctdrW9s.s 			page 30
 
 
  1052              	.LVL110:
@@ -1798,7 +1798,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  1095 0078 FFF7FEFF 		bl	fprintf
  1096              	.LVL114:
   69:app/tasks/light_sensor/light_sensor.c ****       }
-ARM GAS  /tmp/ccamXK4Q.s 			page 31
+ARM GAS  /tmp/cctdrW9s.s 			page 31
 
 
  1097              		.loc 1 69 9 view .LVU301
@@ -1858,7 +1858,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  1145 0004 0024     		movs	r4, #0
  1146 0006 0094     		str	r4, [sp]
  1147 0008 0194     		str	r4, [sp, #4]
-ARM GAS  /tmp/ccamXK4Q.s 			page 32
+ARM GAS  /tmp/cctdrW9s.s 			page 32
 
 
  1148 000a 0294     		str	r4, [sp, #8]
@@ -1918,7 +1918,7 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  1198              	lightSensorTaskBuffer:
  1199 0000 00000000 		.space	512
  1199      00000000 
-ARM GAS  /tmp/ccamXK4Q.s 			page 33
+ARM GAS  /tmp/cctdrW9s.s 			page 33
 
 
  1199      00000000 
@@ -1968,8 +1968,8 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  1242              		.file 7 "/usr/include/newlib/sys/_stdint.h"
  1243              		.file 8 "/usr/include/newlib/sys/types.h"
  1244              		.file 9 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
- 1245              		.file 10 "app/core/actor/../config/events_list/events_list.h"
- 1246              		.file 11 "app/core/actor/../config/actors_list/actors_list.h"
+ 1245              		.file 10 "app/core/actor/../../config/events_list/events_list.h"
+ 1246              		.file 11 "app/core/actor/../../config/actors_list/actors_list.h"
  1247              		.file 12 "app/core/actor/actor.h"
  1248              		.file 13 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h"
  1249              		.file 14 "Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h"
@@ -1977,47 +1977,47 @@ ARM GAS  /tmp/ccamXK4Q.s 			page 1
  1251              		.file 16 "app/drivers/opt3001/opt3001.h"
  1252              		.file 17 "/usr/include/newlib/stdio.h"
  1253              		.file 18 "<built-in>"
-ARM GAS  /tmp/ccamXK4Q.s 			page 34
+ARM GAS  /tmp/cctdrW9s.s 			page 34
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 light_sensor.c
-     /tmp/ccamXK4Q.s:18     .rodata.handleInit.str1.4:0000000000000000 $d
-     /tmp/ccamXK4Q.s:40     .text.handleInit:0000000000000000 $t
-     /tmp/ccamXK4Q.s:47     .text.handleInit:0000000000000000 handleInit
-     /tmp/ccamXK4Q.s:273    .text.handleInit:00000000000000f8 $d
-     /tmp/ccamXK4Q.s:289    .rodata.handleOutOfRange.str1.4:0000000000000000 $d
-     /tmp/ccamXK4Q.s:296    .text.handleOutOfRange:0000000000000000 $t
-     /tmp/ccamXK4Q.s:302    .text.handleOutOfRange:0000000000000000 handleOutOfRange
-     /tmp/ccamXK4Q.s:473    .text.handleOutOfRange:00000000000000a4 $d
-     /tmp/ccamXK4Q.s:482    .rodata.handleTurnedOff.str1.4:0000000000000000 $d
-     /tmp/ccamXK4Q.s:486    .text.handleTurnedOff:0000000000000000 $t
-     /tmp/ccamXK4Q.s:492    .text.handleTurnedOff:0000000000000000 handleTurnedOff
-     /tmp/ccamXK4Q.s:678    .text.handleTurnedOff:00000000000000c0 $d
-     /tmp/ccamXK4Q.s:687    .rodata.handleContinuousMeasure.str1.4:0000000000000000 $d
-     /tmp/ccamXK4Q.s:691    .text.handleContinuousMeasure:0000000000000000 $t
-     /tmp/ccamXK4Q.s:697    .text.handleContinuousMeasure:0000000000000000 handleContinuousMeasure
-     /tmp/ccamXK4Q.s:883    .text.handleContinuousMeasure:00000000000000bc $d
-     /tmp/ccamXK4Q.s:893    .text.handleLightSensorFSM:0000000000000000 $t
-     /tmp/ccamXK4Q.s:899    .text.handleLightSensorFSM:0000000000000000 handleLightSensorFSM
-     /tmp/ccamXK4Q.s:920    .text.handleLightSensorFSM:000000000000000c $d
-     /tmp/ccamXK4Q.s:924    .text.handleLightSensorFSM:0000000000000010 $t
-     /tmp/ccamXK4Q.s:968    .rodata.LIGHT_SENS_Task.str1.4:0000000000000000 $d
-     /tmp/ccamXK4Q.s:981    .text.LIGHT_SENS_Task:0000000000000000 $t
-     /tmp/ccamXK4Q.s:988    .text.LIGHT_SENS_Task:0000000000000000 LIGHT_SENS_Task
-     /tmp/ccamXK4Q.s:1103   .text.LIGHT_SENS_Task:0000000000000080 $d
-     /tmp/ccamXK4Q.s:1117   .rodata.LIGHT_SENS_TaskInit.str1.4:0000000000000000 $d
-     /tmp/ccamXK4Q.s:1121   .text.LIGHT_SENS_TaskInit:0000000000000000 $t
-     /tmp/ccamXK4Q.s:1128   .text.LIGHT_SENS_TaskInit:0000000000000000 LIGHT_SENS_TaskInit
-     /tmp/ccamXK4Q.s:1183   .text.LIGHT_SENS_TaskInit:0000000000000038 $d
-     /tmp/ccamXK4Q.s:1226   .rodata.lightSensorTaskDescription:0000000000000000 lightSensorTaskDescription
-     /tmp/ccamXK4Q.s:1204   .bss.lightSensorTaskControlBlock:0000000000000000 lightSensorTaskControlBlock
-     /tmp/ccamXK4Q.s:1198   .bss.lightSensorTaskBuffer:0000000000000000 lightSensorTaskBuffer
-     /tmp/ccamXK4Q.s:1211   .data.LIGHT_SENS_Actor:0000000000000000 LIGHT_SENS_Actor
-     /tmp/ccamXK4Q.s:1195   .bss.lightSensorTaskBuffer:0000000000000000 $d
-     /tmp/ccamXK4Q.s:1201   .bss.lightSensorTaskControlBlock:0000000000000000 $d
-     /tmp/ccamXK4Q.s:1207   .data.LIGHT_SENS_Actor:0000000000000000 $d
-     /tmp/ccamXK4Q.s:1222   .rodata.lightSensorTaskDescription:0000000000000000 $d
+     /tmp/cctdrW9s.s:18     .rodata.handleInit.str1.4:0000000000000000 $d
+     /tmp/cctdrW9s.s:40     .text.handleInit:0000000000000000 $t
+     /tmp/cctdrW9s.s:47     .text.handleInit:0000000000000000 handleInit
+     /tmp/cctdrW9s.s:273    .text.handleInit:00000000000000f8 $d
+     /tmp/cctdrW9s.s:289    .rodata.handleOutOfRange.str1.4:0000000000000000 $d
+     /tmp/cctdrW9s.s:296    .text.handleOutOfRange:0000000000000000 $t
+     /tmp/cctdrW9s.s:302    .text.handleOutOfRange:0000000000000000 handleOutOfRange
+     /tmp/cctdrW9s.s:473    .text.handleOutOfRange:00000000000000a4 $d
+     /tmp/cctdrW9s.s:482    .rodata.handleTurnedOff.str1.4:0000000000000000 $d
+     /tmp/cctdrW9s.s:486    .text.handleTurnedOff:0000000000000000 $t
+     /tmp/cctdrW9s.s:492    .text.handleTurnedOff:0000000000000000 handleTurnedOff
+     /tmp/cctdrW9s.s:678    .text.handleTurnedOff:00000000000000c0 $d
+     /tmp/cctdrW9s.s:687    .rodata.handleContinuousMeasure.str1.4:0000000000000000 $d
+     /tmp/cctdrW9s.s:691    .text.handleContinuousMeasure:0000000000000000 $t
+     /tmp/cctdrW9s.s:697    .text.handleContinuousMeasure:0000000000000000 handleContinuousMeasure
+     /tmp/cctdrW9s.s:883    .text.handleContinuousMeasure:00000000000000bc $d
+     /tmp/cctdrW9s.s:893    .text.handleLightSensorFSM:0000000000000000 $t
+     /tmp/cctdrW9s.s:899    .text.handleLightSensorFSM:0000000000000000 handleLightSensorFSM
+     /tmp/cctdrW9s.s:920    .text.handleLightSensorFSM:000000000000000c $d
+     /tmp/cctdrW9s.s:924    .text.handleLightSensorFSM:0000000000000010 $t
+     /tmp/cctdrW9s.s:968    .rodata.LIGHT_SENS_Task.str1.4:0000000000000000 $d
+     /tmp/cctdrW9s.s:981    .text.LIGHT_SENS_Task:0000000000000000 $t
+     /tmp/cctdrW9s.s:988    .text.LIGHT_SENS_Task:0000000000000000 LIGHT_SENS_Task
+     /tmp/cctdrW9s.s:1103   .text.LIGHT_SENS_Task:0000000000000080 $d
+     /tmp/cctdrW9s.s:1117   .rodata.LIGHT_SENS_TaskInit.str1.4:0000000000000000 $d
+     /tmp/cctdrW9s.s:1121   .text.LIGHT_SENS_TaskInit:0000000000000000 $t
+     /tmp/cctdrW9s.s:1128   .text.LIGHT_SENS_TaskInit:0000000000000000 LIGHT_SENS_TaskInit
+     /tmp/cctdrW9s.s:1183   .text.LIGHT_SENS_TaskInit:0000000000000038 $d
+     /tmp/cctdrW9s.s:1226   .rodata.lightSensorTaskDescription:0000000000000000 lightSensorTaskDescription
+     /tmp/cctdrW9s.s:1204   .bss.lightSensorTaskControlBlock:0000000000000000 lightSensorTaskControlBlock
+     /tmp/cctdrW9s.s:1198   .bss.lightSensorTaskBuffer:0000000000000000 lightSensorTaskBuffer
+     /tmp/cctdrW9s.s:1211   .data.LIGHT_SENS_Actor:0000000000000000 LIGHT_SENS_Actor
+     /tmp/cctdrW9s.s:1195   .bss.lightSensorTaskBuffer:0000000000000000 $d
+     /tmp/cctdrW9s.s:1201   .bss.lightSensorTaskControlBlock:0000000000000000 $d
+     /tmp/cctdrW9s.s:1207   .data.LIGHT_SENS_Actor:0000000000000000 $d
+     /tmp/cctdrW9s.s:1222   .rodata.lightSensorTaskDescription:0000000000000000 $d
 
 UNDEFINED SYMBOLS
 OPT3001_InitIO
@@ -2029,15 +2029,15 @@ OPT3001_WriteHighLimit
 OPT3001_WriteLowLimit
 osMessageQueuePut
 fwrite
-BSP_I2C1_ReadReg
-BSP_I2C1_WriteReg
+I2C_ReadReg
+I2C_WriteReg
 _impure_ptr
 ACTORS_LIST_SystemRegistry
 OPT3001_ReadResultRawLux
 osDelay
 OPT3001_RawToMilliLux
 osMessageQueueGet
-ARM GAS  /tmp/ccamXK4Q.s 			page 35
+ARM GAS  /tmp/cctdrW9s.s 			page 35
 
 
 osMessageQueueNew

@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccPso8xb.s 			page 1
+ARM GAS  /tmp/ccr0N6Un.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccPso8xb.s 			page 1
   28:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****                 .osMessageQueueId = NULL,
   29:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****                 .osThreadId = NULL,
   30:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         },
-ARM GAS  /tmp/ccPso8xb.s 			page 2
+ARM GAS  /tmp/ccr0N6Un.s 			page 2
 
 
   31:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         .state = TH_SENS_NO_STATE,
@@ -118,7 +118,7 @@ ARM GAS  /tmp/ccPso8xb.s 			page 1
   85:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     case TH_SENS_STATE_ERROR:
   86:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       // TODO implement error handling
   87:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleError(this, message);
-ARM GAS  /tmp/ccPso8xb.s 			page 3
+ARM GAS  /tmp/ccr0N6Un.s 			page 3
 
 
   88:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     default:
@@ -129,7 +129,7 @@ ARM GAS  /tmp/ccPso8xb.s 			page 1
   93:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleInit(TH_SENS_Actor_t *this, message_t *message) {
   94:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   if (GLOBAL_CMD_INITIALIZE == message->event) {
   95:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     // provide IO functions to the sensor driver
-  96:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osStatus_t ioStatus = SHT3x_InitIO(TH_SENS_I2C_ADDRESS, BSP_I2C1_Send, BSP_I2C1_Recv, delayMs, 
+  96:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osStatus_t ioStatus = SHT3x_InitIO(TH_SENS_I2C_ADDRESS, I2C_Send, I2C_Recv, delayMs, NULL);
   97:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
   98:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     if (ioStatus != osOK) return osError;
   99:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
@@ -178,7 +178,7 @@ ARM GAS  /tmp/ccPso8xb.s 			page 1
  142:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }
  143:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
  144:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleContinuousMeasure(TH_SENS_Actor_t *this, message_t *message) {
-ARM GAS  /tmp/ccPso8xb.s 			page 4
+ARM GAS  /tmp/ccr0N6Un.s 			page 4
 
 
  145:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   osStatus_t  ioStatus = osOK;
@@ -238,7 +238,7 @@ ARM GAS  /tmp/ccPso8xb.s 			page 1
   62              		.cfi_offset 14, -4
  168:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   uint32_t ticks = (ms * configTICK_RATE_HZ) / 1000;
   63              		.loc 1 168 3 is_stmt 1 view .LVU6
-ARM GAS  /tmp/ccPso8xb.s 			page 5
+ARM GAS  /tmp/ccr0N6Un.s 			page 5
 
 
   64              		.loc 1 168 24 is_stmt 0 view .LVU7
@@ -298,7 +298,7 @@ ARM GAS  /tmp/ccPso8xb.s 			page 1
  104              		.thumb
  105              		.thumb_func
  106              		.fpu fpv4-sp-d16
-ARM GAS  /tmp/ccPso8xb.s 			page 6
+ARM GAS  /tmp/ccr0N6Un.s 			page 6
 
 
  108              	handleInit:
@@ -353,12 +353,12 @@ ARM GAS  /tmp/ccPso8xb.s 			page 1
  149              		.loc 1 122 1 view .LVU20
  150 0012 0546     		mov	r5, r0
  151              	.LBB2:
-  96:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osStatus_t ioStatus = SHT3x_InitIO(TH_SENS_I2C_ADDRESS, BSP_I2C1_Send, BSP_I2C1_Recv, delayMs, 
+  96:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osStatus_t ioStatus = SHT3x_InitIO(TH_SENS_I2C_ADDRESS, I2C_Send, I2C_Recv, delayMs, NULL);
  152              		.loc 1 96 5 is_stmt 1 view .LVU21
-  96:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osStatus_t ioStatus = SHT3x_InitIO(TH_SENS_I2C_ADDRESS, BSP_I2C1_Send, BSP_I2C1_Recv, delayMs, 
+  96:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osStatus_t ioStatus = SHT3x_InitIO(TH_SENS_I2C_ADDRESS, I2C_Send, I2C_Recv, delayMs, NULL);
  153              		.loc 1 96 27 is_stmt 0 view .LVU22
  154 0014 0023     		movs	r3, #0
-ARM GAS  /tmp/ccPso8xb.s 			page 7
+ARM GAS  /tmp/ccr0N6Un.s 			page 7
 
 
  155 0016 0093     		str	r3, [sp]
@@ -366,11 +366,11 @@ ARM GAS  /tmp/ccPso8xb.s 			page 1
  157 001a 254A     		ldr	r2, .L12+4
  158 001c 2549     		ldr	r1, .L12+8
  159              	.LVL10:
-  96:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osStatus_t ioStatus = SHT3x_InitIO(TH_SENS_I2C_ADDRESS, BSP_I2C1_Send, BSP_I2C1_Recv, delayMs, 
+  96:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osStatus_t ioStatus = SHT3x_InitIO(TH_SENS_I2C_ADDRESS, I2C_Send, I2C_Recv, delayMs, NULL);
  160              		.loc 1 96 27 view .LVU23
  161 001e 8820     		movs	r0, #136
  162              	.LVL11:
-  96:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osStatus_t ioStatus = SHT3x_InitIO(TH_SENS_I2C_ADDRESS, BSP_I2C1_Send, BSP_I2C1_Recv, delayMs, 
+  96:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osStatus_t ioStatus = SHT3x_InitIO(TH_SENS_I2C_ADDRESS, I2C_Send, I2C_Recv, delayMs, NULL);
  163              		.loc 1 96 27 view .LVU24
  164 0020 FFF7FEFF 		bl	SHT3x_InitIO
  165              	.LVL12:
@@ -418,7 +418,7 @@ ARM GAS  /tmp/ccPso8xb.s 			page 1
  197              		.loc 1 108 5 is_stmt 1 view .LVU34
  108:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     ioStatus = SHT3x_ReadDeviceID(&sht3xId);
  198              		.loc 1 108 16 is_stmt 0 view .LVU35
-ARM GAS  /tmp/ccPso8xb.s 			page 8
+ARM GAS  /tmp/ccr0N6Un.s 			page 8
 
 
  199 004e 02A8     		add	r0, sp, #8
@@ -478,7 +478,7 @@ ARM GAS  /tmp/ccPso8xb.s 			page 1
  240              		.loc 1 117 5 is_stmt 1 view .LVU48
  117:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     fprintf(stdout, "Temperature & Humidity sensor %ul initialized\n", TEMPERATURE_HUMIDITY_SENSOR_
  241              		.loc 1 117 13 is_stmt 0 view .LVU49
-ARM GAS  /tmp/ccPso8xb.s 			page 9
+ARM GAS  /tmp/ccr0N6Un.s 			page 9
 
 
  242 0086 3368     		ldr	r3, [r6]
@@ -519,8 +519,8 @@ ARM GAS  /tmp/ccPso8xb.s 			page 1
  270              		.align	2
  271              	.L12:
  272 00ac 00000000 		.word	delayMs
- 273 00b0 00000000 		.word	BSP_I2C1_Recv
- 274 00b4 00000000 		.word	BSP_I2C1_Send
+ 273 00b0 00000000 		.word	I2C_Recv
+ 274 00b4 00000000 		.word	I2C_Send
  275 00b8 00040048 		.word	1207960576
  276 00bc 00000000 		.word	_impure_ptr
  277 00c0 00000000 		.word	.LC0
@@ -538,7 +538,7 @@ ARM GAS  /tmp/ccPso8xb.s 			page 1
  289      454E535F 
  289      434F4E54 
  289      494E554F 
-ARM GAS  /tmp/ccPso8xb.s 			page 10
+ARM GAS  /tmp/ccr0N6Un.s 			page 10
 
 
  289      55535F4D 
@@ -598,7 +598,7 @@ ARM GAS  /tmp/ccPso8xb.s 			page 1
  333              	.L15:
  129:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       ioStatus = SHT3x_PeriodicAcquisitionMode(SHT3x_START_MEASUREMENT_0_5_MPS_LOW_REPEATABILITY_CM
  334              		.loc 1 129 7 is_stmt 1 view .LVU64
-ARM GAS  /tmp/ccPso8xb.s 			page 11
+ARM GAS  /tmp/ccr0N6Un.s 			page 11
 
 
  129:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       ioStatus = SHT3x_PeriodicAcquisitionMode(SHT3x_START_MEASUREMENT_0_5_MPS_LOW_REPEATABILITY_CM
@@ -658,7 +658,7 @@ ARM GAS  /tmp/ccPso8xb.s 			page 1
  374 003c 628A     		ldrh	r2, [r4, #18]
  375 003e 0C49     		ldr	r1, .L20+12
  376              	.LVL36:
-ARM GAS  /tmp/ccPso8xb.s 			page 12
+ARM GAS  /tmp/ccr0N6Un.s 			page 12
 
 
  136:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       fprintf(stdout, "Raw: temperature: %d humidity %d\n", this->rawTemperature, this->rawHumidity
@@ -718,7 +718,7 @@ ARM GAS  /tmp/ccPso8xb.s 			page 1
  419      66206875 
  420              		.section	.text.handleContinuousMeasure,"ax",%progbits
  421              		.align	1
-ARM GAS  /tmp/ccPso8xb.s 			page 13
+ARM GAS  /tmp/ccr0N6Un.s 			page 13
 
 
  422              		.syntax unified
@@ -778,7 +778,7 @@ ARM GAS  /tmp/ccPso8xb.s 			page 1
  468              		.cfi_remember_state
  469              		.cfi_def_cfa_offset 32
  470              		@ sp needed
-ARM GAS  /tmp/ccPso8xb.s 			page 14
+ARM GAS  /tmp/ccr0N6Un.s 			page 14
 
 
  471 0012 BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
@@ -838,7 +838,7 @@ ARM GAS  /tmp/ccPso8xb.s 			page 1
  511 003a DFF85490 		ldr	r9, .L28+12
  512 003e D9F80030 		ldr	r3, [r9]
  513 0042 D3F808A0 		ldr	r10, [r3, #8]
-ARM GAS  /tmp/ccPso8xb.s 			page 15
+ARM GAS  /tmp/ccr0N6Un.s 			page 15
 
 
  154:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       fprintf(stdout, "Temperature: %.2f humidity %.2f\n", t, rh);
@@ -898,7 +898,7 @@ ARM GAS  /tmp/ccPso8xb.s 			page 1
  558 0088 00000000 		.word	.LC4
  559 008c 54000000 		.word	.LC3
  560 0090 00000000 		.word	_impure_ptr
-ARM GAS  /tmp/ccPso8xb.s 			page 16
+ARM GAS  /tmp/ccr0N6Un.s 			page 16
 
 
  561              	.LBE4:
@@ -958,7 +958,7 @@ ARM GAS  /tmp/ccPso8xb.s 			page 1
   82:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleIdle(this, message);
  609              		.loc 1 82 7 is_stmt 1 view .LVU130
   82:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleIdle(this, message);
-ARM GAS  /tmp/ccPso8xb.s 			page 17
+ARM GAS  /tmp/ccr0N6Un.s 			page 17
 
 
  610              		.loc 1 82 14 is_stmt 0 view .LVU131
@@ -1018,7 +1018,7 @@ ARM GAS  /tmp/ccPso8xb.s 			page 1
  649              	.LC9:
  650 0024 25733A20 		.ascii	"%s: Error handling event %u in state %ul\012\000"
  650      4572726F 
-ARM GAS  /tmp/ccPso8xb.s 			page 18
+ARM GAS  /tmp/ccr0N6Un.s 			page 18
 
 
  650      72206861 
@@ -1078,7 +1078,7 @@ ARM GAS  /tmp/ccPso8xb.s 			page 1
  691 000e FFF7FEFF 		bl	fprintf
  692              	.LVL70:
  693              	.L40:
-ARM GAS  /tmp/ccPso8xb.s 			page 19
+ARM GAS  /tmp/ccr0N6Un.s 			page 19
 
 
   62:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   for (;;) {
@@ -1138,7 +1138,7 @@ ARM GAS  /tmp/ccPso8xb.s 			page 1
  735 0046 FFF7FEFF 		bl	fprintf
  736              	.LVL74:
   69:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMess
-ARM GAS  /tmp/ccPso8xb.s 			page 20
+ARM GAS  /tmp/ccr0N6Un.s 			page 20
 
 
  737              		.loc 1 69 9 is_stmt 1 view .LVU162
@@ -1198,7 +1198,7 @@ ARM GAS  /tmp/ccPso8xb.s 			page 1
  781 0090 24000000 		.word	.LC9
  782 0094 00000000 		.word	ACTORS_LIST_SystemRegistry
  783 0098 50000000 		.word	.LC10
-ARM GAS  /tmp/ccPso8xb.s 			page 21
+ARM GAS  /tmp/ccr0N6Un.s 			page 21
 
 
  784 009c 54000000 		.word	.LC3
@@ -1258,7 +1258,7 @@ ARM GAS  /tmp/ccPso8xb.s 			page 1
  833              	.LVL78:
   48:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   TH_SENS_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MESSAG
  834              		.loc 1 48 40 view .LVU177
-ARM GAS  /tmp/ccPso8xb.s 			page 22
+ARM GAS  /tmp/ccr0N6Un.s 			page 22
 
 
  835 0020 064D     		ldr	r5, .L48+4
@@ -1318,7 +1318,7 @@ ARM GAS  /tmp/ccPso8xb.s 			page 1
  881              		.align	2
  882              		.set	.LANCHOR0,. + 0
  885              	TH_SENS_Actor:
-ARM GAS  /tmp/ccPso8xb.s 			page 23
+ARM GAS  /tmp/ccr0N6Un.s 			page 23
 
 
  886 0000 06000000 		.word	6
@@ -1355,57 +1355,57 @@ ARM GAS  /tmp/ccPso8xb.s 			page 1
  918              		.file 9 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l412xx.h"
  919              		.file 10 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_gpio.h"
  920              		.file 11 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
- 921              		.file 12 "app/core/actor/../config/events_list/events_list.h"
- 922              		.file 13 "app/core/actor/../config/actors_list/actors_list.h"
+ 921              		.file 12 "app/core/actor/../../config/events_list/events_list.h"
+ 922              		.file 13 "app/core/actor/../../config/actors_list/actors_list.h"
  923              		.file 14 "app/core/actor/actor.h"
  924              		.file 15 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h"
  925              		.file 16 "Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h"
  926              		.file 17 "app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.h"
  927              		.file 18 "app/drivers/sht3x/sht3x.h"
  928              		.file 19 "/usr/include/newlib/stdio.h"
-ARM GAS  /tmp/ccPso8xb.s 			page 24
+ARM GAS  /tmp/ccr0N6Un.s 			page 24
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 temperature_humidity_sensor.c
-     /tmp/ccPso8xb.s:18     .text.handleError:0000000000000000 $t
-     /tmp/ccPso8xb.s:25     .text.handleError:0000000000000000 handleError
-     /tmp/ccPso8xb.s:44     .text.delayMs:0000000000000000 $t
-     /tmp/ccPso8xb.s:50     .text.delayMs:0000000000000000 delayMs
-     /tmp/ccPso8xb.s:84     .text.delayMs:0000000000000018 $d
-     /tmp/ccPso8xb.s:89     .rodata.handleInit.str1.4:0000000000000000 $d
-     /tmp/ccPso8xb.s:102    .text.handleInit:0000000000000000 $t
-     /tmp/ccPso8xb.s:108    .text.handleInit:0000000000000000 handleInit
-     /tmp/ccPso8xb.s:272    .text.handleInit:00000000000000ac $d
-     /tmp/ccPso8xb.s:287    .rodata.handleIdle.str1.4:0000000000000000 $d
-     /tmp/ccPso8xb.s:294    .text.handleIdle:0000000000000000 $t
-     /tmp/ccPso8xb.s:300    .text.handleIdle:0000000000000000 handleIdle
-     /tmp/ccPso8xb.s:407    .text.handleIdle:0000000000000064 $d
-     /tmp/ccPso8xb.s:417    .rodata.handleContinuousMeasure.str1.4:0000000000000000 $d
-     /tmp/ccPso8xb.s:421    .text.handleContinuousMeasure:0000000000000000 $t
-     /tmp/ccPso8xb.s:427    .text.handleContinuousMeasure:0000000000000000 handleContinuousMeasure
-     /tmp/ccPso8xb.s:557    .text.handleContinuousMeasure:0000000000000084 $d
-     /tmp/ccPso8xb.s:566    .text.handleTHSensorFSM:0000000000000000 $t
-     /tmp/ccPso8xb.s:572    .text.handleTHSensorFSM:0000000000000000 handleTHSensorFSM
-     /tmp/ccPso8xb.s:593    .text.handleTHSensorFSM:000000000000000c $d
-     /tmp/ccPso8xb.s:642    .rodata.TH_SENS_Task.str1.4:0000000000000000 $d
-     /tmp/ccPso8xb.s:655    .text.TH_SENS_Task:0000000000000000 $t
-     /tmp/ccPso8xb.s:662    .text.TH_SENS_Task:0000000000000000 TH_SENS_Task
-     /tmp/ccPso8xb.s:777    .text.TH_SENS_Task:0000000000000080 $d
-     /tmp/ccPso8xb.s:791    .rodata.TH_SENS_TaskInit.str1.4:0000000000000000 $d
-     /tmp/ccPso8xb.s:795    .text.TH_SENS_TaskInit:0000000000000000 $t
-     /tmp/ccPso8xb.s:802    .text.TH_SENS_TaskInit:0000000000000000 TH_SENS_TaskInit
-     /tmp/ccPso8xb.s:857    .text.TH_SENS_TaskInit:0000000000000038 $d
-     /tmp/ccPso8xb.s:900    .rodata.thSensorTaskDescription:0000000000000000 thSensorTaskDescription
-     /tmp/ccPso8xb.s:878    .bss.thSensorTaskControlBlock:0000000000000000 thSensorTaskControlBlock
-     /tmp/ccPso8xb.s:872    .bss.thSensorTaskBuffer:0000000000000000 thSensorTaskBuffer
-     /tmp/ccPso8xb.s:885    .data.TH_SENS_Actor:0000000000000000 TH_SENS_Actor
-     /tmp/ccPso8xb.s:869    .bss.thSensorTaskBuffer:0000000000000000 $d
-     /tmp/ccPso8xb.s:875    .bss.thSensorTaskControlBlock:0000000000000000 $d
-     /tmp/ccPso8xb.s:881    .data.TH_SENS_Actor:0000000000000000 $d
-     /tmp/ccPso8xb.s:896    .rodata.thSensorTaskDescription:0000000000000000 $d
-     /tmp/ccPso8xb.s:598    .text.handleTHSensorFSM:0000000000000011 $d
-     /tmp/ccPso8xb.s:598    .text.handleTHSensorFSM:0000000000000012 $t
+     /tmp/ccr0N6Un.s:18     .text.handleError:0000000000000000 $t
+     /tmp/ccr0N6Un.s:25     .text.handleError:0000000000000000 handleError
+     /tmp/ccr0N6Un.s:44     .text.delayMs:0000000000000000 $t
+     /tmp/ccr0N6Un.s:50     .text.delayMs:0000000000000000 delayMs
+     /tmp/ccr0N6Un.s:84     .text.delayMs:0000000000000018 $d
+     /tmp/ccr0N6Un.s:89     .rodata.handleInit.str1.4:0000000000000000 $d
+     /tmp/ccr0N6Un.s:102    .text.handleInit:0000000000000000 $t
+     /tmp/ccr0N6Un.s:108    .text.handleInit:0000000000000000 handleInit
+     /tmp/ccr0N6Un.s:272    .text.handleInit:00000000000000ac $d
+     /tmp/ccr0N6Un.s:287    .rodata.handleIdle.str1.4:0000000000000000 $d
+     /tmp/ccr0N6Un.s:294    .text.handleIdle:0000000000000000 $t
+     /tmp/ccr0N6Un.s:300    .text.handleIdle:0000000000000000 handleIdle
+     /tmp/ccr0N6Un.s:407    .text.handleIdle:0000000000000064 $d
+     /tmp/ccr0N6Un.s:417    .rodata.handleContinuousMeasure.str1.4:0000000000000000 $d
+     /tmp/ccr0N6Un.s:421    .text.handleContinuousMeasure:0000000000000000 $t
+     /tmp/ccr0N6Un.s:427    .text.handleContinuousMeasure:0000000000000000 handleContinuousMeasure
+     /tmp/ccr0N6Un.s:557    .text.handleContinuousMeasure:0000000000000084 $d
+     /tmp/ccr0N6Un.s:566    .text.handleTHSensorFSM:0000000000000000 $t
+     /tmp/ccr0N6Un.s:572    .text.handleTHSensorFSM:0000000000000000 handleTHSensorFSM
+     /tmp/ccr0N6Un.s:593    .text.handleTHSensorFSM:000000000000000c $d
+     /tmp/ccr0N6Un.s:642    .rodata.TH_SENS_Task.str1.4:0000000000000000 $d
+     /tmp/ccr0N6Un.s:655    .text.TH_SENS_Task:0000000000000000 $t
+     /tmp/ccr0N6Un.s:662    .text.TH_SENS_Task:0000000000000000 TH_SENS_Task
+     /tmp/ccr0N6Un.s:777    .text.TH_SENS_Task:0000000000000080 $d
+     /tmp/ccr0N6Un.s:791    .rodata.TH_SENS_TaskInit.str1.4:0000000000000000 $d
+     /tmp/ccr0N6Un.s:795    .text.TH_SENS_TaskInit:0000000000000000 $t
+     /tmp/ccr0N6Un.s:802    .text.TH_SENS_TaskInit:0000000000000000 TH_SENS_TaskInit
+     /tmp/ccr0N6Un.s:857    .text.TH_SENS_TaskInit:0000000000000038 $d
+     /tmp/ccr0N6Un.s:900    .rodata.thSensorTaskDescription:0000000000000000 thSensorTaskDescription
+     /tmp/ccr0N6Un.s:878    .bss.thSensorTaskControlBlock:0000000000000000 thSensorTaskControlBlock
+     /tmp/ccr0N6Un.s:872    .bss.thSensorTaskBuffer:0000000000000000 thSensorTaskBuffer
+     /tmp/ccr0N6Un.s:885    .data.TH_SENS_Actor:0000000000000000 TH_SENS_Actor
+     /tmp/ccr0N6Un.s:869    .bss.thSensorTaskBuffer:0000000000000000 $d
+     /tmp/ccr0N6Un.s:875    .bss.thSensorTaskControlBlock:0000000000000000 $d
+     /tmp/ccr0N6Un.s:881    .data.TH_SENS_Actor:0000000000000000 $d
+     /tmp/ccr0N6Un.s:896    .rodata.thSensorTaskDescription:0000000000000000 $d
+     /tmp/ccr0N6Un.s:598    .text.handleTHSensorFSM:0000000000000011 $d
+     /tmp/ccr0N6Un.s:598    .text.handleTHSensorFSM:0000000000000012 $t
 
 UNDEFINED SYMBOLS
 osDelay
@@ -1414,8 +1414,8 @@ HAL_GPIO_WritePin
 SHT3x_ReadDeviceID
 fprintf
 osMessageQueuePut
-BSP_I2C1_Recv
-BSP_I2C1_Send
+I2C_Recv
+I2C_Send
 _impure_ptr
 ACTORS_LIST_SystemRegistry
 SHT3x_PeriodicAcquisitionMode
@@ -1423,7 +1423,7 @@ __aeabi_f2d
 SHT3x_ReadMeasurements
 SHT3x_RawToTemperatureC
 SHT3x_RawToHumidityRH
-ARM GAS  /tmp/ccPso8xb.s 			page 25
+ARM GAS  /tmp/ccr0N6Un.s 			page 25
 
 
 osMessageQueueGet

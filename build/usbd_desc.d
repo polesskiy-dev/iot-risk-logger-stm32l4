@@ -44,8 +44,8 @@ build/usbd_desc.o: USB_DEVICE/App/usbd_desc.c \
  libraries/SystemView/SYSVIEW/SEGGER_SYSVIEW_ConfDefaults.h \
  libraries/RTT/Config/SEGGER_RTT_Conf.h app/core/actor/actor.h \
  Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
- app/core/actor/../config/events_list/events_list.h \
- app/core/actor/../config/actors_list/actors_list.h \
+ app/core/actor/../../config/events_list/events_list.h \
+ app/core/actor/../../config/actors_list/actors_list.h \
  app/tasks/event_manager/event_manager.h \
  app/core/power_mode_manager/power_mode_manager.h app/tasks/nfc/nfc.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
@@ -63,9 +63,10 @@ build/usbd_desc.o: USB_DEVICE/App/usbd_desc.c \
  app/tasks/nfc/nfc_handlers.h app/tasks/nfc/nfc.h \
  app/tasks/memory/memory.h Core/Inc/quadspi.h Core/Inc/main.h \
  app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.h \
- app/drivers/sht3x/sht3x.h app/tasks/light_sensor/light_sensor.h \
- app/drivers/opt3001/opt3001.h app/core/cron/cron.h Core/Inc/rtc.h \
- app/core/info_led/info_led.h app/core/retarget/retarget.h \
+ app/config/bsp_bus/bsp_bus.h app/drivers/sht3x/sht3x.h \
+ app/tasks/light_sensor/light_sensor.h app/drivers/opt3001/opt3001.h \
+ app/core/cron/cron.h Core/Inc/rtc.h app/core/info_led/info_led.h \
+ app/core/retarget/retarget.h \
  Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
  Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h \
  Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h \
@@ -121,8 +122,8 @@ libraries/SystemView/SYSVIEW/SEGGER_SYSVIEW_ConfDefaults.h:
 libraries/RTT/Config/SEGGER_RTT_Conf.h:
 app/core/actor/actor.h:
 Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
-app/core/actor/../config/events_list/events_list.h:
-app/core/actor/../config/actors_list/actors_list.h:
+app/core/actor/../../config/events_list/events_list.h:
+app/core/actor/../../config/actors_list/actors_list.h:
 app/tasks/event_manager/event_manager.h:
 app/core/power_mode_manager/power_mode_manager.h:
 app/tasks/nfc/nfc.h:
@@ -146,6 +147,7 @@ app/tasks/memory/memory.h:
 Core/Inc/quadspi.h:
 Core/Inc/main.h:
 app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.h:
+app/config/bsp_bus/bsp_bus.h:
 app/drivers/sht3x/sht3x.h:
 app/tasks/light_sensor/light_sensor.h:
 app/drivers/opt3001/opt3001.h:
