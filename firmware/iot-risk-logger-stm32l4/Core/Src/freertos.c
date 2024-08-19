@@ -46,7 +46,7 @@ typedef StaticTask_t osStaticThreadDef_t;
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
-
+osMutexId_t i2cMutexHandle;
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
@@ -87,6 +87,7 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */
+  i2cMutexHandle = osMutexNew(&(osMutexAttr_t){ .name = "i2cMutex" });
   /* USER CODE END RTOS_MUTEX */
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
@@ -108,6 +109,10 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_THREADS */
   extern actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS];
   /* add threads, ... */
+  /**
+   * Initialize actors threads and save pointers to them in common registry
+   * Not actors have threads but all of them have os message queues so they're should be initialized in terms of os
+   * */
   ACTORS_LIST_SystemRegistry[CRON_ACTOR_ID]                         = CRON_ActorInit();
   ACTORS_LIST_SystemRegistry[PWRM_MANAGER_ACTOR_ID]                 = PWRM_MANAGER_ActorInit();
   ACTORS_LIST_SystemRegistry[TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID]  = TH_SENS_TaskInit();

@@ -18,8 +18,7 @@ extern "C" {
 #include <stdio.h>
 
 #include "main.h"
-#include "custom_bus.h"
-#include "actor.h"
+#include "bsp_bus.h"
 #include "opt3001.h"
 
 #define LIGHT_SENS_I2C_ADDRESS (OPT3001_I2C_ADDR_45 << 1) // ADDR connected to VDD due to SHT3x address conflict

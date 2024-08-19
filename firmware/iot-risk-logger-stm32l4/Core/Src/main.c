@@ -81,7 +81,9 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+//  #ifdef DEBUG
+    HAL_DBGMCU_EnableDBGStopMode();
+//  #endif
   /* USER CODE END Init */
 
   /* Configure the system clock */

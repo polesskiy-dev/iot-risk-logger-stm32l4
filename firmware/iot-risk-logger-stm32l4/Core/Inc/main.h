@@ -44,6 +44,7 @@ extern "C" {
 #include "cron.h"
 #include "info_led.h"
 #include "retarget.h"
+#include "bsp_bus.h"
 
 /* USER CODE END Includes */
 
