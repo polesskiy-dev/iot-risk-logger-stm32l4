@@ -34,11 +34,17 @@ void PreSleepProcessing(uint32_t ulExpectedIdleTime)
 
   switch (PWRM_MANAGER_Actor.state) {
     case PWRM_STANDBY:
-      fprintf(stdout, "Entering STANDBY Mode...\n");
+      #ifdef DEBUG
+        fprintf(stdout, "Entering STANDBY Mode...\n");
+      #endif
+
       HAL_PWR_EnterSTANDBYMode();
       break;
     case PWRM_STOP2:
-      fprintf(stdout, "Entering STOP2 Mode...\n");
+      #ifdef DEBUG
+        fprintf(stdout, "Entering STOP2 Mode...\n");
+      #endif
+
       HAL_PWREx_EnterSTOP2Mode(PWR_STOPENTRY_WFI);
       break;
   }
@@ -57,7 +63,9 @@ void PostSleepProcessing(uint32_t ulExpectedIdleTime)
   // Resume the HAL tick (if using SysTick)
   HAL_ResumeTick();
 
-  fprintf(stdout, "Exited Sleep Mode...\n");
+  #ifdef DEBUG
+    fprintf(stdout, "Exited Sleep Mode...\n");
+  #endif
 }
 
 actor_t* PWRM_MANAGER_ActorInit(void) {

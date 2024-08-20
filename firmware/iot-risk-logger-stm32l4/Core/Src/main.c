@@ -81,9 +81,6 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-//  #ifdef DEBUG
-    HAL_DBGMCU_EnableDBGStopMode();
-//  #endif
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -106,6 +103,14 @@ int main(void)
   RETARGET_Init(); // init stdio, debug
   INFO_LED_Init();
 
+
+  #ifdef DEBUG
+      __HAL_RCC_DBGMCU_CLK_ENABLE();    // Enable clocks for Debug register
+      __HAL_DBGMCU_FREEZE_TIM6();       // Freeze TIM6 during debugging
+      __HAL_DBGMCU_FREEZE_RTC();        // Freeze RTC during debugging
+      __HAL_DBGMCU_FREEZE_WWDG();       // Freeze WWDG during debugging
+      HAL_DBGMCU_EnableDBGStopMode();   // Enable the Debug Module during STOP mode
+  #endif
   /* USER CODE END 2 */
 
   /* Init scheduler */

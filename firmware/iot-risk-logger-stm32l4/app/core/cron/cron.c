@@ -38,7 +38,9 @@ actor_t* CRON_ActorInit(void) {
   // TODO remove after debugging
   status |= setWakeUpPeriod(30); // every 30 seconds
 
-  fprintf(stdout, "Cron initialized: %d\n", status);
+  #ifdef DEBUG
+    fprintf(stdout, "Cron initialized: %d\n", status);
+  #endif
   return &CRON_Actor.super;
 }
 

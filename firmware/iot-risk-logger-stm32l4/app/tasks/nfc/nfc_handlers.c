@@ -12,13 +12,19 @@ int32_t NFC_ST25DVInit(ST25DV_Object_t *pObj) {
 
   int32_t status = ST25DV_RegisterBusIO(pObj, &IO);
   if (status != NFCTAG_OK) {
-    fprintf(stderr, "ST25DV RegisterBusIO Error: %ld\n", status);
+    #ifdef DEBUG
+      fprintf(stderr, "ST25DV RegisterBusIO Error: %ld\n", status);
+    #endif
+
     return NFCTAG_ERROR;
   }
 
   status = St25Dv_Drv.Init(pObj);
   if (status != NFCTAG_OK) {
-    fprintf(stderr, "ST25DV Driver Init Error: %ld\n", status);
+    #ifdef DEBUG
+      fprintf(stderr, "ST25DV Driver Init Error: %ld\n", status);
+    #endif
+
     return NFCTAG_ERROR;
   }
 
@@ -35,7 +41,10 @@ void NFC_HandleGPOInterrupt(ST25DV_Object_t *pObj) {
   ST25DV_ReadITSTStatus_Dyn(pObj, &ITStatus);
   if (ITStatus & ST25DV_ITSTS_DYN_RFPUTMSG_MASK) {
     osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NFC_MAILBOX_HAS_NEW_MESSAGE}, 0, 0);
-    fprintf(stdout, "NFC ITStatus: 0x%x\n", ITStatus);
+
+    #ifdef DEBUG
+      fprintf(stdout, "NFC ITStatus: 0x%x\n", ITStatus);
+    #endif
   }
 }
 
@@ -44,16 +53,24 @@ int32_t NFC_ReadMailboxTo(ST25DV_Object_t *pObj, uint8_t pMailboxBuffer[ST25DV_M
   int32_t status = ST25DV_ReadMBLength_Dyn(pObj, &mailboxLength);
 
   if (status != NFCTAG_OK) {
-    fprintf(stdout, "ST25DV ST25DV_ReadMBLength_Dyn Error\n");
+    #ifdef DEBUG
+        fprintf(stdout, "ST25DV ST25DV_ReadMBLength_Dyn Error\n");
+    #endif
+
     return NFCTAG_ERROR;
   }
 
-  fprintf(stdout, "Mailbox length: %d\n", mailboxLength);
+  #ifdef DEBUG
+    fprintf(stdout, "Mailbox length: %d\n", mailboxLength);
+  #endif
 
   status = ST25DV_ReadMailboxData(pObj, pMailboxBuffer, MAILBOX_START_OFFSET, ST25DV_MAX_MAILBOX_LENGTH);
 
   if (status != NFCTAG_OK) {
-    fprintf(stdout, "ST25DV ST25DV_ReadMailboxData Error\n");
+    #ifdef DEBUG
+      fprintf(stdout, "ST25DV ST25DV_ReadMailboxData Error\n");
+    #endif
+
     return NFCTAG_ERROR;
   }
 
