@@ -61,7 +61,8 @@ https://github.com/polesskiy-dev/iot-risk-logger-stm32l4/assets/5185707/393b0768
 
 ## Quick start
 
-After clone, init submodules
+After clone, init submodules if you forgot
 
 ```bash
 git submodule update --init --recursive
+```

@@ -11,6 +11,7 @@
 #include "sht3x.h"
 #include "main.h"
 
+// TODO move it to task
 SHT3x_IO_t SHT3x_IO = {
         .i2cAddress = 0x00,
         .write = NULL,
@@ -54,6 +55,7 @@ static const uint8_t crc8LookupTable[16 * 16] = {
         0x3b, 0x0a, 0x59, 0x68, 0xff, 0xce, 0x9d, 0xac
 };
 
+// TODO refactor so that every function accepts a pointer to SHT3x_IO_t
 SHT3x_RESULT SHT3x_InitIO(uint8_t i2cAddress, SHT3x_Write_Func write, SHT3x_Read_Func read, SHT3x_DelayMs_Func delayMs, SHT3x_CRC8_Func crc8) {
   SHT3x_IO.i2cAddress = i2cAddress;
   SHT3x_IO.write = write;

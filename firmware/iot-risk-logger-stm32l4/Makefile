@@ -120,6 +120,7 @@ app/core/cron/cron.c \
 app/core/info_led/info_led.c \
 app/drivers/opt3001/opt3001.c \
 app/drivers/sht3x/sht3x.c \
+app/drivers/w25q/w25q.c \
 app/tasks/memory/memory.c \
 app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c \
 app/tasks/light_sensor/light_sensor.c \
@@ -218,6 +219,7 @@ C_INCLUDES =  \
 -Iapp/tasks/event_manager \
 -Iapp/drivers/opt3001 \
 -Iapp/drivers/sht3x \
+-Iapp/drivers/w25q \
 -Iapp/core/cron \
 -Iapp/core/info_led \
 -Iapp/tasks/memory \
