@@ -21,6 +21,10 @@ static uint32_t delayMs(uint32_t ms);
 
 extern actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS];
 
+/**
+ * @brief Temperature & Humidity Sensor actor struct
+ * @extends actor_t
+ */
 TH_SENS_Actor_t TH_SENS_Actor = {
         .super = {
                 .actorId = TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID,
@@ -29,10 +33,11 @@ TH_SENS_Actor_t TH_SENS_Actor = {
                 .osThreadId = NULL,
         },
         .state = TH_SENS_NO_STATE,
-        .rawTemperature = 0x0000,
-        .rawHumidity = 0x0000,
+        .rawTemperature = 0x0000,    ///< raw temperature value
+        .rawHumidity = 0x0000,       ///< raw humidity value
 };
 
+// task description required for static task creation
 uint32_t thSensorTaskBuffer[DEFAULT_TASK_STACK_SIZE_WORDS];
 StaticTask_t thSensorTaskControlBlock;
 const osThreadAttr_t thSensorTaskDescription = {
@@ -44,6 +49,10 @@ const osThreadAttr_t thSensorTaskDescription = {
         .priority = (osPriority_t) osPriorityNormal,
 };
 
+/**
+ * @brief Initializes the Temperature and Humidity Sensor task.
+ * @return {actor_t*} - pointer to the actor base struct
+ */
 actor_t* TH_SENS_TaskInit(void) {
   TH_SENS_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MESSAGE_SIZE, &(osMessageQueueAttr_t){
           .name = "thSensorQueue"
@@ -53,6 +62,11 @@ actor_t* TH_SENS_TaskInit(void) {
   return (actor_t*) &TH_SENS_Actor;
  }
 
+/**
+ * @brief Temperature & Humidity Sensor task
+ * Waits for message from the queue and proceed it in FSM
+ * Enters ERROR state if message handling failed
+ */
 void TH_SENS_Task(void *argument) {
   (void) argument; // Avoid unused parameter warning
   message_t msg;

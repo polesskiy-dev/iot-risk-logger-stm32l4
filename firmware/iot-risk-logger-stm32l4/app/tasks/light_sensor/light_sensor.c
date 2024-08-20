@@ -19,6 +19,10 @@ static osStatus_t handleOutOfRange(LIGHT_SENS_Actor_t *this, message_t *message)
 
 extern actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS];
 
+/**
+ * @brief Light Sensor actor struct
+ * @extends actor_t
+ */
 LIGHT_SENS_Actor_t LIGHT_SENS_Actor = {
         .super = {
                 .actorId = LIGHT_SENSOR_ACTOR_ID,
@@ -27,10 +31,11 @@ LIGHT_SENS_Actor_t LIGHT_SENS_Actor = {
                 .osThreadId = NULL,
         },
         .state = LIGHT_SENS_NO_STATE,
-        .rawLux = 0x0000,
-        .highLimit = OPT3001_CONFIG_LIMIT_MAX
+        .rawLux = 0x0000,                       ///< raw light value
+        .highLimit = OPT3001_CONFIG_LIMIT_MAX   ///< high threshold limit for light sensor
 };
 
+// task description required for static task creation
 uint32_t lightSensorTaskBuffer[DEFAULT_TASK_STACK_SIZE_WORDS];
 StaticTask_t lightSensorTaskControlBlock;
 const osThreadAttr_t lightSensorTaskDescription = {
@@ -42,6 +47,10 @@ const osThreadAttr_t lightSensorTaskDescription = {
         .priority = (osPriority_t) osPriorityNormal,
 };
 
+/**
+ * @brief Initializes the Light Sensor task.
+ * @return {actor_t*} - pointer to the actor base struct
+ */
 actor_t* LIGHT_SENS_TaskInit(void) {
   LIGHT_SENS_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MESSAGE_SIZE, &(osMessageQueueAttr_t){
           .name = "lightSensorQueue"
@@ -51,6 +60,11 @@ actor_t* LIGHT_SENS_TaskInit(void) {
   return &LIGHT_SENS_Actor.super;
 }
 
+/**
+ * @brief Light Sensor task
+ * Waits for message from the queue and proceed it in FSM
+ * Enters ERROR state if message handling failed
+ */
 void LIGHT_SENS_Task(void *argument) {
   (void) argument; // Avoid unused parameter warning
   message_t msg;
@@ -86,6 +100,7 @@ static osStatus_t handleLightSensorFSM(LIGHT_SENS_Actor_t *this, message_t *mess
 
   return osOK;
 }
+
 /**
  * @brief Initializes the sensor, configures I2C, writes default settings, and transitions to the TURNED_OFF state
  */
@@ -242,7 +257,8 @@ static osStatus_t handleContinuousMeasure(LIGHT_SENS_Actor_t *this, message_t *m
 }
 
 /**
- * @brief Cron read sensor data, handle limit interrupts, or turn off the sensor.
+ * @brief Handle limit interrupts, or turn off the sensor.
+ * Continuing proceed Cron read even if out of range
  */
 static osStatus_t handleOutOfRange(LIGHT_SENS_Actor_t *this, message_t *message) {
   osStatus_t ioStatus;

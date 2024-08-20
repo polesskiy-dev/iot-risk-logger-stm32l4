@@ -12,6 +12,10 @@
 
 static osStatus_t handleMemoryFSM(MEMORY_Actor_t *this, message_t *message);
 
+/**
+ * @brief Memory actor struct representing NOR Flash storage
+ * @extends actor_t
+ */
 MEMORY_Actor_t MEMORY_Actor = {
         .super = {
                 .actorId = MEMORY_ACTOR_ID,
@@ -22,6 +26,7 @@ MEMORY_Actor_t MEMORY_Actor = {
         .state = MEMORY_NO_STATE
 };
 
+// task description required for static task creation
 uint32_t memoryTaskBuffer[DEFAULT_TASK_STACK_SIZE_WORDS];
 StaticTask_t memoryTaskControlBlock;
 const osThreadAttr_t memoryTaskDescription = {
@@ -33,41 +38,24 @@ const osThreadAttr_t memoryTaskDescription = {
         .priority = (osPriority_t) osPriorityNormal,
 };
 
+/**
+ * @brief Initializes the Memory Sensor task.
+ * @return {actor_t*} - pointer to the actor base struct
+ */
 actor_t* MEMORY_TaskInit(void) {
   MEMORY_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MESSAGE_SIZE, &(osMessageQueueAttr_t){
           .name = "memoryQueue"
   });
   MEMORY_Actor.super.osThreadId = osThreadNew(MEMORY_Task, NULL, &memoryTaskDescription);
 
-  // TODO move to driver
-
-//  QSPI_CommandTypeDef com;
-//
-//  com.InstructionMode = QSPI_INSTRUCTION_1_LINE; // QSPI_INSTRUCTION_...
-//  com.Instruction = W25Q_POWERDOWN;	 // Command
-//
-//  com.AddressMode = QSPI_ADDRESS_NONE;
-//  com.AddressSize = QSPI_ADDRESS_NONE;
-//  com.Address = 0x0U;
-//
-//  com.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
-//  com.AlternateBytes = QSPI_ALTERNATE_BYTES_NONE;
-//  com.AlternateBytesSize = QSPI_ALTERNATE_BYTES_NONE;
-//
-//  com.DummyCycles = 0;
-//  com.DataMode = QSPI_DATA_NONE;
-//  com.NbData = 0;
-//
-//  com.DdrMode = QSPI_DDR_MODE_DISABLE;
-//  com.DdrHoldHalfCycle = QSPI_DDR_HHC_ANALOG_DELAY;
-//  com.SIOOMode = QSPI_SIOO_INST_EVERY_CMD;
-//
-//  HAL_StatusTypeDef status = HAL_QSPI_Command(&hqspi, &com, HAL_QSPI_TIMEOUT_DEFAULT_VALUE);
-//  fprintf(stdout, "Memory put to sleep status: %u\n", status);
-
   return &MEMORY_Actor.super;
 }
 
+/**
+ * @brief Memory (NOR Flash) task
+ * Waits for message from the queue and proceed it in FSM
+ * Enters ERROR state if message handling failed
+ */
 void MEMORY_Task(void *argument) {
   (void) argument; // Avoid unused parameter warning
   message_t msg;
