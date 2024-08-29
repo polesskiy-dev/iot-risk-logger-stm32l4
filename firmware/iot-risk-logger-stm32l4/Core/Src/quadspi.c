@@ -38,10 +38,10 @@ void MX_QUADSPI_Init(void)
 
   /* USER CODE END QUADSPI_Init 1 */
   hqspi.Instance = QUADSPI;
-  hqspi.Init.ClockPrescaler = 255;
-  hqspi.Init.FifoThreshold = 1;
+  hqspi.Init.ClockPrescaler = 1; // half of the system clock e.g. 48MHz/2 = 24MHz
+  hqspi.Init.FifoThreshold = 1; // 1 byte minimum toi send or receive
   hqspi.Init.SampleShifting = QSPI_SAMPLE_SHIFTING_NONE;
-  hqspi.Init.FlashSize = 1;
+  hqspi.Init.FlashSize = W25Q64JV_FLASH_ADDR_SIZE_BITS;
   hqspi.Init.ChipSelectHighTime = QSPI_CS_HIGH_TIME_1_CYCLE;
   hqspi.Init.ClockMode = QSPI_CLOCK_MODE_0;
   hqspi.Init.FlashID = QSPI_FLASH_ID_1;

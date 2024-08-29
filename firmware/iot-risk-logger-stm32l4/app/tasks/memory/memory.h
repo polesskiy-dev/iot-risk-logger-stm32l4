@@ -22,12 +22,13 @@ extern "C" {
 #include "w25q.h"
 
 /* W25Q64JV Memory Specifications */
-#define W25Q64JV_FLASH_SIZE              0x800000  /* 8 MB (64 Mbit) */
-#define W25Q64JV_SECTOR_SIZE             0x1000    /* 4 KB */
-#define W25Q64JV_SUBSECTOR_SIZE          0x0100    /* 256 B */
-#define W25Q64JV_PAGE_SIZE               0x0100    /* 256 B */
-#define W25Q64JV_BLOCK_SIZE_32K          0x8000    /* 32 KB */
-#define W25Q64JV_BLOCK_SIZE_64K          0x10000   /* 64 KB */
+#define W25Q64JV_FLASH_SIZE              (0x800000)  /* 8 MB (64 Mbit) */
+#define W25Q64JV_FLASH_ADDR_SIZE_BITS    (24)        /* 24bit size address */
+#define W25Q64JV_SECTOR_SIZE             (0x1000)    /* 4 KB */
+#define W25Q64JV_SUBSECTOR_SIZE          (0x0100)    /* 256 B */
+#define W25Q64JV_PAGE_SIZE               (0x0100)    /* 256 B */
+#define W25Q64JV_BLOCK_SIZE_32K          (0x8000)    /* 32 KB */
+#define W25Q64JV_BLOCK_SIZE_64K          (0x10000)   /* 64 KB */
 
 typedef enum {
   MEMORY_NO_STATE = 0,

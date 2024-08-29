@@ -1,0 +1,50 @@
+// rgData: input, raw digital sample array
+// rgValue: output, decoded data array
+// rgFlag: output, decoded flag array
+
+var c = rgData.length // c = number of raw samples
+var pClock = false; // previous cock signal level
+var iStart = 0;     // used to keep track on word start index
+var cByte = 0;      // byte count per transmission
+var cBits = 0;      // bit counter
+var bValue = 0;     // value variable
+
+for(var i = 0; i < c; i++){ // for each sample
+    var s = rgData[i]; // current sample
+    var fSelect = 1&(s>>3); // pin3 is the select signal
+    var fClock = 1&(s>>7); // pin7 is the clock signal
+    var fIO0 = 1&(s>>6) // pin6 - IO0 (LSB)
+    var fIO1 = 1&(s>>4) // pin4 - IO1
+    var fIO2 = 1&(s>>5) // pin5 - IO2
+    var fIO3 = 1&(s>>8) // pin8 - IO3 (MSB)
+
+    if(fSelect != 0){ // select active low
+        // while select inactive reset our counters/variables
+        iStart = i+1; // select might become active with next sample
+        cByte = 0;
+        cBits = 0;
+        bValue = 0;
+        pClock = false;
+        continue;
+    }
+    if(pClock == 0 && fClock != 0){ // sample on clock rising edge
+        bValue <<= 4; // serial data bit, MSBit first
+        bValue |= (fIO3 << 3) | (fIO2 << 2) | (fIO1 << 1) | fIO0; // data seems to be processed as nimble (4 bits)
+        
+        cBits++;
+        if(cBits==2){ // when got the 2x4 bits store it
+            cByte++;
+            // store rgValue/Flag from word start index to current sample position
+            for(var j = iStart; j < i; j++){
+                // Flag change will be visible on plot even when data remains constant.
+                // This is useful in case we get more consecutive equal values.
+                rgFlag[j] = cByte;
+                rgValue[j] = bValue;
+            }
+            iStart = i+1; // next word might start after this sample
+            cBits = 0;  // reset bit count for the next byte
+            bValue = 0; // reset value variable
+        }
+    }
+    pClock = fClock; // previous clock level
+}

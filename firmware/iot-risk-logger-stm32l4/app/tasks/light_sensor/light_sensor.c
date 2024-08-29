@@ -116,7 +116,10 @@ static osStatus_t handleInit(LIGHT_SENS_Actor_t *this, message_t *message) {
     ioStatus = OPT3001_ReadDeviceID(&opt3001Id);
 
     if (ioStatus != osOK) return osError;
-    fprintf(stdout, "OPT3001 ID: %x\n", opt3001Id);
+
+    #ifdef DEBUG
+      fprintf(stdout, "OPT3001 ID: %x\n", opt3001Id);
+    #endif
 
     // write default config (OPT3001 remains in turned off state)
     uint16_t opt3001Config = OPT3001_CONFIG_DEFAULT;
@@ -124,19 +127,6 @@ static osStatus_t handleInit(LIGHT_SENS_Actor_t *this, message_t *message) {
     ioStatus = OPT3001_WriteConfig(opt3001Config);
 
     if (ioStatus != osOK) return osError;
-    fprintf(stdout, "Write OPT3001 Config: %x\n", opt3001Config);
-
-    // read existing config to verify equality
-    uint16_t opt3001ConfigFromSensor = 0x0000;
-    ioStatus = OPT3001_ReadConfig(&opt3001ConfigFromSensor);
-
-    if (ioStatus != osOK) return osError;
-    fprintf(stdout, "OPT3001 Config: %x\n", opt3001ConfigFromSensor);
-
-    if (opt3001Config != opt3001ConfigFromSensor) {
-      fprintf(stderr, "OPT3001 Config mismatch\n");
-      return osError;
-    }
 
     // TODO read it from NOR flash (implement settings manager)
     // set high limit and minimal low limit so that the sensor never triggers the interrupt on low limit

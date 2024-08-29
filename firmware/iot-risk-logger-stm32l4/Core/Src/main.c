@@ -105,7 +105,7 @@ int main(void)
 
 
   #ifdef DEBUG
-      __HAL_RCC_DBGMCU_CLK_ENABLE();    // Enable clocks for Debug register
+//      __HAL_RCC_DBGMCU_CLK_ENABLE();    // Enable clocks for Debug register
       __HAL_DBGMCU_FREEZE_TIM6();       // Freeze TIM6 during debugging
       __HAL_DBGMCU_FREEZE_RTC();        // Freeze RTC during debugging
       __HAL_DBGMCU_FREEZE_WWDG();       // Freeze WWDG during debugging

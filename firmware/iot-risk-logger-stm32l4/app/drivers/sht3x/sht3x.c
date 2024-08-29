@@ -120,7 +120,7 @@ SHT3x_RESULT SHT3x_PeriodicAcquisitionMode(uint16_t modeCondition) {
   return SHT3x_IO.write(SHT3x_IO.i2cAddress, cmd, SHT3x_CMD_SIZE);
 }
 
-SHT3x_RESULT SHT3x_ReadMeasurements(uint16_t *rawTemperature, uint16_t *rawHumidity) {
+SHT3x_RESULT SHT3x_ReadMeasurements(int16_t *rawTemperature, uint16_t *rawHumidity) {
   uint8_t data[6] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
   uint8_t cmd[] = {SHT3x_READ_MEASUREMENT_CMD_ID >> 8, SHT3x_READ_MEASUREMENT_CMD_ID & 0xFF};
 
@@ -151,12 +151,20 @@ SHT3x_RESULT SHT3x_ReadMeasurements(uint16_t *rawTemperature, uint16_t *rawHumid
   return SHT3x_OK;
 }
 
-float SHT3x_RawToTemperatureC(uint16_t rawTemperature) {
-  return -45.0f + 175.0f * (rawTemperature / 65535.0f);
+float SHT3x_RawToTemperatureC(int16_t rawTemperature) {
+  // simplified (65536 instead of 65535) integer version of:
+  // temp = (stemp * 175.0f) / 65535.0f - 45.0f;
+  int32_t stemp = ((4375 * (int32_t)rawTemperature) >> 14) - 4500;
+
+  return (float)stemp / 100.0f;
 }
 
 float SHT3x_RawToHumidityRH(uint16_t rawHumidity) {
-  return 100.0f * (rawHumidity / 65535.0f);
+  // simplified (65536 instead of 65535) integer version of:
+  // humidity = (shum * 100.0f) / 65535.0f;
+  uint32_t shum = (625 * (uint32_t)rawHumidity) >> 12;
+
+  return (float)shum / 100.0f;
 }
 
 uint8_t SHT3x_CRC8(uint8_t *data, uint8_t len) {

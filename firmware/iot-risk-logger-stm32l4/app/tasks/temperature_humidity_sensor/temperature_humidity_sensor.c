@@ -137,7 +137,7 @@ static osStatus_t handleInit(TH_SENS_Actor_t *this, message_t *message) {
     osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_INITIALIZE_SUCCESS, .payload.value = TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID}, 0, 0);
 
     #ifdef DEBUG
-      fprintf(stdout, "Temperature & Humidity sensor %ul initialized\n", TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID);
+      fprintf(stdout, "Temperature & Humidity sensor %u initialized\n", TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID);
     #endif
 
     TO_STATE(this, TH_SENS_IDLE_STATE);
@@ -158,9 +158,9 @@ static osStatus_t handleIdle(TH_SENS_Actor_t *this, message_t *message) {
       return osOK;
     case TH_SENS_START_SINGLE_SHOT_READ:
       // TODO run single shot measurement
-      #ifdef DEBUG
-        fprintf(stdout, "Raw: temperature: %d humidity %d\n", this->rawTemperature, this->rawHumidity);
-      #endif
+//      #ifdef DEBUG
+//        fprintf(stdout, "Raw: temperature: %d humidity %d\n", this->rawTemperature, this->rawHumidity);
+//      #endif
 
       TO_STATE(this, TH_SENS_IDLE_STATE);
       return osOK;
@@ -177,12 +177,12 @@ static osStatus_t handleContinuousMeasure(TH_SENS_Actor_t *this, message_t *mess
       ioStatus = SHT3x_ReadMeasurements(&this->rawTemperature, &this->rawHumidity);
       if (ioStatus != osOK) return osError;
 
-      float t = SHT3x_RawToTemperatureC(this->rawTemperature);
-      float rh = SHT3x_RawToHumidityRH(this->rawHumidity);
-
-      #ifdef DEBUG
-        fprintf(stdout, "Temperature: %.2f humidity %.2f\n", t, rh);
-      #endif
+//      uint16_t t = SHT3x_RawToTemperatureC(this->rawTemperature);
+//      uint16_t rh = SHT3x_RawToHumidityRH(this->rawHumidity);
+//
+//      #ifdef DEBUG
+//        fprintf(stdout, "Temperature: %d humidity %d\n", t, rh);
+//      #endif
 
       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
       return osOK;

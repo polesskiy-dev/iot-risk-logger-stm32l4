@@ -35,7 +35,7 @@ typedef enum {
 typedef struct {
   actor_t super;
   TH_SENS_State_t state;
-  uint16_t rawTemperature; ///< TODO units
+  int16_t rawTemperature; ///< TODO units
   uint16_t rawHumidity; ///< TODO units
 } TH_SENS_Actor_t;
 
