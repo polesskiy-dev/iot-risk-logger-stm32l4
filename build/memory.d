@@ -65,7 +65,7 @@ build/memory.o: app/tasks/memory/memory.c app/tasks/memory/memory.h \
  app/tasks/light_sensor/light_sensor.h app/drivers/opt3001/opt3001.h \
  app/core/cron/cron.h Core/Inc/rtc.h Core/Inc/main.h \
  app/core/info_led/info_led.h app/core/retarget/retarget.h \
- Core/Inc/quadspi.h
+ Core/Inc/quadspi.h app/drivers/w25q/w25q.h
 app/tasks/memory/memory.h:
 Core/Inc/main.h:
 Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
@@ -147,3 +147,4 @@ Core/Inc/main.h:
 app/core/info_led/info_led.h:
 app/core/retarget/retarget.h:
 Core/Inc/quadspi.h:
+app/drivers/w25q/w25q.h:

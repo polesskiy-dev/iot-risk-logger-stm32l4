@@ -1,4 +1,4 @@
-ARM GAS  /tmp/cc5tQuj0.s 			page 1
+ARM GAS  /tmp/ccbriIPv.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /tmp/cc5tQuj0.s 			page 1
   28:app/core/power_mode_manager/power_mode_manager.c **** {
   29:app/core/power_mode_manager/power_mode_manager.c ****   // Disable SysTick Interrupt
   30:app/core/power_mode_manager/power_mode_manager.c ****   SysTick->CTRL &= ~SysTick_CTRL_TICKINT_Msk;
-ARM GAS  /tmp/cc5tQuj0.s 			page 2
+ARM GAS  /tmp/ccbriIPv.s 			page 2
 
 
   31:app/core/power_mode_manager/power_mode_manager.c **** 
@@ -67,63 +67,71 @@ ARM GAS  /tmp/cc5tQuj0.s 			page 1
   34:app/core/power_mode_manager/power_mode_manager.c **** 
   35:app/core/power_mode_manager/power_mode_manager.c ****   switch (PWRM_MANAGER_Actor.state) {
   36:app/core/power_mode_manager/power_mode_manager.c ****     case PWRM_STANDBY:
-  37:app/core/power_mode_manager/power_mode_manager.c ****       fprintf(stdout, "Entering STANDBY Mode...\n");
-  38:app/core/power_mode_manager/power_mode_manager.c ****       HAL_PWR_EnterSTANDBYMode();
-  39:app/core/power_mode_manager/power_mode_manager.c ****       break;
-  40:app/core/power_mode_manager/power_mode_manager.c ****     case PWRM_STOP2:
-  41:app/core/power_mode_manager/power_mode_manager.c ****       fprintf(stdout, "Entering STOP2 Mode...\n");
-  42:app/core/power_mode_manager/power_mode_manager.c ****       HAL_PWREx_EnterSTOP2Mode(PWR_STOPENTRY_WFI);
-  43:app/core/power_mode_manager/power_mode_manager.c ****       break;
-  44:app/core/power_mode_manager/power_mode_manager.c ****   }
-  45:app/core/power_mode_manager/power_mode_manager.c **** 
-  46:app/core/power_mode_manager/power_mode_manager.c ****   // TODO handle non sleep modes
-  47:app/core/power_mode_manager/power_mode_manager.c **** }
-  48:app/core/power_mode_manager/power_mode_manager.c **** 
-  49:app/core/power_mode_manager/power_mode_manager.c **** void PostSleepProcessing(uint32_t ulExpectedIdleTime)
-  50:app/core/power_mode_manager/power_mode_manager.c **** {
-  51:app/core/power_mode_manager/power_mode_manager.c ****   // Restore the system clock after waking up
-  52:app/core/power_mode_manager/power_mode_manager.c ****   SystemClock_Config();
-  53:app/core/power_mode_manager/power_mode_manager.c **** 
-  54:app/core/power_mode_manager/power_mode_manager.c ****   // Enable SysTick Interrupt
-  55:app/core/power_mode_manager/power_mode_manager.c ****   SysTick->CTRL  |= SysTick_CTRL_TICKINT_Msk;
-  56:app/core/power_mode_manager/power_mode_manager.c **** 
-  57:app/core/power_mode_manager/power_mode_manager.c ****   // Resume the HAL tick (if using SysTick)
-  58:app/core/power_mode_manager/power_mode_manager.c ****   HAL_ResumeTick();
+  37:app/core/power_mode_manager/power_mode_manager.c ****       #ifdef DEBUG
+  38:app/core/power_mode_manager/power_mode_manager.c ****         fprintf(stdout, "Entering STANDBY Mode...\n");
+  39:app/core/power_mode_manager/power_mode_manager.c ****       #endif
+  40:app/core/power_mode_manager/power_mode_manager.c **** 
+  41:app/core/power_mode_manager/power_mode_manager.c ****       HAL_PWR_EnterSTANDBYMode();
+  42:app/core/power_mode_manager/power_mode_manager.c ****       break;
+  43:app/core/power_mode_manager/power_mode_manager.c ****     case PWRM_STOP2:
+  44:app/core/power_mode_manager/power_mode_manager.c ****       #ifdef DEBUG
+  45:app/core/power_mode_manager/power_mode_manager.c ****         fprintf(stdout, "Entering STOP2 Mode...\n");
+  46:app/core/power_mode_manager/power_mode_manager.c ****       #endif
+  47:app/core/power_mode_manager/power_mode_manager.c **** 
+  48:app/core/power_mode_manager/power_mode_manager.c ****       HAL_PWREx_EnterSTOP2Mode(PWR_STOPENTRY_WFI);
+  49:app/core/power_mode_manager/power_mode_manager.c ****       break;
+  50:app/core/power_mode_manager/power_mode_manager.c ****   }
+  51:app/core/power_mode_manager/power_mode_manager.c **** 
+  52:app/core/power_mode_manager/power_mode_manager.c ****   // TODO handle non sleep modes
+  53:app/core/power_mode_manager/power_mode_manager.c **** }
+  54:app/core/power_mode_manager/power_mode_manager.c **** 
+  55:app/core/power_mode_manager/power_mode_manager.c **** void PostSleepProcessing(uint32_t ulExpectedIdleTime)
+  56:app/core/power_mode_manager/power_mode_manager.c **** {
+  57:app/core/power_mode_manager/power_mode_manager.c ****   // Restore the system clock after waking up
+  58:app/core/power_mode_manager/power_mode_manager.c ****   SystemClock_Config();
   59:app/core/power_mode_manager/power_mode_manager.c **** 
-  60:app/core/power_mode_manager/power_mode_manager.c ****   fprintf(stdout, "Exited Sleep Mode...\n");
-  61:app/core/power_mode_manager/power_mode_manager.c **** }
+  60:app/core/power_mode_manager/power_mode_manager.c ****   // Enable SysTick Interrupt
+  61:app/core/power_mode_manager/power_mode_manager.c ****   SysTick->CTRL  |= SysTick_CTRL_TICKINT_Msk;
   62:app/core/power_mode_manager/power_mode_manager.c **** 
-  63:app/core/power_mode_manager/power_mode_manager.c **** actor_t* PWRM_MANAGER_ActorInit(void) {
-  64:app/core/power_mode_manager/power_mode_manager.c ****   PWRM_MANAGER_Actor.state = PWRM_STOP2;
+  63:app/core/power_mode_manager/power_mode_manager.c ****   // Resume the HAL tick (if using SysTick)
+  64:app/core/power_mode_manager/power_mode_manager.c ****   HAL_ResumeTick();
   65:app/core/power_mode_manager/power_mode_manager.c **** 
-  66:app/core/power_mode_manager/power_mode_manager.c ****   fprintf(stdout, "Power Mode Manager initialized\n");
-  67:app/core/power_mode_manager/power_mode_manager.c **** 
-  68:app/core/power_mode_manager/power_mode_manager.c ****   return &PWRM_MANAGER_Actor.super;
+  66:app/core/power_mode_manager/power_mode_manager.c ****   #ifdef DEBUG
+  67:app/core/power_mode_manager/power_mode_manager.c ****     fprintf(stdout, "Exited Sleep Mode...\n");
+  68:app/core/power_mode_manager/power_mode_manager.c ****   #endif
   69:app/core/power_mode_manager/power_mode_manager.c **** }
   70:app/core/power_mode_manager/power_mode_manager.c **** 
-  71:app/core/power_mode_manager/power_mode_manager.c **** static osStatus_t handlePwrModeManagerMessage(PWRM_MANAGER_Actor_t *this, message_t *message) {
-  29              		.loc 1 71 95 view -0
+  71:app/core/power_mode_manager/power_mode_manager.c **** actor_t* PWRM_MANAGER_ActorInit(void) {
+  72:app/core/power_mode_manager/power_mode_manager.c ****   PWRM_MANAGER_Actor.state = PWRM_STOP2;
+  73:app/core/power_mode_manager/power_mode_manager.c **** 
+  74:app/core/power_mode_manager/power_mode_manager.c ****   fprintf(stdout, "Power Mode Manager initialized\n");
+  75:app/core/power_mode_manager/power_mode_manager.c **** 
+  76:app/core/power_mode_manager/power_mode_manager.c ****   return &PWRM_MANAGER_Actor.super;
+  77:app/core/power_mode_manager/power_mode_manager.c **** }
+  78:app/core/power_mode_manager/power_mode_manager.c **** 
+  79:app/core/power_mode_manager/power_mode_manager.c **** static osStatus_t handlePwrModeManagerMessage(PWRM_MANAGER_Actor_t *this, message_t *message) {
+  29              		.loc 1 79 95 view -0
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
   32              		@ frame_needed = 0, uses_anonymous_args = 0
   33              		@ link register save eliminated.
-  72:app/core/power_mode_manager/power_mode_manager.c ****   switch (message->event) {
-  34              		.loc 1 72 3 view .LVU1
-  73:app/core/power_mode_manager/power_mode_manager.c ****     // TODO handle sleep manager messages
-  74:app/core/power_mode_manager/power_mode_manager.c ****     default:
-  75:app/core/power_mode_manager/power_mode_manager.c ****       return osOK;
-  35              		.loc 1 75 7 view .LVU2
-  76:app/core/power_mode_manager/power_mode_manager.c ****   }
-  77:app/core/power_mode_manager/power_mode_manager.c **** 
-  78:app/core/power_mode_manager/power_mode_manager.c ****   return osOK;
-  79:app/core/power_mode_manager/power_mode_manager.c **** }...
-  36              		.loc 1 79 1 is_stmt 0 view .LVU3
-ARM GAS  /tmp/cc5tQuj0.s 			page 3
+  80:app/core/power_mode_manager/power_mode_manager.c ****   switch (message->event) {
+  34              		.loc 1 80 3 view .LVU1
+  81:app/core/power_mode_manager/power_mode_manager.c ****     // TODO handle sleep manager messages
+ARM GAS  /tmp/ccbriIPv.s 			page 3
 
 
+  82:app/core/power_mode_manager/power_mode_manager.c ****     default:
+  83:app/core/power_mode_manager/power_mode_manager.c ****       return osOK;
+  35              		.loc 1 83 7 view .LVU2
+  84:app/core/power_mode_manager/power_mode_manager.c ****   }
+  85:app/core/power_mode_manager/power_mode_manager.c **** 
+  86:app/core/power_mode_manager/power_mode_manager.c ****   return osOK;
+  87:app/core/power_mode_manager/power_mode_manager.c **** }...
+  36              		.loc 1 87 1 is_stmt 0 view .LVU3
   37 0000 0020     		movs	r0, #0
   38              	.LVL1:
-  39              		.loc 1 79 1 view .LVU4
+  39              		.loc 1 87 1 view .LVU4
   40 0002 7047     		bx	lr
   41              		.cfi_endproc
   42              	.LFE142:
@@ -170,6 +178,9 @@ ARM GAS  /tmp/cc5tQuj0.s 			page 1
   73              		.loc 1 30 17 is_stmt 0 view .LVU8
   74 0002 4FF0E022 		mov	r2, #-536813568
   75 0006 1369     		ldr	r3, [r2, #16]
+ARM GAS  /tmp/ccbriIPv.s 			page 4
+
+
   76 0008 23F00203 		bic	r3, r3, #2
   77 000c 1361     		str	r3, [r2, #16]
   33:app/core/power_mode_manager/power_mode_manager.c ****   HAL_SuspendTick();
@@ -178,9 +189,6 @@ ARM GAS  /tmp/cc5tQuj0.s 			page 1
   80              	.LVL3:
   35:app/core/power_mode_manager/power_mode_manager.c ****   switch (PWRM_MANAGER_Actor.state) {
   81              		.loc 1 35 3 view .LVU10
-ARM GAS  /tmp/cc5tQuj0.s 			page 4
-
-
   35:app/core/power_mode_manager/power_mode_manager.c ****   switch (PWRM_MANAGER_Actor.state) {
   82              		.loc 1 35 29 is_stmt 0 view .LVU11
   83 0012 0F4B     		ldr	r3, .L7
@@ -192,58 +200,58 @@ ARM GAS  /tmp/cc5tQuj0.s 			page 1
   88 001a 022B     		cmp	r3, #2
   89 001c 0BD0     		beq	.L4
   90              	.L2:
-  47:app/core/power_mode_manager/power_mode_manager.c **** }
-  91              		.loc 1 47 1 view .LVU13
+  53:app/core/power_mode_manager/power_mode_manager.c **** }
+  91              		.loc 1 53 1 view .LVU13
   92 001e 08BD     		pop	{r3, pc}
   93              	.L3:
-  37:app/core/power_mode_manager/power_mode_manager.c ****       fprintf(stdout, "Entering STANDBY Mode...\n");
-  94              		.loc 1 37 7 is_stmt 1 view .LVU14
-  37:app/core/power_mode_manager/power_mode_manager.c ****       fprintf(stdout, "Entering STANDBY Mode...\n");
-  95              		.loc 1 37 15 is_stmt 0 view .LVU15
+  38:app/core/power_mode_manager/power_mode_manager.c ****         fprintf(stdout, "Entering STANDBY Mode...\n");
+  94              		.loc 1 38 9 is_stmt 1 view .LVU14
+  38:app/core/power_mode_manager/power_mode_manager.c ****         fprintf(stdout, "Entering STANDBY Mode...\n");
+  95              		.loc 1 38 17 is_stmt 0 view .LVU15
   96 0020 0C4B     		ldr	r3, .L7+4
   97 0022 1B68     		ldr	r3, [r3]
-  37:app/core/power_mode_manager/power_mode_manager.c ****       fprintf(stdout, "Entering STANDBY Mode...\n");
-  98              		.loc 1 37 7 view .LVU16
+  38:app/core/power_mode_manager/power_mode_manager.c ****         fprintf(stdout, "Entering STANDBY Mode...\n");
+  98              		.loc 1 38 9 view .LVU16
   99 0024 9B68     		ldr	r3, [r3, #8]
  100 0026 1922     		movs	r2, #25
  101 0028 0121     		movs	r1, #1
  102 002a 0B48     		ldr	r0, .L7+8
  103 002c FFF7FEFF 		bl	fwrite
  104              	.LVL4:
-  38:app/core/power_mode_manager/power_mode_manager.c ****       HAL_PWR_EnterSTANDBYMode();
- 105              		.loc 1 38 7 is_stmt 1 view .LVU17
+  41:app/core/power_mode_manager/power_mode_manager.c ****       HAL_PWR_EnterSTANDBYMode();
+ 105              		.loc 1 41 7 is_stmt 1 view .LVU17
  106 0030 FFF7FEFF 		bl	HAL_PWR_EnterSTANDBYMode
  107              	.LVL5:
-  39:app/core/power_mode_manager/power_mode_manager.c ****       break;
- 108              		.loc 1 39 7 view .LVU18
+  42:app/core/power_mode_manager/power_mode_manager.c ****       break;
+ 108              		.loc 1 42 7 view .LVU18
  109 0034 F3E7     		b	.L2
  110              	.L4:
-  41:app/core/power_mode_manager/power_mode_manager.c ****       fprintf(stdout, "Entering STOP2 Mode...\n");
- 111              		.loc 1 41 7 view .LVU19
-  41:app/core/power_mode_manager/power_mode_manager.c ****       fprintf(stdout, "Entering STOP2 Mode...\n");
- 112              		.loc 1 41 15 is_stmt 0 view .LVU20
+  45:app/core/power_mode_manager/power_mode_manager.c ****         fprintf(stdout, "Entering STOP2 Mode...\n");
+ 111              		.loc 1 45 9 view .LVU19
+  45:app/core/power_mode_manager/power_mode_manager.c ****         fprintf(stdout, "Entering STOP2 Mode...\n");
+ 112              		.loc 1 45 17 is_stmt 0 view .LVU20
  113 0036 074B     		ldr	r3, .L7+4
  114 0038 1B68     		ldr	r3, [r3]
-  41:app/core/power_mode_manager/power_mode_manager.c ****       fprintf(stdout, "Entering STOP2 Mode...\n");
- 115              		.loc 1 41 7 view .LVU21
+  45:app/core/power_mode_manager/power_mode_manager.c ****         fprintf(stdout, "Entering STOP2 Mode...\n");
+ 115              		.loc 1 45 9 view .LVU21
  116 003a 9B68     		ldr	r3, [r3, #8]
  117 003c 1722     		movs	r2, #23
  118 003e 0121     		movs	r1, #1
  119 0040 0648     		ldr	r0, .L7+12
+ARM GAS  /tmp/ccbriIPv.s 			page 5
+
+
  120 0042 FFF7FEFF 		bl	fwrite
  121              	.LVL6:
-  42:app/core/power_mode_manager/power_mode_manager.c ****       HAL_PWREx_EnterSTOP2Mode(PWR_STOPENTRY_WFI);
- 122              		.loc 1 42 7 is_stmt 1 view .LVU22
+  48:app/core/power_mode_manager/power_mode_manager.c ****       HAL_PWREx_EnterSTOP2Mode(PWR_STOPENTRY_WFI);
+ 122              		.loc 1 48 7 is_stmt 1 view .LVU22
  123 0046 0120     		movs	r0, #1
  124 0048 FFF7FEFF 		bl	HAL_PWREx_EnterSTOP2Mode
  125              	.LVL7:
-  43:app/core/power_mode_manager/power_mode_manager.c ****       break;
-ARM GAS  /tmp/cc5tQuj0.s 			page 5
-
-
- 126              		.loc 1 43 7 view .LVU23
-  47:app/core/power_mode_manager/power_mode_manager.c **** }
- 127              		.loc 1 47 1 is_stmt 0 view .LVU24
+  49:app/core/power_mode_manager/power_mode_manager.c ****       break;
+ 126              		.loc 1 49 7 view .LVU23
+  53:app/core/power_mode_manager/power_mode_manager.c **** }
+ 127              		.loc 1 53 1 is_stmt 0 view .LVU24
  128 004c E7E7     		b	.L2
  129              	.L8:
  130 004e 00BF     		.align	2
@@ -272,53 +280,53 @@ ARM GAS  /tmp/cc5tQuj0.s 			page 1
  151              	PostSleepProcessing:
  152              	.LVL8:
  153              	.LFB140:
-  50:app/core/power_mode_manager/power_mode_manager.c **** {
- 154              		.loc 1 50 1 is_stmt 1 view -0
+  56:app/core/power_mode_manager/power_mode_manager.c **** {
+ 154              		.loc 1 56 1 is_stmt 1 view -0
  155              		.cfi_startproc
  156              		@ args = 0, pretend = 0, frame = 0
  157              		@ frame_needed = 0, uses_anonymous_args = 0
-  50:app/core/power_mode_manager/power_mode_manager.c **** {
- 158              		.loc 1 50 1 is_stmt 0 view .LVU26
+  56:app/core/power_mode_manager/power_mode_manager.c **** {
+ 158              		.loc 1 56 1 is_stmt 0 view .LVU26
  159 0000 08B5     		push	{r3, lr}
  160              	.LCFI1:
  161              		.cfi_def_cfa_offset 8
  162              		.cfi_offset 3, -8
  163              		.cfi_offset 14, -4
-  52:app/core/power_mode_manager/power_mode_manager.c ****   SystemClock_Config();
- 164              		.loc 1 52 3 is_stmt 1 view .LVU27
+  58:app/core/power_mode_manager/power_mode_manager.c ****   SystemClock_Config();
+ 164              		.loc 1 58 3 is_stmt 1 view .LVU27
  165 0002 FFF7FEFF 		bl	SystemClock_Config
  166              	.LVL9:
-  55:app/core/power_mode_manager/power_mode_manager.c ****   SysTick->CTRL  |= SysTick_CTRL_TICKINT_Msk;
- 167              		.loc 1 55 3 view .LVU28
-  55:app/core/power_mode_manager/power_mode_manager.c ****   SysTick->CTRL  |= SysTick_CTRL_TICKINT_Msk;
- 168              		.loc 1 55 18 is_stmt 0 view .LVU29
+  61:app/core/power_mode_manager/power_mode_manager.c ****   SysTick->CTRL  |= SysTick_CTRL_TICKINT_Msk;
+ 167              		.loc 1 61 3 view .LVU28
+ARM GAS  /tmp/ccbriIPv.s 			page 6
+
+
+  61:app/core/power_mode_manager/power_mode_manager.c ****   SysTick->CTRL  |= SysTick_CTRL_TICKINT_Msk;
+ 168              		.loc 1 61 18 is_stmt 0 view .LVU29
  169 0006 4FF0E022 		mov	r2, #-536813568
  170 000a 1369     		ldr	r3, [r2, #16]
  171 000c 43F00203 		orr	r3, r3, #2
  172 0010 1361     		str	r3, [r2, #16]
-  58:app/core/power_mode_manager/power_mode_manager.c ****   HAL_ResumeTick();
- 173              		.loc 1 58 3 is_stmt 1 view .LVU30
-ARM GAS  /tmp/cc5tQuj0.s 			page 6
-
-
+  64:app/core/power_mode_manager/power_mode_manager.c ****   HAL_ResumeTick();
+ 173              		.loc 1 64 3 is_stmt 1 view .LVU30
  174 0012 FFF7FEFF 		bl	HAL_ResumeTick
  175              	.LVL10:
-  60:app/core/power_mode_manager/power_mode_manager.c ****   fprintf(stdout, "Exited Sleep Mode...\n");
- 176              		.loc 1 60 3 view .LVU31
-  60:app/core/power_mode_manager/power_mode_manager.c ****   fprintf(stdout, "Exited Sleep Mode...\n");
- 177              		.loc 1 60 11 is_stmt 0 view .LVU32
+  67:app/core/power_mode_manager/power_mode_manager.c ****     fprintf(stdout, "Exited Sleep Mode...\n");
+ 176              		.loc 1 67 5 view .LVU31
+  67:app/core/power_mode_manager/power_mode_manager.c ****     fprintf(stdout, "Exited Sleep Mode...\n");
+ 177              		.loc 1 67 13 is_stmt 0 view .LVU32
  178 0016 044B     		ldr	r3, .L11
  179 0018 1B68     		ldr	r3, [r3]
-  60:app/core/power_mode_manager/power_mode_manager.c ****   fprintf(stdout, "Exited Sleep Mode...\n");
- 180              		.loc 1 60 3 view .LVU33
+  67:app/core/power_mode_manager/power_mode_manager.c ****     fprintf(stdout, "Exited Sleep Mode...\n");
+ 180              		.loc 1 67 5 view .LVU33
  181 001a 9B68     		ldr	r3, [r3, #8]
  182 001c 1522     		movs	r2, #21
  183 001e 0121     		movs	r1, #1
  184 0020 0248     		ldr	r0, .L11+4
  185 0022 FFF7FEFF 		bl	fwrite
  186              	.LVL11:
-  61:app/core/power_mode_manager/power_mode_manager.c **** }
- 187              		.loc 1 61 1 view .LVU34
+  69:app/core/power_mode_manager/power_mode_manager.c **** }
+ 187              		.loc 1 69 1 view .LVU34
  188 0026 08BD     		pop	{r3, pc}
  189              	.L12:
  190              		.align	2
@@ -344,44 +352,44 @@ ARM GAS  /tmp/cc5tQuj0.s 			page 1
  207              		.fpu fpv4-sp-d16
  209              	PWRM_MANAGER_ActorInit:
  210              	.LFB141:
-  63:app/core/power_mode_manager/power_mode_manager.c **** actor_t* PWRM_MANAGER_ActorInit(void) {
- 211              		.loc 1 63 39 is_stmt 1 view -0
+  71:app/core/power_mode_manager/power_mode_manager.c **** actor_t* PWRM_MANAGER_ActorInit(void) {
+ 211              		.loc 1 71 39 is_stmt 1 view -0
  212              		.cfi_startproc
  213              		@ args = 0, pretend = 0, frame = 0
  214              		@ frame_needed = 0, uses_anonymous_args = 0
  215 0000 10B5     		push	{r4, lr}
+ARM GAS  /tmp/ccbriIPv.s 			page 7
+
+
  216              	.LCFI2:
  217              		.cfi_def_cfa_offset 8
  218              		.cfi_offset 4, -8
  219              		.cfi_offset 14, -4
-  64:app/core/power_mode_manager/power_mode_manager.c ****   PWRM_MANAGER_Actor.state = PWRM_STOP2;
- 220              		.loc 1 64 3 view .LVU36
-  64:app/core/power_mode_manager/power_mode_manager.c ****   PWRM_MANAGER_Actor.state = PWRM_STOP2;
- 221              		.loc 1 64 28 is_stmt 0 view .LVU37
-ARM GAS  /tmp/cc5tQuj0.s 			page 7
-
-
+  72:app/core/power_mode_manager/power_mode_manager.c ****   PWRM_MANAGER_Actor.state = PWRM_STOP2;
+ 220              		.loc 1 72 3 view .LVU36
+  72:app/core/power_mode_manager/power_mode_manager.c ****   PWRM_MANAGER_Actor.state = PWRM_STOP2;
+ 221              		.loc 1 72 28 is_stmt 0 view .LVU37
  222 0002 064C     		ldr	r4, .L15
  223 0004 0223     		movs	r3, #2
  224 0006 2374     		strb	r3, [r4, #16]
-  66:app/core/power_mode_manager/power_mode_manager.c ****   fprintf(stdout, "Power Mode Manager initialized\n");
- 225              		.loc 1 66 3 is_stmt 1 view .LVU38
-  66:app/core/power_mode_manager/power_mode_manager.c ****   fprintf(stdout, "Power Mode Manager initialized\n");
- 226              		.loc 1 66 11 is_stmt 0 view .LVU39
+  74:app/core/power_mode_manager/power_mode_manager.c ****   fprintf(stdout, "Power Mode Manager initialized\n");
+ 225              		.loc 1 74 3 is_stmt 1 view .LVU38
+  74:app/core/power_mode_manager/power_mode_manager.c ****   fprintf(stdout, "Power Mode Manager initialized\n");
+ 226              		.loc 1 74 11 is_stmt 0 view .LVU39
  227 0008 054B     		ldr	r3, .L15+4
  228 000a 1B68     		ldr	r3, [r3]
-  66:app/core/power_mode_manager/power_mode_manager.c ****   fprintf(stdout, "Power Mode Manager initialized\n");
- 229              		.loc 1 66 3 view .LVU40
+  74:app/core/power_mode_manager/power_mode_manager.c ****   fprintf(stdout, "Power Mode Manager initialized\n");
+ 229              		.loc 1 74 3 view .LVU40
  230 000c 9B68     		ldr	r3, [r3, #8]
  231 000e 1F22     		movs	r2, #31
  232 0010 0121     		movs	r1, #1
  233 0012 0448     		ldr	r0, .L15+8
  234 0014 FFF7FEFF 		bl	fwrite
  235              	.LVL12:
-  68:app/core/power_mode_manager/power_mode_manager.c ****   return &PWRM_MANAGER_Actor.super;
- 236              		.loc 1 68 3 is_stmt 1 view .LVU41
-  69:app/core/power_mode_manager/power_mode_manager.c **** }
- 237              		.loc 1 69 1 is_stmt 0 view .LVU42
+  76:app/core/power_mode_manager/power_mode_manager.c ****   return &PWRM_MANAGER_Actor.super;
+ 236              		.loc 1 76 3 is_stmt 1 view .LVU41
+  77:app/core/power_mode_manager/power_mode_manager.c **** }
+ 237              		.loc 1 77 1 is_stmt 0 view .LVU42
  238 0018 2046     		mov	r0, r4
  239 001a 10BD     		pop	{r4, pc}
  240              	.L16:
@@ -410,6 +418,9 @@ ARM GAS  /tmp/cc5tQuj0.s 			page 1
  266              		.file 4 "/usr/include/newlib/sys/_types.h"
  267              		.file 5 "/usr/include/newlib/sys/reent.h"
  268              		.file 6 "/usr/include/newlib/sys/lock.h"
+ARM GAS  /tmp/ccbriIPv.s 			page 8
+
+
  269              		.file 7 "/usr/include/newlib/sys/_stdint.h"
  270              		.file 8 "/usr/include/newlib/sys/types.h"
  271              		.file 9 "Drivers/CMSIS/Include/core_cm4.h"
@@ -418,34 +429,31 @@ ARM GAS  /tmp/cc5tQuj0.s 			page 1
  274              		.file 12 "app/core/actor/../../config/actors_list/actors_list.h"
  275              		.file 13 "app/core/actor/actor.h"
  276              		.file 14 "app/core/power_mode_manager/power_mode_manager.h"
-ARM GAS  /tmp/cc5tQuj0.s 			page 8
-
-
  277              		.file 15 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h"
  278              		.file 16 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr.h"
  279              		.file 17 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h"
  280              		.file 18 "<built-in>"
-ARM GAS  /tmp/cc5tQuj0.s 			page 9
+ARM GAS  /tmp/ccbriIPv.s 			page 9
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 power_mode_manager.c
-     /tmp/cc5tQuj0.s:18     .text.handlePwrModeManagerMessage:0000000000000000 $t
-     /tmp/cc5tQuj0.s:25     .text.handlePwrModeManagerMessage:0000000000000000 handlePwrModeManagerMessage
-     /tmp/cc5tQuj0.s:45     .rodata.PreSleepProcessing.str1.4:0000000000000000 $d
-     /tmp/cc5tQuj0.s:52     .text.PreSleepProcessing:0000000000000000 $t
-     /tmp/cc5tQuj0.s:59     .text.PreSleepProcessing:0000000000000000 PreSleepProcessing
-     /tmp/cc5tQuj0.s:132    .text.PreSleepProcessing:0000000000000050 $d
-     /tmp/cc5tQuj0.s:140    .rodata.PostSleepProcessing.str1.4:0000000000000000 $d
-     /tmp/cc5tQuj0.s:144    .text.PostSleepProcessing:0000000000000000 $t
-     /tmp/cc5tQuj0.s:151    .text.PostSleepProcessing:0000000000000000 PostSleepProcessing
-     /tmp/cc5tQuj0.s:192    .text.PostSleepProcessing:0000000000000028 $d
-     /tmp/cc5tQuj0.s:198    .rodata.PWRM_MANAGER_ActorInit.str1.4:0000000000000000 $d
-     /tmp/cc5tQuj0.s:202    .text.PWRM_MANAGER_ActorInit:0000000000000000 $t
-     /tmp/cc5tQuj0.s:209    .text.PWRM_MANAGER_ActorInit:0000000000000000 PWRM_MANAGER_ActorInit
-     /tmp/cc5tQuj0.s:243    .text.PWRM_MANAGER_ActorInit:000000000000001c $d
-     /tmp/cc5tQuj0.s:255    .data.PWRM_MANAGER_Actor:0000000000000000 PWRM_MANAGER_Actor
-     /tmp/cc5tQuj0.s:251    .data.PWRM_MANAGER_Actor:0000000000000000 $d
+     /tmp/ccbriIPv.s:18     .text.handlePwrModeManagerMessage:0000000000000000 $t
+     /tmp/ccbriIPv.s:25     .text.handlePwrModeManagerMessage:0000000000000000 handlePwrModeManagerMessage
+     /tmp/ccbriIPv.s:45     .rodata.PreSleepProcessing.str1.4:0000000000000000 $d
+     /tmp/ccbriIPv.s:52     .text.PreSleepProcessing:0000000000000000 $t
+     /tmp/ccbriIPv.s:59     .text.PreSleepProcessing:0000000000000000 PreSleepProcessing
+     /tmp/ccbriIPv.s:132    .text.PreSleepProcessing:0000000000000050 $d
+     /tmp/ccbriIPv.s:140    .rodata.PostSleepProcessing.str1.4:0000000000000000 $d
+     /tmp/ccbriIPv.s:144    .text.PostSleepProcessing:0000000000000000 $t
+     /tmp/ccbriIPv.s:151    .text.PostSleepProcessing:0000000000000000 PostSleepProcessing
+     /tmp/ccbriIPv.s:192    .text.PostSleepProcessing:0000000000000028 $d
+     /tmp/ccbriIPv.s:198    .rodata.PWRM_MANAGER_ActorInit.str1.4:0000000000000000 $d
+     /tmp/ccbriIPv.s:202    .text.PWRM_MANAGER_ActorInit:0000000000000000 $t
+     /tmp/ccbriIPv.s:209    .text.PWRM_MANAGER_ActorInit:0000000000000000 PWRM_MANAGER_ActorInit
+     /tmp/ccbriIPv.s:243    .text.PWRM_MANAGER_ActorInit:000000000000001c $d
+     /tmp/ccbriIPv.s:255    .data.PWRM_MANAGER_Actor:0000000000000000 PWRM_MANAGER_Actor
+     /tmp/ccbriIPv.s:251    .data.PWRM_MANAGER_Actor:0000000000000000 $d
 
 UNDEFINED SYMBOLS
 HAL_SuspendTick

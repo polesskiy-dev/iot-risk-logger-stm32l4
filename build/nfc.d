@@ -56,6 +56,7 @@ build/nfc.o: app/tasks/nfc/nfc.c app/tasks/nfc/nfc.h \
  app/tasks/event_manager/event_manager.h \
  app/core/power_mode_manager/power_mode_manager.h app/tasks/nfc/nfc.h \
  app/tasks/memory/memory.h Core/Inc/quadspi.h Core/Inc/main.h \
+ app/drivers/w25q/w25q.h \
  app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.h \
  app/config/bsp_bus/bsp_bus.h Core/Inc/custom_bus.h \
  Core/Inc/custom_conf.h Core/Inc/custom_errno.h app/drivers/sht3x/sht3x.h \
@@ -128,6 +129,7 @@ app/tasks/nfc/nfc.h:
 app/tasks/memory/memory.h:
 Core/Inc/quadspi.h:
 Core/Inc/main.h:
+app/drivers/w25q/w25q.h:
 app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.h:
 app/config/bsp_bus/bsp_bus.h:
 Core/Inc/custom_bus.h:

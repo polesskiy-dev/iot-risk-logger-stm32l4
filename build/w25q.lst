@@ -1,0 +1,1715 @@
+ARM GAS  /tmp/cczlp3KS.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"w25q.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.W25Q_EnableWright,"ax",%progbits
+  18              		.align	1
+  19              		.arch armv7e-m
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv4-sp-d16
+  25              	W25Q_EnableWright:
+  26              	.LVL0:
+  27              	.LFB143:
+  28              		.file 1 "app/drivers/w25q/w25q.c"
+   1:app/drivers/w25q/w25q.c **** /*!
+   2:app/drivers/w25q/w25q.c ****  * @file w25q.c
+   3:app/drivers/w25q/w25q.c ****  * @brief implementation of w25q
+   4:app/drivers/w25q/w25q.c ****  *
+   5:app/drivers/w25q/w25q.c ****  * Detailed description of the implementation file.
+   6:app/drivers/w25q/w25q.c ****  *
+   7:app/drivers/w25q/w25q.c ****  * @date 19/08/2024
+   8:app/drivers/w25q/w25q.c ****  * @author artempolisskyi
+   9:app/drivers/w25q/w25q.c ****  */
+  10:app/drivers/w25q/w25q.c **** 
+  11:app/drivers/w25q/w25q.c **** #include "w25q.h"
+  12:app/drivers/w25q/w25q.c **** #include "cmsis_os2.h"
+  13:app/drivers/w25q/w25q.c **** 
+  14:app/drivers/w25q/w25q.c **** static HAL_StatusTypeDef W25Q_EnableWright(W25Q_HandleTypeDef *hflash);
+  15:app/drivers/w25q/w25q.c **** 
+  16:app/drivers/w25q/w25q.c **** HAL_StatusTypeDef W25Q_Init(W25Q_HandleTypeDef *hflash) {
+  17:app/drivers/w25q/w25q.c ****   // TODO implement if needed
+  18:app/drivers/w25q/w25q.c **** 
+  19:app/drivers/w25q/w25q.c ****   return osOK;
+  20:app/drivers/w25q/w25q.c **** }
+  21:app/drivers/w25q/w25q.c **** 
+  22:app/drivers/w25q/w25q.c **** /**
+  23:app/drivers/w25q/w25q.c ****  * @brief
+  24:app/drivers/w25q/w25q.c ****  *
+  25:app/drivers/w25q/w25q.c ****  * @note size should be less than page size (256 bytes)
+  26:app/drivers/w25q/w25q.c ****  *
+  27:app/drivers/w25q/w25q.c ****  * @param hflash
+  28:app/drivers/w25q/w25q.c ****  * @param dataBuffer [out]
+  29:app/drivers/w25q/w25q.c ****  * @param address [in]
+  30:app/drivers/w25q/w25q.c ****  * @param size [in]
+ARM GAS  /tmp/cczlp3KS.s 			page 2
+
+
+  31:app/drivers/w25q/w25q.c ****  * @return
+  32:app/drivers/w25q/w25q.c ****  */
+  33:app/drivers/w25q/w25q.c **** HAL_StatusTypeDef W25Q_ReadData(W25Q_HandleTypeDef *hflash, uint8_t *const dataBuffer, uint32_t add
+  34:app/drivers/w25q/w25q.c ****   QSPI_CommandTypeDef sCommand;
+  35:app/drivers/w25q/w25q.c ****   HAL_StatusTypeDef status;
+  36:app/drivers/w25q/w25q.c ****   hflash->busyWaitCycles = FLASH_BUSY_WAIT_CYCLES;
+  37:app/drivers/w25q/w25q.c **** 
+  38:app/drivers/w25q/w25q.c ****   // Set up the QSPI command
+  39:app/drivers/w25q/w25q.c ****   sCommand.InstructionMode   = QSPI_INSTRUCTION_1_LINE;
+  40:app/drivers/w25q/w25q.c ****   sCommand.Instruction       = W25Q_CMD_FAST_READ;
+  41:app/drivers/w25q/w25q.c **** 
+  42:app/drivers/w25q/w25q.c ****   sCommand.AddressMode       = QSPI_ADDRESS_4_LINES;
+  43:app/drivers/w25q/w25q.c ****   sCommand.AddressSize       = QSPI_ADDRESS_24_BITS;
+  44:app/drivers/w25q/w25q.c ****   sCommand.Address           = address;
+  45:app/drivers/w25q/w25q.c **** 
+  46:app/drivers/w25q/w25q.c ****   sCommand.AlternateByteMode  = QSPI_ALTERNATE_BYTES_NONE;
+  47:app/drivers/w25q/w25q.c **** 
+  48:app/drivers/w25q/w25q.c ****   sCommand.DataMode          = QSPI_DATA_4_LINES;
+  49:app/drivers/w25q/w25q.c ****   sCommand.DummyCycles       = 6;
+  50:app/drivers/w25q/w25q.c ****   sCommand.NbData            = size;
+  51:app/drivers/w25q/w25q.c **** 
+  52:app/drivers/w25q/w25q.c ****   sCommand.DdrMode           = QSPI_DDR_MODE_DISABLE;
+  53:app/drivers/w25q/w25q.c ****   sCommand.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+  54:app/drivers/w25q/w25q.c ****   sCommand.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+  55:app/drivers/w25q/w25q.c **** 
+  56:app/drivers/w25q/w25q.c ****   // TODO check: The Quad Enable bit (QE) of Status Register-2 must be set to enable the Fast Read 
+  57:app/drivers/w25q/w25q.c **** 
+  58:app/drivers/w25q/w25q.c ****   // Send the command
+  59:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, W25Q_TIMEOUT_DEFAULT);
+  60:app/drivers/w25q/w25q.c ****   if (status != HAL_OK) {
+  61:app/drivers/w25q/w25q.c ****     return status;
+  62:app/drivers/w25q/w25q.c ****   }
+  63:app/drivers/w25q/w25q.c **** 
+  64:app/drivers/w25q/w25q.c ****   // Receive the data
+  65:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Receive(hflash->hqspi, dataBuffer, W25Q_TIMEOUT_DEFAULT);
+  66:app/drivers/w25q/w25q.c ****   if (status != HAL_OK) {
+  67:app/drivers/w25q/w25q.c ****     return status;
+  68:app/drivers/w25q/w25q.c ****   }
+  69:app/drivers/w25q/w25q.c **** 
+  70:app/drivers/w25q/w25q.c ****   while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LE
+  71:app/drivers/w25q/w25q.c ****     osDelay(1);
+  72:app/drivers/w25q/w25q.c **** 
+  73:app/drivers/w25q/w25q.c ****   if (hflash->busyWaitCycles <= NO_FLASH_BUSY_WAIT_CYCLES_LEFT)
+  74:app/drivers/w25q/w25q.c ****     status = HAL_ERROR;
+  75:app/drivers/w25q/w25q.c **** 
+  76:app/drivers/w25q/w25q.c ****   return status;
+  77:app/drivers/w25q/w25q.c **** }
+  78:app/drivers/w25q/w25q.c **** 
+  79:app/drivers/w25q/w25q.c **** HAL_StatusTypeDef W25Q_WriteData(W25Q_HandleTypeDef *hflash, const uint8_t *dataBuffer, uint32_t ad
+  80:app/drivers/w25q/w25q.c ****   QSPI_CommandTypeDef sCommand;
+  81:app/drivers/w25q/w25q.c ****   HAL_StatusTypeDef status;
+  82:app/drivers/w25q/w25q.c ****   hflash->busyWaitCycles = FLASH_BUSY_WAIT_CYCLES;
+  83:app/drivers/w25q/w25q.c **** 
+  84:app/drivers/w25q/w25q.c ****   status = W25Q_EnableWright(hflash);
+  85:app/drivers/w25q/w25q.c **** 
+  86:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+  87:app/drivers/w25q/w25q.c ****     return status;
+ARM GAS  /tmp/cczlp3KS.s 			page 3
+
+
+  88:app/drivers/w25q/w25q.c **** 
+  89:app/drivers/w25q/w25q.c ****   // Set up the QSPI command
+  90:app/drivers/w25q/w25q.c ****   sCommand.InstructionMode   = QSPI_INSTRUCTION_1_LINE;
+  91:app/drivers/w25q/w25q.c ****   sCommand.Instruction       = W25Q_CMD_PAGE_PROGRAM;
+  92:app/drivers/w25q/w25q.c **** 
+  93:app/drivers/w25q/w25q.c ****   sCommand.AddressMode       = QSPI_ADDRESS_1_LINE;
+  94:app/drivers/w25q/w25q.c ****   sCommand.AddressSize       = QSPI_ADDRESS_24_BITS;
+  95:app/drivers/w25q/w25q.c ****   sCommand.Address           = address;
+  96:app/drivers/w25q/w25q.c **** 
+  97:app/drivers/w25q/w25q.c ****   sCommand.AlternateByteMode  = QSPI_ALTERNATE_BYTES_NONE;
+  98:app/drivers/w25q/w25q.c **** 
+  99:app/drivers/w25q/w25q.c ****   sCommand.DataMode          = QSPI_DATA_1_LINE;
+ 100:app/drivers/w25q/w25q.c ****   sCommand.DummyCycles       = 0;
+ 101:app/drivers/w25q/w25q.c ****   sCommand.NbData            = size;
+ 102:app/drivers/w25q/w25q.c **** 
+ 103:app/drivers/w25q/w25q.c ****   sCommand.DdrMode           = QSPI_DDR_MODE_DISABLE;
+ 104:app/drivers/w25q/w25q.c ****   sCommand.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+ 105:app/drivers/w25q/w25q.c ****   sCommand.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+ 106:app/drivers/w25q/w25q.c **** 
+ 107:app/drivers/w25q/w25q.c ****   // Send the page program command
+ 108:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, HAL_QSPI_TIMEOUT_DEFAULT_VALUE);
+ 109:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+ 110:app/drivers/w25q/w25q.c ****   {
+ 111:app/drivers/w25q/w25q.c ****     return status;
+ 112:app/drivers/w25q/w25q.c ****   }
+ 113:app/drivers/w25q/w25q.c **** 
+ 114:app/drivers/w25q/w25q.c ****   // Transmit the data
+ 115:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Transmit(hflash->hqspi, (uint8_t *)dataBuffer, HAL_QSPI_TIMEOUT_DEFAULT_VALUE);
+ 116:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+ 117:app/drivers/w25q/w25q.c ****   {
+ 118:app/drivers/w25q/w25q.c ****     return status;
+ 119:app/drivers/w25q/w25q.c ****   }
+ 120:app/drivers/w25q/w25q.c **** 
+ 121:app/drivers/w25q/w25q.c ****   while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LE
+ 122:app/drivers/w25q/w25q.c ****     osDelay(1);
+ 123:app/drivers/w25q/w25q.c **** 
+ 124:app/drivers/w25q/w25q.c ****   if (hflash->busyWaitCycles <= NO_FLASH_BUSY_WAIT_CYCLES_LEFT)
+ 125:app/drivers/w25q/w25q.c ****     status = HAL_ERROR;
+ 126:app/drivers/w25q/w25q.c **** 
+ 127:app/drivers/w25q/w25q.c ****   return status;
+ 128:app/drivers/w25q/w25q.c **** }
+ 129:app/drivers/w25q/w25q.c **** 
+ 130:app/drivers/w25q/w25q.c **** HAL_StatusTypeDef W25Q_EraseSector(W25Q_HandleTypeDef *hflash, uint32_t address) {
+ 131:app/drivers/w25q/w25q.c ****   QSPI_CommandTypeDef sCommand;
+ 132:app/drivers/w25q/w25q.c ****   HAL_StatusTypeDef status;
+ 133:app/drivers/w25q/w25q.c ****   hflash->busyWaitCycles = FLASH_BUSY_WAIT_CYCLES;
+ 134:app/drivers/w25q/w25q.c **** 
+ 135:app/drivers/w25q/w25q.c ****   status = W25Q_EnableWright(hflash);
+ 136:app/drivers/w25q/w25q.c **** 
+ 137:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+ 138:app/drivers/w25q/w25q.c ****     return status;
+ 139:app/drivers/w25q/w25q.c **** 
+ 140:app/drivers/w25q/w25q.c ****   // Set up the QSPI command
+ 141:app/drivers/w25q/w25q.c ****   sCommand.InstructionMode = QSPI_INSTRUCTION_1_LINE;
+ 142:app/drivers/w25q/w25q.c ****   sCommand.Instruction = W25Q_CMD_SECTOR_ERASE;
+ 143:app/drivers/w25q/w25q.c **** 
+ 144:app/drivers/w25q/w25q.c ****   sCommand.AddressMode = QSPI_ADDRESS_1_LINE;
+ARM GAS  /tmp/cczlp3KS.s 			page 4
+
+
+ 145:app/drivers/w25q/w25q.c ****   sCommand.AddressSize = QSPI_ADDRESS_24_BITS;
+ 146:app/drivers/w25q/w25q.c ****   sCommand.Address = address;
+ 147:app/drivers/w25q/w25q.c **** 
+ 148:app/drivers/w25q/w25q.c ****   sCommand.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
+ 149:app/drivers/w25q/w25q.c **** 
+ 150:app/drivers/w25q/w25q.c ****   sCommand.DataMode = QSPI_DATA_NONE;
+ 151:app/drivers/w25q/w25q.c ****   sCommand.DummyCycles = 0;
+ 152:app/drivers/w25q/w25q.c ****   sCommand.NbData = 0;
+ 153:app/drivers/w25q/w25q.c **** 
+ 154:app/drivers/w25q/w25q.c ****   sCommand.DdrMode = QSPI_DDR_MODE_DISABLE;
+ 155:app/drivers/w25q/w25q.c ****   sCommand.DdrHoldHalfCycle = QSPI_DDR_HHC_ANALOG_DELAY;
+ 156:app/drivers/w25q/w25q.c ****   sCommand.SIOOMode = QSPI_SIOO_INST_EVERY_CMD;
+ 157:app/drivers/w25q/w25q.c **** 
+ 158:app/drivers/w25q/w25q.c ****   // Send the command
+ 159:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, HAL_QSPI_TIMEOUT_DEFAULT_VALUE);
+ 160:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+ 161:app/drivers/w25q/w25q.c ****     return status;
+ 162:app/drivers/w25q/w25q.c **** 
+ 163:app/drivers/w25q/w25q.c ****   while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LE
+ 164:app/drivers/w25q/w25q.c ****     osDelay(1);
+ 165:app/drivers/w25q/w25q.c **** 
+ 166:app/drivers/w25q/w25q.c ****   if (hflash->busyWaitCycles <= NO_FLASH_BUSY_WAIT_CYCLES_LEFT)
+ 167:app/drivers/w25q/w25q.c ****     status = HAL_ERROR;
+ 168:app/drivers/w25q/w25q.c **** 
+ 169:app/drivers/w25q/w25q.c ****   return status;
+ 170:app/drivers/w25q/w25q.c **** }
+ 171:app/drivers/w25q/w25q.c **** 
+ 172:app/drivers/w25q/w25q.c **** HAL_StatusTypeDef W25Q_EraseChip(W25Q_HandleTypeDef *hflash);
+ 173:app/drivers/w25q/w25q.c **** 
+ 174:app/drivers/w25q/w25q.c **** HAL_StatusTypeDef W25Q_Sleep(W25Q_HandleTypeDef *hflash) {
+ 175:app/drivers/w25q/w25q.c ****   QSPI_CommandTypeDef sCommand;
+ 176:app/drivers/w25q/w25q.c ****   HAL_StatusTypeDef status;
+ 177:app/drivers/w25q/w25q.c **** 
+ 178:app/drivers/w25q/w25q.c ****   // Set up the QSPI command
+ 179:app/drivers/w25q/w25q.c ****   sCommand.InstructionMode   = QSPI_INSTRUCTION_1_LINE;
+ 180:app/drivers/w25q/w25q.c ****   sCommand.Instruction       = W25Q_CMD_POWER_DOWN;
+ 181:app/drivers/w25q/w25q.c **** 
+ 182:app/drivers/w25q/w25q.c ****   sCommand.AddressMode       = QSPI_ADDRESS_NONE;
+ 183:app/drivers/w25q/w25q.c **** 
+ 184:app/drivers/w25q/w25q.c ****   sCommand.AlternateByteMode  = QSPI_ALTERNATE_BYTES_NONE;
+ 185:app/drivers/w25q/w25q.c ****   sCommand.AlternateBytes     = QSPI_ALTERNATE_BYTES_8_BITS;
+ 186:app/drivers/w25q/w25q.c ****   sCommand.AlternateBytesSize = QSPI_ALTERNATE_BYTES_8_BITS;
+ 187:app/drivers/w25q/w25q.c **** 
+ 188:app/drivers/w25q/w25q.c ****   sCommand.DataMode          = QSPI_DATA_NONE;
+ 189:app/drivers/w25q/w25q.c ****   sCommand.DummyCycles       = 0;
+ 190:app/drivers/w25q/w25q.c ****   sCommand.NbData            = 0;
+ 191:app/drivers/w25q/w25q.c **** 
+ 192:app/drivers/w25q/w25q.c ****   sCommand.DdrMode           = QSPI_DDR_MODE_DISABLE;
+ 193:app/drivers/w25q/w25q.c ****   sCommand.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+ 194:app/drivers/w25q/w25q.c ****   sCommand.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+ 195:app/drivers/w25q/w25q.c **** 
+ 196:app/drivers/w25q/w25q.c ****   // Send the command
+ 197:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, W25Q_TIMEOUT_DEFAULT);
+ 198:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+ 199:app/drivers/w25q/w25q.c ****     return status;
+ 200:app/drivers/w25q/w25q.c **** 
+ 201:app/drivers/w25q/w25q.c ****   return HAL_OK;
+ARM GAS  /tmp/cczlp3KS.s 			page 5
+
+
+ 202:app/drivers/w25q/w25q.c **** }
+ 203:app/drivers/w25q/w25q.c **** 
+ 204:app/drivers/w25q/w25q.c **** // TODO implement it
+ 205:app/drivers/w25q/w25q.c **** HAL_StatusTypeDef W25Q_ReadStatusReg(W25Q_HandleTypeDef *hflash) {
+ 206:app/drivers/w25q/w25q.c ****   QSPI_CommandTypeDef sCommand;
+ 207:app/drivers/w25q/w25q.c ****   HAL_StatusTypeDef status;
+ 208:app/drivers/w25q/w25q.c **** 
+ 209:app/drivers/w25q/w25q.c ****   // Initialize the QSPI command structure
+ 210:app/drivers/w25q/w25q.c ****   sCommand.InstructionMode   = QSPI_INSTRUCTION_1_LINE;   // Instruction sent on 1 line
+ 211:app/drivers/w25q/w25q.c ****   sCommand.Instruction       = W25Q_CMD_READ_STATUS_REG1; // Read status register 1
+ 212:app/drivers/w25q/w25q.c **** 
+ 213:app/drivers/w25q/w25q.c ****   sCommand.AddressMode       = QSPI_ADDRESS_NONE;        // No address needed for this command
+ 214:app/drivers/w25q/w25q.c ****   sCommand.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;// No alternate bytes
+ 215:app/drivers/w25q/w25q.c ****   sCommand.DataMode          = QSPI_DATA_1_LINE;         // Data received on 1 line
+ 216:app/drivers/w25q/w25q.c ****   sCommand.DummyCycles       = 0;                        // No dummy cycles needed
+ 217:app/drivers/w25q/w25q.c ****   sCommand.NbData            = 1;                        // We expect to receive 1 byte (the status
+ 218:app/drivers/w25q/w25q.c **** 
+ 219:app/drivers/w25q/w25q.c ****   sCommand.DdrMode           = QSPI_DDR_MODE_DISABLE;    // No DDR mode
+ 220:app/drivers/w25q/w25q.c ****   sCommand.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;// No DDR hold
+ 221:app/drivers/w25q/w25q.c ****   sCommand.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD; // Send instruction every time
+ 222:app/drivers/w25q/w25q.c **** 
+ 223:app/drivers/w25q/w25q.c ****   // Send the command
+ 224:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, HAL_QSPI_TIMEOUT_DEFAULT_VALUE);
+ 225:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+ 226:app/drivers/w25q/w25q.c ****     return status;
+ 227:app/drivers/w25q/w25q.c **** 
+ 228:app/drivers/w25q/w25q.c ****   // Receive the status register value
+ 229:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Receive(hflash->hqspi, &hflash->status.status1Reg, HAL_QSPI_TIMEOUT_DEFAULT_VAL
+ 230:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+ 231:app/drivers/w25q/w25q.c ****     return status;
+ 232:app/drivers/w25q/w25q.c **** 
+ 233:app/drivers/w25q/w25q.c ****   return HAL_OK;
+ 234:app/drivers/w25q/w25q.c **** }
+ 235:app/drivers/w25q/w25q.c **** 
+ 236:app/drivers/w25q/w25q.c **** /**
+ 237:app/drivers/w25q/w25q.c ****  * @brief Read the W25Q device ID
+ 238:app/drivers/w25q/w25q.c ****  *
+ 239:app/drivers/w25q/w25q.c ****  * The instruction is initiated by driving the /CS pin low and shifting the instruction code “94h
+ 240:app/drivers/w25q/w25q.c ****  * four clock dummy cycles and then a 24-bit address (A23-A0) of 000000h, but with the capability t
+ 241:app/drivers/w25q/w25q.c ****  * Address bits four bits per clock. After which, the Manufacturer ID for Winbond (EFh) and the Dev
+ 242:app/drivers/w25q/w25q.c ****  *
+ 243:app/drivers/w25q/w25q.c ****  * @param hflash [in]
+ 244:app/drivers/w25q/w25q.c ****  * @param ID [out]
+ 245:app/drivers/w25q/w25q.c ****  */
+ 246:app/drivers/w25q/w25q.c **** HAL_StatusTypeDef W25Q_ReadID(W25Q_HandleTypeDef *hflash, uint8_t ID[W25Q_ID_SIZE]) {
+ 247:app/drivers/w25q/w25q.c ****   QSPI_CommandTypeDef sCommand;
+ 248:app/drivers/w25q/w25q.c ****   HAL_StatusTypeDef status = HAL_OK;
+ 249:app/drivers/w25q/w25q.c ****   hflash->busyWaitCycles = FLASH_BUSY_WAIT_CYCLES;
+ 250:app/drivers/w25q/w25q.c **** 
+ 251:app/drivers/w25q/w25q.c ****   // Set up the QSPI command
+ 252:app/drivers/w25q/w25q.c ****   sCommand.InstructionMode   = QSPI_INSTRUCTION_1_LINE;
+ 253:app/drivers/w25q/w25q.c ****   sCommand.Instruction       = W25Q_CMD_READ_ID;
+ 254:app/drivers/w25q/w25q.c **** 
+ 255:app/drivers/w25q/w25q.c ****   sCommand.AddressMode       = QSPI_ADDRESS_4_LINES;
+ 256:app/drivers/w25q/w25q.c ****   sCommand.AddressSize       = QSPI_ADDRESS_24_BITS;
+ 257:app/drivers/w25q/w25q.c ****   sCommand.Address           = 0x000000;
+ 258:app/drivers/w25q/w25q.c **** 
+ARM GAS  /tmp/cczlp3KS.s 			page 6
+
+
+ 259:app/drivers/w25q/w25q.c ****   sCommand.AlternateByteMode  = QSPI_ALTERNATE_BYTES_NONE;
+ 260:app/drivers/w25q/w25q.c **** 
+ 261:app/drivers/w25q/w25q.c ****   sCommand.DataMode          = QSPI_DATA_4_LINES;
+ 262:app/drivers/w25q/w25q.c ****   sCommand.DummyCycles       = 6; // 2 cycles per byte
+ 263:app/drivers/w25q/w25q.c ****   sCommand.NbData            = W25Q_ID_SIZE;
+ 264:app/drivers/w25q/w25q.c **** 
+ 265:app/drivers/w25q/w25q.c ****   sCommand.DdrMode           = QSPI_DDR_MODE_DISABLE;
+ 266:app/drivers/w25q/w25q.c ****   sCommand.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+ 267:app/drivers/w25q/w25q.c ****   sCommand.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+ 268:app/drivers/w25q/w25q.c **** 
+ 269:app/drivers/w25q/w25q.c ****   // Send the command
+ 270:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, W25Q_TIMEOUT_DEFAULT);
+ 271:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+ 272:app/drivers/w25q/w25q.c ****     return status;
+ 273:app/drivers/w25q/w25q.c **** 
+ 274:app/drivers/w25q/w25q.c ****   // Receive the data
+ 275:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Receive(hflash->hqspi, ID, W25Q_TIMEOUT_DEFAULT);
+ 276:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+ 277:app/drivers/w25q/w25q.c ****     return status;
+ 278:app/drivers/w25q/w25q.c **** 
+ 279:app/drivers/w25q/w25q.c ****   while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LE
+ 280:app/drivers/w25q/w25q.c ****     osDelay(1);
+ 281:app/drivers/w25q/w25q.c **** 
+ 282:app/drivers/w25q/w25q.c ****   if (hflash->busyWaitCycles <= NO_FLASH_BUSY_WAIT_CYCLES_LEFT)
+ 283:app/drivers/w25q/w25q.c ****     status = HAL_ERROR;
+ 284:app/drivers/w25q/w25q.c **** 
+ 285:app/drivers/w25q/w25q.c ****   return status;
+ 286:app/drivers/w25q/w25q.c **** }
+ 287:app/drivers/w25q/w25q.c **** 
+ 288:app/drivers/w25q/w25q.c **** HAL_StatusTypeDef W25Q_isBusy(W25Q_HandleTypeDef *hflash) {
+ 289:app/drivers/w25q/w25q.c ****   // Read the status register
+ 290:app/drivers/w25q/w25q.c ****   if (W25Q_ReadStatusReg(hflash) != HAL_OK) {
+ 291:app/drivers/w25q/w25q.c ****     return HAL_ERROR;
+ 292:app/drivers/w25q/w25q.c ****   }
+ 293:app/drivers/w25q/w25q.c **** 
+ 294:app/drivers/w25q/w25q.c ****   // Check the busy flag
+ 295:app/drivers/w25q/w25q.c ****   if (hflash->status.status1RegBits.busy) {
+ 296:app/drivers/w25q/w25q.c ****     return HAL_BUSY;
+ 297:app/drivers/w25q/w25q.c ****   }
+ 298:app/drivers/w25q/w25q.c **** 
+ 299:app/drivers/w25q/w25q.c ****   return HAL_OK;
+ 300:app/drivers/w25q/w25q.c **** }
+ 301:app/drivers/w25q/w25q.c **** 
+ 302:app/drivers/w25q/w25q.c **** static HAL_StatusTypeDef W25Q_EnableWright(W25Q_HandleTypeDef *hflash) {
+  29              		.loc 1 302 72 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 56
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		.loc 1 302 72 is_stmt 0 view .LVU1
+  34 0000 00B5     		push	{lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 4
+  37              		.cfi_offset 14, -4
+  38 0002 8FB0     		sub	sp, sp, #60
+  39              	.LCFI1:
+  40              		.cfi_def_cfa_offset 64
+ 303:app/drivers/w25q/w25q.c ****   QSPI_CommandTypeDef sCommand;
+ARM GAS  /tmp/cczlp3KS.s 			page 7
+
+
+  41              		.loc 1 303 3 is_stmt 1 view .LVU2
+ 304:app/drivers/w25q/w25q.c ****   HAL_StatusTypeDef status;
+  42              		.loc 1 304 3 view .LVU3
+ 305:app/drivers/w25q/w25q.c ****   hflash->busyWaitCycles = FLASH_BUSY_WAIT_CYCLES;
+  43              		.loc 1 305 3 view .LVU4
+  44              		.loc 1 305 26 is_stmt 0 view .LVU5
+  45 0004 0523     		movs	r3, #5
+  46 0006 80F82530 		strb	r3, [r0, #37]
+ 306:app/drivers/w25q/w25q.c **** 
+ 307:app/drivers/w25q/w25q.c ****   // Set up the QSPI command
+ 308:app/drivers/w25q/w25q.c ****   sCommand.InstructionMode   = QSPI_INSTRUCTION_1_LINE;
+  47              		.loc 1 308 3 is_stmt 1 view .LVU6
+  48              		.loc 1 308 30 is_stmt 0 view .LVU7
+  49 000a 4FF48073 		mov	r3, #256
+  50 000e 0693     		str	r3, [sp, #24]
+ 309:app/drivers/w25q/w25q.c ****   sCommand.Instruction       = W25Q_CMD_WRITE_ENABLE;
+  51              		.loc 1 309 3 is_stmt 1 view .LVU8
+  52              		.loc 1 309 30 is_stmt 0 view .LVU9
+  53 0010 0623     		movs	r3, #6
+  54 0012 0093     		str	r3, [sp]
+ 310:app/drivers/w25q/w25q.c **** 
+ 311:app/drivers/w25q/w25q.c ****   sCommand.AddressMode       = QSPI_ADDRESS_NONE;
+  55              		.loc 1 311 3 is_stmt 1 view .LVU10
+  56              		.loc 1 311 30 is_stmt 0 view .LVU11
+  57 0014 0023     		movs	r3, #0
+  58 0016 0793     		str	r3, [sp, #28]
+ 312:app/drivers/w25q/w25q.c **** 
+ 313:app/drivers/w25q/w25q.c ****   sCommand.AlternateByteMode  = QSPI_ALTERNATE_BYTES_NONE;
+  59              		.loc 1 313 3 is_stmt 1 view .LVU12
+  60              		.loc 1 313 31 is_stmt 0 view .LVU13
+  61 0018 0893     		str	r3, [sp, #32]
+ 314:app/drivers/w25q/w25q.c **** 
+ 315:app/drivers/w25q/w25q.c ****   sCommand.DataMode          = QSPI_DATA_NONE;
+  62              		.loc 1 315 3 is_stmt 1 view .LVU14
+  63              		.loc 1 315 30 is_stmt 0 view .LVU15
+  64 001a 0993     		str	r3, [sp, #36]
+ 316:app/drivers/w25q/w25q.c ****   sCommand.DummyCycles       = 0;
+  65              		.loc 1 316 3 is_stmt 1 view .LVU16
+  66              		.loc 1 316 30 is_stmt 0 view .LVU17
+  67 001c 0593     		str	r3, [sp, #20]
+ 317:app/drivers/w25q/w25q.c ****   sCommand.NbData            = 0;
+  68              		.loc 1 317 3 is_stmt 1 view .LVU18
+  69              		.loc 1 317 30 is_stmt 0 view .LVU19
+  70 001e 0A93     		str	r3, [sp, #40]
+ 318:app/drivers/w25q/w25q.c **** 
+ 319:app/drivers/w25q/w25q.c ****   sCommand.DdrMode           = QSPI_DDR_MODE_DISABLE;
+  71              		.loc 1 319 3 is_stmt 1 view .LVU20
+  72              		.loc 1 319 30 is_stmt 0 view .LVU21
+  73 0020 0B93     		str	r3, [sp, #44]
+ 320:app/drivers/w25q/w25q.c ****   sCommand.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+  74              		.loc 1 320 3 is_stmt 1 view .LVU22
+  75              		.loc 1 320 30 is_stmt 0 view .LVU23
+  76 0022 0C93     		str	r3, [sp, #48]
+ 321:app/drivers/w25q/w25q.c ****   sCommand.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+  77              		.loc 1 321 3 is_stmt 1 view .LVU24
+  78              		.loc 1 321 30 is_stmt 0 view .LVU25
+  79 0024 0D93     		str	r3, [sp, #52]
+ARM GAS  /tmp/cczlp3KS.s 			page 8
+
+
+ 322:app/drivers/w25q/w25q.c **** 
+ 323:app/drivers/w25q/w25q.c ****   // Send the page program command
+ 324:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, HAL_QSPI_TIMEOUT_DEFAULT_VALUE);
+  80              		.loc 1 324 3 is_stmt 1 view .LVU26
+  81              		.loc 1 324 12 is_stmt 0 view .LVU27
+  82 0026 41F28832 		movw	r2, #5000
+  83 002a 6946     		mov	r1, sp
+  84 002c 0068     		ldr	r0, [r0]
+  85              	.LVL1:
+  86              		.loc 1 324 12 view .LVU28
+  87 002e FFF7FEFF 		bl	HAL_QSPI_Command
+  88              	.LVL2:
+ 325:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+  89              		.loc 1 325 3 is_stmt 1 view .LVU29
+ 326:app/drivers/w25q/w25q.c ****     return status;
+ 327:app/drivers/w25q/w25q.c **** 
+ 328:app/drivers/w25q/w25q.c ****   return HAL_OK;
+ 329:app/drivers/w25q/w25q.c **** }...
+  90              		.loc 1 329 1 is_stmt 0 view .LVU30
+  91 0032 0FB0     		add	sp, sp, #60
+  92              	.LCFI2:
+  93              		.cfi_def_cfa_offset 4
+  94              		@ sp needed
+  95 0034 5DF804FB 		ldr	pc, [sp], #4
+  96              		.cfi_endproc
+  97              	.LFE143:
+  99              		.section	.text.W25Q_Init,"ax",%progbits
+ 100              		.align	1
+ 101              		.global	W25Q_Init
+ 102              		.syntax unified
+ 103              		.thumb
+ 104              		.thumb_func
+ 105              		.fpu fpv4-sp-d16
+ 107              	W25Q_Init:
+ 108              	.LVL3:
+ 109              	.LFB135:
+  16:app/drivers/w25q/w25q.c **** HAL_StatusTypeDef W25Q_Init(W25Q_HandleTypeDef *hflash) {
+ 110              		.loc 1 16 57 is_stmt 1 view -0
+ 111              		.cfi_startproc
+ 112              		@ args = 0, pretend = 0, frame = 0
+ 113              		@ frame_needed = 0, uses_anonymous_args = 0
+ 114              		@ link register save eliminated.
+  19:app/drivers/w25q/w25q.c ****   return osOK;
+ 115              		.loc 1 19 3 view .LVU32
+  20:app/drivers/w25q/w25q.c **** }
+ 116              		.loc 1 20 1 is_stmt 0 view .LVU33
+ 117 0000 0020     		movs	r0, #0
+ 118              	.LVL4:
+  20:app/drivers/w25q/w25q.c **** }
+ 119              		.loc 1 20 1 view .LVU34
+ 120 0002 7047     		bx	lr
+ 121              		.cfi_endproc
+ 122              	.LFE135:
+ 124              		.section	.text.W25Q_Sleep,"ax",%progbits
+ 125              		.align	1
+ 126              		.global	W25Q_Sleep
+ 127              		.syntax unified
+ARM GAS  /tmp/cczlp3KS.s 			page 9
+
+
+ 128              		.thumb
+ 129              		.thumb_func
+ 130              		.fpu fpv4-sp-d16
+ 132              	W25Q_Sleep:
+ 133              	.LVL5:
+ 134              	.LFB139:
+ 174:app/drivers/w25q/w25q.c **** HAL_StatusTypeDef W25Q_Sleep(W25Q_HandleTypeDef *hflash) {
+ 135              		.loc 1 174 58 is_stmt 1 view -0
+ 136              		.cfi_startproc
+ 137              		@ args = 0, pretend = 0, frame = 56
+ 138              		@ frame_needed = 0, uses_anonymous_args = 0
+ 174:app/drivers/w25q/w25q.c **** HAL_StatusTypeDef W25Q_Sleep(W25Q_HandleTypeDef *hflash) {
+ 139              		.loc 1 174 58 is_stmt 0 view .LVU36
+ 140 0000 00B5     		push	{lr}
+ 141              	.LCFI3:
+ 142              		.cfi_def_cfa_offset 4
+ 143              		.cfi_offset 14, -4
+ 144 0002 8FB0     		sub	sp, sp, #60
+ 145              	.LCFI4:
+ 146              		.cfi_def_cfa_offset 64
+ 175:app/drivers/w25q/w25q.c ****   QSPI_CommandTypeDef sCommand;
+ 147              		.loc 1 175 3 is_stmt 1 view .LVU37
+ 176:app/drivers/w25q/w25q.c ****   HAL_StatusTypeDef status;
+ 148              		.loc 1 176 3 view .LVU38
+ 179:app/drivers/w25q/w25q.c ****   sCommand.InstructionMode   = QSPI_INSTRUCTION_1_LINE;
+ 149              		.loc 1 179 3 view .LVU39
+ 179:app/drivers/w25q/w25q.c ****   sCommand.InstructionMode   = QSPI_INSTRUCTION_1_LINE;
+ 150              		.loc 1 179 30 is_stmt 0 view .LVU40
+ 151 0004 4FF48073 		mov	r3, #256
+ 152 0008 0693     		str	r3, [sp, #24]
+ 180:app/drivers/w25q/w25q.c ****   sCommand.Instruction       = W25Q_CMD_POWER_DOWN;
+ 153              		.loc 1 180 3 is_stmt 1 view .LVU41
+ 180:app/drivers/w25q/w25q.c ****   sCommand.Instruction       = W25Q_CMD_POWER_DOWN;
+ 154              		.loc 1 180 30 is_stmt 0 view .LVU42
+ 155 000a B923     		movs	r3, #185
+ 156 000c 0093     		str	r3, [sp]
+ 182:app/drivers/w25q/w25q.c ****   sCommand.AddressMode       = QSPI_ADDRESS_NONE;
+ 157              		.loc 1 182 3 is_stmt 1 view .LVU43
+ 182:app/drivers/w25q/w25q.c ****   sCommand.AddressMode       = QSPI_ADDRESS_NONE;
+ 158              		.loc 1 182 30 is_stmt 0 view .LVU44
+ 159 000e 0023     		movs	r3, #0
+ 160 0010 0793     		str	r3, [sp, #28]
+ 184:app/drivers/w25q/w25q.c ****   sCommand.AlternateByteMode  = QSPI_ALTERNATE_BYTES_NONE;
+ 161              		.loc 1 184 3 is_stmt 1 view .LVU45
+ 184:app/drivers/w25q/w25q.c ****   sCommand.AlternateByteMode  = QSPI_ALTERNATE_BYTES_NONE;
+ 162              		.loc 1 184 31 is_stmt 0 view .LVU46
+ 163 0012 0893     		str	r3, [sp, #32]
+ 185:app/drivers/w25q/w25q.c ****   sCommand.AlternateBytes     = QSPI_ALTERNATE_BYTES_8_BITS;
+ 164              		.loc 1 185 3 is_stmt 1 view .LVU47
+ 185:app/drivers/w25q/w25q.c ****   sCommand.AlternateBytes     = QSPI_ALTERNATE_BYTES_8_BITS;
+ 165              		.loc 1 185 31 is_stmt 0 view .LVU48
+ 166 0014 0293     		str	r3, [sp, #8]
+ 186:app/drivers/w25q/w25q.c ****   sCommand.AlternateBytesSize = QSPI_ALTERNATE_BYTES_8_BITS;
+ 167              		.loc 1 186 3 is_stmt 1 view .LVU49
+ 186:app/drivers/w25q/w25q.c ****   sCommand.AlternateBytesSize = QSPI_ALTERNATE_BYTES_8_BITS;
+ 168              		.loc 1 186 31 is_stmt 0 view .LVU50
+ 169 0016 0493     		str	r3, [sp, #16]
+ARM GAS  /tmp/cczlp3KS.s 			page 10
+
+
+ 188:app/drivers/w25q/w25q.c ****   sCommand.DataMode          = QSPI_DATA_NONE;
+ 170              		.loc 1 188 3 is_stmt 1 view .LVU51
+ 188:app/drivers/w25q/w25q.c ****   sCommand.DataMode          = QSPI_DATA_NONE;
+ 171              		.loc 1 188 30 is_stmt 0 view .LVU52
+ 172 0018 0993     		str	r3, [sp, #36]
+ 189:app/drivers/w25q/w25q.c ****   sCommand.DummyCycles       = 0;
+ 173              		.loc 1 189 3 is_stmt 1 view .LVU53
+ 189:app/drivers/w25q/w25q.c ****   sCommand.DummyCycles       = 0;
+ 174              		.loc 1 189 30 is_stmt 0 view .LVU54
+ 175 001a 0593     		str	r3, [sp, #20]
+ 190:app/drivers/w25q/w25q.c ****   sCommand.NbData            = 0;
+ 176              		.loc 1 190 3 is_stmt 1 view .LVU55
+ 190:app/drivers/w25q/w25q.c ****   sCommand.NbData            = 0;
+ 177              		.loc 1 190 30 is_stmt 0 view .LVU56
+ 178 001c 0A93     		str	r3, [sp, #40]
+ 192:app/drivers/w25q/w25q.c ****   sCommand.DdrMode           = QSPI_DDR_MODE_DISABLE;
+ 179              		.loc 1 192 3 is_stmt 1 view .LVU57
+ 192:app/drivers/w25q/w25q.c ****   sCommand.DdrMode           = QSPI_DDR_MODE_DISABLE;
+ 180              		.loc 1 192 30 is_stmt 0 view .LVU58
+ 181 001e 0B93     		str	r3, [sp, #44]
+ 193:app/drivers/w25q/w25q.c ****   sCommand.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+ 182              		.loc 1 193 3 is_stmt 1 view .LVU59
+ 193:app/drivers/w25q/w25q.c ****   sCommand.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+ 183              		.loc 1 193 30 is_stmt 0 view .LVU60
+ 184 0020 0C93     		str	r3, [sp, #48]
+ 194:app/drivers/w25q/w25q.c ****   sCommand.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+ 185              		.loc 1 194 3 is_stmt 1 view .LVU61
+ 194:app/drivers/w25q/w25q.c ****   sCommand.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+ 186              		.loc 1 194 30 is_stmt 0 view .LVU62
+ 187 0022 0D93     		str	r3, [sp, #52]
+ 197:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, W25Q_TIMEOUT_DEFAULT);
+ 188              		.loc 1 197 3 is_stmt 1 view .LVU63
+ 197:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, W25Q_TIMEOUT_DEFAULT);
+ 189              		.loc 1 197 12 is_stmt 0 view .LVU64
+ 190 0024 4FF47A72 		mov	r2, #1000
+ 191 0028 6946     		mov	r1, sp
+ 192 002a 0068     		ldr	r0, [r0]
+ 193              	.LVL6:
+ 197:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, W25Q_TIMEOUT_DEFAULT);
+ 194              		.loc 1 197 12 view .LVU65
+ 195 002c FFF7FEFF 		bl	HAL_QSPI_Command
+ 196              	.LVL7:
+ 198:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+ 197              		.loc 1 198 3 is_stmt 1 view .LVU66
+ 202:app/drivers/w25q/w25q.c **** }
+ 198              		.loc 1 202 1 is_stmt 0 view .LVU67
+ 199 0030 0FB0     		add	sp, sp, #60
+ 200              	.LCFI5:
+ 201              		.cfi_def_cfa_offset 4
+ 202              		@ sp needed
+ 203 0032 5DF804FB 		ldr	pc, [sp], #4
+ 204              		.cfi_endproc
+ 205              	.LFE139:
+ 207              		.section	.text.W25Q_ReadStatusReg,"ax",%progbits
+ 208              		.align	1
+ 209              		.global	W25Q_ReadStatusReg
+ 210              		.syntax unified
+ARM GAS  /tmp/cczlp3KS.s 			page 11
+
+
+ 211              		.thumb
+ 212              		.thumb_func
+ 213              		.fpu fpv4-sp-d16
+ 215              	W25Q_ReadStatusReg:
+ 216              	.LVL8:
+ 217              	.LFB140:
+ 205:app/drivers/w25q/w25q.c **** HAL_StatusTypeDef W25Q_ReadStatusReg(W25Q_HandleTypeDef *hflash) {
+ 218              		.loc 1 205 66 is_stmt 1 view -0
+ 219              		.cfi_startproc
+ 220              		@ args = 0, pretend = 0, frame = 56
+ 221              		@ frame_needed = 0, uses_anonymous_args = 0
+ 205:app/drivers/w25q/w25q.c **** HAL_StatusTypeDef W25Q_ReadStatusReg(W25Q_HandleTypeDef *hflash) {
+ 222              		.loc 1 205 66 is_stmt 0 view .LVU69
+ 223 0000 10B5     		push	{r4, lr}
+ 224              	.LCFI6:
+ 225              		.cfi_def_cfa_offset 8
+ 226              		.cfi_offset 4, -8
+ 227              		.cfi_offset 14, -4
+ 228 0002 8EB0     		sub	sp, sp, #56
+ 229              	.LCFI7:
+ 230              		.cfi_def_cfa_offset 64
+ 231 0004 0446     		mov	r4, r0
+ 206:app/drivers/w25q/w25q.c ****   QSPI_CommandTypeDef sCommand;
+ 232              		.loc 1 206 3 is_stmt 1 view .LVU70
+ 207:app/drivers/w25q/w25q.c ****   HAL_StatusTypeDef status;
+ 233              		.loc 1 207 3 view .LVU71
+ 210:app/drivers/w25q/w25q.c ****   sCommand.InstructionMode   = QSPI_INSTRUCTION_1_LINE;   // Instruction sent on 1 line
+ 234              		.loc 1 210 3 view .LVU72
+ 210:app/drivers/w25q/w25q.c ****   sCommand.InstructionMode   = QSPI_INSTRUCTION_1_LINE;   // Instruction sent on 1 line
+ 235              		.loc 1 210 30 is_stmt 0 view .LVU73
+ 236 0006 4FF48073 		mov	r3, #256
+ 237 000a 0693     		str	r3, [sp, #24]
+ 211:app/drivers/w25q/w25q.c ****   sCommand.Instruction       = W25Q_CMD_READ_STATUS_REG1; // Read status register 1
+ 238              		.loc 1 211 3 is_stmt 1 view .LVU74
+ 211:app/drivers/w25q/w25q.c ****   sCommand.Instruction       = W25Q_CMD_READ_STATUS_REG1; // Read status register 1
+ 239              		.loc 1 211 30 is_stmt 0 view .LVU75
+ 240 000c 0523     		movs	r3, #5
+ 241 000e 0093     		str	r3, [sp]
+ 213:app/drivers/w25q/w25q.c ****   sCommand.AddressMode       = QSPI_ADDRESS_NONE;        // No address needed for this command
+ 242              		.loc 1 213 3 is_stmt 1 view .LVU76
+ 213:app/drivers/w25q/w25q.c ****   sCommand.AddressMode       = QSPI_ADDRESS_NONE;        // No address needed for this command
+ 243              		.loc 1 213 30 is_stmt 0 view .LVU77
+ 244 0010 0023     		movs	r3, #0
+ 245 0012 0793     		str	r3, [sp, #28]
+ 214:app/drivers/w25q/w25q.c ****   sCommand.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;// No alternate bytes
+ 246              		.loc 1 214 3 is_stmt 1 view .LVU78
+ 214:app/drivers/w25q/w25q.c ****   sCommand.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;// No alternate bytes
+ 247              		.loc 1 214 30 is_stmt 0 view .LVU79
+ 248 0014 0893     		str	r3, [sp, #32]
+ 215:app/drivers/w25q/w25q.c ****   sCommand.DataMode          = QSPI_DATA_1_LINE;         // Data received on 1 line
+ 249              		.loc 1 215 3 is_stmt 1 view .LVU80
+ 215:app/drivers/w25q/w25q.c ****   sCommand.DataMode          = QSPI_DATA_1_LINE;         // Data received on 1 line
+ 250              		.loc 1 215 30 is_stmt 0 view .LVU81
+ 251 0016 4FF08072 		mov	r2, #16777216
+ 252 001a 0992     		str	r2, [sp, #36]
+ 216:app/drivers/w25q/w25q.c ****   sCommand.DummyCycles       = 0;                        // No dummy cycles needed
+ 253              		.loc 1 216 3 is_stmt 1 view .LVU82
+ARM GAS  /tmp/cczlp3KS.s 			page 12
+
+
+ 216:app/drivers/w25q/w25q.c ****   sCommand.DummyCycles       = 0;                        // No dummy cycles needed
+ 254              		.loc 1 216 30 is_stmt 0 view .LVU83
+ 255 001c 0593     		str	r3, [sp, #20]
+ 217:app/drivers/w25q/w25q.c ****   sCommand.NbData            = 1;                        // We expect to receive 1 byte (the status
+ 256              		.loc 1 217 3 is_stmt 1 view .LVU84
+ 217:app/drivers/w25q/w25q.c ****   sCommand.NbData            = 1;                        // We expect to receive 1 byte (the status
+ 257              		.loc 1 217 30 is_stmt 0 view .LVU85
+ 258 001e 0122     		movs	r2, #1
+ 259 0020 0A92     		str	r2, [sp, #40]
+ 219:app/drivers/w25q/w25q.c ****   sCommand.DdrMode           = QSPI_DDR_MODE_DISABLE;    // No DDR mode
+ 260              		.loc 1 219 3 is_stmt 1 view .LVU86
+ 219:app/drivers/w25q/w25q.c ****   sCommand.DdrMode           = QSPI_DDR_MODE_DISABLE;    // No DDR mode
+ 261              		.loc 1 219 30 is_stmt 0 view .LVU87
+ 262 0022 0B93     		str	r3, [sp, #44]
+ 220:app/drivers/w25q/w25q.c ****   sCommand.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;// No DDR hold
+ 263              		.loc 1 220 3 is_stmt 1 view .LVU88
+ 220:app/drivers/w25q/w25q.c ****   sCommand.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;// No DDR hold
+ 264              		.loc 1 220 30 is_stmt 0 view .LVU89
+ 265 0024 0C93     		str	r3, [sp, #48]
+ 221:app/drivers/w25q/w25q.c ****   sCommand.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD; // Send instruction every time
+ 266              		.loc 1 221 3 is_stmt 1 view .LVU90
+ 221:app/drivers/w25q/w25q.c ****   sCommand.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD; // Send instruction every time
+ 267              		.loc 1 221 30 is_stmt 0 view .LVU91
+ 268 0026 0D93     		str	r3, [sp, #52]
+ 224:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, HAL_QSPI_TIMEOUT_DEFAULT_VALUE);
+ 269              		.loc 1 224 3 is_stmt 1 view .LVU92
+ 224:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, HAL_QSPI_TIMEOUT_DEFAULT_VALUE);
+ 270              		.loc 1 224 12 is_stmt 0 view .LVU93
+ 271 0028 41F28832 		movw	r2, #5000
+ 272 002c 6946     		mov	r1, sp
+ 273 002e 0068     		ldr	r0, [r0]
+ 274              	.LVL9:
+ 224:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, HAL_QSPI_TIMEOUT_DEFAULT_VALUE);
+ 275              		.loc 1 224 12 view .LVU94
+ 276 0030 FFF7FEFF 		bl	HAL_QSPI_Command
+ 277              	.LVL10:
+ 225:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+ 278              		.loc 1 225 3 is_stmt 1 view .LVU95
+ 225:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+ 279              		.loc 1 225 6 is_stmt 0 view .LVU96
+ 280 0034 08B1     		cbz	r0, .L9
+ 281              	.LVL11:
+ 282              	.L7:
+ 234:app/drivers/w25q/w25q.c **** }
+ 283              		.loc 1 234 1 view .LVU97
+ 284 0036 0EB0     		add	sp, sp, #56
+ 285              	.LCFI8:
+ 286              		.cfi_remember_state
+ 287              		.cfi_def_cfa_offset 8
+ 288              		@ sp needed
+ 289 0038 10BD     		pop	{r4, pc}
+ 290              	.LVL12:
+ 291              	.L9:
+ 292              	.LCFI9:
+ 293              		.cfi_restore_state
+ 229:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Receive(hflash->hqspi, &hflash->status.status1Reg, HAL_QSPI_TIMEOUT_DEFAULT_VAL
+ 294              		.loc 1 229 3 is_stmt 1 view .LVU98
+ARM GAS  /tmp/cczlp3KS.s 			page 13
+
+
+ 229:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Receive(hflash->hqspi, &hflash->status.status1Reg, HAL_QSPI_TIMEOUT_DEFAULT_VAL
+ 295              		.loc 1 229 12 is_stmt 0 view .LVU99
+ 296 003a 2146     		mov	r1, r4
+ 297 003c 51F8240B 		ldr	r0, [r1], #36
+ 298 0040 41F28832 		movw	r2, #5000
+ 299 0044 FFF7FEFF 		bl	HAL_QSPI_Receive
+ 300              	.LVL13:
+ 230:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+ 301              		.loc 1 230 3 is_stmt 1 view .LVU100
+ 302 0048 F5E7     		b	.L7
+ 303              		.cfi_endproc
+ 304              	.LFE140:
+ 306              		.section	.text.W25Q_isBusy,"ax",%progbits
+ 307              		.align	1
+ 308              		.global	W25Q_isBusy
+ 309              		.syntax unified
+ 310              		.thumb
+ 311              		.thumb_func
+ 312              		.fpu fpv4-sp-d16
+ 314              	W25Q_isBusy:
+ 315              	.LVL14:
+ 316              	.LFB142:
+ 288:app/drivers/w25q/w25q.c **** HAL_StatusTypeDef W25Q_isBusy(W25Q_HandleTypeDef *hflash) {
+ 317              		.loc 1 288 59 view -0
+ 318              		.cfi_startproc
+ 319              		@ args = 0, pretend = 0, frame = 0
+ 320              		@ frame_needed = 0, uses_anonymous_args = 0
+ 288:app/drivers/w25q/w25q.c **** HAL_StatusTypeDef W25Q_isBusy(W25Q_HandleTypeDef *hflash) {
+ 321              		.loc 1 288 59 is_stmt 0 view .LVU102
+ 322 0000 10B5     		push	{r4, lr}
+ 323              	.LCFI10:
+ 324              		.cfi_def_cfa_offset 8
+ 325              		.cfi_offset 4, -8
+ 326              		.cfi_offset 14, -4
+ 327 0002 0446     		mov	r4, r0
+ 290:app/drivers/w25q/w25q.c ****   if (W25Q_ReadStatusReg(hflash) != HAL_OK) {
+ 328              		.loc 1 290 3 is_stmt 1 view .LVU103
+ 290:app/drivers/w25q/w25q.c ****   if (W25Q_ReadStatusReg(hflash) != HAL_OK) {
+ 329              		.loc 1 290 7 is_stmt 0 view .LVU104
+ 330 0004 FFF7FEFF 		bl	W25Q_ReadStatusReg
+ 331              	.LVL15:
+ 290:app/drivers/w25q/w25q.c ****   if (W25Q_ReadStatusReg(hflash) != HAL_OK) {
+ 332              		.loc 1 290 6 view .LVU105
+ 333 0008 28B9     		cbnz	r0, .L12
+ 295:app/drivers/w25q/w25q.c ****   if (hflash->status.status1RegBits.busy) {
+ 334              		.loc 1 295 3 is_stmt 1 view .LVU106
+ 295:app/drivers/w25q/w25q.c ****   if (hflash->status.status1RegBits.busy) {
+ 335              		.loc 1 295 7 is_stmt 0 view .LVU107
+ 336 000a 94F82400 		ldrb	r0, [r4, #36]	@ zero_extendqisi2
+ 295:app/drivers/w25q/w25q.c ****   if (hflash->status.status1RegBits.busy) {
+ 337              		.loc 1 295 6 view .LVU108
+ 338 000e 10F00100 		ands	r0, r0, #1
+ 339 0012 02D1     		bne	.L15
+ 340              	.L11:
+ 300:app/drivers/w25q/w25q.c **** }
+ 341              		.loc 1 300 1 view .LVU109
+ 342 0014 10BD     		pop	{r4, pc}
+ARM GAS  /tmp/cczlp3KS.s 			page 14
+
+
+ 343              	.LVL16:
+ 344              	.L12:
+ 291:app/drivers/w25q/w25q.c ****     return HAL_ERROR;
+ 345              		.loc 1 291 12 view .LVU110
+ 346 0016 0120     		movs	r0, #1
+ 347 0018 FCE7     		b	.L11
+ 348              	.L15:
+ 296:app/drivers/w25q/w25q.c ****     return HAL_BUSY;
+ 349              		.loc 1 296 12 view .LVU111
+ 350 001a 0220     		movs	r0, #2
+ 351 001c FAE7     		b	.L11
+ 352              		.cfi_endproc
+ 353              	.LFE142:
+ 355              		.section	.text.W25Q_ReadData,"ax",%progbits
+ 356              		.align	1
+ 357              		.global	W25Q_ReadData
+ 358              		.syntax unified
+ 359              		.thumb
+ 360              		.thumb_func
+ 361              		.fpu fpv4-sp-d16
+ 363              	W25Q_ReadData:
+ 364              	.LVL17:
+ 365              	.LFB136:
+  33:app/drivers/w25q/w25q.c **** HAL_StatusTypeDef W25Q_ReadData(W25Q_HandleTypeDef *hflash, uint8_t *const dataBuffer, uint32_t add
+ 366              		.loc 1 33 121 is_stmt 1 view -0
+ 367              		.cfi_startproc
+ 368              		@ args = 0, pretend = 0, frame = 56
+ 369              		@ frame_needed = 0, uses_anonymous_args = 0
+  33:app/drivers/w25q/w25q.c **** HAL_StatusTypeDef W25Q_ReadData(W25Q_HandleTypeDef *hflash, uint8_t *const dataBuffer, uint32_t add
+ 370              		.loc 1 33 121 is_stmt 0 view .LVU113
+ 371 0000 70B5     		push	{r4, r5, r6, lr}
+ 372              	.LCFI11:
+ 373              		.cfi_def_cfa_offset 16
+ 374              		.cfi_offset 4, -16
+ 375              		.cfi_offset 5, -12
+ 376              		.cfi_offset 6, -8
+ 377              		.cfi_offset 14, -4
+ 378 0002 8EB0     		sub	sp, sp, #56
+ 379              	.LCFI12:
+ 380              		.cfi_def_cfa_offset 72
+ 381 0004 0446     		mov	r4, r0
+ 382 0006 0D46     		mov	r5, r1
+  34:app/drivers/w25q/w25q.c ****   QSPI_CommandTypeDef sCommand;
+ 383              		.loc 1 34 3 is_stmt 1 view .LVU114
+  35:app/drivers/w25q/w25q.c ****   HAL_StatusTypeDef status;
+ 384              		.loc 1 35 3 view .LVU115
+  36:app/drivers/w25q/w25q.c ****   hflash->busyWaitCycles = FLASH_BUSY_WAIT_CYCLES;
+ 385              		.loc 1 36 3 view .LVU116
+  36:app/drivers/w25q/w25q.c ****   hflash->busyWaitCycles = FLASH_BUSY_WAIT_CYCLES;
+ 386              		.loc 1 36 26 is_stmt 0 view .LVU117
+ 387 0008 0521     		movs	r1, #5
+ 388              	.LVL18:
+  36:app/drivers/w25q/w25q.c ****   hflash->busyWaitCycles = FLASH_BUSY_WAIT_CYCLES;
+ 389              		.loc 1 36 26 view .LVU118
+ 390 000a 80F82510 		strb	r1, [r0, #37]
+  39:app/drivers/w25q/w25q.c ****   sCommand.InstructionMode   = QSPI_INSTRUCTION_1_LINE;
+ 391              		.loc 1 39 3 is_stmt 1 view .LVU119
+ARM GAS  /tmp/cczlp3KS.s 			page 15
+
+
+  39:app/drivers/w25q/w25q.c ****   sCommand.InstructionMode   = QSPI_INSTRUCTION_1_LINE;
+ 392              		.loc 1 39 30 is_stmt 0 view .LVU120
+ 393 000e 4FF48071 		mov	r1, #256
+ 394 0012 0691     		str	r1, [sp, #24]
+  40:app/drivers/w25q/w25q.c ****   sCommand.Instruction       = W25Q_CMD_FAST_READ;
+ 395              		.loc 1 40 3 is_stmt 1 view .LVU121
+  40:app/drivers/w25q/w25q.c ****   sCommand.Instruction       = W25Q_CMD_FAST_READ;
+ 396              		.loc 1 40 30 is_stmt 0 view .LVU122
+ 397 0014 EB21     		movs	r1, #235
+ 398 0016 0091     		str	r1, [sp]
+  42:app/drivers/w25q/w25q.c ****   sCommand.AddressMode       = QSPI_ADDRESS_4_LINES;
+ 399              		.loc 1 42 3 is_stmt 1 view .LVU123
+  42:app/drivers/w25q/w25q.c ****   sCommand.AddressMode       = QSPI_ADDRESS_4_LINES;
+ 400              		.loc 1 42 30 is_stmt 0 view .LVU124
+ 401 0018 4FF44061 		mov	r1, #3072
+ 402 001c 0791     		str	r1, [sp, #28]
+  43:app/drivers/w25q/w25q.c ****   sCommand.AddressSize       = QSPI_ADDRESS_24_BITS;
+ 403              		.loc 1 43 3 is_stmt 1 view .LVU125
+  43:app/drivers/w25q/w25q.c ****   sCommand.AddressSize       = QSPI_ADDRESS_24_BITS;
+ 404              		.loc 1 43 30 is_stmt 0 view .LVU126
+ 405 001e 4FF40051 		mov	r1, #8192
+ 406 0022 0391     		str	r1, [sp, #12]
+  44:app/drivers/w25q/w25q.c ****   sCommand.Address           = address;
+ 407              		.loc 1 44 3 is_stmt 1 view .LVU127
+  44:app/drivers/w25q/w25q.c ****   sCommand.Address           = address;
+ 408              		.loc 1 44 30 is_stmt 0 view .LVU128
+ 409 0024 0192     		str	r2, [sp, #4]
+  46:app/drivers/w25q/w25q.c ****   sCommand.AlternateByteMode  = QSPI_ALTERNATE_BYTES_NONE;
+ 410              		.loc 1 46 3 is_stmt 1 view .LVU129
+  46:app/drivers/w25q/w25q.c ****   sCommand.AlternateByteMode  = QSPI_ALTERNATE_BYTES_NONE;
+ 411              		.loc 1 46 31 is_stmt 0 view .LVU130
+ 412 0026 0022     		movs	r2, #0
+ 413              	.LVL19:
+  46:app/drivers/w25q/w25q.c ****   sCommand.AlternateByteMode  = QSPI_ALTERNATE_BYTES_NONE;
+ 414              		.loc 1 46 31 view .LVU131
+ 415 0028 0892     		str	r2, [sp, #32]
+  48:app/drivers/w25q/w25q.c ****   sCommand.DataMode          = QSPI_DATA_4_LINES;
+ 416              		.loc 1 48 3 is_stmt 1 view .LVU132
+  48:app/drivers/w25q/w25q.c ****   sCommand.DataMode          = QSPI_DATA_4_LINES;
+ 417              		.loc 1 48 30 is_stmt 0 view .LVU133
+ 418 002a 4FF04071 		mov	r1, #50331648
+ 419 002e 0991     		str	r1, [sp, #36]
+  49:app/drivers/w25q/w25q.c ****   sCommand.DummyCycles       = 6;
+ 420              		.loc 1 49 3 is_stmt 1 view .LVU134
+  49:app/drivers/w25q/w25q.c ****   sCommand.DummyCycles       = 6;
+ 421              		.loc 1 49 30 is_stmt 0 view .LVU135
+ 422 0030 0621     		movs	r1, #6
+ 423 0032 0591     		str	r1, [sp, #20]
+  50:app/drivers/w25q/w25q.c ****   sCommand.NbData            = size;
+ 424              		.loc 1 50 3 is_stmt 1 view .LVU136
+  50:app/drivers/w25q/w25q.c ****   sCommand.NbData            = size;
+ 425              		.loc 1 50 30 is_stmt 0 view .LVU137
+ 426 0034 0A93     		str	r3, [sp, #40]
+  52:app/drivers/w25q/w25q.c ****   sCommand.DdrMode           = QSPI_DDR_MODE_DISABLE;
+ 427              		.loc 1 52 3 is_stmt 1 view .LVU138
+  52:app/drivers/w25q/w25q.c ****   sCommand.DdrMode           = QSPI_DDR_MODE_DISABLE;
+ 428              		.loc 1 52 30 is_stmt 0 view .LVU139
+ARM GAS  /tmp/cczlp3KS.s 			page 16
+
+
+ 429 0036 0B92     		str	r2, [sp, #44]
+  53:app/drivers/w25q/w25q.c ****   sCommand.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+ 430              		.loc 1 53 3 is_stmt 1 view .LVU140
+  53:app/drivers/w25q/w25q.c ****   sCommand.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+ 431              		.loc 1 53 30 is_stmt 0 view .LVU141
+ 432 0038 0C92     		str	r2, [sp, #48]
+  54:app/drivers/w25q/w25q.c ****   sCommand.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+ 433              		.loc 1 54 3 is_stmt 1 view .LVU142
+  54:app/drivers/w25q/w25q.c ****   sCommand.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+ 434              		.loc 1 54 30 is_stmt 0 view .LVU143
+ 435 003a 0D92     		str	r2, [sp, #52]
+  59:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, W25Q_TIMEOUT_DEFAULT);
+ 436              		.loc 1 59 3 is_stmt 1 view .LVU144
+  59:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, W25Q_TIMEOUT_DEFAULT);
+ 437              		.loc 1 59 12 is_stmt 0 view .LVU145
+ 438 003c 4FF47A72 		mov	r2, #1000
+ 439 0040 6946     		mov	r1, sp
+ 440 0042 0068     		ldr	r0, [r0]
+ 441              	.LVL20:
+  59:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, W25Q_TIMEOUT_DEFAULT);
+ 442              		.loc 1 59 12 view .LVU146
+ 443 0044 FFF7FEFF 		bl	HAL_QSPI_Command
+ 444              	.LVL21:
+  60:app/drivers/w25q/w25q.c ****   if (status != HAL_OK) {
+ 445              		.loc 1 60 3 is_stmt 1 view .LVU147
+  60:app/drivers/w25q/w25q.c ****   if (status != HAL_OK) {
+ 446              		.loc 1 60 6 is_stmt 0 view .LVU148
+ 447 0048 0646     		mov	r6, r0
+ 448 004a 10B1     		cbz	r0, .L23
+ 449              	.LVL22:
+ 450              	.L17:
+  77:app/drivers/w25q/w25q.c **** }
+ 451              		.loc 1 77 1 view .LVU149
+ 452 004c 3046     		mov	r0, r6
+ 453 004e 0EB0     		add	sp, sp, #56
+ 454              	.LCFI13:
+ 455              		.cfi_remember_state
+ 456              		.cfi_def_cfa_offset 16
+ 457              		@ sp needed
+ 458 0050 70BD     		pop	{r4, r5, r6, pc}
+ 459              	.LVL23:
+ 460              	.L23:
+ 461              	.LCFI14:
+ 462              		.cfi_restore_state
+  65:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Receive(hflash->hqspi, dataBuffer, W25Q_TIMEOUT_DEFAULT);
+ 463              		.loc 1 65 3 is_stmt 1 view .LVU150
+  65:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Receive(hflash->hqspi, dataBuffer, W25Q_TIMEOUT_DEFAULT);
+ 464              		.loc 1 65 12 is_stmt 0 view .LVU151
+ 465 0052 4FF47A72 		mov	r2, #1000
+ 466 0056 2946     		mov	r1, r5
+ 467 0058 2068     		ldr	r0, [r4]
+ 468              	.LVL24:
+  65:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Receive(hflash->hqspi, dataBuffer, W25Q_TIMEOUT_DEFAULT);
+ 469              		.loc 1 65 12 view .LVU152
+ 470 005a FFF7FEFF 		bl	HAL_QSPI_Receive
+ 471              	.LVL25:
+  66:app/drivers/w25q/w25q.c ****   if (status != HAL_OK) {
+ARM GAS  /tmp/cczlp3KS.s 			page 17
+
+
+ 472              		.loc 1 66 3 is_stmt 1 view .LVU153
+  66:app/drivers/w25q/w25q.c ****   if (status != HAL_OK) {
+ 473              		.loc 1 66 6 is_stmt 0 view .LVU154
+ 474 005e 0646     		mov	r6, r0
+ 475 0060 18B1     		cbz	r0, .L18
+ 476 0062 F3E7     		b	.L17
+ 477              	.LVL26:
+ 478              	.L20:
+  71:app/drivers/w25q/w25q.c ****     osDelay(1);
+ 479              		.loc 1 71 5 is_stmt 1 view .LVU155
+ 480 0064 0120     		movs	r0, #1
+ 481 0066 FFF7FEFF 		bl	osDelay
+ 482              	.LVL27:
+ 483              	.L18:
+  70:app/drivers/w25q/w25q.c ****   while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LE
+ 484              		.loc 1 70 9 view .LVU156
+  70:app/drivers/w25q/w25q.c ****   while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LE
+ 485              		.loc 1 70 10 is_stmt 0 view .LVU157
+ 486 006a 2046     		mov	r0, r4
+ 487 006c FFF7FEFF 		bl	W25Q_isBusy
+ 488              	.LVL28:
+  70:app/drivers/w25q/w25q.c ****   while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LE
+ 489              		.loc 1 70 9 view .LVU158
+ 490 0070 0228     		cmp	r0, #2
+ 491 0072 06D1     		bne	.L19
+  70:app/drivers/w25q/w25q.c ****   while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LE
+ 492              		.loc 1 70 51 discriminator 1 view .LVU159
+ 493 0074 94F82530 		ldrb	r3, [r4, #37]	@ zero_extendqisi2
+  70:app/drivers/w25q/w25q.c ****   while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LE
+ 494              		.loc 1 70 67 discriminator 1 view .LVU160
+ 495 0078 5A1E     		subs	r2, r3, #1
+ 496 007a 84F82520 		strb	r2, [r4, #37]
+  70:app/drivers/w25q/w25q.c ****   while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LE
+ 497              		.loc 1 70 42 discriminator 1 view .LVU161
+ 498 007e 002B     		cmp	r3, #0
+ 499 0080 F0D1     		bne	.L20
+ 500              	.L19:
+  73:app/drivers/w25q/w25q.c ****   if (hflash->busyWaitCycles <= NO_FLASH_BUSY_WAIT_CYCLES_LEFT)
+ 501              		.loc 1 73 3 is_stmt 1 view .LVU162
+  73:app/drivers/w25q/w25q.c ****   if (hflash->busyWaitCycles <= NO_FLASH_BUSY_WAIT_CYCLES_LEFT)
+ 502              		.loc 1 73 13 is_stmt 0 view .LVU163
+ 503 0082 94F82530 		ldrb	r3, [r4, #37]	@ zero_extendqisi2
+  73:app/drivers/w25q/w25q.c ****   if (hflash->busyWaitCycles <= NO_FLASH_BUSY_WAIT_CYCLES_LEFT)
+ 504              		.loc 1 73 6 view .LVU164
+ 505 0086 002B     		cmp	r3, #0
+ 506 0088 E0D1     		bne	.L17
+  74:app/drivers/w25q/w25q.c ****     status = HAL_ERROR;
+ 507              		.loc 1 74 12 view .LVU165
+ 508 008a 0126     		movs	r6, #1
+ 509 008c DEE7     		b	.L17
+ 510              		.cfi_endproc
+ 511              	.LFE136:
+ 513              		.section	.text.W25Q_WriteData,"ax",%progbits
+ 514              		.align	1
+ 515              		.global	W25Q_WriteData
+ 516              		.syntax unified
+ 517              		.thumb
+ARM GAS  /tmp/cczlp3KS.s 			page 18
+
+
+ 518              		.thumb_func
+ 519              		.fpu fpv4-sp-d16
+ 521              	W25Q_WriteData:
+ 522              	.LVL29:
+ 523              	.LFB137:
+  79:app/drivers/w25q/w25q.c **** HAL_StatusTypeDef W25Q_WriteData(W25Q_HandleTypeDef *hflash, const uint8_t *dataBuffer, uint32_t ad
+ 524              		.loc 1 79 122 is_stmt 1 view -0
+ 525              		.cfi_startproc
+ 526              		@ args = 0, pretend = 0, frame = 56
+ 527              		@ frame_needed = 0, uses_anonymous_args = 0
+  79:app/drivers/w25q/w25q.c **** HAL_StatusTypeDef W25Q_WriteData(W25Q_HandleTypeDef *hflash, const uint8_t *dataBuffer, uint32_t ad
+ 528              		.loc 1 79 122 is_stmt 0 view .LVU167
+ 529 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 530              	.LCFI15:
+ 531              		.cfi_def_cfa_offset 24
+ 532              		.cfi_offset 4, -24
+ 533              		.cfi_offset 5, -20
+ 534              		.cfi_offset 6, -16
+ 535              		.cfi_offset 7, -12
+ 536              		.cfi_offset 8, -8
+ 537              		.cfi_offset 14, -4
+ 538 0004 8EB0     		sub	sp, sp, #56
+ 539              	.LCFI16:
+ 540              		.cfi_def_cfa_offset 80
+ 541 0006 0446     		mov	r4, r0
+ 542 0008 0E46     		mov	r6, r1
+ 543 000a 9046     		mov	r8, r2
+ 544 000c 1D46     		mov	r5, r3
+  80:app/drivers/w25q/w25q.c ****   QSPI_CommandTypeDef sCommand;
+ 545              		.loc 1 80 3 is_stmt 1 view .LVU168
+  81:app/drivers/w25q/w25q.c ****   HAL_StatusTypeDef status;
+ 546              		.loc 1 81 3 view .LVU169
+  82:app/drivers/w25q/w25q.c ****   hflash->busyWaitCycles = FLASH_BUSY_WAIT_CYCLES;
+ 547              		.loc 1 82 3 view .LVU170
+  82:app/drivers/w25q/w25q.c ****   hflash->busyWaitCycles = FLASH_BUSY_WAIT_CYCLES;
+ 548              		.loc 1 82 26 is_stmt 0 view .LVU171
+ 549 000e 4FF0050C 		mov	ip, #5
+ 550 0012 80F825C0 		strb	ip, [r0, #37]
+  84:app/drivers/w25q/w25q.c ****   status = W25Q_EnableWright(hflash);
+ 551              		.loc 1 84 3 is_stmt 1 view .LVU172
+  84:app/drivers/w25q/w25q.c ****   status = W25Q_EnableWright(hflash);
+ 552              		.loc 1 84 12 is_stmt 0 view .LVU173
+ 553 0016 FFF7FEFF 		bl	W25Q_EnableWright
+ 554              	.LVL30:
+  86:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+ 555              		.loc 1 86 3 is_stmt 1 view .LVU174
+  86:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+ 556              		.loc 1 86 6 is_stmt 0 view .LVU175
+ 557 001a 0746     		mov	r7, r0
+ 558 001c 18B1     		cbz	r0, .L31
+ 559              	.LVL31:
+ 560              	.L25:
+ 128:app/drivers/w25q/w25q.c **** }
+ 561              		.loc 1 128 1 view .LVU176
+ 562 001e 3846     		mov	r0, r7
+ 563 0020 0EB0     		add	sp, sp, #56
+ 564              	.LCFI17:
+ARM GAS  /tmp/cczlp3KS.s 			page 19
+
+
+ 565              		.cfi_remember_state
+ 566              		.cfi_def_cfa_offset 24
+ 567              		@ sp needed
+ 568 0022 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 569              	.LVL32:
+ 570              	.L31:
+ 571              	.LCFI18:
+ 572              		.cfi_restore_state
+  90:app/drivers/w25q/w25q.c ****   sCommand.InstructionMode   = QSPI_INSTRUCTION_1_LINE;
+ 573              		.loc 1 90 3 is_stmt 1 view .LVU177
+  90:app/drivers/w25q/w25q.c ****   sCommand.InstructionMode   = QSPI_INSTRUCTION_1_LINE;
+ 574              		.loc 1 90 30 is_stmt 0 view .LVU178
+ 575 0026 4FF48073 		mov	r3, #256
+ 576 002a 0693     		str	r3, [sp, #24]
+  91:app/drivers/w25q/w25q.c ****   sCommand.Instruction       = W25Q_CMD_PAGE_PROGRAM;
+ 577              		.loc 1 91 3 is_stmt 1 view .LVU179
+  91:app/drivers/w25q/w25q.c ****   sCommand.Instruction       = W25Q_CMD_PAGE_PROGRAM;
+ 578              		.loc 1 91 30 is_stmt 0 view .LVU180
+ 579 002c 0223     		movs	r3, #2
+ 580 002e 0093     		str	r3, [sp]
+  93:app/drivers/w25q/w25q.c ****   sCommand.AddressMode       = QSPI_ADDRESS_1_LINE;
+ 581              		.loc 1 93 3 is_stmt 1 view .LVU181
+  93:app/drivers/w25q/w25q.c ****   sCommand.AddressMode       = QSPI_ADDRESS_1_LINE;
+ 582              		.loc 1 93 30 is_stmt 0 view .LVU182
+ 583 0030 4FF48063 		mov	r3, #1024
+ 584 0034 0793     		str	r3, [sp, #28]
+  94:app/drivers/w25q/w25q.c ****   sCommand.AddressSize       = QSPI_ADDRESS_24_BITS;
+ 585              		.loc 1 94 3 is_stmt 1 view .LVU183
+  94:app/drivers/w25q/w25q.c ****   sCommand.AddressSize       = QSPI_ADDRESS_24_BITS;
+ 586              		.loc 1 94 30 is_stmt 0 view .LVU184
+ 587 0036 4FF40053 		mov	r3, #8192
+ 588 003a 0393     		str	r3, [sp, #12]
+  95:app/drivers/w25q/w25q.c ****   sCommand.Address           = address;
+ 589              		.loc 1 95 3 is_stmt 1 view .LVU185
+  95:app/drivers/w25q/w25q.c ****   sCommand.Address           = address;
+ 590              		.loc 1 95 30 is_stmt 0 view .LVU186
+ 591 003c CDF80480 		str	r8, [sp, #4]
+  97:app/drivers/w25q/w25q.c ****   sCommand.AlternateByteMode  = QSPI_ALTERNATE_BYTES_NONE;
+ 592              		.loc 1 97 3 is_stmt 1 view .LVU187
+  97:app/drivers/w25q/w25q.c ****   sCommand.AlternateByteMode  = QSPI_ALTERNATE_BYTES_NONE;
+ 593              		.loc 1 97 31 is_stmt 0 view .LVU188
+ 594 0040 0022     		movs	r2, #0
+ 595 0042 0892     		str	r2, [sp, #32]
+  99:app/drivers/w25q/w25q.c ****   sCommand.DataMode          = QSPI_DATA_1_LINE;
+ 596              		.loc 1 99 3 is_stmt 1 view .LVU189
+  99:app/drivers/w25q/w25q.c ****   sCommand.DataMode          = QSPI_DATA_1_LINE;
+ 597              		.loc 1 99 30 is_stmt 0 view .LVU190
+ 598 0044 4FF08073 		mov	r3, #16777216
+ 599 0048 0993     		str	r3, [sp, #36]
+ 100:app/drivers/w25q/w25q.c ****   sCommand.DummyCycles       = 0;
+ 600              		.loc 1 100 3 is_stmt 1 view .LVU191
+ 100:app/drivers/w25q/w25q.c ****   sCommand.DummyCycles       = 0;
+ 601              		.loc 1 100 30 is_stmt 0 view .LVU192
+ 602 004a 0592     		str	r2, [sp, #20]
+ 101:app/drivers/w25q/w25q.c ****   sCommand.NbData            = size;
+ 603              		.loc 1 101 3 is_stmt 1 view .LVU193
+ 101:app/drivers/w25q/w25q.c ****   sCommand.NbData            = size;
+ARM GAS  /tmp/cczlp3KS.s 			page 20
+
+
+ 604              		.loc 1 101 30 is_stmt 0 view .LVU194
+ 605 004c 0A95     		str	r5, [sp, #40]
+ 103:app/drivers/w25q/w25q.c ****   sCommand.DdrMode           = QSPI_DDR_MODE_DISABLE;
+ 606              		.loc 1 103 3 is_stmt 1 view .LVU195
+ 103:app/drivers/w25q/w25q.c ****   sCommand.DdrMode           = QSPI_DDR_MODE_DISABLE;
+ 607              		.loc 1 103 30 is_stmt 0 view .LVU196
+ 608 004e 0B92     		str	r2, [sp, #44]
+ 104:app/drivers/w25q/w25q.c ****   sCommand.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+ 609              		.loc 1 104 3 is_stmt 1 view .LVU197
+ 104:app/drivers/w25q/w25q.c ****   sCommand.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+ 610              		.loc 1 104 30 is_stmt 0 view .LVU198
+ 611 0050 0C92     		str	r2, [sp, #48]
+ 105:app/drivers/w25q/w25q.c ****   sCommand.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+ 612              		.loc 1 105 3 is_stmt 1 view .LVU199
+ 105:app/drivers/w25q/w25q.c ****   sCommand.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+ 613              		.loc 1 105 30 is_stmt 0 view .LVU200
+ 614 0052 0D92     		str	r2, [sp, #52]
+ 108:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, HAL_QSPI_TIMEOUT_DEFAULT_VALUE);
+ 615              		.loc 1 108 3 is_stmt 1 view .LVU201
+ 108:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, HAL_QSPI_TIMEOUT_DEFAULT_VALUE);
+ 616              		.loc 1 108 12 is_stmt 0 view .LVU202
+ 617 0054 41F28832 		movw	r2, #5000
+ 618 0058 6946     		mov	r1, sp
+ 619 005a 2068     		ldr	r0, [r4]
+ 620              	.LVL33:
+ 108:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, HAL_QSPI_TIMEOUT_DEFAULT_VALUE);
+ 621              		.loc 1 108 12 view .LVU203
+ 622 005c FFF7FEFF 		bl	HAL_QSPI_Command
+ 623              	.LVL34:
+ 109:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+ 624              		.loc 1 109 3 is_stmt 1 view .LVU204
+ 109:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+ 625              		.loc 1 109 6 is_stmt 0 view .LVU205
+ 626 0060 0746     		mov	r7, r0
+ 627 0062 0028     		cmp	r0, #0
+ 628 0064 DBD1     		bne	.L25
+ 115:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Transmit(hflash->hqspi, (uint8_t *)dataBuffer, HAL_QSPI_TIMEOUT_DEFAULT_VALUE);
+ 629              		.loc 1 115 3 is_stmt 1 view .LVU206
+ 115:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Transmit(hflash->hqspi, (uint8_t *)dataBuffer, HAL_QSPI_TIMEOUT_DEFAULT_VALUE);
+ 630              		.loc 1 115 12 is_stmt 0 view .LVU207
+ 631 0066 41F28832 		movw	r2, #5000
+ 632 006a 3146     		mov	r1, r6
+ 633 006c 2068     		ldr	r0, [r4]
+ 634              	.LVL35:
+ 115:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Transmit(hflash->hqspi, (uint8_t *)dataBuffer, HAL_QSPI_TIMEOUT_DEFAULT_VALUE);
+ 635              		.loc 1 115 12 view .LVU208
+ 636 006e FFF7FEFF 		bl	HAL_QSPI_Transmit
+ 637              	.LVL36:
+ 116:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+ 638              		.loc 1 116 3 is_stmt 1 view .LVU209
+ 116:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+ 639              		.loc 1 116 6 is_stmt 0 view .LVU210
+ 640 0072 0746     		mov	r7, r0
+ 641 0074 18B1     		cbz	r0, .L26
+ 642 0076 D2E7     		b	.L25
+ 643              	.LVL37:
+ 644              	.L28:
+ARM GAS  /tmp/cczlp3KS.s 			page 21
+
+
+ 122:app/drivers/w25q/w25q.c ****     osDelay(1);
+ 645              		.loc 1 122 5 is_stmt 1 view .LVU211
+ 646 0078 0120     		movs	r0, #1
+ 647 007a FFF7FEFF 		bl	osDelay
+ 648              	.LVL38:
+ 649              	.L26:
+ 121:app/drivers/w25q/w25q.c ****   while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LE
+ 650              		.loc 1 121 9 view .LVU212
+ 121:app/drivers/w25q/w25q.c ****   while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LE
+ 651              		.loc 1 121 10 is_stmt 0 view .LVU213
+ 652 007e 2046     		mov	r0, r4
+ 653 0080 FFF7FEFF 		bl	W25Q_isBusy
+ 654              	.LVL39:
+ 121:app/drivers/w25q/w25q.c ****   while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LE
+ 655              		.loc 1 121 9 view .LVU214
+ 656 0084 0228     		cmp	r0, #2
+ 657 0086 06D1     		bne	.L27
+ 121:app/drivers/w25q/w25q.c ****   while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LE
+ 658              		.loc 1 121 51 discriminator 1 view .LVU215
+ 659 0088 94F82530 		ldrb	r3, [r4, #37]	@ zero_extendqisi2
+ 121:app/drivers/w25q/w25q.c ****   while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LE
+ 660              		.loc 1 121 67 discriminator 1 view .LVU216
+ 661 008c 5A1E     		subs	r2, r3, #1
+ 662 008e 84F82520 		strb	r2, [r4, #37]
+ 121:app/drivers/w25q/w25q.c ****   while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LE
+ 663              		.loc 1 121 42 discriminator 1 view .LVU217
+ 664 0092 002B     		cmp	r3, #0
+ 665 0094 F0D1     		bne	.L28
+ 666              	.L27:
+ 124:app/drivers/w25q/w25q.c ****   if (hflash->busyWaitCycles <= NO_FLASH_BUSY_WAIT_CYCLES_LEFT)
+ 667              		.loc 1 124 3 is_stmt 1 view .LVU218
+ 124:app/drivers/w25q/w25q.c ****   if (hflash->busyWaitCycles <= NO_FLASH_BUSY_WAIT_CYCLES_LEFT)
+ 668              		.loc 1 124 13 is_stmt 0 view .LVU219
+ 669 0096 94F82530 		ldrb	r3, [r4, #37]	@ zero_extendqisi2
+ 124:app/drivers/w25q/w25q.c ****   if (hflash->busyWaitCycles <= NO_FLASH_BUSY_WAIT_CYCLES_LEFT)
+ 670              		.loc 1 124 6 view .LVU220
+ 671 009a 002B     		cmp	r3, #0
+ 672 009c BFD1     		bne	.L25
+ 125:app/drivers/w25q/w25q.c ****     status = HAL_ERROR;
+ 673              		.loc 1 125 12 view .LVU221
+ 674 009e 0127     		movs	r7, #1
+ 675 00a0 BDE7     		b	.L25
+ 676              		.cfi_endproc
+ 677              	.LFE137:
+ 679              		.section	.text.W25Q_EraseSector,"ax",%progbits
+ 680              		.align	1
+ 681              		.global	W25Q_EraseSector
+ 682              		.syntax unified
+ 683              		.thumb
+ 684              		.thumb_func
+ 685              		.fpu fpv4-sp-d16
+ 687              	W25Q_EraseSector:
+ 688              	.LVL40:
+ 689              	.LFB138:
+ 130:app/drivers/w25q/w25q.c **** HAL_StatusTypeDef W25Q_EraseSector(W25Q_HandleTypeDef *hflash, uint32_t address) {
+ 690              		.loc 1 130 82 is_stmt 1 view -0
+ 691              		.cfi_startproc
+ARM GAS  /tmp/cczlp3KS.s 			page 22
+
+
+ 692              		@ args = 0, pretend = 0, frame = 56
+ 693              		@ frame_needed = 0, uses_anonymous_args = 0
+ 130:app/drivers/w25q/w25q.c **** HAL_StatusTypeDef W25Q_EraseSector(W25Q_HandleTypeDef *hflash, uint32_t address) {
+ 694              		.loc 1 130 82 is_stmt 0 view .LVU223
+ 695 0000 70B5     		push	{r4, r5, r6, lr}
+ 696              	.LCFI19:
+ 697              		.cfi_def_cfa_offset 16
+ 698              		.cfi_offset 4, -16
+ 699              		.cfi_offset 5, -12
+ 700              		.cfi_offset 6, -8
+ 701              		.cfi_offset 14, -4
+ 702 0002 8EB0     		sub	sp, sp, #56
+ 703              	.LCFI20:
+ 704              		.cfi_def_cfa_offset 72
+ 705 0004 0446     		mov	r4, r0
+ 706 0006 0E46     		mov	r6, r1
+ 131:app/drivers/w25q/w25q.c ****   QSPI_CommandTypeDef sCommand;
+ 707              		.loc 1 131 3 is_stmt 1 view .LVU224
+ 132:app/drivers/w25q/w25q.c ****   HAL_StatusTypeDef status;
+ 708              		.loc 1 132 3 view .LVU225
+ 133:app/drivers/w25q/w25q.c ****   hflash->busyWaitCycles = FLASH_BUSY_WAIT_CYCLES;
+ 709              		.loc 1 133 3 view .LVU226
+ 133:app/drivers/w25q/w25q.c ****   hflash->busyWaitCycles = FLASH_BUSY_WAIT_CYCLES;
+ 710              		.loc 1 133 26 is_stmt 0 view .LVU227
+ 711 0008 0523     		movs	r3, #5
+ 712 000a 80F82530 		strb	r3, [r0, #37]
+ 135:app/drivers/w25q/w25q.c ****   status = W25Q_EnableWright(hflash);
+ 713              		.loc 1 135 3 is_stmt 1 view .LVU228
+ 135:app/drivers/w25q/w25q.c ****   status = W25Q_EnableWright(hflash);
+ 714              		.loc 1 135 12 is_stmt 0 view .LVU229
+ 715 000e FFF7FEFF 		bl	W25Q_EnableWright
+ 716              	.LVL41:
+ 137:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+ 717              		.loc 1 137 3 is_stmt 1 view .LVU230
+ 137:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+ 718              		.loc 1 137 6 is_stmt 0 view .LVU231
+ 719 0012 0546     		mov	r5, r0
+ 720 0014 10B1     		cbz	r0, .L39
+ 721              	.LVL42:
+ 722              	.L33:
+ 170:app/drivers/w25q/w25q.c **** }
+ 723              		.loc 1 170 1 view .LVU232
+ 724 0016 2846     		mov	r0, r5
+ 725 0018 0EB0     		add	sp, sp, #56
+ 726              	.LCFI21:
+ 727              		.cfi_remember_state
+ 728              		.cfi_def_cfa_offset 16
+ 729              		@ sp needed
+ 730 001a 70BD     		pop	{r4, r5, r6, pc}
+ 731              	.LVL43:
+ 732              	.L39:
+ 733              	.LCFI22:
+ 734              		.cfi_restore_state
+ 141:app/drivers/w25q/w25q.c ****   sCommand.InstructionMode = QSPI_INSTRUCTION_1_LINE;
+ 735              		.loc 1 141 3 is_stmt 1 view .LVU233
+ 141:app/drivers/w25q/w25q.c ****   sCommand.InstructionMode = QSPI_INSTRUCTION_1_LINE;
+ 736              		.loc 1 141 28 is_stmt 0 view .LVU234
+ARM GAS  /tmp/cczlp3KS.s 			page 23
+
+
+ 737 001c 4FF48073 		mov	r3, #256
+ 738 0020 0693     		str	r3, [sp, #24]
+ 142:app/drivers/w25q/w25q.c ****   sCommand.Instruction = W25Q_CMD_SECTOR_ERASE;
+ 739              		.loc 1 142 3 is_stmt 1 view .LVU235
+ 142:app/drivers/w25q/w25q.c ****   sCommand.Instruction = W25Q_CMD_SECTOR_ERASE;
+ 740              		.loc 1 142 24 is_stmt 0 view .LVU236
+ 741 0022 2023     		movs	r3, #32
+ 742 0024 0093     		str	r3, [sp]
+ 144:app/drivers/w25q/w25q.c ****   sCommand.AddressMode = QSPI_ADDRESS_1_LINE;
+ 743              		.loc 1 144 3 is_stmt 1 view .LVU237
+ 144:app/drivers/w25q/w25q.c ****   sCommand.AddressMode = QSPI_ADDRESS_1_LINE;
+ 744              		.loc 1 144 24 is_stmt 0 view .LVU238
+ 745 0026 4FF48063 		mov	r3, #1024
+ 746 002a 0793     		str	r3, [sp, #28]
+ 145:app/drivers/w25q/w25q.c ****   sCommand.AddressSize = QSPI_ADDRESS_24_BITS;
+ 747              		.loc 1 145 3 is_stmt 1 view .LVU239
+ 145:app/drivers/w25q/w25q.c ****   sCommand.AddressSize = QSPI_ADDRESS_24_BITS;
+ 748              		.loc 1 145 24 is_stmt 0 view .LVU240
+ 749 002c 4FF40053 		mov	r3, #8192
+ 750 0030 0393     		str	r3, [sp, #12]
+ 146:app/drivers/w25q/w25q.c ****   sCommand.Address = address;
+ 751              		.loc 1 146 3 is_stmt 1 view .LVU241
+ 146:app/drivers/w25q/w25q.c ****   sCommand.Address = address;
+ 752              		.loc 1 146 20 is_stmt 0 view .LVU242
+ 753 0032 0196     		str	r6, [sp, #4]
+ 148:app/drivers/w25q/w25q.c ****   sCommand.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
+ 754              		.loc 1 148 3 is_stmt 1 view .LVU243
+ 148:app/drivers/w25q/w25q.c ****   sCommand.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
+ 755              		.loc 1 148 30 is_stmt 0 view .LVU244
+ 756 0034 0023     		movs	r3, #0
+ 757 0036 0893     		str	r3, [sp, #32]
+ 150:app/drivers/w25q/w25q.c ****   sCommand.DataMode = QSPI_DATA_NONE;
+ 758              		.loc 1 150 3 is_stmt 1 view .LVU245
+ 150:app/drivers/w25q/w25q.c ****   sCommand.DataMode = QSPI_DATA_NONE;
+ 759              		.loc 1 150 21 is_stmt 0 view .LVU246
+ 760 0038 0993     		str	r3, [sp, #36]
+ 151:app/drivers/w25q/w25q.c ****   sCommand.DummyCycles = 0;
+ 761              		.loc 1 151 3 is_stmt 1 view .LVU247
+ 151:app/drivers/w25q/w25q.c ****   sCommand.DummyCycles = 0;
+ 762              		.loc 1 151 24 is_stmt 0 view .LVU248
+ 763 003a 0593     		str	r3, [sp, #20]
+ 152:app/drivers/w25q/w25q.c ****   sCommand.NbData = 0;
+ 764              		.loc 1 152 3 is_stmt 1 view .LVU249
+ 152:app/drivers/w25q/w25q.c ****   sCommand.NbData = 0;
+ 765              		.loc 1 152 19 is_stmt 0 view .LVU250
+ 766 003c 0A93     		str	r3, [sp, #40]
+ 154:app/drivers/w25q/w25q.c ****   sCommand.DdrMode = QSPI_DDR_MODE_DISABLE;
+ 767              		.loc 1 154 3 is_stmt 1 view .LVU251
+ 154:app/drivers/w25q/w25q.c ****   sCommand.DdrMode = QSPI_DDR_MODE_DISABLE;
+ 768              		.loc 1 154 20 is_stmt 0 view .LVU252
+ 769 003e 0B93     		str	r3, [sp, #44]
+ 155:app/drivers/w25q/w25q.c ****   sCommand.DdrHoldHalfCycle = QSPI_DDR_HHC_ANALOG_DELAY;
+ 770              		.loc 1 155 3 is_stmt 1 view .LVU253
+ 155:app/drivers/w25q/w25q.c ****   sCommand.DdrHoldHalfCycle = QSPI_DDR_HHC_ANALOG_DELAY;
+ 771              		.loc 1 155 29 is_stmt 0 view .LVU254
+ 772 0040 0C93     		str	r3, [sp, #48]
+ 156:app/drivers/w25q/w25q.c ****   sCommand.SIOOMode = QSPI_SIOO_INST_EVERY_CMD;
+ARM GAS  /tmp/cczlp3KS.s 			page 24
+
+
+ 773              		.loc 1 156 3 is_stmt 1 view .LVU255
+ 156:app/drivers/w25q/w25q.c ****   sCommand.SIOOMode = QSPI_SIOO_INST_EVERY_CMD;
+ 774              		.loc 1 156 21 is_stmt 0 view .LVU256
+ 775 0042 0D93     		str	r3, [sp, #52]
+ 159:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, HAL_QSPI_TIMEOUT_DEFAULT_VALUE);
+ 776              		.loc 1 159 3 is_stmt 1 view .LVU257
+ 159:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, HAL_QSPI_TIMEOUT_DEFAULT_VALUE);
+ 777              		.loc 1 159 12 is_stmt 0 view .LVU258
+ 778 0044 41F28832 		movw	r2, #5000
+ 779 0048 6946     		mov	r1, sp
+ 780 004a 2068     		ldr	r0, [r4]
+ 781              	.LVL44:
+ 159:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, HAL_QSPI_TIMEOUT_DEFAULT_VALUE);
+ 782              		.loc 1 159 12 view .LVU259
+ 783 004c FFF7FEFF 		bl	HAL_QSPI_Command
+ 784              	.LVL45:
+ 160:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+ 785              		.loc 1 160 3 is_stmt 1 view .LVU260
+ 160:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+ 786              		.loc 1 160 6 is_stmt 0 view .LVU261
+ 787 0050 0546     		mov	r5, r0
+ 788 0052 18B1     		cbz	r0, .L34
+ 789 0054 DFE7     		b	.L33
+ 790              	.LVL46:
+ 791              	.L36:
+ 164:app/drivers/w25q/w25q.c ****     osDelay(1);
+ 792              		.loc 1 164 5 is_stmt 1 view .LVU262
+ 793 0056 0120     		movs	r0, #1
+ 794 0058 FFF7FEFF 		bl	osDelay
+ 795              	.LVL47:
+ 796              	.L34:
+ 163:app/drivers/w25q/w25q.c ****   while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LE
+ 797              		.loc 1 163 9 view .LVU263
+ 163:app/drivers/w25q/w25q.c ****   while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LE
+ 798              		.loc 1 163 10 is_stmt 0 view .LVU264
+ 799 005c 2046     		mov	r0, r4
+ 800 005e FFF7FEFF 		bl	W25Q_isBusy
+ 801              	.LVL48:
+ 163:app/drivers/w25q/w25q.c ****   while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LE
+ 802              		.loc 1 163 9 view .LVU265
+ 803 0062 0228     		cmp	r0, #2
+ 804 0064 06D1     		bne	.L35
+ 163:app/drivers/w25q/w25q.c ****   while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LE
+ 805              		.loc 1 163 51 discriminator 1 view .LVU266
+ 806 0066 94F82530 		ldrb	r3, [r4, #37]	@ zero_extendqisi2
+ 163:app/drivers/w25q/w25q.c ****   while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LE
+ 807              		.loc 1 163 67 discriminator 1 view .LVU267
+ 808 006a 5A1E     		subs	r2, r3, #1
+ 809 006c 84F82520 		strb	r2, [r4, #37]
+ 163:app/drivers/w25q/w25q.c ****   while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LE
+ 810              		.loc 1 163 42 discriminator 1 view .LVU268
+ 811 0070 002B     		cmp	r3, #0
+ 812 0072 F0D1     		bne	.L36
+ 813              	.L35:
+ 166:app/drivers/w25q/w25q.c ****   if (hflash->busyWaitCycles <= NO_FLASH_BUSY_WAIT_CYCLES_LEFT)
+ 814              		.loc 1 166 3 is_stmt 1 view .LVU269
+ 166:app/drivers/w25q/w25q.c ****   if (hflash->busyWaitCycles <= NO_FLASH_BUSY_WAIT_CYCLES_LEFT)
+ARM GAS  /tmp/cczlp3KS.s 			page 25
+
+
+ 815              		.loc 1 166 13 is_stmt 0 view .LVU270
+ 816 0074 94F82530 		ldrb	r3, [r4, #37]	@ zero_extendqisi2
+ 166:app/drivers/w25q/w25q.c ****   if (hflash->busyWaitCycles <= NO_FLASH_BUSY_WAIT_CYCLES_LEFT)
+ 817              		.loc 1 166 6 view .LVU271
+ 818 0078 002B     		cmp	r3, #0
+ 819 007a CCD1     		bne	.L33
+ 167:app/drivers/w25q/w25q.c ****     status = HAL_ERROR;
+ 820              		.loc 1 167 12 view .LVU272
+ 821 007c 0125     		movs	r5, #1
+ 822 007e CAE7     		b	.L33
+ 823              		.cfi_endproc
+ 824              	.LFE138:
+ 826              		.section	.text.W25Q_ReadID,"ax",%progbits
+ 827              		.align	1
+ 828              		.global	W25Q_ReadID
+ 829              		.syntax unified
+ 830              		.thumb
+ 831              		.thumb_func
+ 832              		.fpu fpv4-sp-d16
+ 834              	W25Q_ReadID:
+ 835              	.LVL49:
+ 836              	.LFB141:
+ 246:app/drivers/w25q/w25q.c **** HAL_StatusTypeDef W25Q_ReadID(W25Q_HandleTypeDef *hflash, uint8_t ID[W25Q_ID_SIZE]) {
+ 837              		.loc 1 246 85 is_stmt 1 view -0
+ 838              		.cfi_startproc
+ 839              		@ args = 0, pretend = 0, frame = 56
+ 840              		@ frame_needed = 0, uses_anonymous_args = 0
+ 246:app/drivers/w25q/w25q.c **** HAL_StatusTypeDef W25Q_ReadID(W25Q_HandleTypeDef *hflash, uint8_t ID[W25Q_ID_SIZE]) {
+ 841              		.loc 1 246 85 is_stmt 0 view .LVU274
+ 842 0000 70B5     		push	{r4, r5, r6, lr}
+ 843              	.LCFI23:
+ 844              		.cfi_def_cfa_offset 16
+ 845              		.cfi_offset 4, -16
+ 846              		.cfi_offset 5, -12
+ 847              		.cfi_offset 6, -8
+ 848              		.cfi_offset 14, -4
+ 849 0002 8EB0     		sub	sp, sp, #56
+ 850              	.LCFI24:
+ 851              		.cfi_def_cfa_offset 72
+ 852 0004 0446     		mov	r4, r0
+ 853 0006 0D46     		mov	r5, r1
+ 247:app/drivers/w25q/w25q.c ****   QSPI_CommandTypeDef sCommand;
+ 854              		.loc 1 247 3 is_stmt 1 view .LVU275
+ 248:app/drivers/w25q/w25q.c ****   HAL_StatusTypeDef status = HAL_OK;
+ 855              		.loc 1 248 3 view .LVU276
+ 856              	.LVL50:
+ 249:app/drivers/w25q/w25q.c ****   hflash->busyWaitCycles = FLASH_BUSY_WAIT_CYCLES;
+ 857              		.loc 1 249 3 view .LVU277
+ 249:app/drivers/w25q/w25q.c ****   hflash->busyWaitCycles = FLASH_BUSY_WAIT_CYCLES;
+ 858              		.loc 1 249 26 is_stmt 0 view .LVU278
+ 859 0008 0523     		movs	r3, #5
+ 860 000a 80F82530 		strb	r3, [r0, #37]
+ 252:app/drivers/w25q/w25q.c ****   sCommand.InstructionMode   = QSPI_INSTRUCTION_1_LINE;
+ 861              		.loc 1 252 3 is_stmt 1 view .LVU279
+ 252:app/drivers/w25q/w25q.c ****   sCommand.InstructionMode   = QSPI_INSTRUCTION_1_LINE;
+ 862              		.loc 1 252 30 is_stmt 0 view .LVU280
+ 863 000e 4FF48073 		mov	r3, #256
+ARM GAS  /tmp/cczlp3KS.s 			page 26
+
+
+ 864 0012 0693     		str	r3, [sp, #24]
+ 253:app/drivers/w25q/w25q.c ****   sCommand.Instruction       = W25Q_CMD_READ_ID;
+ 865              		.loc 1 253 3 is_stmt 1 view .LVU281
+ 253:app/drivers/w25q/w25q.c ****   sCommand.Instruction       = W25Q_CMD_READ_ID;
+ 866              		.loc 1 253 30 is_stmt 0 view .LVU282
+ 867 0014 9423     		movs	r3, #148
+ 868 0016 0093     		str	r3, [sp]
+ 255:app/drivers/w25q/w25q.c ****   sCommand.AddressMode       = QSPI_ADDRESS_4_LINES;
+ 869              		.loc 1 255 3 is_stmt 1 view .LVU283
+ 255:app/drivers/w25q/w25q.c ****   sCommand.AddressMode       = QSPI_ADDRESS_4_LINES;
+ 870              		.loc 1 255 30 is_stmt 0 view .LVU284
+ 871 0018 4FF44063 		mov	r3, #3072
+ 872 001c 0793     		str	r3, [sp, #28]
+ 256:app/drivers/w25q/w25q.c ****   sCommand.AddressSize       = QSPI_ADDRESS_24_BITS;
+ 873              		.loc 1 256 3 is_stmt 1 view .LVU285
+ 256:app/drivers/w25q/w25q.c ****   sCommand.AddressSize       = QSPI_ADDRESS_24_BITS;
+ 874              		.loc 1 256 30 is_stmt 0 view .LVU286
+ 875 001e 4FF40053 		mov	r3, #8192
+ 876 0022 0393     		str	r3, [sp, #12]
+ 257:app/drivers/w25q/w25q.c ****   sCommand.Address           = 0x000000;
+ 877              		.loc 1 257 3 is_stmt 1 view .LVU287
+ 257:app/drivers/w25q/w25q.c ****   sCommand.Address           = 0x000000;
+ 878              		.loc 1 257 30 is_stmt 0 view .LVU288
+ 879 0024 0023     		movs	r3, #0
+ 880 0026 0193     		str	r3, [sp, #4]
+ 259:app/drivers/w25q/w25q.c ****   sCommand.AlternateByteMode  = QSPI_ALTERNATE_BYTES_NONE;
+ 881              		.loc 1 259 3 is_stmt 1 view .LVU289
+ 259:app/drivers/w25q/w25q.c ****   sCommand.AlternateByteMode  = QSPI_ALTERNATE_BYTES_NONE;
+ 882              		.loc 1 259 31 is_stmt 0 view .LVU290
+ 883 0028 0893     		str	r3, [sp, #32]
+ 261:app/drivers/w25q/w25q.c ****   sCommand.DataMode          = QSPI_DATA_4_LINES;
+ 884              		.loc 1 261 3 is_stmt 1 view .LVU291
+ 261:app/drivers/w25q/w25q.c ****   sCommand.DataMode          = QSPI_DATA_4_LINES;
+ 885              		.loc 1 261 30 is_stmt 0 view .LVU292
+ 886 002a 4FF04072 		mov	r2, #50331648
+ 887 002e 0992     		str	r2, [sp, #36]
+ 262:app/drivers/w25q/w25q.c ****   sCommand.DummyCycles       = 6; // 2 cycles per byte
+ 888              		.loc 1 262 3 is_stmt 1 view .LVU293
+ 262:app/drivers/w25q/w25q.c ****   sCommand.DummyCycles       = 6; // 2 cycles per byte
+ 889              		.loc 1 262 30 is_stmt 0 view .LVU294
+ 890 0030 0622     		movs	r2, #6
+ 891 0032 0592     		str	r2, [sp, #20]
+ 263:app/drivers/w25q/w25q.c ****   sCommand.NbData            = W25Q_ID_SIZE;
+ 892              		.loc 1 263 3 is_stmt 1 view .LVU295
+ 263:app/drivers/w25q/w25q.c ****   sCommand.NbData            = W25Q_ID_SIZE;
+ 893              		.loc 1 263 30 is_stmt 0 view .LVU296
+ 894 0034 0222     		movs	r2, #2
+ 895 0036 0A92     		str	r2, [sp, #40]
+ 265:app/drivers/w25q/w25q.c ****   sCommand.DdrMode           = QSPI_DDR_MODE_DISABLE;
+ 896              		.loc 1 265 3 is_stmt 1 view .LVU297
+ 265:app/drivers/w25q/w25q.c ****   sCommand.DdrMode           = QSPI_DDR_MODE_DISABLE;
+ 897              		.loc 1 265 30 is_stmt 0 view .LVU298
+ 898 0038 0B93     		str	r3, [sp, #44]
+ 266:app/drivers/w25q/w25q.c ****   sCommand.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+ 899              		.loc 1 266 3 is_stmt 1 view .LVU299
+ 266:app/drivers/w25q/w25q.c ****   sCommand.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+ 900              		.loc 1 266 30 is_stmt 0 view .LVU300
+ARM GAS  /tmp/cczlp3KS.s 			page 27
+
+
+ 901 003a 0C93     		str	r3, [sp, #48]
+ 267:app/drivers/w25q/w25q.c ****   sCommand.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+ 902              		.loc 1 267 3 is_stmt 1 view .LVU301
+ 267:app/drivers/w25q/w25q.c ****   sCommand.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+ 903              		.loc 1 267 30 is_stmt 0 view .LVU302
+ 904 003c 0D93     		str	r3, [sp, #52]
+ 270:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, W25Q_TIMEOUT_DEFAULT);
+ 905              		.loc 1 270 3 is_stmt 1 view .LVU303
+ 270:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, W25Q_TIMEOUT_DEFAULT);
+ 906              		.loc 1 270 12 is_stmt 0 view .LVU304
+ 907 003e 4FF47A72 		mov	r2, #1000
+ 908 0042 6946     		mov	r1, sp
+ 909              	.LVL51:
+ 270:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, W25Q_TIMEOUT_DEFAULT);
+ 910              		.loc 1 270 12 view .LVU305
+ 911 0044 0068     		ldr	r0, [r0]
+ 912              	.LVL52:
+ 270:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, W25Q_TIMEOUT_DEFAULT);
+ 913              		.loc 1 270 12 view .LVU306
+ 914 0046 FFF7FEFF 		bl	HAL_QSPI_Command
+ 915              	.LVL53:
+ 271:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+ 916              		.loc 1 271 3 is_stmt 1 view .LVU307
+ 271:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+ 917              		.loc 1 271 6 is_stmt 0 view .LVU308
+ 918 004a 0646     		mov	r6, r0
+ 919 004c 10B1     		cbz	r0, .L47
+ 920              	.LVL54:
+ 921              	.L41:
+ 286:app/drivers/w25q/w25q.c **** }
+ 922              		.loc 1 286 1 view .LVU309
+ 923 004e 3046     		mov	r0, r6
+ 924 0050 0EB0     		add	sp, sp, #56
+ 925              	.LCFI25:
+ 926              		.cfi_remember_state
+ 927              		.cfi_def_cfa_offset 16
+ 928              		@ sp needed
+ 929 0052 70BD     		pop	{r4, r5, r6, pc}
+ 930              	.LVL55:
+ 931              	.L47:
+ 932              	.LCFI26:
+ 933              		.cfi_restore_state
+ 275:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Receive(hflash->hqspi, ID, W25Q_TIMEOUT_DEFAULT);
+ 934              		.loc 1 275 3 is_stmt 1 view .LVU310
+ 275:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Receive(hflash->hqspi, ID, W25Q_TIMEOUT_DEFAULT);
+ 935              		.loc 1 275 12 is_stmt 0 view .LVU311
+ 936 0054 4FF47A72 		mov	r2, #1000
+ 937 0058 2946     		mov	r1, r5
+ 938 005a 2068     		ldr	r0, [r4]
+ 939              	.LVL56:
+ 275:app/drivers/w25q/w25q.c ****   status = HAL_QSPI_Receive(hflash->hqspi, ID, W25Q_TIMEOUT_DEFAULT);
+ 940              		.loc 1 275 12 view .LVU312
+ 941 005c FFF7FEFF 		bl	HAL_QSPI_Receive
+ 942              	.LVL57:
+ 276:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+ 943              		.loc 1 276 3 is_stmt 1 view .LVU313
+ 276:app/drivers/w25q/w25q.c ****   if (status != HAL_OK)
+ARM GAS  /tmp/cczlp3KS.s 			page 28
+
+
+ 944              		.loc 1 276 6 is_stmt 0 view .LVU314
+ 945 0060 0646     		mov	r6, r0
+ 946 0062 18B1     		cbz	r0, .L42
+ 947 0064 F3E7     		b	.L41
+ 948              	.LVL58:
+ 949              	.L44:
+ 280:app/drivers/w25q/w25q.c ****     osDelay(1);
+ 950              		.loc 1 280 5 is_stmt 1 view .LVU315
+ 951 0066 0120     		movs	r0, #1
+ 952 0068 FFF7FEFF 		bl	osDelay
+ 953              	.LVL59:
+ 954              	.L42:
+ 279:app/drivers/w25q/w25q.c ****   while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LE
+ 955              		.loc 1 279 9 view .LVU316
+ 279:app/drivers/w25q/w25q.c ****   while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LE
+ 956              		.loc 1 279 10 is_stmt 0 view .LVU317
+ 957 006c 2046     		mov	r0, r4
+ 958 006e FFF7FEFF 		bl	W25Q_isBusy
+ 959              	.LVL60:
+ 279:app/drivers/w25q/w25q.c ****   while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LE
+ 960              		.loc 1 279 9 view .LVU318
+ 961 0072 0228     		cmp	r0, #2
+ 962 0074 06D1     		bne	.L43
+ 279:app/drivers/w25q/w25q.c ****   while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LE
+ 963              		.loc 1 279 51 discriminator 1 view .LVU319
+ 964 0076 94F82530 		ldrb	r3, [r4, #37]	@ zero_extendqisi2
+ 279:app/drivers/w25q/w25q.c ****   while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LE
+ 965              		.loc 1 279 67 discriminator 1 view .LVU320
+ 966 007a 5A1E     		subs	r2, r3, #1
+ 967 007c 84F82520 		strb	r2, [r4, #37]
+ 279:app/drivers/w25q/w25q.c ****   while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LE
+ 968              		.loc 1 279 42 discriminator 1 view .LVU321
+ 969 0080 002B     		cmp	r3, #0
+ 970 0082 F0D1     		bne	.L44
+ 971              	.L43:
+ 282:app/drivers/w25q/w25q.c ****   if (hflash->busyWaitCycles <= NO_FLASH_BUSY_WAIT_CYCLES_LEFT)
+ 972              		.loc 1 282 3 is_stmt 1 view .LVU322
+ 282:app/drivers/w25q/w25q.c ****   if (hflash->busyWaitCycles <= NO_FLASH_BUSY_WAIT_CYCLES_LEFT)
+ 973              		.loc 1 282 13 is_stmt 0 view .LVU323
+ 974 0084 94F82530 		ldrb	r3, [r4, #37]	@ zero_extendqisi2
+ 282:app/drivers/w25q/w25q.c ****   if (hflash->busyWaitCycles <= NO_FLASH_BUSY_WAIT_CYCLES_LEFT)
+ 975              		.loc 1 282 6 view .LVU324
+ 976 0088 002B     		cmp	r3, #0
+ 977 008a E0D1     		bne	.L41
+ 283:app/drivers/w25q/w25q.c ****     status = HAL_ERROR;
+ 978              		.loc 1 283 12 view .LVU325
+ 979 008c 0126     		movs	r6, #1
+ 980 008e DEE7     		b	.L41
+ 981              		.cfi_endproc
+ 982              	.LFE141:
+ 984              		.text
+ 985              	.Letext0:
+ 986              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 987              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 988              		.file 4 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l412xx.h"
+ 989              		.file 5 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h"
+ 990              		.file 6 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_dma.h"
+ARM GAS  /tmp/cczlp3KS.s 			page 29
+
+
+ 991              		.file 7 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_qspi.h"
+ 992              		.file 8 "app/drivers/w25q/w25q.h"
+ 993              		.file 9 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
+ARM GAS  /tmp/cczlp3KS.s 			page 30
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 w25q.c
+     /tmp/cczlp3KS.s:18     .text.W25Q_EnableWright:0000000000000000 $t
+     /tmp/cczlp3KS.s:25     .text.W25Q_EnableWright:0000000000000000 W25Q_EnableWright
+     /tmp/cczlp3KS.s:100    .text.W25Q_Init:0000000000000000 $t
+     /tmp/cczlp3KS.s:107    .text.W25Q_Init:0000000000000000 W25Q_Init
+     /tmp/cczlp3KS.s:125    .text.W25Q_Sleep:0000000000000000 $t
+     /tmp/cczlp3KS.s:132    .text.W25Q_Sleep:0000000000000000 W25Q_Sleep
+     /tmp/cczlp3KS.s:208    .text.W25Q_ReadStatusReg:0000000000000000 $t
+     /tmp/cczlp3KS.s:215    .text.W25Q_ReadStatusReg:0000000000000000 W25Q_ReadStatusReg
+     /tmp/cczlp3KS.s:307    .text.W25Q_isBusy:0000000000000000 $t
+     /tmp/cczlp3KS.s:314    .text.W25Q_isBusy:0000000000000000 W25Q_isBusy
+     /tmp/cczlp3KS.s:356    .text.W25Q_ReadData:0000000000000000 $t
+     /tmp/cczlp3KS.s:363    .text.W25Q_ReadData:0000000000000000 W25Q_ReadData
+     /tmp/cczlp3KS.s:514    .text.W25Q_WriteData:0000000000000000 $t
+     /tmp/cczlp3KS.s:521    .text.W25Q_WriteData:0000000000000000 W25Q_WriteData
+     /tmp/cczlp3KS.s:680    .text.W25Q_EraseSector:0000000000000000 $t
+     /tmp/cczlp3KS.s:687    .text.W25Q_EraseSector:0000000000000000 W25Q_EraseSector
+     /tmp/cczlp3KS.s:827    .text.W25Q_ReadID:0000000000000000 $t
+     /tmp/cczlp3KS.s:834    .text.W25Q_ReadID:0000000000000000 W25Q_ReadID
+
+UNDEFINED SYMBOLS
+HAL_QSPI_Command
+HAL_QSPI_Receive
+osDelay
+HAL_QSPI_Transmit

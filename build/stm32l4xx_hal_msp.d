@@ -60,6 +60,7 @@ build/stm32l4xx_hal_msp.o: Core/Src/stm32l4xx_hal_msp.c Core/Inc/main.h \
  Core/Inc/custom_conf.h Core/Inc/custom_errno.h \
  app/tasks/nfc/nfc_handlers.h app/tasks/nfc/nfc.h \
  app/tasks/memory/memory.h Core/Inc/quadspi.h Core/Inc/main.h \
+ app/drivers/w25q/w25q.h \
  app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.h \
  app/config/bsp_bus/bsp_bus.h app/drivers/sht3x/sht3x.h \
  app/tasks/light_sensor/light_sensor.h app/drivers/opt3001/opt3001.h \
@@ -136,6 +137,7 @@ app/tasks/nfc/nfc.h:
 app/tasks/memory/memory.h:
 Core/Inc/quadspi.h:
 Core/Inc/main.h:
+app/drivers/w25q/w25q.h:
 app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.h:
 app/config/bsp_bus/bsp_bus.h:
 app/drivers/sht3x/sht3x.h:
