@@ -81,10 +81,8 @@ void MEMORY_Task(void *argument) {
 
   HAL_StatusTypeDef status = HAL_OK;
   uint8_t id[W25Q_ID_SIZE] = {0x00, 0x00 };
-  char *dummyToWrite = "Hello, World!";
-  uint8_t dummyToRead[32] = {0};
-
-  W25Q_Init(&MEMORY_W25QHandle);
+  const char *dummyToWrite = "Hello, World!";
+  uint8_t dummyToRead[16] = {0};
 
   status = W25Q_EraseSector(&MEMORY_W25QHandle, 0);
   if (status != HAL_OK) {
@@ -96,7 +94,7 @@ void MEMORY_Task(void *argument) {
     fprintf(stderr, "memory error");
   }
 
-  status = W25Q_ReadData(&MEMORY_W25QHandle, dummyToRead, 0, 32);
+  status = W25Q_ReadData(&MEMORY_W25QHandle, dummyToRead, 0, 16);
   if (status != HAL_OK) {
     fprintf(stderr, "memory error");
   }

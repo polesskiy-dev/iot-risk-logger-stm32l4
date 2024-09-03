@@ -59,7 +59,7 @@ extern "C" {
 
 #define W25Q_ID_SIZE                    (2)
 
-#define FLASH_BUSY_WAIT_CYCLES          (5)
+#define FLASH_BUSY_WAIT_CYCLES          (0xFFFF)
 #define NO_FLASH_BUSY_WAIT_CYCLES_LEFT  (0)
 
 /* W25Q Handle Structure */
@@ -92,13 +92,12 @@ typedef struct
     } status1RegBits;               ///> Status register 1 bits
   } status;
 
-  uint8_t busyWaitCycles;           ///> Number of cycles to wait for the memory to become not busy, error on depletion
+  uint16_t busyWaitCycles;           ///> Number of cycles to wait for the memory to become not busy, error on depletion
 } W25Q_HandleTypeDef;
 
 /* Function Prototypes */
-HAL_StatusTypeDef W25Q_Init(W25Q_HandleTypeDef *hflash);
-HAL_StatusTypeDef W25Q_ReadData(W25Q_HandleTypeDef *hflash, uint8_t *dataBuffer, uint32_t address, uint32_t size);
-HAL_StatusTypeDef W25Q_WriteData(W25Q_HandleTypeDef *hflash, const uint8_t *dataBuffer, uint32_t address, uint32_t size);
+HAL_StatusTypeDef W25Q_ReadData(W25Q_HandleTypeDef *hflash, uint8_t *dataBuffer, uint32_t address, size_t size);
+HAL_StatusTypeDef W25Q_WriteData(W25Q_HandleTypeDef *hflash, const uint8_t *dataBuffer, uint32_t address, size_t size);
 HAL_StatusTypeDef W25Q_EraseSector(W25Q_HandleTypeDef *hflash, uint32_t address);
 HAL_StatusTypeDef W25Q_EraseChip(W25Q_HandleTypeDef *hflash);
 HAL_StatusTypeDef W25Q_ReadStatusReg(W25Q_HandleTypeDef *hflash);

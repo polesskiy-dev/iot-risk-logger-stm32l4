@@ -13,29 +13,23 @@
 
 static HAL_StatusTypeDef W25Q_WaitBusy(W25Q_HandleTypeDef *hflash);
 
-HAL_StatusTypeDef W25Q_Init(W25Q_HandleTypeDef *hflash) {
-  // TODO implement if needed
-
-  return osOK;
-}
-
 /**
- * @brief
+ * @brief Fast 4 lines read data from the flash
  *
- * @note size should be less than page size (256 bytes)
+ * @note The entire memory can be accessed with a single instruction as long as the clock continues
+ * @note The Quad Enable bit (QE) of Status Register-2 must be set, it's factory default value is 1
  *
- * @param hflash
- * @param dataBuffer [out]
+ * @param {W25Q_HandleTypeDef} hflash [in]
+ * @param dataBuffer [out] buffer to store the data
  * @param address [in]
  * @param size [in]
- * @return
+ *
+ * @return {HAL_StatusTypeDef} execution status
  */
-HAL_StatusTypeDef W25Q_ReadData(W25Q_HandleTypeDef *hflash, uint8_t *const dataBuffer, uint32_t address, uint32_t size) {
-  QSPI_CommandTypeDef sCommand;
+HAL_StatusTypeDef W25Q_ReadData(W25Q_HandleTypeDef *hflash, uint8_t *const dataBuffer, uint32_t address, size_t size) {
+  QSPI_CommandTypeDef sCommand = {};
 
-  HAL_StatusTypeDef status = W25Q_WaitBusy(hflash);
-  if (status != HAL_OK)
-    return status;
+  HAL_StatusTypeDef status = HAL_OK;
 
   // Set up the QSPI command
   sCommand.InstructionMode   = QSPI_INSTRUCTION_1_LINE;
@@ -48,7 +42,7 @@ HAL_StatusTypeDef W25Q_ReadData(W25Q_HandleTypeDef *hflash, uint8_t *const dataB
   sCommand.AlternateByteMode  = QSPI_ALTERNATE_BYTES_NONE;
 
   sCommand.DataMode          = QSPI_DATA_4_LINES;
-  sCommand.DummyCycles       = 8;
+  sCommand.DummyCycles       = 6;
   sCommand.NbData            = size;
 
   sCommand.DdrMode           = QSPI_DDR_MODE_DISABLE;
@@ -70,12 +64,24 @@ HAL_StatusTypeDef W25Q_ReadData(W25Q_HandleTypeDef *hflash, uint8_t *const dataB
   return status;
 }
 
-HAL_StatusTypeDef W25Q_WriteData(W25Q_HandleTypeDef *hflash, const uint8_t *dataBuffer, uint32_t address, uint32_t size) {
-  QSPI_CommandTypeDef sCommand;
+/**
+ * @brief Write data to the flash
+ *
+ * @description The Page Program instruction allows from 1 to 256 bytes of data to be programmed into the memory
+ *
+ * @note Single-line mode was selected due to the datasheet note about the lack of feasible performance improvement in the 4-line mode
+ *
+ * @param {W25Q_HandleTypeDef} hflash [in]
+ * @param dataBuffer [in] buffer to write the data from
+ * @param address [in]
+ * @param size [in]
+ *
+ * @return {HAL_StatusTypeDef} execution status
+ */
+HAL_StatusTypeDef W25Q_WriteData(W25Q_HandleTypeDef *hflash, const uint8_t *dataBuffer, uint32_t address, size_t size) {
+  QSPI_CommandTypeDef sCommand = {};
 
-  HAL_StatusTypeDef status = W25Q_WaitBusy(hflash);
-  if (status != HAL_OK)
-    return status;
+  HAL_StatusTypeDef status = HAL_OK;
 
   status = W25Q_EnableWright(hflash);
   if (status != HAL_OK)
@@ -109,15 +115,26 @@ HAL_StatusTypeDef W25Q_WriteData(W25Q_HandleTypeDef *hflash, const uint8_t *data
   if (status != HAL_OK)
     return status;
 
+  status = W25Q_WaitBusy(hflash);
+  if (status != HAL_OK)
+    return status;
+
   return status;
 }
 
+/**
+ * @brief Erase a single 4KB sector
+ *
+ * @description The Sector Erase instruction sets all memory within a specified sector (4KB) to the erased state of all 1s (FFh)
+ *
+ * @param {W25Q_HandleTypeDef} hflash [in]
+ * @param address [in] - address in memory, it wil be aligned to the sector start address internally
+ *
+ * @return {HAL_StatusTypeDef} execution status
+ */
 HAL_StatusTypeDef W25Q_EraseSector(W25Q_HandleTypeDef *hflash, uint32_t address) {
-  QSPI_CommandTypeDef sCommand;
-
-  HAL_StatusTypeDef status = W25Q_WaitBusy(hflash);
-  if (status != HAL_OK)
-    return status;
+  QSPI_CommandTypeDef sCommand = {};
+  HAL_StatusTypeDef status = HAL_OK;
 
   status = W25Q_EnableWright(hflash);
   if (status != HAL_OK)
@@ -134,8 +151,6 @@ HAL_StatusTypeDef W25Q_EraseSector(W25Q_HandleTypeDef *hflash, uint32_t address)
   sCommand.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
 
   sCommand.DataMode = QSPI_DATA_NONE;
-  sCommand.DummyCycles = 0;
-  sCommand.NbData = 0;
 
   sCommand.DdrMode = QSPI_DDR_MODE_DISABLE;
   sCommand.DdrHoldHalfCycle = QSPI_DDR_HHC_ANALOG_DELAY;
@@ -146,17 +161,60 @@ HAL_StatusTypeDef W25Q_EraseSector(W25Q_HandleTypeDef *hflash, uint32_t address)
   if (status != HAL_OK)
     return status;
 
+  status = W25Q_WaitBusy(hflash);
+  if (status != HAL_OK)
+    return status;
+
   return status;
 }
 
-HAL_StatusTypeDef W25Q_EraseChip(W25Q_HandleTypeDef *hflash);
+/**
+ * @brief Erase the entire chip
+ *
+ * @description The Chip Erase instruction sets all memory within the device to the erased state of all 1s (FFh)
+ *
+ * @param {W25Q_HandleTypeDef} hflash [in]
+ *
+ * @return {HAL_StatusTypeDef} execution status
+ */
+HAL_StatusTypeDef W25Q_EraseChip(W25Q_HandleTypeDef *hflash) {
+  QSPI_CommandTypeDef sCommand = {};
+  HAL_StatusTypeDef status = HAL_OK;
 
-HAL_StatusTypeDef W25Q_Sleep(W25Q_HandleTypeDef *hflash) {
-  QSPI_CommandTypeDef sCommand;
-
-  HAL_StatusTypeDef status = W25Q_WaitBusy(hflash);
+  status = W25Q_EnableWright(hflash);
   if (status != HAL_OK)
     return status;
+
+  // Set up the QSPI command
+  sCommand.InstructionMode = QSPI_INSTRUCTION_1_LINE;
+  sCommand.Instruction = W25Q_CMD_CHIP_ERASE;
+
+  sCommand.AddressMode = QSPI_ADDRESS_NONE;
+
+  sCommand.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
+
+  sCommand.DataMode = QSPI_DATA_NONE;
+
+  sCommand.DdrMode = QSPI_DDR_MODE_DISABLE;
+  sCommand.DdrHoldHalfCycle = QSPI_DDR_HHC_ANALOG_DELAY;
+  sCommand.SIOOMode = QSPI_SIOO_INST_EVERY_CMD;
+
+  // Send the command
+  status = HAL_QSPI_Command(hflash->hqspi, &sCommand, HAL_QSPI_TIMEOUT_DEFAULT_VALUE);
+  if (status != HAL_OK)
+    return status;
+
+  // wait for the busy flag to be cleared
+  status = W25Q_WaitBusy(hflash);
+  if (status != HAL_OK)
+    return status;
+
+  return status;
+}
+
+HAL_StatusTypeDef W25Q_Sleep(W25Q_HandleTypeDef *hflash) {
+  QSPI_CommandTypeDef sCommand = {};
+  HAL_StatusTypeDef status = HAL_OK;
 
   // Set up the QSPI command
   sCommand.InstructionMode   = QSPI_INSTRUCTION_1_LINE;
@@ -169,8 +227,6 @@ HAL_StatusTypeDef W25Q_Sleep(W25Q_HandleTypeDef *hflash) {
   sCommand.AlternateBytesSize = QSPI_ALTERNATE_BYTES_8_BITS;
 
   sCommand.DataMode          = QSPI_DATA_NONE;
-  sCommand.DummyCycles       = 0;
-  sCommand.NbData            = 0;
 
   sCommand.DdrMode           = QSPI_DDR_MODE_DISABLE;
   sCommand.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
@@ -193,13 +249,13 @@ HAL_StatusTypeDef W25Q_Sleep(W25Q_HandleTypeDef *hflash) {
  *
  * @param hflash [in]
  * @param ID [out]
+ *
+ * @return {HAL_StatusTypeDef} execution status
  */
 HAL_StatusTypeDef W25Q_ReadID(W25Q_HandleTypeDef *hflash, uint8_t ID[W25Q_ID_SIZE]) {
-  QSPI_CommandTypeDef sCommand;
+  QSPI_CommandTypeDef sCommand = {};
 
-  HAL_StatusTypeDef status = W25Q_WaitBusy(hflash);
-  if (status != HAL_OK)
-    return status;
+  HAL_StatusTypeDef status = HAL_OK;
 
   // Set up the QSPI command
   sCommand.InstructionMode   = QSPI_INSTRUCTION_1_LINE;
@@ -233,7 +289,7 @@ HAL_StatusTypeDef W25Q_ReadID(W25Q_HandleTypeDef *hflash, uint8_t ID[W25Q_ID_SIZ
 }
 
 HAL_StatusTypeDef W25Q_ReadStatusReg(W25Q_HandleTypeDef *hflash) {
-  QSPI_CommandTypeDef sCommand;
+  QSPI_CommandTypeDef sCommand = {};
   HAL_StatusTypeDef status;
 
   // Initialize the QSPI command structure
@@ -263,6 +319,17 @@ HAL_StatusTypeDef W25Q_ReadStatusReg(W25Q_HandleTypeDef *hflash) {
   return HAL_OK;
 }
 
+/**
+ * @brief Check if the flash is busy
+ *
+ * @description BUSY is a read only bit in the status register (S0) that is set to a 1 state when the device is executing a
+ * *Page Program, Quad Page Program, Sector Erase, Block Erase, Chip Erase, Write Status Register or
+ * Erase/Program Security Register* instruction. During this time the device will ignore further instructions
+ * except for the Read Status Register and Erase/Program Suspend instruction
+ *
+ * @param {W25Q_HandleTypeDef} hflash [in]
+ * @return {HAL_StatusTypeDef} execution status
+ */
 HAL_StatusTypeDef W25Q_isBusy(W25Q_HandleTypeDef *hflash) {
   // Read the status register
   if (W25Q_ReadStatusReg(hflash) != HAL_OK) {
@@ -278,11 +345,9 @@ HAL_StatusTypeDef W25Q_isBusy(W25Q_HandleTypeDef *hflash) {
 }
 
 HAL_StatusTypeDef W25Q_EnableWright(W25Q_HandleTypeDef *hflash) {
-  QSPI_CommandTypeDef sCommand;
+  QSPI_CommandTypeDef sCommand = {};
 
-  HAL_StatusTypeDef status = W25Q_WaitBusy(hflash);
-  if (status != HAL_OK)
-    return status;
+  HAL_StatusTypeDef status = HAL_OK;
 
   // Set up the QSPI command
   sCommand.InstructionMode   = QSPI_INSTRUCTION_1_LINE;
@@ -293,8 +358,6 @@ HAL_StatusTypeDef W25Q_EnableWright(W25Q_HandleTypeDef *hflash) {
   sCommand.AlternateByteMode  = QSPI_ALTERNATE_BYTES_NONE;
 
   sCommand.DataMode          = QSPI_DATA_NONE;
-  sCommand.DummyCycles       = 0;
-  sCommand.NbData            = 0;
 
   sCommand.DdrMode           = QSPI_DDR_MODE_DISABLE;
   sCommand.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
@@ -306,18 +369,16 @@ HAL_StatusTypeDef W25Q_EnableWright(W25Q_HandleTypeDef *hflash) {
   if (status != HAL_OK)
     return status;
 
-  status = W25Q_WaitBusy(hflash);
-  if (status != HAL_OK)
-    return status;
-
   return status;
 }
 
 static HAL_StatusTypeDef W25Q_WaitBusy(W25Q_HandleTypeDef *hflash) {
   hflash->busyWaitCycles = FLASH_BUSY_WAIT_CYCLES; // refresh the counter
+  HAL_StatusTypeDef status = HAL_OK;
 
-  while (W25Q_isBusy(hflash) == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LEFT)
-    osDelay(1);
+  do {
+    status = W25Q_isBusy(hflash);
+  } while (status == HAL_BUSY && hflash->busyWaitCycles-- > NO_FLASH_BUSY_WAIT_CYCLES_LEFT);
 
   if (hflash->busyWaitCycles <= NO_FLASH_BUSY_WAIT_CYCLES_LEFT)
     return HAL_TIMEOUT;
