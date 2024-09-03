@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccSwXN2A.s 			page 1
+ARM GAS  /tmp/ccCtvXoh.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
   29:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c ****  * Implementation of functions defined in portable.h for the ARM CM4F port.
   30:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c ****  *----------------------------------------------------------*/
   31:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
-ARM GAS  /tmp/ccSwXN2A.s 			page 2
+ARM GAS  /tmp/ccCtvXoh.s 			page 2
 
 
   32:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** /* Scheduler includes. */
@@ -118,7 +118,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
   86:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** #define portASPEN_AND_LSPEN_BITS			( 0x3UL << 30UL )
   87:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
   88:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** /* Constants required to set up the initial stack. */
-ARM GAS  /tmp/ccSwXN2A.s 			page 3
+ARM GAS  /tmp/ccCtvXoh.s 			page 3
 
 
   89:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** #define portINITIAL_XPSR					( 0x01000000 )
@@ -178,7 +178,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  143:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
  144:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** /* Each task maintains its own interrupt status in the critical nesting
  145:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** variable. */
-ARM GAS  /tmp/ccSwXN2A.s 			page 4
+ARM GAS  /tmp/ccCtvXoh.s 			page 4
 
 
  146:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** static UBaseType_t uxCriticalNesting = 0xaaaaaaaa;
@@ -238,7 +238,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  200:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	*pxTopOfStack = ( StackType_t ) portTASK_RETURN_ADDRESS;	/* LR */
  201:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
  202:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	/* Save code space by skipping register initialisation. */
-ARM GAS  /tmp/ccSwXN2A.s 			page 5
+ARM GAS  /tmp/ccCtvXoh.s 			page 5
 
 
  203:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	pxTopOfStack -= 5;	/* R12, R3, R2 and R1. */
@@ -298,7 +298,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
    9:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h ****  * the Software, and to permit persons to whom the Software is furnished to do so,
   10:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h ****  * subject to the following conditions:
   11:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h ****  *
-ARM GAS  /tmp/ccSwXN2A.s 			page 6
+ARM GAS  /tmp/ccCtvXoh.s 			page 6
 
 
   12:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h ****  * The above copyright notice and this permission notice shall be included in all
@@ -358,7 +358,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
   66:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 	/* 32-bit tick type on a 32-bit architecture, so reads of the tick count do
   67:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 	not need to be guarded with a critical section. */
   68:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 	#define portTICK_TYPE_IS_ATOMIC 1
-ARM GAS  /tmp/ccSwXN2A.s 			page 7
+ARM GAS  /tmp/ccCtvXoh.s 			page 7
 
 
   69:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** #endif
@@ -418,7 +418,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  123:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** #ifndef configUSE_PORT_OPTIMISED_TASK_SELECTION
  124:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 	#define configUSE_PORT_OPTIMISED_TASK_SELECTION 1
  125:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** #endif
-ARM GAS  /tmp/ccSwXN2A.s 			page 8
+ARM GAS  /tmp/ccCtvXoh.s 			page 8
 
 
  126:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 
@@ -478,7 +478,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  180:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 	}
  181:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 	else
  182:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 	{
-ARM GAS  /tmp/ccSwXN2A.s 			page 9
+ARM GAS  /tmp/ccCtvXoh.s 			page 9
 
 
  183:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 		xReturn = pdTRUE;
@@ -538,7 +538,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
   87              	
   88              	@ 0 "" 2
   89              	.LVL1:
-ARM GAS  /tmp/ccSwXN2A.s 			page 10
+ARM GAS  /tmp/ccCtvXoh.s 			page 10
 
 
   90              		.thumb
@@ -598,7 +598,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  247:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 					"	ldr r0, [r1]					\n" /* The first item in pxCurrentTCB is the task top of stack. */
  248:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 					"	ldmia r0!, {r4-r11, r14}		\n" /* Pop the registers that are not automatically saved on excep
  249:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 					"	msr psp, r0						\n" /* Restore the task stack pointer. */
-ARM GAS  /tmp/ccSwXN2A.s 			page 11
+ARM GAS  /tmp/ccCtvXoh.s 			page 11
 
 
  250:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 					"	isb								\n"
@@ -658,7 +658,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  147              		.loc 1 281 1 is_stmt 0 view .LVU25
  148              		.thumb
  149              		.syntax unified
-ARM GAS  /tmp/ccSwXN2A.s 			page 12
+ARM GAS  /tmp/ccCtvXoh.s 			page 12
 
 
  150              		.cfi_endproc
@@ -670,7 +670,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  157              		.thumb_func
  158              		.fpu fpv4-sp-d16
  160              	vPortEnableVFP:
- 161              	.LFB16:
+ 161              	.LFB15:
  282:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** /*-----------------------------------------------------------*/
  283:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
  284:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** /*
@@ -718,7 +718,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  326:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		while( ( ucMaxPriorityValue & portTOP_BIT_OF_BYTE ) == portTOP_BIT_OF_BYTE )
  327:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		{
  328:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			ulMaxPRIGROUPValue--;
-ARM GAS  /tmp/ccSwXN2A.s 			page 13
+ARM GAS  /tmp/ccCtvXoh.s 			page 13
 
 
  329:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			ucMaxPriorityValue <<= ( uint8_t ) 0x01;
@@ -778,7 +778,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  383:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	not being called in the case that the application writer overrides this
  384:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	functionality by defining configTASK_RETURN_ADDRESS.  Call
  385:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	vTaskSwitchContext() so link time optimisation does not remove the
-ARM GAS  /tmp/ccSwXN2A.s 			page 14
+ARM GAS  /tmp/ccCtvXoh.s 			page 14
 
 
  386:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	symbol. */
@@ -838,7 +838,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  440:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	"	ldr	r3, pxCurrentTCBConst			\n" /* Get the location of the current TCB. */
  441:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	"	ldr	r2, [r3]						\n"
  442:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	"										\n"
-ARM GAS  /tmp/ccSwXN2A.s 			page 15
+ARM GAS  /tmp/ccCtvXoh.s 			page 15
 
 
  443:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	"	tst r14, #0x10						\n" /* Is the task using the FPU context?  If so, push high vfp registers. *
@@ -898,7 +898,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  497:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		/* Increment the RTOS tick. */
  498:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		if( xTaskIncrementTick() != pdFALSE )
  499:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		{
-ARM GAS  /tmp/ccSwXN2A.s 			page 16
+ARM GAS  /tmp/ccCtvXoh.s 			page 16
 
 
  500:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			traceISR_EXIT_TO_SCHEDULER();
@@ -958,7 +958,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  554:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			portNVIC_SYSTICK_LOAD_REG = portNVIC_SYSTICK_CURRENT_VALUE_REG;
  555:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
  556:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			/* Restart SysTick. */
-ARM GAS  /tmp/ccSwXN2A.s 			page 17
+ARM GAS  /tmp/ccCtvXoh.s 			page 17
 
 
  557:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			portNVIC_SYSTICK_CTRL_REG |= portNVIC_SYSTICK_ENABLE_BIT;
@@ -1018,7 +1018,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  611:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			portNVIC_SYSTICK_COUNT_FLAG_BIT is not cleared if it is set.  Again,
  612:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			the time the SysTick is stopped for is accounted for as best it can
  613:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			be, but using the tickless mode will inevitably result in some tiny
-ARM GAS  /tmp/ccSwXN2A.s 			page 18
+ARM GAS  /tmp/ccCtvXoh.s 			page 18
 
 
  614:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			drift of the time maintained by the kernel with respect to calendar
@@ -1078,7 +1078,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  668:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			portNVIC_SYSTICK_CURRENT_VALUE_REG = 0UL;
  669:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			portNVIC_SYSTICK_CTRL_REG |= portNVIC_SYSTICK_ENABLE_BIT;
  670:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			vTaskStepTick( ulCompleteTickPeriods );
-ARM GAS  /tmp/ccSwXN2A.s 			page 19
+ARM GAS  /tmp/ccCtvXoh.s 			page 19
 
 
  671:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			portNVIC_SYSTICK_LOAD_REG = ulTimerCountsForOneTick - 1UL;
@@ -1138,7 +1138,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  710:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	(
  711:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		"	ldr.w r0, =0xE000ED88		\n" /* The FPU enable bits are in the CPACR. */
  712:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		"	ldr r1, [r0]				\n"
-ARM GAS  /tmp/ccSwXN2A.s 			page 20
+ARM GAS  /tmp/ccCtvXoh.s 			page 20
 
 
  713:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		"								\n"
@@ -1151,7 +1151,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  178              		.thumb
  179              		.syntax unified
  180              		.cfi_endproc
- 181              	.LFE16:
+ 181              	.LFE15:
  183 000e 0000     		.section	.text.pxPortInitialiseStack,"ax",%progbits
  184              		.align	1
  185              		.global	pxPortInitialiseStack
@@ -1198,7 +1198,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  216 0010 054B     		ldr	r3, .L11
  200:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
  217              		.loc 1 200 16 view .LVU40
-ARM GAS  /tmp/ccSwXN2A.s 			page 21
+ARM GAS  /tmp/ccCtvXoh.s 			page 21
 
 
  218 0012 40F80C3C 		str	r3, [r0, #-12]
@@ -1258,7 +1258,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  262              	@ 244 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c" 1
  263 0000 074B     			ldr	r3, pxCurrentTCBConst2		
  264 0002 1968     		ldr r1, [r3]					
-ARM GAS  /tmp/ccSwXN2A.s 			page 22
+ARM GAS  /tmp/ccCtvXoh.s 			page 22
 
 
  265 0004 0868     		ldr r0, [r1]					
@@ -1318,7 +1318,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  315 0016 BFF34F8F 		dsb														
  316              	
  317              	@ 0 "" 2
-ARM GAS  /tmp/ccSwXN2A.s 			page 23
+ARM GAS  /tmp/ccCtvXoh.s 			page 23
 
 
  318              	.LVL10:
@@ -1378,7 +1378,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  366 000c BFF34F8F 		dsb														
  367              	
  368              	@ 0 "" 2
-ARM GAS  /tmp/ccSwXN2A.s 			page 24
+ARM GAS  /tmp/ccCtvXoh.s 			page 24
 
 
  369              		.thumb
@@ -1438,7 +1438,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  415:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	}
  414              		.loc 1 415 3 is_stmt 1 discriminator 1 view .LVU81
  415:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	}
-ARM GAS  /tmp/ccSwXN2A.s 			page 25
+ARM GAS  /tmp/ccCtvXoh.s 			page 25
 
 
  415              		.loc 1 415 3 discriminator 1 view .LVU82
@@ -1498,7 +1498,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  465              	.LBE41:
  422:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	uxCriticalNesting--;
  466              		.loc 1 422 2 is_stmt 1 discriminator 1 view .LVU91
-ARM GAS  /tmp/ccSwXN2A.s 			page 26
+ARM GAS  /tmp/ccCtvXoh.s 			page 26
 
 
  422:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	uxCriticalNesting--;
@@ -1558,7 +1558,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  225:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** /*-----------------------------------------------------------*/
  226:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 
  227:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** portFORCE_INLINE static void vPortSetBASEPRI( uint32_t ulNewMaskValue )
-ARM GAS  /tmp/ccSwXN2A.s 			page 27
+ARM GAS  /tmp/ccCtvXoh.s 			page 27
 
 
  484              		.loc 2 227 30 view .LVU100
@@ -1618,7 +1618,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  535 0016 20E9F04F 		stmdb r0!, {r4-r11, r14}			
  536 001a 1060     		str r0, [r2]						
  537              											
-ARM GAS  /tmp/ccSwXN2A.s 			page 28
+ARM GAS  /tmp/ccCtvXoh.s 			page 28
 
 
  538 001c 2DE90900 		stmdb sp!, {r0, r3}					
@@ -1678,7 +1678,7 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  591              		.cfi_offset 14, -4
  494:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c ****   traceISR_ENTER();
  592              		.loc 1 494 2 view .LVU108
-ARM GAS  /tmp/ccSwXN2A.s 			page 29
+ARM GAS  /tmp/ccCtvXoh.s 			page 29
 
 
  593              	.LBB45:
@@ -1703,989 +1703,542 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  609              	.LBE46:
  610              	.LBE45:
  495:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	{
- 611              		.loc 1 495 3 view .LVU112
- 612 0012 FFF7FEFF 		bl	SEGGER_SYSVIEW_RecordEnterISR
- 613              	.LVL15:
+ 611              		.loc 1 495 19 view .LVU112
  498:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		{
- 614              		.loc 1 498 3 view .LVU113
+ 612              		.loc 1 498 3 view .LVU113
  498:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		{
- 615              		.loc 1 498 7 is_stmt 0 view .LVU114
- 616 0016 FFF7FEFF 		bl	xTaskIncrementTick
- 617              	.LVL16:
+ 613              		.loc 1 498 7 is_stmt 0 view .LVU114
+ 614 0012 FFF7FEFF 		bl	xTaskIncrementTick
+ 615              	.LVL15:
  498:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		{
- 618              		.loc 1 498 5 view .LVU115
- 619 001a 58B1     		cbz	r0, .L33
+ 616              		.loc 1 498 5 view .LVU115
+ 617 0016 28B1     		cbz	r0, .L33
  500:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			/* A context switch is required.  Context switching is performed in
- 620              		.loc 1 500 4 is_stmt 1 view .LVU116
- 621 001c FFF7FEFF 		bl	SEGGER_SYSVIEW_RecordExitISRToScheduler
- 622              	.LVL17:
+ 618              		.loc 1 500 32 is_stmt 1 view .LVU116
  503:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		}
- 623              		.loc 1 503 4 view .LVU117
+ 619              		.loc 1 503 4 view .LVU117
  503:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		}
- 624              		.loc 1 503 26 is_stmt 0 view .LVU118
- 625 0020 4FF0E023 		mov	r3, #-536813568
- 626 0024 4FF08052 		mov	r2, #268435456
- 627 0028 C3F8042D 		str	r2, [r3, #3332]
- 628              	.L34:
- 510:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** }
- 629              		.loc 1 510 2 is_stmt 1 view .LVU119
- 630              	.LVL18:
- 631              	.LBB47:
- 632              	.LBI47:
- 227:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** {
- 633              		.loc 2 227 30 view .LVU120
- 634              	.LBB48:
- 635              		.loc 2 229 2 view .LVU121
- 636 002c 0023     		movs	r3, #0
- 637              		.syntax unified
-ARM GAS  /tmp/ccSwXN2A.s 			page 30
-
-
- 638              	@ 229 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h" 1
- 639 002e 83F31188 			msr basepri, r3	
- 640              	@ 0 "" 2
- 641              	.LVL19:
- 642              		.loc 2 229 2 is_stmt 0 view .LVU122
- 643              		.thumb
- 644              		.syntax unified
- 645              	.LBE48:
- 646              	.LBE47:
- 511:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** /*-----------------------------------------------------------*/
- 647              		.loc 1 511 1 view .LVU123
- 648 0032 08BD     		pop	{r3, pc}
- 649              	.L33:
+ 620              		.loc 1 503 26 is_stmt 0 view .LVU118
+ 621 0018 4FF0E023 		mov	r3, #-536813568
+ 622 001c 4FF08052 		mov	r2, #268435456
+ 623 0020 C3F8042D 		str	r2, [r3, #3332]
+ 624              	.L33:
  507:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		}
- 650              		.loc 1 507 4 is_stmt 1 view .LVU124
- 651 0034 FFF7FEFF 		bl	SEGGER_SYSVIEW_RecordExitISR
- 652              	.LVL20:
- 653 0038 F8E7     		b	.L34
- 654              		.cfi_endproc
- 655              	.LFE13:
- 657              		.section	.text.vPortSuppressTicksAndSleep,"ax",%progbits
- 658              		.align	1
- 659              		.weak	vPortSuppressTicksAndSleep
- 660              		.syntax unified
- 661              		.thumb
- 662              		.thumb_func
- 663              		.fpu fpv4-sp-d16
- 665              	vPortSuppressTicksAndSleep:
- 666              	.LVL21:
- 667              	.LFB14:
- 517:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	uint32_t ulReloadValue, ulCompleteTickPeriods, ulCompletedSysTickDecrements;
- 668              		.loc 1 517 2 view -0
- 669              		.cfi_startproc
- 670              		@ args = 0, pretend = 0, frame = 0
- 671              		@ frame_needed = 0, uses_anonymous_args = 0
- 517:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	uint32_t ulReloadValue, ulCompleteTickPeriods, ulCompletedSysTickDecrements;
- 672              		.loc 1 517 2 is_stmt 0 view .LVU126
- 673 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
- 674              	.LCFI3:
- 675              		.cfi_def_cfa_offset 24
- 676              		.cfi_offset 3, -24
- 677              		.cfi_offset 4, -20
- 678              		.cfi_offset 5, -16
- 679              		.cfi_offset 6, -12
- 680              		.cfi_offset 7, -8
- 681              		.cfi_offset 14, -4
- 518:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	TickType_t xModifiableIdleTime;
- 682              		.loc 1 518 2 is_stmt 1 view .LVU127
- 519:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 683              		.loc 1 519 2 view .LVU128
- 522:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		{
- 684              		.loc 1 522 3 view .LVU129
- 522:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		{
- 685              		.loc 1 522 25 is_stmt 0 view .LVU130
- 686 0002 3D4B     		ldr	r3, .L46
- 687 0004 1D68     		ldr	r5, [r3]
- 522:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		{
-ARM GAS  /tmp/ccSwXN2A.s 			page 31
+ 625              		.loc 1 507 19 is_stmt 1 view .LVU119
+ 510:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** }
+ 626              		.loc 1 510 2 view .LVU120
+ 627              	.LVL16:
+ 628              	.LBB47:
+ 629              	.LBI47:
+ 227:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** {
+ 630              		.loc 2 227 30 view .LVU121
+ 631              	.LBB48:
+ 632              		.loc 2 229 2 view .LVU122
+ 633 0024 0023     		movs	r3, #0
+ 634              		.syntax unified
+ 635              	@ 229 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h" 1
+ 636 0026 83F31188 			msr basepri, r3	
+ARM GAS  /tmp/ccCtvXoh.s 			page 30
 
 
- 688              		.loc 1 522 5 view .LVU131
- 689 0006 8542     		cmp	r5, r0
- 690 0008 00D3     		bcc	.L37
- 691 000a 0546     		mov	r5, r0
- 692              	.L37:
- 693              	.LVL22:
- 531:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 694              		.loc 1 531 3 is_stmt 1 view .LVU132
- 531:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 695              		.loc 1 531 29 is_stmt 0 view .LVU133
- 696 000c 4FF0E023 		mov	r3, #-536813568
- 697 0010 1A69     		ldr	r2, [r3, #16]
- 698 0012 22F00102 		bic	r2, r2, #1
- 699 0016 1A61     		str	r2, [r3, #16]
- 536:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		if( ulReloadValue > ulStoppedTimerCompensation )
- 700              		.loc 1 536 3 is_stmt 1 view .LVU134
- 536:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		if( ulReloadValue > ulStoppedTimerCompensation )
- 701              		.loc 1 536 19 is_stmt 0 view .LVU135
- 702 0018 9C69     		ldr	r4, [r3, #24]
- 536:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		if( ulReloadValue > ulStoppedTimerCompensation )
- 703              		.loc 1 536 104 view .LVU136
- 704 001a 6E1E     		subs	r6, r5, #1
- 536:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		if( ulReloadValue > ulStoppedTimerCompensation )
- 705              		.loc 1 536 82 view .LVU137
- 706 001c 374B     		ldr	r3, .L46+4
- 707 001e 1B68     		ldr	r3, [r3]
- 536:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		if( ulReloadValue > ulStoppedTimerCompensation )
- 708              		.loc 1 536 17 view .LVU138
- 709 0020 03FB0644 		mla	r4, r3, r6, r4
- 710              	.LVL23:
- 537:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		{
- 711              		.loc 1 537 3 is_stmt 1 view .LVU139
- 537:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		{
- 712              		.loc 1 537 21 is_stmt 0 view .LVU140
- 713 0024 364B     		ldr	r3, .L46+8
- 714 0026 1B68     		ldr	r3, [r3]
- 537:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		{
- 715              		.loc 1 537 5 view .LVU141
- 716 0028 A342     		cmp	r3, r4
- 717 002a 00D2     		bcs	.L38
- 539:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		}
- 718              		.loc 1 539 4 is_stmt 1 view .LVU142
- 539:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		}
- 719              		.loc 1 539 18 is_stmt 0 view .LVU143
- 720 002c E41A     		subs	r4, r4, r3
- 721              	.LVL24:
- 722              	.L38:
- 544:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		__asm volatile( "dsb" );
- 723              		.loc 1 544 3 is_stmt 1 view .LVU144
- 724              		.syntax unified
- 725              	@ 544 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c" 1
- 726 002e 72B6     		cpsid i
- 727              	@ 0 "" 2
- 545:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		__asm volatile( "isb" );
- 728              		.loc 1 545 3 view .LVU145
- 729              	@ 545 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c" 1
- 730 0030 BFF34F8F 		dsb
-ARM GAS  /tmp/ccSwXN2A.s 			page 32
-
-
- 731              	@ 0 "" 2
- 546:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 732              		.loc 1 546 3 view .LVU146
- 733              	@ 546 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c" 1
- 734 0034 BFF36F8F 		isb
- 735              	@ 0 "" 2
- 550:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		{
- 736              		.loc 1 550 3 view .LVU147
- 550:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		{
- 737              		.loc 1 550 7 is_stmt 0 view .LVU148
- 738              		.thumb
- 739              		.syntax unified
- 740 0038 FFF7FEFF 		bl	eTaskConfirmSleepModeStatus
- 741              	.LVL25:
- 550:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		{
- 742              		.loc 1 550 5 view .LVU149
- 743 003c 68B9     		cbnz	r0, .L39
- 554:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 744              		.loc 1 554 4 is_stmt 1 view .LVU150
- 554:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 745              		.loc 1 554 32 is_stmt 0 view .LVU151
- 746 003e 4FF0E023 		mov	r3, #-536813568
- 747 0042 9A69     		ldr	r2, [r3, #24]
- 554:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 748              		.loc 1 554 30 view .LVU152
- 749 0044 5A61     		str	r2, [r3, #20]
- 557:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 750              		.loc 1 557 4 is_stmt 1 view .LVU153
- 557:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 751              		.loc 1 557 30 is_stmt 0 view .LVU154
- 752 0046 1A69     		ldr	r2, [r3, #16]
- 753 0048 42F00102 		orr	r2, r2, #1
- 754 004c 1A61     		str	r2, [r3, #16]
- 561:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 755              		.loc 1 561 4 is_stmt 1 view .LVU155
- 561:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 756              		.loc 1 561 56 is_stmt 0 view .LVU156
- 757 004e 2B4A     		ldr	r2, .L46+4
- 758 0050 1268     		ldr	r2, [r2]
- 759 0052 013A     		subs	r2, r2, #1
- 561:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 760              		.loc 1 561 30 view .LVU157
- 761 0054 5A61     		str	r2, [r3, #20]
- 565:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		}
- 762              		.loc 1 565 4 is_stmt 1 view .LVU158
- 763              		.syntax unified
- 764              	@ 565 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c" 1
- 765 0056 62B6     		cpsie i
- 766              	@ 0 "" 2
- 767              	.LVL26:
- 768              		.thumb
- 769              		.syntax unified
- 770              	.L36:
- 676:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 771              		.loc 1 676 2 is_stmt 0 view .LVU159
- 772 0058 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
- 773              	.LVL27:
-ARM GAS  /tmp/ccSwXN2A.s 			page 33
-
-
- 774              	.L39:
- 570:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 775              		.loc 1 570 4 is_stmt 1 view .LVU160
- 570:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 776              		.loc 1 570 30 is_stmt 0 view .LVU161
- 777 005a 4FF0E027 		mov	r7, #-536813568
- 778 005e 7C61     		str	r4, [r7, #20]
- 574:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 779              		.loc 1 574 4 is_stmt 1 view .LVU162
- 574:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 780              		.loc 1 574 39 is_stmt 0 view .LVU163
- 781 0060 0020     		movs	r0, #0
- 782 0062 B861     		str	r0, [r7, #24]
- 577:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 783              		.loc 1 577 4 is_stmt 1 view .LVU164
- 577:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 784              		.loc 1 577 30 is_stmt 0 view .LVU165
- 785 0064 3B69     		ldr	r3, [r7, #16]
- 786 0066 43F00103 		orr	r3, r3, #1
- 787 006a 3B61     		str	r3, [r7, #16]
- 584:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			configPRE_SLEEP_PROCESSING( xModifiableIdleTime );
- 788              		.loc 1 584 4 is_stmt 1 view .LVU166
- 789              	.LVL28:
- 585:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			if( xModifiableIdleTime > 0 )
- 790              		.loc 1 585 4 view .LVU167
- 585:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			if( xModifiableIdleTime > 0 )
- 791              		.loc 1 585 4 view .LVU168
- 585:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			if( xModifiableIdleTime > 0 )
- 792              		.loc 1 585 4 view .LVU169
- 793 006c FFF7FEFF 		bl	PreSleepProcessing
- 794              	.LVL29:
- 585:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			if( xModifiableIdleTime > 0 )
- 795              		.loc 1 585 4 view .LVU170
- 586:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			{
- 796              		.loc 1 586 4 view .LVU171
- 592:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 797              		.loc 1 592 4 view .LVU172
- 798 0070 2846     		mov	r0, r5
- 799 0072 FFF7FEFF 		bl	PostSleepProcessing
- 800              	.LVL30:
- 597:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			__asm volatile( "dsb" );
- 801              		.loc 1 597 4 view .LVU173
- 802              		.syntax unified
- 803              	@ 597 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c" 1
- 804 0076 62B6     		cpsie i
- 805              	@ 0 "" 2
- 598:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			__asm volatile( "isb" );
- 806              		.loc 1 598 4 view .LVU174
- 807              	@ 598 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c" 1
- 808 0078 BFF34F8F 		dsb
- 809              	@ 0 "" 2
- 599:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 810              		.loc 1 599 4 view .LVU175
- 811              	@ 599 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c" 1
- 812 007c BFF36F8F 		isb
- 813              	@ 0 "" 2
- 605:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			__asm volatile( "dsb" );
-ARM GAS  /tmp/ccSwXN2A.s 			page 34
-
-
- 814              		.loc 1 605 4 view .LVU176
- 815              	@ 605 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c" 1
- 816 0080 72B6     		cpsid i
- 817              	@ 0 "" 2
- 606:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			__asm volatile( "isb" );
- 818              		.loc 1 606 4 view .LVU177
- 819              	@ 606 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c" 1
- 820 0082 BFF34F8F 		dsb
- 821              	@ 0 "" 2
- 607:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 822              		.loc 1 607 4 view .LVU178
- 823              	@ 607 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c" 1
- 824 0086 BFF36F8F 		isb
- 825              	@ 0 "" 2
- 616:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 826              		.loc 1 616 4 view .LVU179
- 616:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 827              		.loc 1 616 30 is_stmt 0 view .LVU180
- 828              		.thumb
- 829              		.syntax unified
- 830 008a 0623     		movs	r3, #6
- 831 008c 3B61     		str	r3, [r7, #16]
- 623:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			{
- 832              		.loc 1 623 4 is_stmt 1 view .LVU181
- 623:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			{
- 833              		.loc 1 623 10 is_stmt 0 view .LVU182
- 834 008e 3B69     		ldr	r3, [r7, #16]
- 623:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			{
- 835              		.loc 1 623 6 view .LVU183
- 836 0090 13F4803F 		tst	r3, #65536
- 837 0094 20D0     		beq	.L41
- 838              	.LBB49:
- 625:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 839              		.loc 1 625 5 is_stmt 1 view .LVU184
- 631:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 840              		.loc 1 631 5 view .LVU185
- 631:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 841              		.loc 1 631 63 is_stmt 0 view .LVU186
- 842 0096 194B     		ldr	r3, .L46+4
- 843 0098 1A68     		ldr	r2, [r3]
- 631:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 844              		.loc 1 631 83 view .LVU187
- 845 009a BB69     		ldr	r3, [r7, #24]
- 631:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 846              		.loc 1 631 81 view .LVU188
- 847 009c 1C1B     		subs	r4, r3, r4
- 848              	.LVL31:
- 631:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 849              		.loc 1 631 63 view .LVU189
- 850 009e 1444     		add	r4, r4, r2
- 631:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 851              		.loc 1 631 27 view .LVU190
- 852 00a0 013C     		subs	r4, r4, #1
- 853              	.LVL32:
- 636:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 				{
- 854              		.loc 1 636 5 is_stmt 1 view .LVU191
- 636:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 				{
-ARM GAS  /tmp/ccSwXN2A.s 			page 35
-
-
- 855              		.loc 1 636 33 is_stmt 0 view .LVU192
- 856 00a2 174B     		ldr	r3, .L46+8
- 857 00a4 1B68     		ldr	r3, [r3]
- 636:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 				{
- 858              		.loc 1 636 7 view .LVU193
- 859 00a6 A342     		cmp	r3, r4
- 860 00a8 01D8     		bhi	.L42
- 636:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 				{
- 861              		.loc 1 636 64 discriminator 1 view .LVU194
- 862 00aa A242     		cmp	r2, r4
- 863 00ac 00D2     		bcs	.L43
- 864              	.L42:
- 638:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 				}
- 865              		.loc 1 638 6 is_stmt 1 view .LVU195
- 638:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 				}
- 866              		.loc 1 638 28 is_stmt 0 view .LVU196
- 867 00ae 541E     		subs	r4, r2, #1
- 868              	.LVL33:
- 869              	.L43:
- 641:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 870              		.loc 1 641 5 is_stmt 1 view .LVU197
- 641:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 871              		.loc 1 641 31 is_stmt 0 view .LVU198
- 872 00b0 4FF0E023 		mov	r3, #-536813568
- 873 00b4 5C61     		str	r4, [r3, #20]
- 646:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			}
- 874              		.loc 1 646 5 is_stmt 1 view .LVU199
- 875              	.LVL34:
- 876              	.L44:
- 646:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			}
- 877              		.loc 1 646 5 is_stmt 0 view .LVU200
- 878              	.LBE49:
- 668:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			portNVIC_SYSTICK_CTRL_REG |= portNVIC_SYSTICK_ENABLE_BIT;
- 879              		.loc 1 668 4 is_stmt 1 view .LVU201
- 668:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			portNVIC_SYSTICK_CTRL_REG |= portNVIC_SYSTICK_ENABLE_BIT;
- 880              		.loc 1 668 39 is_stmt 0 view .LVU202
- 881 00b6 4FF0E024 		mov	r4, #-536813568
- 882 00ba 0023     		movs	r3, #0
- 883 00bc A361     		str	r3, [r4, #24]
- 669:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			vTaskStepTick( ulCompleteTickPeriods );
- 884              		.loc 1 669 4 is_stmt 1 view .LVU203
- 669:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			vTaskStepTick( ulCompleteTickPeriods );
- 885              		.loc 1 669 30 is_stmt 0 view .LVU204
- 886 00be 2369     		ldr	r3, [r4, #16]
- 887 00c0 43F00103 		orr	r3, r3, #1
- 888 00c4 2361     		str	r3, [r4, #16]
- 670:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			portNVIC_SYSTICK_LOAD_REG = ulTimerCountsForOneTick - 1UL;
- 889              		.loc 1 670 4 is_stmt 1 view .LVU205
- 890 00c6 3046     		mov	r0, r6
- 891 00c8 FFF7FEFF 		bl	vTaskStepTick
- 892              	.LVL35:
- 671:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 893              		.loc 1 671 4 view .LVU206
- 671:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 894              		.loc 1 671 56 is_stmt 0 view .LVU207
- 895 00cc 0B4B     		ldr	r3, .L46+4
- 896 00ce 1B68     		ldr	r3, [r3]
-ARM GAS  /tmp/ccSwXN2A.s 			page 36
-
-
- 897 00d0 013B     		subs	r3, r3, #1
- 671:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 898              		.loc 1 671 30 view .LVU208
- 899 00d2 6361     		str	r3, [r4, #20]
- 674:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		}
- 900              		.loc 1 674 4 is_stmt 1 view .LVU209
- 901              		.syntax unified
- 902              	@ 674 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c" 1
- 903 00d4 62B6     		cpsie i
- 904              	@ 0 "" 2
- 676:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 905              		.loc 1 676 2 is_stmt 0 view .LVU210
- 906              		.thumb
- 907              		.syntax unified
- 908 00d6 BFE7     		b	.L36
- 909              	.LVL36:
- 910              	.L41:
- 654:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 911              		.loc 1 654 5 is_stmt 1 view .LVU211
- 654:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 912              		.loc 1 654 56 is_stmt 0 view .LVU212
- 913 00d8 084B     		ldr	r3, .L46+4
- 914 00da 1A68     		ldr	r2, [r3]
- 915 00dc 02FB05F5 		mul	r5, r2, r5
- 916              	.LVL37:
- 654:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 917              		.loc 1 654 86 view .LVU213
- 918 00e0 4FF0E021 		mov	r1, #-536813568
- 919 00e4 8B69     		ldr	r3, [r1, #24]
- 654:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 920              		.loc 1 654 34 view .LVU214
- 921 00e6 EE1A     		subs	r6, r5, r3
- 922              	.LVL38:
- 658:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 923              		.loc 1 658 5 is_stmt 1 view .LVU215
- 658:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 924              		.loc 1 658 27 is_stmt 0 view .LVU216
- 925 00e8 B6FBF2F6 		udiv	r6, r6, r2
- 926              	.LVL39:
- 662:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			}
- 927              		.loc 1 662 5 is_stmt 1 view .LVU217
- 662:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			}
- 928              		.loc 1 662 67 is_stmt 0 view .LVU218
- 929 00ec 06FB0222 		mla	r2, r6, r2, r2
- 662:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			}
- 930              		.loc 1 662 95 view .LVU219
- 931 00f0 5D1B     		subs	r5, r3, r5
- 932              	.LVL40:
- 662:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			}
- 933              		.loc 1 662 95 view .LVU220
- 934 00f2 1544     		add	r5, r5, r2
- 662:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			}
- 935              		.loc 1 662 31 view .LVU221
- 936 00f4 4D61     		str	r5, [r1, #20]
- 662:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			}
- 937              		.loc 1 662 31 view .LVU222
- 938 00f6 DEE7     		b	.L44
-ARM GAS  /tmp/ccSwXN2A.s 			page 37
-
-
- 939              	.L47:
- 940              		.align	2
- 941              	.L46:
- 942 00f8 00000000 		.word	.LANCHOR1
- 943 00fc 00000000 		.word	.LANCHOR2
- 944 0100 00000000 		.word	.LANCHOR3
- 945              		.cfi_endproc
- 946              	.LFE14:
- 948              		.section	.text.vPortSetupTimerInterrupt,"ax",%progbits
- 949              		.align	1
- 950              		.weak	vPortSetupTimerInterrupt
- 951              		.syntax unified
- 952              		.thumb
- 953              		.thumb_func
- 954              		.fpu fpv4-sp-d16
- 956              	vPortSetupTimerInterrupt:
- 957              	.LFB15:
+ 637              	@ 0 "" 2
+ 638              	.LVL17:
+ 639              		.loc 2 229 2 is_stmt 0 view .LVU123
+ 640              		.thumb
+ 641              		.syntax unified
+ 642              	.LBE48:
+ 643              	.LBE47:
+ 511:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** /*-----------------------------------------------------------*/
+ 644              		.loc 1 511 1 view .LVU124
+ 645 002a 08BD     		pop	{r3, pc}
+ 646              		.cfi_endproc
+ 647              	.LFE13:
+ 649              		.section	.text.vPortSetupTimerInterrupt,"ax",%progbits
+ 650              		.align	1
+ 651              		.weak	vPortSetupTimerInterrupt
+ 652              		.syntax unified
+ 653              		.thumb
+ 654              		.thumb_func
+ 655              		.fpu fpv4-sp-d16
+ 657              	vPortSetupTimerInterrupt:
+ 658              	.LFB14:
  686:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	/* Calculate the constants required to configure the tick interrupt. */
- 958              		.loc 1 686 1 is_stmt 1 view -0
- 959              		.cfi_startproc
- 960              		@ args = 0, pretend = 0, frame = 0
- 961              		@ frame_needed = 0, uses_anonymous_args = 0
- 962              		@ link register save eliminated.
- 690:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		xMaximumPossibleSuppressedTicks = portMAX_24_BIT_NUMBER / ulTimerCountsForOneTick;
- 963              		.loc 1 690 3 view .LVU224
- 690:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		xMaximumPossibleSuppressedTicks = portMAX_24_BIT_NUMBER / ulTimerCountsForOneTick;
- 964              		.loc 1 690 54 is_stmt 0 view .LVU225
- 965 0000 0F4B     		ldr	r3, .L49
- 966 0002 1A68     		ldr	r2, [r3]
- 967 0004 0F48     		ldr	r0, .L49+4
- 968 0006 A0FB0212 		umull	r1, r2, r0, r2
- 969 000a 9209     		lsrs	r2, r2, #6
- 690:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		xMaximumPossibleSuppressedTicks = portMAX_24_BIT_NUMBER / ulTimerCountsForOneTick;
- 970              		.loc 1 690 27 view .LVU226
- 971 000c 0E49     		ldr	r1, .L49+8
- 972 000e 0A60     		str	r2, [r1]
- 691:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		ulStoppedTimerCompensation = portMISSED_COUNTS_FACTOR / ( configCPU_CLOCK_HZ / configSYSTICK_CLOC
- 973              		.loc 1 691 3 is_stmt 1 view .LVU227
- 691:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		ulStoppedTimerCompensation = portMISSED_COUNTS_FACTOR / ( configCPU_CLOCK_HZ / configSYSTICK_CLOC
- 974              		.loc 1 691 59 is_stmt 0 view .LVU228
- 975 0010 6FF07F41 		mvn	r1, #-16777216
- 976 0014 B1FBF2F2 		udiv	r2, r1, r2
- 691:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		ulStoppedTimerCompensation = portMISSED_COUNTS_FACTOR / ( configCPU_CLOCK_HZ / configSYSTICK_CLOC
- 977              		.loc 1 691 35 view .LVU229
- 978 0018 0C49     		ldr	r1, .L49+12
- 979 001a 0A60     		str	r2, [r1]
- 692:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	}
- 980              		.loc 1 692 3 is_stmt 1 view .LVU230
- 692:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	}
- 981              		.loc 1 692 30 is_stmt 0 view .LVU231
- 982 001c 0C4A     		ldr	r2, .L49+16
- 983 001e 2D21     		movs	r1, #45
- 984 0020 1160     		str	r1, [r2]
+ 659              		.loc 1 686 1 is_stmt 1 view -0
+ 660              		.cfi_startproc
+ 661              		@ args = 0, pretend = 0, frame = 0
+ 662              		@ frame_needed = 0, uses_anonymous_args = 0
+ 663              		@ link register save eliminated.
  697:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	portNVIC_SYSTICK_CURRENT_VALUE_REG = 0UL;
- 985              		.loc 1 697 2 is_stmt 1 view .LVU232
+ 664              		.loc 1 697 2 view .LVU126
  697:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	portNVIC_SYSTICK_CURRENT_VALUE_REG = 0UL;
- 986              		.loc 1 697 28 is_stmt 0 view .LVU233
-ARM GAS  /tmp/ccSwXN2A.s 			page 38
+ 665              		.loc 1 697 28 is_stmt 0 view .LVU127
+ 666 0000 4FF0E022 		mov	r2, #-536813568
+ 667 0004 0023     		movs	r3, #0
+ 668 0006 1361     		str	r3, [r2, #16]
+ 698:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
+ 669              		.loc 1 698 2 is_stmt 1 view .LVU128
+ 698:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
+ 670              		.loc 1 698 37 is_stmt 0 view .LVU129
+ 671 0008 9361     		str	r3, [r2, #24]
+ 701:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	portNVIC_SYSTICK_CTRL_REG = ( portNVIC_SYSTICK_CLK_BIT | portNVIC_SYSTICK_INT_BIT | portNVIC_SYSTI
+ 672              		.loc 1 701 2 is_stmt 1 view .LVU130
+ 701:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	portNVIC_SYSTICK_CTRL_REG = ( portNVIC_SYSTICK_CLK_BIT | portNVIC_SYSTICK_INT_BIT | portNVIC_SYSTI
+ 673              		.loc 1 701 55 is_stmt 0 view .LVU131
+ 674 000a 054B     		ldr	r3, .L36
+ 675 000c 1B68     		ldr	r3, [r3]
+ 676 000e 0549     		ldr	r1, .L36+4
+ 677 0010 A1FB0313 		umull	r1, r3, r1, r3
+ 678 0014 9B09     		lsrs	r3, r3, #6
+ 701:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	portNVIC_SYSTICK_CTRL_REG = ( portNVIC_SYSTICK_CLK_BIT | portNVIC_SYSTICK_INT_BIT | portNVIC_SYSTI
+ 679              		.loc 1 701 78 view .LVU132
+ 680 0016 013B     		subs	r3, r3, #1
+ 701:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	portNVIC_SYSTICK_CTRL_REG = ( portNVIC_SYSTICK_CLK_BIT | portNVIC_SYSTICK_INT_BIT | portNVIC_SYSTI
+ 681              		.loc 1 701 28 view .LVU133
+ 682 0018 5361     		str	r3, [r2, #20]
+ 702:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** }
+ 683              		.loc 1 702 2 is_stmt 1 view .LVU134
+ 702:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** }
+ARM GAS  /tmp/ccCtvXoh.s 			page 31
 
 
- 987 0022 4FF0E022 		mov	r2, #-536813568
- 988 0026 0021     		movs	r1, #0
- 989 0028 1161     		str	r1, [r2, #16]
- 698:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 990              		.loc 1 698 2 is_stmt 1 view .LVU234
- 698:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 991              		.loc 1 698 37 is_stmt 0 view .LVU235
- 992 002a 9161     		str	r1, [r2, #24]
- 701:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	portNVIC_SYSTICK_CTRL_REG = ( portNVIC_SYSTICK_CLK_BIT | portNVIC_SYSTICK_INT_BIT | portNVIC_SYSTI
- 993              		.loc 1 701 2 is_stmt 1 view .LVU236
- 701:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	portNVIC_SYSTICK_CTRL_REG = ( portNVIC_SYSTICK_CLK_BIT | portNVIC_SYSTICK_INT_BIT | portNVIC_SYSTI
- 994              		.loc 1 701 55 is_stmt 0 view .LVU237
- 995 002c 1B68     		ldr	r3, [r3]
- 996 002e A0FB0313 		umull	r1, r3, r0, r3
- 997 0032 9B09     		lsrs	r3, r3, #6
- 701:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	portNVIC_SYSTICK_CTRL_REG = ( portNVIC_SYSTICK_CLK_BIT | portNVIC_SYSTICK_INT_BIT | portNVIC_SYSTI
- 998              		.loc 1 701 78 view .LVU238
- 999 0034 013B     		subs	r3, r3, #1
- 701:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	portNVIC_SYSTICK_CTRL_REG = ( portNVIC_SYSTICK_CLK_BIT | portNVIC_SYSTICK_INT_BIT | portNVIC_SYSTI
- 1000              		.loc 1 701 28 view .LVU239
- 1001 0036 5361     		str	r3, [r2, #20]
- 702:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** }
- 1002              		.loc 1 702 2 is_stmt 1 view .LVU240
- 702:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** }
- 1003              		.loc 1 702 28 is_stmt 0 view .LVU241
- 1004 0038 0723     		movs	r3, #7
- 1005 003a 1361     		str	r3, [r2, #16]
+ 684              		.loc 1 702 28 is_stmt 0 view .LVU135
+ 685 001a 0723     		movs	r3, #7
+ 686 001c 1361     		str	r3, [r2, #16]
  703:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** /*-----------------------------------------------------------*/
- 1006              		.loc 1 703 1 view .LVU242
- 1007 003c 7047     		bx	lr
- 1008              	.L50:
- 1009 003e 00BF     		.align	2
- 1010              	.L49:
- 1011 0040 00000000 		.word	SystemCoreClock
- 1012 0044 D34D6210 		.word	274877907
- 1013 0048 00000000 		.word	.LANCHOR2
- 1014 004c 00000000 		.word	.LANCHOR1
- 1015 0050 00000000 		.word	.LANCHOR3
- 1016              		.cfi_endproc
- 1017              	.LFE15:
- 1019              		.section	.text.xPortStartScheduler,"ax",%progbits
- 1020              		.align	1
- 1021              		.global	xPortStartScheduler
- 1022              		.syntax unified
- 1023              		.thumb
- 1024              		.thumb_func
- 1025              		.fpu fpv4-sp-d16
- 1027              	xPortStartScheduler:
- 1028              	.LFB8:
+ 687              		.loc 1 703 1 view .LVU136
+ 688 001e 7047     		bx	lr
+ 689              	.L37:
+ 690              		.align	2
+ 691              	.L36:
+ 692 0020 00000000 		.word	SystemCoreClock
+ 693 0024 D34D6210 		.word	274877907
+ 694              		.cfi_endproc
+ 695              	.LFE14:
+ 697              		.section	.text.xPortStartScheduler,"ax",%progbits
+ 698              		.align	1
+ 699              		.global	xPortStartScheduler
+ 700              		.syntax unified
+ 701              		.thumb
+ 702              		.thumb_func
+ 703              		.fpu fpv4-sp-d16
+ 705              	xPortStartScheduler:
+ 706              	.LFB8:
  288:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	/* configMAX_SYSCALL_INTERRUPT_PRIORITY must not be set to 0.
- 1029              		.loc 1 288 1 is_stmt 1 view -0
- 1030              		.cfi_startproc
- 1031              		@ args = 0, pretend = 0, frame = 8
- 1032              		@ frame_needed = 0, uses_anonymous_args = 0
+ 707              		.loc 1 288 1 is_stmt 1 view -0
+ 708              		.cfi_startproc
+ 709              		@ args = 0, pretend = 0, frame = 8
+ 710              		@ frame_needed = 0, uses_anonymous_args = 0
  291:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1033              		.loc 1 291 2 view .LVU244
+ 711              		.loc 1 291 2 view .LVU138
  291:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
-ARM GAS  /tmp/ccSwXN2A.s 			page 39
+ 712              		.loc 1 291 54 view .LVU139
+ 296:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	configASSERT( portCPUID != portCORTEX_M7_r0p0_ID );
+ 713              		.loc 1 296 2 view .LVU140
+ 714 0000 4FF0E023 		mov	r3, #-536813568
+ 715 0004 D3F8002D 		ldr	r2, [r3, #3328]
+ 716 0008 3D4B     		ldr	r3, .L51
+ 717 000a 9A42     		cmp	r2, r3
+ 718 000c 1CD0     		beq	.L49
+ 296:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	configASSERT( portCPUID != portCORTEX_M7_r0p0_ID );
+ 719              		.loc 1 296 52 discriminator 2 view .LVU141
+ 297:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
+ 720              		.loc 1 297 2 discriminator 2 view .LVU142
+ 721 000e 4FF0E023 		mov	r3, #-536813568
+ 722 0012 D3F8002D 		ldr	r2, [r3, #3328]
+ 723 0016 3B4B     		ldr	r3, .L51+4
+ 724 0018 9A42     		cmp	r2, r3
+ 725 001a 1ED0     		beq	.L50
+ 288:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	/* configMAX_SYSCALL_INTERRUPT_PRIORITY must not be set to 0.
+ 726              		.loc 1 288 1 is_stmt 0 discriminator 2 view .LVU143
+ 727 001c 30B5     		push	{r4, r5, lr}
+ 728              	.LCFI3:
+ 729              		.cfi_def_cfa_offset 12
+ 730              		.cfi_offset 4, -12
+ 731              		.cfi_offset 5, -8
+ 732              		.cfi_offset 14, -4
+ 733 001e 83B0     		sub	sp, sp, #12
+ 734              	.LCFI4:
+ARM GAS  /tmp/ccCtvXoh.s 			page 32
 
 
- 1034              		.loc 1 291 54 view .LVU245
- 296:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	configASSERT( portCPUID != portCORTEX_M7_r0p0_ID );
- 1035              		.loc 1 296 2 view .LVU246
- 1036 0000 4FF0E023 		mov	r3, #-536813568
- 1037 0004 D3F8002D 		ldr	r2, [r3, #3328]
- 1038 0008 3D4B     		ldr	r3, .L64
- 1039 000a 9A42     		cmp	r2, r3
- 1040 000c 1CD0     		beq	.L62
- 296:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	configASSERT( portCPUID != portCORTEX_M7_r0p0_ID );
- 1041              		.loc 1 296 52 discriminator 2 view .LVU247
+ 735              		.cfi_def_cfa_offset 24
  297:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1042              		.loc 1 297 2 discriminator 2 view .LVU248
- 1043 000e 4FF0E023 		mov	r3, #-536813568
- 1044 0012 D3F8002D 		ldr	r2, [r3, #3328]
- 1045 0016 3B4B     		ldr	r3, .L64+4
- 1046 0018 9A42     		cmp	r2, r3
- 1047 001a 1ED0     		beq	.L63
- 288:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	/* configMAX_SYSCALL_INTERRUPT_PRIORITY must not be set to 0.
- 1048              		.loc 1 288 1 is_stmt 0 discriminator 2 view .LVU249
- 1049 001c 30B5     		push	{r4, r5, lr}
- 1050              	.LCFI4:
- 1051              		.cfi_def_cfa_offset 12
- 1052              		.cfi_offset 4, -12
- 1053              		.cfi_offset 5, -8
- 1054              		.cfi_offset 14, -4
- 1055 001e 83B0     		sub	sp, sp, #12
- 1056              	.LCFI5:
- 1057              		.cfi_def_cfa_offset 24
- 297:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1058              		.loc 1 297 52 is_stmt 1 discriminator 2 view .LVU250
- 1059              	.LBB50:
+ 736              		.loc 1 297 52 is_stmt 1 discriminator 2 view .LVU144
+ 737              	.LBB49:
  301:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		volatile uint8_t * const pucFirstUserPriorityRegister = ( volatile uint8_t * const ) ( portNVIC_I
- 1060              		.loc 1 301 3 discriminator 2 view .LVU251
+ 738              		.loc 1 301 3 discriminator 2 view .LVU145
  302:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		volatile uint8_t ucMaxPriorityValue;
- 1061              		.loc 1 302 3 discriminator 2 view .LVU252
- 1062              	.LVL41:
+ 739              		.loc 1 302 3 discriminator 2 view .LVU146
+ 740              	.LVL18:
  303:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1063              		.loc 1 303 3 discriminator 2 view .LVU253
+ 741              		.loc 1 303 3 discriminator 2 view .LVU147
  311:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1064              		.loc 1 311 3 discriminator 2 view .LVU254
+ 742              		.loc 1 311 3 discriminator 2 view .LVU148
  311:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1065              		.loc 1 311 24 is_stmt 0 discriminator 2 view .LVU255
- 1066 0020 394B     		ldr	r3, .L64+8
- 1067 0022 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
- 1068 0024 D2B2     		uxtb	r2, r2
+ 743              		.loc 1 311 24 is_stmt 0 discriminator 2 view .LVU149
+ 744 0020 394B     		ldr	r3, .L51+8
+ 745 0022 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 746 0024 D2B2     		uxtb	r2, r2
  311:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1069              		.loc 1 311 22 discriminator 2 view .LVU256
- 1070 0026 0192     		str	r2, [sp, #4]
+ 747              		.loc 1 311 22 discriminator 2 view .LVU150
+ 748 0026 0192     		str	r2, [sp, #4]
  315:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1071              		.loc 1 315 3 is_stmt 1 discriminator 2 view .LVU257
+ 749              		.loc 1 315 3 is_stmt 1 discriminator 2 view .LVU151
  315:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1072              		.loc 1 315 33 is_stmt 0 discriminator 2 view .LVU258
- 1073 0028 FF22     		movs	r2, #255
- 1074 002a 1A70     		strb	r2, [r3]
+ 750              		.loc 1 315 33 is_stmt 0 discriminator 2 view .LVU152
+ 751 0028 FF22     		movs	r2, #255
+ 752 002a 1A70     		strb	r2, [r3]
  318:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1075              		.loc 1 318 3 is_stmt 1 discriminator 2 view .LVU259
+ 753              		.loc 1 318 3 is_stmt 1 discriminator 2 view .LVU153
  318:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
-ARM GAS  /tmp/ccSwXN2A.s 			page 40
-
-
- 1076              		.loc 1 318 24 is_stmt 0 discriminator 2 view .LVU260
- 1077 002c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 1078 002e DBB2     		uxtb	r3, r3
+ 754              		.loc 1 318 24 is_stmt 0 discriminator 2 view .LVU154
+ 755 002c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 756 002e DBB2     		uxtb	r3, r3
  318:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1079              		.loc 1 318 22 discriminator 2 view .LVU261
- 1080 0030 8DF80330 		strb	r3, [sp, #3]
+ 757              		.loc 1 318 22 discriminator 2 view .LVU155
+ 758 0030 8DF80330 		strb	r3, [sp, #3]
  321:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1081              		.loc 1 321 3 is_stmt 1 discriminator 2 view .LVU262
+ 759              		.loc 1 321 3 is_stmt 1 discriminator 2 view .LVU156
  321:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1082              		.loc 1 321 63 is_stmt 0 discriminator 2 view .LVU263
- 1083 0034 9DF80330 		ldrb	r3, [sp, #3]	@ zero_extendqisi2
- 1084 0038 03F05003 		and	r3, r3, #80
+ 760              		.loc 1 321 63 is_stmt 0 discriminator 2 view .LVU157
+ 761 0034 9DF80330 		ldrb	r3, [sp, #3]	@ zero_extendqisi2
+ 762 0038 03F05003 		and	r3, r3, #80
  321:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1085              		.loc 1 321 24 discriminator 2 view .LVU264
- 1086 003c 334A     		ldr	r2, .L64+12
- 1087 003e 1370     		strb	r3, [r2]
+ 763              		.loc 1 321 24 discriminator 2 view .LVU158
+ 764 003c 334A     		ldr	r2, .L51+12
+ 765 003e 1370     		strb	r3, [r2]
  325:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		while( ( ucMaxPriorityValue & portTOP_BIT_OF_BYTE ) == portTOP_BIT_OF_BYTE )
- 1088              		.loc 1 325 3 is_stmt 1 discriminator 2 view .LVU265
+ 766              		.loc 1 325 3 is_stmt 1 discriminator 2 view .LVU159
  325:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		while( ( ucMaxPriorityValue & portTOP_BIT_OF_BYTE ) == portTOP_BIT_OF_BYTE )
- 1089              		.loc 1 325 22 is_stmt 0 discriminator 2 view .LVU266
- 1090 0040 334B     		ldr	r3, .L64+16
- 1091 0042 0722     		movs	r2, #7
- 1092 0044 1A60     		str	r2, [r3]
+ 767              		.loc 1 325 22 is_stmt 0 discriminator 2 view .LVU160
+ 768 0040 334B     		ldr	r3, .L51+16
+ 769 0042 0722     		movs	r2, #7
+ 770 0044 1A60     		str	r2, [r3]
  326:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		{
- 1093              		.loc 1 326 3 is_stmt 1 discriminator 2 view .LVU267
+ 771              		.loc 1 326 3 is_stmt 1 discriminator 2 view .LVU161
  326:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		{
- 1094              		.loc 1 326 8 is_stmt 0 discriminator 2 view .LVU268
- 1095 0046 1BE0     		b	.L56
- 1096              	.LVL42:
- 1097              	.L62:
- 1098              	.LCFI6:
- 1099              		.cfi_def_cfa_offset 0
- 1100              		.cfi_restore 4
- 1101              		.cfi_restore 5
- 1102              		.cfi_restore 14
+ 772              		.loc 1 326 8 is_stmt 0 discriminator 2 view .LVU162
+ARM GAS  /tmp/ccCtvXoh.s 			page 33
+
+
+ 773 0046 1BE0     		b	.L43
+ 774              	.LVL19:
+ 775              	.L49:
+ 776              	.LCFI5:
+ 777              		.cfi_def_cfa_offset 0
+ 778              		.cfi_restore 4
+ 779              		.cfi_restore 5
+ 780              		.cfi_restore 14
  326:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		{
- 1103              		.loc 1 326 8 discriminator 2 view .LVU269
- 1104              	.LBE50:
+ 781              		.loc 1 326 8 discriminator 2 view .LVU163
+ 782              	.LBE49:
  296:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	configASSERT( portCPUID != portCORTEX_M7_r0p0_ID );
- 1105              		.loc 1 296 2 is_stmt 1 view .LVU270
- 1106              	.LBB53:
- 1107              	.LBI53:
+ 783              		.loc 1 296 2 is_stmt 1 view .LVU164
+ 784              	.LBB52:
+ 785              	.LBI52:
  191:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** {
- 1108              		.loc 2 191 30 view .LVU271
- 1109              	.LBB54:
+ 786              		.loc 2 191 30 view .LVU165
+ 787              	.LBB53:
  193:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 
- 1110              		.loc 2 193 1 view .LVU272
+ 788              		.loc 2 193 1 view .LVU166
  195:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 	(
- 1111              		.loc 2 195 2 view .LVU273
- 1112              		.syntax unified
- 1113              	@ 195 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h" 1
- 1114 0048 4FF05003 			mov r3, #80												
- 1115 004c 83F31188 		msr basepri, r3											
- 1116 0050 BFF36F8F 		isb														
- 1117 0054 BFF34F8F 		dsb														
- 1118              	
- 1119              	@ 0 "" 2
-ARM GAS  /tmp/ccSwXN2A.s 			page 41
-
-
- 1120              	.LVL43:
- 1121              		.thumb
- 1122              		.syntax unified
- 1123              	.L53:
+ 789              		.loc 2 195 2 view .LVU167
+ 790              		.syntax unified
+ 791              	@ 195 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h" 1
+ 792 0048 4FF05003 			mov r3, #80												
+ 793 004c 83F31188 		msr basepri, r3											
+ 794 0050 BFF36F8F 		isb														
+ 795 0054 BFF34F8F 		dsb														
+ 796              	
+ 797              	@ 0 "" 2
+ 798              	.LVL20:
+ 799              		.thumb
+ 800              		.syntax unified
+ 801              	.L40:
  195:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 	(
- 1124              		.loc 2 195 2 is_stmt 0 view .LVU274
- 1125              	.LBE54:
- 1126              	.LBE53:
+ 802              		.loc 2 195 2 is_stmt 0 view .LVU168
+ 803              	.LBE53:
+ 804              	.LBE52:
  296:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	configASSERT( portCPUID != portCORTEX_M7_r0p0_ID );
- 1127              		.loc 1 296 2 is_stmt 1 discriminator 2 view .LVU275
+ 805              		.loc 1 296 2 is_stmt 1 discriminator 2 view .LVU169
  296:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	configASSERT( portCPUID != portCORTEX_M7_r0p0_ID );
- 1128              		.loc 1 296 2 discriminator 2 view .LVU276
+ 806              		.loc 1 296 2 discriminator 2 view .LVU170
  296:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	configASSERT( portCPUID != portCORTEX_M7_r0p0_ID );
- 1129              		.loc 1 296 2 discriminator 2 view .LVU277
- 1130 0058 FEE7     		b	.L53
- 1131              	.L63:
+ 807              		.loc 1 296 2 discriminator 2 view .LVU171
+ 808 0058 FEE7     		b	.L40
+ 809              	.L50:
  297:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1132              		.loc 1 297 2 view .LVU278
- 1133              	.LBB55:
- 1134              	.LBI55:
+ 810              		.loc 1 297 2 view .LVU172
+ 811              	.LBB54:
+ 812              	.LBI54:
  191:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** {
- 1135              		.loc 2 191 30 view .LVU279
- 1136              	.LBB56:
+ 813              		.loc 2 191 30 view .LVU173
+ 814              	.LBB55:
  193:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 
- 1137              		.loc 2 193 1 view .LVU280
+ 815              		.loc 2 193 1 view .LVU174
  195:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 	(
- 1138              		.loc 2 195 2 view .LVU281
- 1139              		.syntax unified
- 1140              	@ 195 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h" 1
- 1141 005a 4FF05003 			mov r3, #80												
- 1142 005e 83F31188 		msr basepri, r3											
- 1143 0062 BFF36F8F 		isb														
- 1144 0066 BFF34F8F 		dsb														
- 1145              	
- 1146              	@ 0 "" 2
- 1147              	.LVL44:
- 1148              		.thumb
- 1149              		.syntax unified
- 1150              	.L55:
- 195:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 	(
- 1151              		.loc 2 195 2 is_stmt 0 view .LVU282
- 1152              	.LBE56:
- 1153              	.LBE55:
- 297:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1154              		.loc 1 297 2 is_stmt 1 discriminator 3 view .LVU283
- 297:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1155              		.loc 1 297 2 discriminator 3 view .LVU284
- 297:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1156              		.loc 1 297 2 discriminator 3 view .LVU285
- 1157 006a FEE7     		b	.L55
- 1158              	.LVL45:
- 1159              	.L57:
- 1160              	.LCFI7:
- 1161              		.cfi_def_cfa_offset 24
- 1162              		.cfi_offset 4, -12
- 1163              		.cfi_offset 5, -8
- 1164              		.cfi_offset 14, -4
-ARM GAS  /tmp/ccSwXN2A.s 			page 42
+ 816              		.loc 2 195 2 view .LVU175
+ARM GAS  /tmp/ccCtvXoh.s 			page 34
 
 
- 1165              	.LBB57:
+ 817              		.syntax unified
+ 818              	@ 195 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h" 1
+ 819 005a 4FF05003 			mov r3, #80												
+ 820 005e 83F31188 		msr basepri, r3											
+ 821 0062 BFF36F8F 		isb														
+ 822 0066 BFF34F8F 		dsb														
+ 823              	
+ 824              	@ 0 "" 2
+ 825              	.LVL21:
+ 826              		.thumb
+ 827              		.syntax unified
+ 828              	.L42:
+ 195:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 	(
+ 829              		.loc 2 195 2 is_stmt 0 view .LVU176
+ 830              	.LBE55:
+ 831              	.LBE54:
+ 297:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
+ 832              		.loc 1 297 2 is_stmt 1 discriminator 3 view .LVU177
+ 297:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
+ 833              		.loc 1 297 2 discriminator 3 view .LVU178
+ 297:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
+ 834              		.loc 1 297 2 discriminator 3 view .LVU179
+ 835 006a FEE7     		b	.L42
+ 836              	.LVL22:
+ 837              	.L44:
+ 838              	.LCFI6:
+ 839              		.cfi_def_cfa_offset 24
+ 840              		.cfi_offset 4, -12
+ 841              		.cfi_offset 5, -8
+ 842              		.cfi_offset 14, -4
+ 843              	.LBB56:
  328:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			ucMaxPriorityValue <<= ( uint8_t ) 0x01;
- 1166              		.loc 1 328 4 view .LVU286
+ 844              		.loc 1 328 4 view .LVU180
  328:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			ucMaxPriorityValue <<= ( uint8_t ) 0x01;
- 1167              		.loc 1 328 22 is_stmt 0 view .LVU287
- 1168 006c 284A     		ldr	r2, .L64+16
- 1169 006e 1368     		ldr	r3, [r2]
- 1170 0070 013B     		subs	r3, r3, #1
- 1171 0072 1360     		str	r3, [r2]
+ 845              		.loc 1 328 22 is_stmt 0 view .LVU181
+ 846 006c 284A     		ldr	r2, .L51+16
+ 847 006e 1368     		ldr	r3, [r2]
+ 848 0070 013B     		subs	r3, r3, #1
+ 849 0072 1360     		str	r3, [r2]
  329:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		}
- 1172              		.loc 1 329 4 is_stmt 1 view .LVU288
+ 850              		.loc 1 329 4 is_stmt 1 view .LVU182
  329:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		}
- 1173              		.loc 1 329 23 is_stmt 0 view .LVU289
- 1174 0074 9DF80330 		ldrb	r3, [sp, #3]	@ zero_extendqisi2
- 1175 0078 5B00     		lsls	r3, r3, #1
- 1176 007a DBB2     		uxtb	r3, r3
- 1177 007c 8DF80330 		strb	r3, [sp, #3]
- 1178              	.L56:
+ 851              		.loc 1 329 23 is_stmt 0 view .LVU183
+ 852 0074 9DF80330 		ldrb	r3, [sp, #3]	@ zero_extendqisi2
+ 853 0078 5B00     		lsls	r3, r3, #1
+ 854 007a DBB2     		uxtb	r3, r3
+ 855 007c 8DF80330 		strb	r3, [sp, #3]
+ 856              	.L43:
  326:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		{
- 1179              		.loc 1 326 8 is_stmt 1 view .LVU290
+ 857              		.loc 1 326 8 is_stmt 1 view .LVU184
  326:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		{
- 1180              		.loc 1 326 31 is_stmt 0 view .LVU291
- 1181 0080 9DF80330 		ldrb	r3, [sp, #3]	@ zero_extendqisi2
+ 858              		.loc 1 326 31 is_stmt 0 view .LVU185
+ 859 0080 9DF80330 		ldrb	r3, [sp, #3]	@ zero_extendqisi2
  326:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		{
- 1182              		.loc 1 326 8 view .LVU292
- 1183 0084 13F0800F 		tst	r3, #128
- 1184 0088 F0D1     		bne	.L57
+ 860              		.loc 1 326 8 view .LVU186
+ 861 0084 13F0800F 		tst	r3, #128
+ 862 0088 F0D1     		bne	.L44
+ARM GAS  /tmp/ccCtvXoh.s 			page 35
+
+
  346:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		}
- 1185              		.loc 1 346 4 is_stmt 1 view .LVU293
- 1186 008a 214B     		ldr	r3, .L64+16
- 1187 008c 1B68     		ldr	r3, [r3]
- 1188 008e 032B     		cmp	r3, #3
- 1189 0090 08D0     		beq	.L58
+ 863              		.loc 1 346 4 is_stmt 1 view .LVU187
+ 864 008a 214B     		ldr	r3, .L51+16
+ 865 008c 1B68     		ldr	r3, [r3]
+ 866 008e 032B     		cmp	r3, #3
+ 867 0090 08D0     		beq	.L45
  346:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		}
- 1190              		.loc 1 346 4 view .LVU294
- 1191              	.LBB51:
- 1192              	.LBI51:
+ 868              		.loc 1 346 4 view .LVU188
+ 869              	.LBB50:
+ 870              	.LBI50:
  191:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** {
- 1193              		.loc 2 191 30 view .LVU295
- 1194              	.LBB52:
+ 871              		.loc 2 191 30 view .LVU189
+ 872              	.LBB51:
  193:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 
- 1195              		.loc 2 193 1 view .LVU296
+ 873              		.loc 2 193 1 view .LVU190
  195:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 	(
- 1196              		.loc 2 195 2 view .LVU297
- 1197              		.syntax unified
- 1198              	@ 195 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h" 1
- 1199 0092 4FF05003 			mov r3, #80												
- 1200 0096 83F31188 		msr basepri, r3											
- 1201 009a BFF36F8F 		isb														
- 1202 009e BFF34F8F 		dsb														
- 1203              	
- 1204              	@ 0 "" 2
- 1205              	.LVL46:
- 1206              		.thumb
- 1207              		.syntax unified
- 1208              	.L59:
+ 874              		.loc 2 195 2 view .LVU191
+ 875              		.syntax unified
+ 876              	@ 195 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h" 1
+ 877 0092 4FF05003 			mov r3, #80												
+ 878 0096 83F31188 		msr basepri, r3											
+ 879 009a BFF36F8F 		isb														
+ 880 009e BFF34F8F 		dsb														
+ 881              	
+ 882              	@ 0 "" 2
+ 883              	.LVL23:
+ 884              		.thumb
+ 885              		.syntax unified
+ 886              	.L46:
  195:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 	(
-ARM GAS  /tmp/ccSwXN2A.s 			page 43
+ 887              		.loc 2 195 2 is_stmt 0 view .LVU192
+ 888              	.LBE51:
+ 889              	.LBE50:
+ 346:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		}
+ 890              		.loc 1 346 4 is_stmt 1 discriminator 4 view .LVU193
+ 346:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		}
+ 891              		.loc 1 346 4 discriminator 4 view .LVU194
+ 346:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		}
+ 892              		.loc 1 346 4 discriminator 4 view .LVU195
+ 893 00a2 FEE7     		b	.L46
+ 894              	.L45:
+ 346:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		}
+ 895              		.loc 1 346 85 discriminator 2 view .LVU196
+ 352:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		ulMaxPRIGROUPValue &= portPRIORITY_GROUP_MASK;
+ 896              		.loc 1 352 3 discriminator 2 view .LVU197
+ 352:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		ulMaxPRIGROUPValue &= portPRIORITY_GROUP_MASK;
+ 897              		.loc 1 352 22 is_stmt 0 discriminator 2 view .LVU198
+ 898 00a4 1B02     		lsls	r3, r3, #8
+ 899 00a6 1A4A     		ldr	r2, .L51+16
+ 900 00a8 1360     		str	r3, [r2]
+ 353:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
+ 901              		.loc 1 353 3 is_stmt 1 discriminator 2 view .LVU199
+ 353:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
+ 902              		.loc 1 353 22 is_stmt 0 discriminator 2 view .LVU200
+ 903 00aa 03F4E063 		and	r3, r3, #1792
+ 904 00ae 1360     		str	r3, [r2]
+ 357:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	}
+ARM GAS  /tmp/ccCtvXoh.s 			page 36
 
 
- 1209              		.loc 2 195 2 is_stmt 0 view .LVU298
- 1210              	.LBE52:
- 1211              	.LBE51:
- 346:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		}
- 1212              		.loc 1 346 4 is_stmt 1 discriminator 4 view .LVU299
- 346:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		}
- 1213              		.loc 1 346 4 discriminator 4 view .LVU300
- 346:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		}
- 1214              		.loc 1 346 4 discriminator 4 view .LVU301
- 1215 00a2 FEE7     		b	.L59
- 1216              	.L58:
- 346:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		}
- 1217              		.loc 1 346 85 discriminator 2 view .LVU302
- 352:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		ulMaxPRIGROUPValue &= portPRIORITY_GROUP_MASK;
- 1218              		.loc 1 352 3 discriminator 2 view .LVU303
- 352:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		ulMaxPRIGROUPValue &= portPRIORITY_GROUP_MASK;
- 1219              		.loc 1 352 22 is_stmt 0 discriminator 2 view .LVU304
- 1220 00a4 1B02     		lsls	r3, r3, #8
- 1221 00a6 1A4A     		ldr	r2, .L64+16
- 1222 00a8 1360     		str	r3, [r2]
- 353:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1223              		.loc 1 353 3 is_stmt 1 discriminator 2 view .LVU305
- 353:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1224              		.loc 1 353 22 is_stmt 0 discriminator 2 view .LVU306
- 1225 00aa 03F4E063 		and	r3, r3, #1792
- 1226 00ae 1360     		str	r3, [r2]
+ 905              		.loc 1 357 3 is_stmt 1 discriminator 2 view .LVU201
  357:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	}
- 1227              		.loc 1 357 3 is_stmt 1 discriminator 2 view .LVU307
- 357:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	}
- 1228              		.loc 1 357 33 is_stmt 0 discriminator 2 view .LVU308
- 1229 00b0 019B     		ldr	r3, [sp, #4]
- 1230 00b2 DBB2     		uxtb	r3, r3
- 1231 00b4 144A     		ldr	r2, .L64+8
- 1232 00b6 1370     		strb	r3, [r2]
- 1233              	.LBE57:
+ 906              		.loc 1 357 33 is_stmt 0 discriminator 2 view .LVU202
+ 907 00b0 019B     		ldr	r3, [sp, #4]
+ 908 00b2 DBB2     		uxtb	r3, r3
+ 909 00b4 144A     		ldr	r2, .L51+8
+ 910 00b6 1370     		strb	r3, [r2]
+ 911              	.LBE56:
  362:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	portNVIC_SYSPRI2_REG |= portNVIC_SYSTICK_PRI;
- 1234              		.loc 1 362 2 is_stmt 1 discriminator 2 view .LVU309
+ 912              		.loc 1 362 2 is_stmt 1 discriminator 2 view .LVU203
  362:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	portNVIC_SYSPRI2_REG |= portNVIC_SYSTICK_PRI;
- 1235              		.loc 1 362 23 is_stmt 0 discriminator 2 view .LVU310
- 1236 00b8 4FF0E024 		mov	r4, #-536813568
- 1237 00bc D4F8203D 		ldr	r3, [r4, #3360]
- 1238 00c0 43F47003 		orr	r3, r3, #15728640
- 1239 00c4 C4F8203D 		str	r3, [r4, #3360]
+ 913              		.loc 1 362 23 is_stmt 0 discriminator 2 view .LVU204
+ 914 00b8 4FF0E024 		mov	r4, #-536813568
+ 915 00bc D4F8203D 		ldr	r3, [r4, #3360]
+ 916 00c0 43F47003 		orr	r3, r3, #15728640
+ 917 00c4 C4F8203D 		str	r3, [r4, #3360]
  363:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1240              		.loc 1 363 2 is_stmt 1 discriminator 2 view .LVU311
+ 918              		.loc 1 363 2 is_stmt 1 discriminator 2 view .LVU205
  363:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1241              		.loc 1 363 23 is_stmt 0 discriminator 2 view .LVU312
- 1242 00c8 D4F8203D 		ldr	r3, [r4, #3360]
- 1243 00cc 43F07043 		orr	r3, r3, #-268435456
- 1244 00d0 C4F8203D 		str	r3, [r4, #3360]
+ 919              		.loc 1 363 23 is_stmt 0 discriminator 2 view .LVU206
+ 920 00c8 D4F8203D 		ldr	r3, [r4, #3360]
+ 921 00cc 43F07043 		orr	r3, r3, #-268435456
+ 922 00d0 C4F8203D 		str	r3, [r4, #3360]
  367:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1245              		.loc 1 367 2 is_stmt 1 discriminator 2 view .LVU313
- 1246 00d4 FFF7FEFF 		bl	vPortSetupTimerInterrupt
- 1247              	.LVL47:
+ 923              		.loc 1 367 2 is_stmt 1 discriminator 2 view .LVU207
+ 924 00d4 FFF7FEFF 		bl	vPortSetupTimerInterrupt
+ 925              	.LVL24:
  370:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1248              		.loc 1 370 2 discriminator 2 view .LVU314
+ 926              		.loc 1 370 2 discriminator 2 view .LVU208
  370:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
-ARM GAS  /tmp/ccSwXN2A.s 			page 44
-
-
- 1249              		.loc 1 370 20 is_stmt 0 discriminator 2 view .LVU315
- 1250 00d8 0025     		movs	r5, #0
- 1251 00da 0E4B     		ldr	r3, .L64+20
- 1252 00dc 1D60     		str	r5, [r3]
+ 927              		.loc 1 370 20 is_stmt 0 discriminator 2 view .LVU209
+ 928 00d8 0025     		movs	r5, #0
+ 929 00da 0E4B     		ldr	r3, .L51+20
+ 930 00dc 1D60     		str	r5, [r3]
  373:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1253              		.loc 1 373 2 is_stmt 1 discriminator 2 view .LVU316
- 1254 00de FFF7FEFF 		bl	vPortEnableVFP
- 1255              	.LVL48:
+ 931              		.loc 1 373 2 is_stmt 1 discriminator 2 view .LVU210
+ 932 00de FFF7FEFF 		bl	vPortEnableVFP
+ 933              	.LVL25:
  376:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1256              		.loc 1 376 2 discriminator 2 view .LVU317
+ 934              		.loc 1 376 2 discriminator 2 view .LVU211
  376:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1257              		.loc 1 376 17 is_stmt 0 discriminator 2 view .LVU318
- 1258 00e2 D4F8343F 		ldr	r3, [r4, #3892]
- 1259 00e6 43F04043 		orr	r3, r3, #-1073741824
- 1260 00ea C4F8343F 		str	r3, [r4, #3892]
+ 935              		.loc 1 376 17 is_stmt 0 discriminator 2 view .LVU212
+ 936 00e2 D4F8343F 		ldr	r3, [r4, #3892]
+ 937 00e6 43F04043 		orr	r3, r3, #-1073741824
+ 938 00ea C4F8343F 		str	r3, [r4, #3892]
  379:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1261              		.loc 1 379 2 is_stmt 1 discriminator 2 view .LVU319
- 1262 00ee FFF7FEFF 		bl	prvPortStartFirstTask
- 1263              	.LVL49:
+ 939              		.loc 1 379 2 is_stmt 1 discriminator 2 view .LVU213
+ 940 00ee FFF7FEFF 		bl	prvPortStartFirstTask
+ 941              	.LVL26:
  387:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	prvTaskExitError();
- 1264              		.loc 1 387 2 discriminator 2 view .LVU320
- 1265 00f2 FFF7FEFF 		bl	vTaskSwitchContext
- 1266              	.LVL50:
+ 942              		.loc 1 387 2 discriminator 2 view .LVU214
+ 943 00f2 FFF7FEFF 		bl	vTaskSwitchContext
+ 944              	.LVL27:
  388:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
- 1267              		.loc 1 388 2 discriminator 2 view .LVU321
- 1268 00f6 FFF7FEFF 		bl	prvTaskExitError
- 1269              	.LVL51:
+ 945              		.loc 1 388 2 discriminator 2 view .LVU215
+ 946 00f6 FFF7FEFF 		bl	prvTaskExitError
+ 947              	.LVL28:
+ARM GAS  /tmp/ccCtvXoh.s 			page 37
+
+
  391:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** }
- 1270              		.loc 1 391 2 discriminator 2 view .LVU322
+ 948              		.loc 1 391 2 discriminator 2 view .LVU216
  392:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** /*-----------------------------------------------------------*/
- 1271              		.loc 1 392 1 is_stmt 0 discriminator 2 view .LVU323
- 1272 00fa 2846     		mov	r0, r5
- 1273 00fc 03B0     		add	sp, sp, #12
- 1274              	.LCFI8:
- 1275              		.cfi_def_cfa_offset 12
- 1276              		@ sp needed
- 1277 00fe 30BD     		pop	{r4, r5, pc}
- 1278              	.L65:
- 1279              		.align	2
- 1280              	.L64:
- 1281 0100 71C20F41 		.word	1091551857
- 1282 0104 70C20F41 		.word	1091551856
- 1283 0108 00E400E0 		.word	-536812544
- 1284 010c 00000000 		.word	.LANCHOR4
- 1285 0110 00000000 		.word	.LANCHOR5
- 1286 0114 00000000 		.word	.LANCHOR0
- 1287              		.cfi_endproc
- 1288              	.LFE8:
- 1290              		.section	.text.vPortValidateInterruptPriority,"ax",%progbits
- 1291              		.align	1
- 1292              		.global	vPortValidateInterruptPriority
- 1293              		.syntax unified
- 1294              		.thumb
- 1295              		.thumb_func
- 1296              		.fpu fpv4-sp-d16
- 1298              	vPortValidateInterruptPriority:
- 1299              	.LFB17:
-ARM GAS  /tmp/ccSwXN2A.s 			page 45
-
-
+ 949              		.loc 1 392 1 is_stmt 0 discriminator 2 view .LVU217
+ 950 00fa 2846     		mov	r0, r5
+ 951 00fc 03B0     		add	sp, sp, #12
+ 952              	.LCFI7:
+ 953              		.cfi_def_cfa_offset 12
+ 954              		@ sp needed
+ 955 00fe 30BD     		pop	{r4, r5, pc}
+ 956              	.L52:
+ 957              		.align	2
+ 958              	.L51:
+ 959 0100 71C20F41 		.word	1091551857
+ 960 0104 70C20F41 		.word	1091551856
+ 961 0108 00E400E0 		.word	-536812544
+ 962 010c 00000000 		.word	.LANCHOR1
+ 963 0110 00000000 		.word	.LANCHOR2
+ 964 0114 00000000 		.word	.LANCHOR0
+ 965              		.cfi_endproc
+ 966              	.LFE8:
+ 968              		.section	.text.vPortValidateInterruptPriority,"ax",%progbits
+ 969              		.align	1
+ 970              		.global	vPortValidateInterruptPriority
+ 971              		.syntax unified
+ 972              		.thumb
+ 973              		.thumb_func
+ 974              		.fpu fpv4-sp-d16
+ 976              	vPortValidateInterruptPriority:
+ 977              	.LFB16:
  719:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** /*-----------------------------------------------------------*/
  720:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
  721:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** #if( configASSERT_DEFINED == 1 )
  722:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
  723:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	void vPortValidateInterruptPriority( void )
  724:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	{
- 1300              		.loc 1 724 2 is_stmt 1 view -0
- 1301              		.cfi_startproc
- 1302              		@ args = 0, pretend = 0, frame = 0
- 1303              		@ frame_needed = 0, uses_anonymous_args = 0
- 1304              		@ link register save eliminated.
+ 978              		.loc 1 724 2 is_stmt 1 view -0
+ 979              		.cfi_startproc
+ 980              		@ args = 0, pretend = 0, frame = 0
+ 981              		@ frame_needed = 0, uses_anonymous_args = 0
+ 982              		@ link register save eliminated.
  725:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	uint32_t ulCurrentInterrupt;
- 1305              		.loc 1 725 2 view .LVU325
+ 983              		.loc 1 725 2 view .LVU219
  726:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	uint8_t ucCurrentPriority;
- 1306              		.loc 1 726 2 view .LVU326
+ 984              		.loc 1 726 2 view .LVU220
  727:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
  728:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		/* Obtain the number of the currently executing interrupt. */
  729:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		__asm volatile( "mrs %0, ipsr" : "=r"( ulCurrentInterrupt ) :: "memory" );
- 1307              		.loc 1 729 3 view .LVU327
- 1308              		.syntax unified
- 1309              	@ 729 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c" 1
- 1310 0000 EFF30583 		mrs r3, ipsr
- 1311              	@ 0 "" 2
- 1312              	.LVL52:
+ 985              		.loc 1 729 3 view .LVU221
+ 986              		.syntax unified
+ 987              	@ 729 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c" 1
+ 988 0000 EFF30583 		mrs r3, ipsr
+ 989              	@ 0 "" 2
+ 990              	.LVL29:
  730:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
  731:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		/* Is the interrupt number a user defined interrupt? */
  732:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		if( ulCurrentInterrupt >= portFIRST_USER_INTERRUPT_NUMBER )
- 1313              		.loc 1 732 3 view .LVU328
- 1314              		.loc 1 732 5 is_stmt 0 view .LVU329
- 1315              		.thumb
- 1316              		.syntax unified
- 1317 0004 0F2B     		cmp	r3, #15
- 1318 0006 0FD9     		bls	.L67
+ARM GAS  /tmp/ccCtvXoh.s 			page 38
+
+
+ 991              		.loc 1 732 3 view .LVU222
+ 992              		.loc 1 732 5 is_stmt 0 view .LVU223
+ 993              		.thumb
+ 994              		.syntax unified
+ 995 0004 0F2B     		cmp	r3, #15
+ 996 0006 0FD9     		bls	.L54
  733:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		{
  734:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			/* Look up the interrupt's priority. */
  735:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			ucCurrentPriority = pcInterruptPriorityRegisters[ ulCurrentInterrupt ];
- 1319              		.loc 1 735 4 is_stmt 1 view .LVU330
- 1320              		.loc 1 735 52 is_stmt 0 view .LVU331
- 1321 0008 114A     		ldr	r2, .L71
- 1322              		.loc 1 735 22 view .LVU332
- 1323 000a 9B5C     		ldrb	r3, [r3, r2]	@ zero_extendqisi2
- 1324              	.LVL53:
- 1325              		.loc 1 735 22 view .LVU333
- 1326 000c DBB2     		uxtb	r3, r3
- 1327              	.LVL54:
+ 997              		.loc 1 735 4 is_stmt 1 view .LVU224
+ 998              		.loc 1 735 52 is_stmt 0 view .LVU225
+ 999 0008 114A     		ldr	r2, .L58
+ 1000              		.loc 1 735 22 view .LVU226
+ 1001 000a 9B5C     		ldrb	r3, [r3, r2]	@ zero_extendqisi2
+ 1002              	.LVL30:
+ 1003              		.loc 1 735 22 view .LVU227
+ 1004 000c DBB2     		uxtb	r3, r3
+ 1005              	.LVL31:
  736:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
  737:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			/* The following assertion will fail if a service routine (ISR) for
  738:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			an interrupt that has been assigned a priority above
@@ -2698,9 +2251,6 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  745:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			interrupt priorities, therefore the priority of the interrupt must
  746:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			be set to a value equal to or numerically *higher* than
  747:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			configMAX_SYSCALL_INTERRUPT_PRIORITY.
-ARM GAS  /tmp/ccSwXN2A.s 			page 46
-
-
  748:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
  749:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			Interrupts that	use the FreeRTOS API must not be left at their
  750:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			default priority of	zero as that is the highest possible priority,
@@ -2714,43 +2264,46 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  758:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			http://www.freertos.org/RTOS-Cortex-M3-M4.html
  759:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			http://www.freertos.org/FAQHelp.html */
  760:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 			configASSERT( ucCurrentPriority >= ucMaxSysCallPriority );
- 1328              		.loc 1 760 4 is_stmt 1 view .LVU334
- 1329 000e 114A     		ldr	r2, .L71+4
- 1330 0010 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
- 1331 0012 9A42     		cmp	r2, r3
- 1332 0014 08D9     		bls	.L67
- 1333              		.loc 1 760 4 view .LVU335
- 1334              	.LBB58:
- 1335              	.LBI58:
+ 1006              		.loc 1 760 4 is_stmt 1 view .LVU228
+ 1007 000e 114A     		ldr	r2, .L58+4
+ 1008 0010 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 1009 0012 9A42     		cmp	r2, r3
+ 1010 0014 08D9     		bls	.L54
+ 1011              		.loc 1 760 4 view .LVU229
+ 1012              	.LBB57:
+ 1013              	.LBI57:
  191:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** {
- 1336              		.loc 2 191 30 view .LVU336
- 1337              	.LBB59:
+ 1014              		.loc 2 191 30 view .LVU230
+ 1015              	.LBB58:
  193:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 
- 1338              		.loc 2 193 1 view .LVU337
+ 1016              		.loc 2 193 1 view .LVU231
  195:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 	(
- 1339              		.loc 2 195 2 view .LVU338
- 1340              		.syntax unified
- 1341              	@ 195 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h" 1
- 1342 0016 4FF05003 			mov r3, #80												
- 1343 001a 83F31188 		msr basepri, r3											
- 1344 001e BFF36F8F 		isb														
- 1345 0022 BFF34F8F 		dsb														
- 1346              	
- 1347              	@ 0 "" 2
- 1348              	.LVL55:
- 1349              		.thumb
- 1350              		.syntax unified
- 1351              	.L68:
+ARM GAS  /tmp/ccCtvXoh.s 			page 39
+
+
+ 1017              		.loc 2 195 2 view .LVU232
+ 1018              		.syntax unified
+ 1019              	@ 195 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h" 1
+ 1020 0016 4FF05003 			mov r3, #80												
+ 1021 001a 83F31188 		msr basepri, r3											
+ 1022 001e BFF36F8F 		isb														
+ 1023 0022 BFF34F8F 		dsb														
+ 1024              	
+ 1025              	@ 0 "" 2
+ 1026              	.LVL32:
+ 1027              		.thumb
+ 1028              		.syntax unified
+ 1029              	.L55:
  195:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 	(
- 1352              		.loc 2 195 2 is_stmt 0 view .LVU339
- 1353              	.LBE59:
- 1354              	.LBE58:
- 1355              		.loc 1 760 4 is_stmt 1 discriminator 1 view .LVU340
- 1356              		.loc 1 760 4 discriminator 1 view .LVU341
- 1357              		.loc 1 760 4 discriminator 1 view .LVU342
- 1358 0026 FEE7     		b	.L68
- 1359              	.L67:
- 1360              		.loc 1 760 61 discriminator 2 view .LVU343
+ 1030              		.loc 2 195 2 is_stmt 0 view .LVU233
+ 1031              	.LBE58:
+ 1032              	.LBE57:
+ 1033              		.loc 1 760 4 is_stmt 1 discriminator 1 view .LVU234
+ 1034              		.loc 1 760 4 discriminator 1 view .LVU235
+ 1035              		.loc 1 760 4 discriminator 1 view .LVU236
+ 1036 0026 FEE7     		b	.L55
+ 1037              	.L54:
+ 1038              		.loc 1 760 61 discriminator 2 view .LVU237
  761:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		}
  762:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
  763:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		/* Priority grouping:  The interrupt controller (NVIC) allows the bits
@@ -2758,9 +2311,6 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  765:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		define the interrupt's pre-emption priority bits and bits that define
  766:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		the interrupt's sub-priority.  For simplicity all bits must be defined
  767:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		to be pre-emption priority bits.  The following assertion will fail if
-ARM GAS  /tmp/ccSwXN2A.s 			page 47
-
-
  768:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		this is not the case (if some bits represent a sub-priority).
  769:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 
  770:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		If the application only uses CMSIS libraries for interrupt
@@ -2770,170 +2320,135 @@ ARM GAS  /tmp/ccSwXN2A.s 			page 1
  774:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		assume a non-zero priority group setting, in which cases using a value
  775:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		of zero will result in unpredictable behaviour. */
  776:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 		configASSERT( ( portAIRCR_REG & portPRIORITY_GROUP_MASK ) <= ulMaxPRIGROUPValue );
- 1361              		.loc 1 776 3 discriminator 2 view .LVU344
- 1362 0028 4FF0E023 		mov	r3, #-536813568
- 1363 002c D3F80C3D 		ldr	r3, [r3, #3340]
- 1364 0030 03F4E063 		and	r3, r3, #1792
- 1365 0034 084A     		ldr	r2, .L71+8
- 1366 0036 1268     		ldr	r2, [r2]
- 1367 0038 9342     		cmp	r3, r2
- 1368 003a 08D9     		bls	.L66
- 1369              		.loc 1 776 3 view .LVU345
- 1370              	.LBB60:
- 1371              	.LBI60:
+ 1039              		.loc 1 776 3 discriminator 2 view .LVU238
+ 1040 0028 4FF0E023 		mov	r3, #-536813568
+ 1041 002c D3F80C3D 		ldr	r3, [r3, #3340]
+ 1042 0030 03F4E063 		and	r3, r3, #1792
+ 1043 0034 084A     		ldr	r2, .L58+8
+ 1044 0036 1268     		ldr	r2, [r2]
+ 1045 0038 9342     		cmp	r3, r2
+ 1046 003a 08D9     		bls	.L53
+ 1047              		.loc 1 776 3 view .LVU239
+ 1048              	.LBB59:
+ 1049              	.LBI59:
  191:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** {
- 1372              		.loc 2 191 30 view .LVU346
- 1373              	.LBB61:
+ 1050              		.loc 2 191 30 view .LVU240
+ 1051              	.LBB60:
  193:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 
- 1374              		.loc 2 193 1 view .LVU347
+ 1052              		.loc 2 193 1 view .LVU241
  195:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 	(
- 1375              		.loc 2 195 2 view .LVU348
- 1376              		.syntax unified
- 1377              	@ 195 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h" 1
- 1378 003c 4FF05003 			mov r3, #80												
- 1379 0040 83F31188 		msr basepri, r3											
- 1380 0044 BFF36F8F 		isb														
- 1381 0048 BFF34F8F 		dsb														
- 1382              	
- 1383              	@ 0 "" 2
- 1384              	.LVL56:
- 1385              		.thumb
- 1386              		.syntax unified
- 1387              	.L70:
+ 1053              		.loc 2 195 2 view .LVU242
+ARM GAS  /tmp/ccCtvXoh.s 			page 40
+
+
+ 1054              		.syntax unified
+ 1055              	@ 195 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h" 1
+ 1056 003c 4FF05003 			mov r3, #80												
+ 1057 0040 83F31188 		msr basepri, r3											
+ 1058 0044 BFF36F8F 		isb														
+ 1059 0048 BFF34F8F 		dsb														
+ 1060              	
+ 1061              	@ 0 "" 2
+ 1062              	.LVL33:
+ 1063              		.thumb
+ 1064              		.syntax unified
+ 1065              	.L57:
  195:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h **** 	(
- 1388              		.loc 2 195 2 is_stmt 0 view .LVU349
- 1389              	.LBE61:
- 1390              	.LBE60:
- 1391              		.loc 1 776 3 is_stmt 1 discriminator 2 view .LVU350
- 1392              		.loc 1 776 3 discriminator 2 view .LVU351
- 1393              		.loc 1 776 3 discriminator 2 view .LVU352
- 1394 004c FEE7     		b	.L70
- 1395              	.L66:
+ 1066              		.loc 2 195 2 is_stmt 0 view .LVU243
+ 1067              	.LBE60:
+ 1068              	.LBE59:
+ 1069              		.loc 1 776 3 is_stmt 1 discriminator 2 view .LVU244
+ 1070              		.loc 1 776 3 discriminator 2 view .LVU245
+ 1071              		.loc 1 776 3 discriminator 2 view .LVU246
+ 1072 004c FEE7     		b	.L57
+ 1073              	.L53:
  777:Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c **** 	}
- 1396              		.loc 1 777 2 is_stmt 0 view .LVU353
- 1397 004e 7047     		bx	lr
- 1398              	.L72:
- 1399              		.align	2
- 1400              	.L71:
- 1401 0050 F0E300E0 		.word	-536812560
- 1402 0054 00000000 		.word	.LANCHOR4
- 1403 0058 00000000 		.word	.LANCHOR5
-ARM GAS  /tmp/ccSwXN2A.s 			page 48
-
-
- 1404              		.cfi_endproc
- 1405              	.LFE17:
- 1407              		.section	.bss.ucMaxSysCallPriority,"aw",%nobits
- 1408              		.set	.LANCHOR4,. + 0
- 1411              	ucMaxSysCallPriority:
- 1412 0000 00       		.space	1
- 1413              		.section	.bss.ulMaxPRIGROUPValue,"aw",%nobits
- 1414              		.align	2
- 1415              		.set	.LANCHOR5,. + 0
- 1418              	ulMaxPRIGROUPValue:
- 1419 0000 00000000 		.space	4
- 1420              		.section	.bss.ulStoppedTimerCompensation,"aw",%nobits
- 1421              		.align	2
- 1422              		.set	.LANCHOR3,. + 0
- 1425              	ulStoppedTimerCompensation:
- 1426 0000 00000000 		.space	4
- 1427              		.section	.bss.ulTimerCountsForOneTick,"aw",%nobits
- 1428              		.align	2
- 1429              		.set	.LANCHOR2,. + 0
- 1432              	ulTimerCountsForOneTick:
- 1433 0000 00000000 		.space	4
- 1434              		.section	.bss.xMaximumPossibleSuppressedTicks,"aw",%nobits
- 1435              		.align	2
- 1436              		.set	.LANCHOR1,. + 0
- 1439              	xMaximumPossibleSuppressedTicks:
- 1440 0000 00000000 		.space	4
- 1441              		.section	.data.uxCriticalNesting,"aw"
- 1442              		.align	2
- 1443              		.set	.LANCHOR0,. + 0
- 1446              	uxCriticalNesting:
- 1447 0000 AAAAAAAA 		.word	-1431655766
- 1448              		.text
- 1449              	.Letext0:
- 1450              		.file 3 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h"
- 1451              		.file 4 "Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h"
- 1452              		.file 5 "Core/Inc/FreeRTOSConfig.h"
- 1453              		.file 6 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
- 1454              		.file 7 "libraries/SystemView/SYSVIEW/SEGGER_SYSVIEW.h"
-ARM GAS  /tmp/ccSwXN2A.s 			page 49
+ 1074              		.loc 1 777 2 is_stmt 0 view .LVU247
+ 1075 004e 7047     		bx	lr
+ 1076              	.L59:
+ 1077              		.align	2
+ 1078              	.L58:
+ 1079 0050 F0E300E0 		.word	-536812560
+ 1080 0054 00000000 		.word	.LANCHOR1
+ 1081 0058 00000000 		.word	.LANCHOR2
+ 1082              		.cfi_endproc
+ 1083              	.LFE16:
+ 1085              		.section	.bss.ucMaxSysCallPriority,"aw",%nobits
+ 1086              		.set	.LANCHOR1,. + 0
+ 1089              	ucMaxSysCallPriority:
+ 1090 0000 00       		.space	1
+ 1091              		.section	.bss.ulMaxPRIGROUPValue,"aw",%nobits
+ 1092              		.align	2
+ 1093              		.set	.LANCHOR2,. + 0
+ 1096              	ulMaxPRIGROUPValue:
+ 1097 0000 00000000 		.space	4
+ 1098              		.section	.data.uxCriticalNesting,"aw"
+ 1099              		.align	2
+ 1100              		.set	.LANCHOR0,. + 0
+ 1103              	uxCriticalNesting:
+ 1104 0000 AAAAAAAA 		.word	-1431655766
+ 1105              		.text
+ 1106              	.Letext0:
+ 1107              		.file 3 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h"
+ 1108              		.file 4 "Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h"
+ 1109              		.file 5 "Core/Inc/FreeRTOSConfig.h"
+ 1110              		.file 6 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
+ARM GAS  /tmp/ccCtvXoh.s 			page 41
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 port.c
-     /tmp/ccSwXN2A.s:18     .text.prvTaskExitError:0000000000000000 $t
-     /tmp/ccSwXN2A.s:25     .text.prvTaskExitError:0000000000000000 prvTaskExitError
-     /tmp/ccSwXN2A.s:112    .text.prvTaskExitError:000000000000003c $d
-     /tmp/ccSwXN2A.s:117    .text.prvPortStartFirstTask:0000000000000000 $t
-     /tmp/ccSwXN2A.s:123    .text.prvPortStartFirstTask:0000000000000000 prvPortStartFirstTask
-     /tmp/ccSwXN2A.s:154    .text.vPortEnableVFP:0000000000000000 $t
-     /tmp/ccSwXN2A.s:160    .text.vPortEnableVFP:0000000000000000 vPortEnableVFP
-     /tmp/ccSwXN2A.s:184    .text.pxPortInitialiseStack:0000000000000000 $t
-     /tmp/ccSwXN2A.s:191    .text.pxPortInitialiseStack:0000000000000000 pxPortInitialiseStack
-     /tmp/ccSwXN2A.s:241    .text.pxPortInitialiseStack:0000000000000028 $d
-     /tmp/ccSwXN2A.s:246    .text.SVC_Handler:0000000000000000 $t
-     /tmp/ccSwXN2A.s:253    .text.SVC_Handler:0000000000000000 SVC_Handler
-     /tmp/ccSwXN2A.s:274    .text.SVC_Handler:0000000000000020 pxCurrentTCBConst2
-     /tmp/ccSwXN2A.s:274    .text.SVC_Handler:0000000000000020 $d
-     /tmp/ccSwXN2A.s:284    .text.vPortEndScheduler:0000000000000000 $t
-     /tmp/ccSwXN2A.s:291    .text.vPortEndScheduler:0000000000000000 vPortEndScheduler
-     /tmp/ccSwXN2A.s:335    .text.vPortEndScheduler:0000000000000020 $d
-     /tmp/ccSwXN2A.s:340    .text.vPortEnterCritical:0000000000000000 $t
-     /tmp/ccSwXN2A.s:347    .text.vPortEnterCritical:0000000000000000 vPortEnterCritical
-     /tmp/ccSwXN2A.s:421    .text.vPortEnterCritical:0000000000000040 $d
-     /tmp/ccSwXN2A.s:426    .text.vPortExitCritical:0000000000000000 $t
-     /tmp/ccSwXN2A.s:433    .text.vPortExitCritical:0000000000000000 vPortExitCritical
-     /tmp/ccSwXN2A.s:503    .text.vPortExitCritical:0000000000000028 $d
-     /tmp/ccSwXN2A.s:508    .text.PendSV_Handler:0000000000000000 $t
-     /tmp/ccSwXN2A.s:515    .text.PendSV_Handler:0000000000000000 PendSV_Handler
-     /tmp/ccSwXN2A.s:564    .text.PendSV_Handler:0000000000000060 pxCurrentTCBConst
-     /tmp/ccSwXN2A.s:564    .text.PendSV_Handler:0000000000000060 $d
-     /tmp/ccSwXN2A.s:574    .text.xPortSysTickHandler:0000000000000000 $t
-     /tmp/ccSwXN2A.s:581    .text.xPortSysTickHandler:0000000000000000 xPortSysTickHandler
-     /tmp/ccSwXN2A.s:658    .text.vPortSuppressTicksAndSleep:0000000000000000 $t
-     /tmp/ccSwXN2A.s:665    .text.vPortSuppressTicksAndSleep:0000000000000000 vPortSuppressTicksAndSleep
-     /tmp/ccSwXN2A.s:942    .text.vPortSuppressTicksAndSleep:00000000000000f8 $d
-     /tmp/ccSwXN2A.s:949    .text.vPortSetupTimerInterrupt:0000000000000000 $t
-     /tmp/ccSwXN2A.s:956    .text.vPortSetupTimerInterrupt:0000000000000000 vPortSetupTimerInterrupt
-     /tmp/ccSwXN2A.s:1011   .text.vPortSetupTimerInterrupt:0000000000000040 $d
-     /tmp/ccSwXN2A.s:1020   .text.xPortStartScheduler:0000000000000000 $t
-     /tmp/ccSwXN2A.s:1027   .text.xPortStartScheduler:0000000000000000 xPortStartScheduler
-     /tmp/ccSwXN2A.s:1281   .text.xPortStartScheduler:0000000000000100 $d
-     /tmp/ccSwXN2A.s:1291   .text.vPortValidateInterruptPriority:0000000000000000 $t
-     /tmp/ccSwXN2A.s:1298   .text.vPortValidateInterruptPriority:0000000000000000 vPortValidateInterruptPriority
-     /tmp/ccSwXN2A.s:1401   .text.vPortValidateInterruptPriority:0000000000000050 $d
-     /tmp/ccSwXN2A.s:1411   .bss.ucMaxSysCallPriority:0000000000000000 ucMaxSysCallPriority
-     /tmp/ccSwXN2A.s:1412   .bss.ucMaxSysCallPriority:0000000000000000 $d
-     /tmp/ccSwXN2A.s:1414   .bss.ulMaxPRIGROUPValue:0000000000000000 $d
-     /tmp/ccSwXN2A.s:1418   .bss.ulMaxPRIGROUPValue:0000000000000000 ulMaxPRIGROUPValue
-     /tmp/ccSwXN2A.s:1421   .bss.ulStoppedTimerCompensation:0000000000000000 $d
-     /tmp/ccSwXN2A.s:1425   .bss.ulStoppedTimerCompensation:0000000000000000 ulStoppedTimerCompensation
-     /tmp/ccSwXN2A.s:1428   .bss.ulTimerCountsForOneTick:0000000000000000 $d
-     /tmp/ccSwXN2A.s:1432   .bss.ulTimerCountsForOneTick:0000000000000000 ulTimerCountsForOneTick
-     /tmp/ccSwXN2A.s:1435   .bss.xMaximumPossibleSuppressedTicks:0000000000000000 $d
-     /tmp/ccSwXN2A.s:1439   .bss.xMaximumPossibleSuppressedTicks:0000000000000000 xMaximumPossibleSuppressedTicks
-     /tmp/ccSwXN2A.s:1442   .data.uxCriticalNesting:0000000000000000 $d
-     /tmp/ccSwXN2A.s:1446   .data.uxCriticalNesting:0000000000000000 uxCriticalNesting
-     /tmp/ccSwXN2A.s:183    .text.vPortEnableVFP:000000000000000e $d
-     /tmp/ccSwXN2A.s:3664   .text.vPortEnableVFP:0000000000000010 $d
-ARM GAS  /tmp/ccSwXN2A.s 			page 50
-
-
-     /tmp/ccSwXN2A.s:153    .text.prvPortStartFirstTask:0000000000000022 $d
-     /tmp/ccSwXN2A.s:3664   .text.prvPortStartFirstTask:0000000000000024 $d
+     /tmp/ccCtvXoh.s:18     .text.prvTaskExitError:0000000000000000 $t
+     /tmp/ccCtvXoh.s:25     .text.prvTaskExitError:0000000000000000 prvTaskExitError
+     /tmp/ccCtvXoh.s:112    .text.prvTaskExitError:000000000000003c $d
+     /tmp/ccCtvXoh.s:117    .text.prvPortStartFirstTask:0000000000000000 $t
+     /tmp/ccCtvXoh.s:123    .text.prvPortStartFirstTask:0000000000000000 prvPortStartFirstTask
+     /tmp/ccCtvXoh.s:154    .text.vPortEnableVFP:0000000000000000 $t
+     /tmp/ccCtvXoh.s:160    .text.vPortEnableVFP:0000000000000000 vPortEnableVFP
+     /tmp/ccCtvXoh.s:184    .text.pxPortInitialiseStack:0000000000000000 $t
+     /tmp/ccCtvXoh.s:191    .text.pxPortInitialiseStack:0000000000000000 pxPortInitialiseStack
+     /tmp/ccCtvXoh.s:241    .text.pxPortInitialiseStack:0000000000000028 $d
+     /tmp/ccCtvXoh.s:246    .text.SVC_Handler:0000000000000000 $t
+     /tmp/ccCtvXoh.s:253    .text.SVC_Handler:0000000000000000 SVC_Handler
+     /tmp/ccCtvXoh.s:274    .text.SVC_Handler:0000000000000020 pxCurrentTCBConst2
+     /tmp/ccCtvXoh.s:274    .text.SVC_Handler:0000000000000020 $d
+     /tmp/ccCtvXoh.s:284    .text.vPortEndScheduler:0000000000000000 $t
+     /tmp/ccCtvXoh.s:291    .text.vPortEndScheduler:0000000000000000 vPortEndScheduler
+     /tmp/ccCtvXoh.s:335    .text.vPortEndScheduler:0000000000000020 $d
+     /tmp/ccCtvXoh.s:340    .text.vPortEnterCritical:0000000000000000 $t
+     /tmp/ccCtvXoh.s:347    .text.vPortEnterCritical:0000000000000000 vPortEnterCritical
+     /tmp/ccCtvXoh.s:421    .text.vPortEnterCritical:0000000000000040 $d
+     /tmp/ccCtvXoh.s:426    .text.vPortExitCritical:0000000000000000 $t
+     /tmp/ccCtvXoh.s:433    .text.vPortExitCritical:0000000000000000 vPortExitCritical
+     /tmp/ccCtvXoh.s:503    .text.vPortExitCritical:0000000000000028 $d
+     /tmp/ccCtvXoh.s:508    .text.PendSV_Handler:0000000000000000 $t
+     /tmp/ccCtvXoh.s:515    .text.PendSV_Handler:0000000000000000 PendSV_Handler
+     /tmp/ccCtvXoh.s:564    .text.PendSV_Handler:0000000000000060 pxCurrentTCBConst
+     /tmp/ccCtvXoh.s:564    .text.PendSV_Handler:0000000000000060 $d
+     /tmp/ccCtvXoh.s:574    .text.xPortSysTickHandler:0000000000000000 $t
+     /tmp/ccCtvXoh.s:581    .text.xPortSysTickHandler:0000000000000000 xPortSysTickHandler
+     /tmp/ccCtvXoh.s:650    .text.vPortSetupTimerInterrupt:0000000000000000 $t
+     /tmp/ccCtvXoh.s:657    .text.vPortSetupTimerInterrupt:0000000000000000 vPortSetupTimerInterrupt
+     /tmp/ccCtvXoh.s:692    .text.vPortSetupTimerInterrupt:0000000000000020 $d
+     /tmp/ccCtvXoh.s:698    .text.xPortStartScheduler:0000000000000000 $t
+     /tmp/ccCtvXoh.s:705    .text.xPortStartScheduler:0000000000000000 xPortStartScheduler
+     /tmp/ccCtvXoh.s:959    .text.xPortStartScheduler:0000000000000100 $d
+     /tmp/ccCtvXoh.s:969    .text.vPortValidateInterruptPriority:0000000000000000 $t
+     /tmp/ccCtvXoh.s:976    .text.vPortValidateInterruptPriority:0000000000000000 vPortValidateInterruptPriority
+     /tmp/ccCtvXoh.s:1079   .text.vPortValidateInterruptPriority:0000000000000050 $d
+     /tmp/ccCtvXoh.s:1089   .bss.ucMaxSysCallPriority:0000000000000000 ucMaxSysCallPriority
+     /tmp/ccCtvXoh.s:1090   .bss.ucMaxSysCallPriority:0000000000000000 $d
+     /tmp/ccCtvXoh.s:1092   .bss.ulMaxPRIGROUPValue:0000000000000000 $d
+     /tmp/ccCtvXoh.s:1096   .bss.ulMaxPRIGROUPValue:0000000000000000 ulMaxPRIGROUPValue
+     /tmp/ccCtvXoh.s:1099   .data.uxCriticalNesting:0000000000000000 $d
+     /tmp/ccCtvXoh.s:1103   .data.uxCriticalNesting:0000000000000000 uxCriticalNesting
+     /tmp/ccCtvXoh.s:183    .text.vPortEnableVFP:000000000000000e $d
+     /tmp/ccCtvXoh.s:2825   .text.vPortEnableVFP:0000000000000010 $d
+     /tmp/ccCtvXoh.s:153    .text.prvPortStartFirstTask:0000000000000022 $d
+     /tmp/ccCtvXoh.s:2825   .text.prvPortStartFirstTask:0000000000000024 $d
 
 UNDEFINED SYMBOLS
 pxCurrentTCB
 vTaskSwitchContext
-SEGGER_SYSVIEW_RecordEnterISR
 xTaskIncrementTick
-SEGGER_SYSVIEW_RecordExitISRToScheduler
-SEGGER_SYSVIEW_RecordExitISR
-eTaskConfirmSleepModeStatus
-PreSleepProcessing
-PostSleepProcessing
-vTaskStepTick
 SystemCoreClock

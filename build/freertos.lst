@@ -1,4 +1,4 @@
-ARM GAS  /tmp/cctJwOGF.s 			page 1
+ARM GAS  /tmp/cchKSsZN.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -26,8 +26,9 @@ ARM GAS  /tmp/cctJwOGF.s 			page 1
   23              		.thumb_func
   24              		.fpu fpv4-sp-d16
   26              	StartDefaultTask:
-  27              	.LFB140:
-  28              		.file 1 "Core/Src/freertos.c"
+  27              	.LVL0:
+  28              	.LFB140:
+  29              		.file 1 "Core/Src/freertos.c"
    1:Core/Src/freertos.c **** /* USER CODE BEGIN Header */
    2:Core/Src/freertos.c **** /**
    3:Core/Src/freertos.c ****   ******************************************************************************
@@ -57,135 +58,133 @@ ARM GAS  /tmp/cctJwOGF.s 			page 1
   27:Core/Src/freertos.c **** /* USER CODE BEGIN Includes */
   28:Core/Src/freertos.c **** 
   29:Core/Src/freertos.c **** /* USER CODE END Includes */
+ARM GAS  /tmp/cchKSsZN.s 			page 2
+
+
   30:Core/Src/freertos.c **** 
-ARM GAS  /tmp/cctJwOGF.s 			page 2
-
-
   31:Core/Src/freertos.c **** /* Private typedef -----------------------------------------------------------*/
-  32:Core/Src/freertos.c **** typedef StaticTask_t osStaticThreadDef_t;
-  33:Core/Src/freertos.c **** /* USER CODE BEGIN PTD */
-  34:Core/Src/freertos.c **** 
-  35:Core/Src/freertos.c **** /* USER CODE END PTD */
-  36:Core/Src/freertos.c **** 
-  37:Core/Src/freertos.c **** /* Private define ------------------------------------------------------------*/
-  38:Core/Src/freertos.c **** /* USER CODE BEGIN PD */
-  39:Core/Src/freertos.c **** 
-  40:Core/Src/freertos.c **** /* USER CODE END PD */
-  41:Core/Src/freertos.c **** 
-  42:Core/Src/freertos.c **** /* Private macro -------------------------------------------------------------*/
-  43:Core/Src/freertos.c **** /* USER CODE BEGIN PM */
-  44:Core/Src/freertos.c **** 
-  45:Core/Src/freertos.c **** /* USER CODE END PM */
-  46:Core/Src/freertos.c **** 
-  47:Core/Src/freertos.c **** /* Private variables ---------------------------------------------------------*/
-  48:Core/Src/freertos.c **** /* USER CODE BEGIN Variables */
-  49:Core/Src/freertos.c **** osMutexId_t i2cMutexHandle;
-  50:Core/Src/freertos.c **** /* USER CODE END Variables */
-  51:Core/Src/freertos.c **** /* Definitions for defaultTask */
-  52:Core/Src/freertos.c **** osThreadId_t defaultTaskHandle;
-  53:Core/Src/freertos.c **** uint32_t defaultTaskBuffer[ 128 ];
-  54:Core/Src/freertos.c **** osStaticThreadDef_t defaultTaskControlBlock;
-  55:Core/Src/freertos.c **** const osThreadAttr_t defaultTask_attributes = {
-  56:Core/Src/freertos.c ****   .name = "defaultTask",
-  57:Core/Src/freertos.c ****   .cb_mem = &defaultTaskControlBlock,
-  58:Core/Src/freertos.c ****   .cb_size = sizeof(defaultTaskControlBlock),
-  59:Core/Src/freertos.c ****   .stack_mem = &defaultTaskBuffer[0],
-  60:Core/Src/freertos.c ****   .stack_size = sizeof(defaultTaskBuffer),
-  61:Core/Src/freertos.c ****   .priority = (osPriority_t) osPriorityNormal,
-  62:Core/Src/freertos.c **** };
-  63:Core/Src/freertos.c **** 
-  64:Core/Src/freertos.c **** /* Private function prototypes -----------------------------------------------*/
-  65:Core/Src/freertos.c **** /* USER CODE BEGIN FunctionPrototypes */
-  66:Core/Src/freertos.c **** 
-  67:Core/Src/freertos.c **** /* USER CODE END FunctionPrototypes */
-  68:Core/Src/freertos.c **** 
-  69:Core/Src/freertos.c **** void StartDefaultTask(void *argument);
-  70:Core/Src/freertos.c **** 
-  71:Core/Src/freertos.c **** extern void MX_USB_DEVICE_Init(void);
-  72:Core/Src/freertos.c **** void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
-  73:Core/Src/freertos.c **** 
-  74:Core/Src/freertos.c **** /* USER CODE BEGIN PREPOSTSLEEP */
-  75:Core/Src/freertos.c **** /** @see sleep.c */
-  76:Core/Src/freertos.c **** /* USER CODE END PREPOSTSLEEP */
-  77:Core/Src/freertos.c **** 
-  78:Core/Src/freertos.c **** /**
-  79:Core/Src/freertos.c ****   * @brief  FreeRTOS initialization
-  80:Core/Src/freertos.c ****   * @param  None
-  81:Core/Src/freertos.c ****   * @retval None
-  82:Core/Src/freertos.c ****   */
-  83:Core/Src/freertos.c **** void MX_FREERTOS_Init(void) {
-  84:Core/Src/freertos.c ****   /* USER CODE BEGIN Init */
-  85:Core/Src/freertos.c **** 
-  86:Core/Src/freertos.c ****   /* USER CODE END Init */
-  87:Core/Src/freertos.c **** 
-ARM GAS  /tmp/cctJwOGF.s 			page 3
+  32:Core/Src/freertos.c **** /* USER CODE BEGIN PTD */
+  33:Core/Src/freertos.c **** typedef StaticTask_t osStaticThreadDef_t;
+  34:Core/Src/freertos.c **** /* USER CODE END PTD */
+  35:Core/Src/freertos.c **** 
+  36:Core/Src/freertos.c **** /* Private define ------------------------------------------------------------*/
+  37:Core/Src/freertos.c **** /* USER CODE BEGIN PD */
+  38:Core/Src/freertos.c **** 
+  39:Core/Src/freertos.c **** /* USER CODE END PD */
+  40:Core/Src/freertos.c **** 
+  41:Core/Src/freertos.c **** /* Private macro -------------------------------------------------------------*/
+  42:Core/Src/freertos.c **** /* USER CODE BEGIN PM */
+  43:Core/Src/freertos.c **** 
+  44:Core/Src/freertos.c **** /* USER CODE END PM */
+  45:Core/Src/freertos.c **** 
+  46:Core/Src/freertos.c **** /* Private variables ---------------------------------------------------------*/
+  47:Core/Src/freertos.c **** /* USER CODE BEGIN Variables */
+  48:Core/Src/freertos.c **** osMutexId_t i2cMutexHandle;
+  49:Core/Src/freertos.c **** /* USER CODE END Variables */
+  50:Core/Src/freertos.c **** /* Definitions for defaultTask */
+  51:Core/Src/freertos.c **** osThreadId_t defaultTaskHandle;
+  52:Core/Src/freertos.c **** uint32_t defaultTaskBuffer[ 128 ];
+  53:Core/Src/freertos.c **** osStaticThreadDef_t defaultTaskControlBlock;
+  54:Core/Src/freertos.c **** const osThreadAttr_t defaultTask_attributes = {
+  55:Core/Src/freertos.c ****   .name = "defaultTask",
+  56:Core/Src/freertos.c ****   .cb_mem = &defaultTaskControlBlock,
+  57:Core/Src/freertos.c ****   .cb_size = sizeof(defaultTaskControlBlock),
+  58:Core/Src/freertos.c ****   .stack_mem = &defaultTaskBuffer[0],
+  59:Core/Src/freertos.c ****   .stack_size = sizeof(defaultTaskBuffer),
+  60:Core/Src/freertos.c ****   .priority = (osPriority_t) osPriorityNormal,
+  61:Core/Src/freertos.c **** };
+  62:Core/Src/freertos.c **** 
+  63:Core/Src/freertos.c **** /* Private function prototypes -----------------------------------------------*/
+  64:Core/Src/freertos.c **** /* USER CODE BEGIN FunctionPrototypes */
+  65:Core/Src/freertos.c **** 
+  66:Core/Src/freertos.c **** /* USER CODE END FunctionPrototypes */
+  67:Core/Src/freertos.c **** 
+  68:Core/Src/freertos.c **** void StartDefaultTask(void *argument);
+  69:Core/Src/freertos.c **** 
+  70:Core/Src/freertos.c **** extern void MX_USB_DEVICE_Init(void);
+  71:Core/Src/freertos.c **** void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
+  72:Core/Src/freertos.c **** 
+  73:Core/Src/freertos.c **** /* USER CODE BEGIN PREPOSTSLEEP */
+  74:Core/Src/freertos.c **** /** @see sleep.c */
+  75:Core/Src/freertos.c **** /* USER CODE END PREPOSTSLEEP */
+  76:Core/Src/freertos.c **** 
+  77:Core/Src/freertos.c **** /**
+  78:Core/Src/freertos.c ****   * @brief  FreeRTOS initialization
+  79:Core/Src/freertos.c ****   * @param  None
+  80:Core/Src/freertos.c ****   * @retval None
+  81:Core/Src/freertos.c ****   */
+  82:Core/Src/freertos.c **** void MX_FREERTOS_Init(void) {
+  83:Core/Src/freertos.c ****   /* USER CODE BEGIN Init */
+  84:Core/Src/freertos.c **** 
+  85:Core/Src/freertos.c ****   /* USER CODE END Init */
+  86:Core/Src/freertos.c **** 
+ARM GAS  /tmp/cchKSsZN.s 			page 3
 
 
-  88:Core/Src/freertos.c ****   /* USER CODE BEGIN RTOS_MUTEX */
-  89:Core/Src/freertos.c ****   /* add mutexes, ... */
-  90:Core/Src/freertos.c ****   i2cMutexHandle = osMutexNew(&(osMutexAttr_t){ .name = "i2cMutex" });
-  91:Core/Src/freertos.c ****   /* USER CODE END RTOS_MUTEX */
-  92:Core/Src/freertos.c **** 
-  93:Core/Src/freertos.c ****   /* USER CODE BEGIN RTOS_SEMAPHORES */
-  94:Core/Src/freertos.c ****   /* add semaphores, ... */
-  95:Core/Src/freertos.c ****   /* USER CODE END RTOS_SEMAPHORES */
-  96:Core/Src/freertos.c **** 
-  97:Core/Src/freertos.c ****   /* USER CODE BEGIN RTOS_TIMERS */
-  98:Core/Src/freertos.c ****   /* start timers, add new ones, ... */
-  99:Core/Src/freertos.c ****   /* USER CODE END RTOS_TIMERS */
- 100:Core/Src/freertos.c **** 
- 101:Core/Src/freertos.c ****   /* USER CODE BEGIN RTOS_QUEUES */
- 102:Core/Src/freertos.c ****   /* add queues, ... */
- 103:Core/Src/freertos.c ****   /* USER CODE END RTOS_QUEUES */
- 104:Core/Src/freertos.c **** 
- 105:Core/Src/freertos.c ****   /* Create the thread(s) */
- 106:Core/Src/freertos.c ****   /* creation of defaultTask */
- 107:Core/Src/freertos.c ****   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
- 108:Core/Src/freertos.c **** 
- 109:Core/Src/freertos.c ****   /* USER CODE BEGIN RTOS_THREADS */
- 110:Core/Src/freertos.c ****   extern actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS];
- 111:Core/Src/freertos.c ****   /* add threads, ... */
- 112:Core/Src/freertos.c ****   /**
- 113:Core/Src/freertos.c ****    * Initialize actors threads and save pointers to them in common registry
- 114:Core/Src/freertos.c ****    * Not actors have threads but all of them have os message queues so they're should be initialize
- 115:Core/Src/freertos.c ****    * */
- 116:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[CRON_ACTOR_ID]                         = CRON_ActorInit();
- 117:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[PWRM_MANAGER_ACTOR_ID]                 = PWRM_MANAGER_ActorInit();
- 118:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID]  = TH_SENS_TaskInit();
- 119:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[LIGHT_SENSOR_ACTOR_ID]                 = LIGHT_SENS_TaskInit();
- 120:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[MEMORY_ACTOR_ID]                       = MEMORY_TaskInit();
- 121:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[NFC_ACTOR_ID]                          = NFC_TaskInit();
- 122:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]                   = EV_MANAGER_ActorInit(defaultT
- 123:Core/Src/freertos.c ****   // TODO
- 124:Core/Src/freertos.c ****   // ACCEL_TaskInit();
- 125:Core/Src/freertos.c **** 
- 126:Core/Src/freertos.c ****   /* USER CODE END RTOS_THREADS */
- 127:Core/Src/freertos.c **** 
- 128:Core/Src/freertos.c ****   /* USER CODE BEGIN RTOS_EVENTS */
- 129:Core/Src/freertos.c ****   /* add events, ... */
- 130:Core/Src/freertos.c ****   /* USER CODE END RTOS_EVENTS */
- 131:Core/Src/freertos.c **** 
- 132:Core/Src/freertos.c **** }
- 133:Core/Src/freertos.c **** 
- 134:Core/Src/freertos.c **** /* USER CODE BEGIN Header_StartDefaultTask */
- 135:Core/Src/freertos.c **** /**
- 136:Core/Src/freertos.c ****   * @brief  Function implementing the defaultTask thread.
- 137:Core/Src/freertos.c ****   * @param  argument: Not used
- 138:Core/Src/freertos.c ****   * @retval None
- 139:Core/Src/freertos.c ****   */
- 140:Core/Src/freertos.c **** /* USER CODE END Header_StartDefaultTask */
- 141:Core/Src/freertos.c **** void StartDefaultTask(void *argument)
- 142:Core/Src/freertos.c **** {
-  29              		.loc 1 142 1 view -0
-  30              		.cfi_startproc
-ARM GAS  /tmp/cctJwOGF.s 			page 4
+  87:Core/Src/freertos.c ****   /* USER CODE BEGIN RTOS_MUTEX */
+  88:Core/Src/freertos.c ****   /* add mutexes, ... */
+  89:Core/Src/freertos.c ****   i2cMutexHandle = osMutexNew(&(osMutexAttr_t){ .name = "i2cMutex" });
+  90:Core/Src/freertos.c ****   /* USER CODE END RTOS_MUTEX */
+  91:Core/Src/freertos.c **** 
+  92:Core/Src/freertos.c ****   /* USER CODE BEGIN RTOS_SEMAPHORES */
+  93:Core/Src/freertos.c ****   /* add semaphores, ... */
+  94:Core/Src/freertos.c ****   /* USER CODE END RTOS_SEMAPHORES */
+  95:Core/Src/freertos.c **** 
+  96:Core/Src/freertos.c ****   /* USER CODE BEGIN RTOS_TIMERS */
+  97:Core/Src/freertos.c ****   /* start timers, add new ones, ... */
+  98:Core/Src/freertos.c ****   /* USER CODE END RTOS_TIMERS */
+  99:Core/Src/freertos.c **** 
+ 100:Core/Src/freertos.c ****   /* USER CODE BEGIN RTOS_QUEUES */
+ 101:Core/Src/freertos.c ****   /* add queues, ... */
+ 102:Core/Src/freertos.c ****   /* USER CODE END RTOS_QUEUES */
+ 103:Core/Src/freertos.c **** 
+ 104:Core/Src/freertos.c ****   /* Create the thread(s) */
+ 105:Core/Src/freertos.c ****   /* creation of defaultTask */
+ 106:Core/Src/freertos.c ****   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+ 107:Core/Src/freertos.c **** 
+ 108:Core/Src/freertos.c ****   /* USER CODE BEGIN RTOS_THREADS */
+ 109:Core/Src/freertos.c ****   extern actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS];
+ 110:Core/Src/freertos.c ****   /* add threads, ... */
+ 111:Core/Src/freertos.c ****   /**
+ 112:Core/Src/freertos.c ****    * Initialize actors threads and save pointers to them in common registry
+ 113:Core/Src/freertos.c ****    * Not actors have threads but all of them have os message queues so they're should be initialize
+ 114:Core/Src/freertos.c ****    * */
+ 115:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[CRON_ACTOR_ID]                         = CRON_ActorInit();
+ 116:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[PWRM_MANAGER_ACTOR_ID]                 = PWRM_MANAGER_ActorInit();
+ 117:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID]  = TH_SENS_TaskInit();
+ 118:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[LIGHT_SENSOR_ACTOR_ID]                 = LIGHT_SENS_TaskInit();
+ 119:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[MEMORY_ACTOR_ID]                       = MEMORY_TaskInit();
+ 120:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[NFC_ACTOR_ID]                          = NFC_TaskInit();
+ 121:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]                   = EV_MANAGER_ActorInit(defaultT
+ 122:Core/Src/freertos.c ****   // TODO
+ 123:Core/Src/freertos.c ****   // ACCEL_TaskInit();
+ 124:Core/Src/freertos.c **** 
+ 125:Core/Src/freertos.c ****   /* USER CODE END RTOS_THREADS */
+ 126:Core/Src/freertos.c **** 
+ 127:Core/Src/freertos.c ****   /* USER CODE BEGIN RTOS_EVENTS */
+ 128:Core/Src/freertos.c ****   /* add events, ... */
+ 129:Core/Src/freertos.c ****   /* USER CODE END RTOS_EVENTS */
+ 130:Core/Src/freertos.c **** 
+ 131:Core/Src/freertos.c **** }
+ 132:Core/Src/freertos.c **** 
+ 133:Core/Src/freertos.c **** /* USER CODE BEGIN Header_StartDefaultTask */
+ 134:Core/Src/freertos.c **** /**
+ 135:Core/Src/freertos.c ****   * @brief  Function implementing the defaultTask thread.
+ 136:Core/Src/freertos.c ****   * @param  argument: Not used
+ 137:Core/Src/freertos.c ****   * @retval None
+ 138:Core/Src/freertos.c ****   */
+ 139:Core/Src/freertos.c **** /* USER CODE END Header_StartDefaultTask */
+ 140:Core/Src/freertos.c **** void StartDefaultTask(void *argument)
+ 141:Core/Src/freertos.c **** {
+  30              		.loc 1 141 1 view -0
+  31              		.cfi_startproc
+ARM GAS  /tmp/cchKSsZN.s 			page 4
 
 
-  31              		@ Volatile: function does not return.
-  32              		@ args = 0, pretend = 0, frame = 16
-  33              		@ frame_needed = 0, uses_anonymous_args = 0
-  34              	.LVL0:
-  35              		.loc 1 142 1 is_stmt 0 view .LVU1
+  32              		@ Volatile: function does not return.
+  33              		@ args = 0, pretend = 0, frame = 16
+  34              		@ frame_needed = 0, uses_anonymous_args = 0
+  35              		.loc 1 141 1 is_stmt 0 view .LVU1
   36 0000 00B5     		push	{lr}
   37              	.LCFI0:
   38              		.cfi_def_cfa_offset 4
@@ -193,310 +192,313 @@ ARM GAS  /tmp/cctJwOGF.s 			page 1
   40 0002 85B0     		sub	sp, sp, #20
   41              	.LCFI1:
   42              		.cfi_def_cfa_offset 24
-  43 0004 03E0     		b	.L2
-  44              	.LVL1:
-  45              	.L5:
- 143:Core/Src/freertos.c ****   /* init code for USB_DEVICE */
- 144:Core/Src/freertos.c **** 
- 145:Core/Src/freertos.c ****   /* USER CODE BEGIN StartDefaultTask */
- 146:Core/Src/freertos.c ****   //  MX_USB_DEVICE_Init();
- 147:Core/Src/freertos.c ****   (void) argument; // Avoid unused parameter warning
- 148:Core/Src/freertos.c ****   message_t msg;
- 149:Core/Src/freertos.c ****   /* Infinite loop */
- 150:Core/Src/freertos.c ****   for(;;)
- 151:Core/Src/freertos.c ****   {
- 152:Core/Src/freertos.c ****     // process event manager messages
- 153:Core/Src/freertos.c ****     if (osMessageQueueGet(EV_MANAGER_Actor.super.osMessageQueueId, &msg, NULL, osWaitForever) == os
- 154:Core/Src/freertos.c ****       EV_MANAGER_Actor.super.messageHandler(&EV_MANAGER_Actor.super, &msg);
-  46              		.loc 1 154 7 is_stmt 1 view .LVU2
-  47              		.loc 1 154 29 is_stmt 0 view .LVU3
-  48 0006 0748     		ldr	r0, .L6
-  49 0008 C368     		ldr	r3, [r0, #12]
-  50              		.loc 1 154 7 view .LVU4
-  51 000a 01A9     		add	r1, sp, #4
-  52 000c 9847     		blx	r3
-  53              	.LVL2:
-  54              	.L2:
- 147:Core/Src/freertos.c ****   message_t msg;
-  55              		.loc 1 147 3 is_stmt 1 view .LVU5
- 148:Core/Src/freertos.c ****   /* Infinite loop */
-  56              		.loc 1 148 3 view .LVU6
- 150:Core/Src/freertos.c ****   {
-  57              		.loc 1 150 3 view .LVU7
- 153:Core/Src/freertos.c ****       EV_MANAGER_Actor.super.messageHandler(&EV_MANAGER_Actor.super, &msg);
-  58              		.loc 1 153 5 view .LVU8
- 153:Core/Src/freertos.c ****       EV_MANAGER_Actor.super.messageHandler(&EV_MANAGER_Actor.super, &msg);
-  59              		.loc 1 153 9 is_stmt 0 view .LVU9
-  60 000e 4FF0FF33 		mov	r3, #-1
-  61 0012 0022     		movs	r2, #0
-  62 0014 01A9     		add	r1, sp, #4
-  63 0016 0348     		ldr	r0, .L6
-  64 0018 8068     		ldr	r0, [r0, #8]
-  65 001a FFF7FEFF 		bl	osMessageQueueGet
-  66              	.LVL3:
- 153:Core/Src/freertos.c ****       EV_MANAGER_Actor.super.messageHandler(&EV_MANAGER_Actor.super, &msg);
-  67              		.loc 1 153 8 view .LVU10
-  68 001e 0028     		cmp	r0, #0
-  69 0020 F5D1     		bne	.L2
-ARM GAS  /tmp/cctJwOGF.s 			page 5
+ 142:Core/Src/freertos.c ****   /* init code for USB_DEVICE */
+ 143:Core/Src/freertos.c ****   MX_USB_DEVICE_Init();
+  43              		.loc 1 143 3 is_stmt 1 view .LVU2
+  44 0004 FFF7FEFF 		bl	MX_USB_DEVICE_Init
+  45              	.LVL1:
+  46              		.loc 1 143 3 is_stmt 0 view .LVU3
+  47 0008 03E0     		b	.L2
+  48              	.L5:
+ 144:Core/Src/freertos.c ****   /* USER CODE BEGIN StartDefaultTask */
+ 145:Core/Src/freertos.c ****   (void) argument; // Avoid unused parameter warning
+ 146:Core/Src/freertos.c ****   message_t msg;
+ 147:Core/Src/freertos.c ****   /* Infinite loop */
+ 148:Core/Src/freertos.c ****   for(;;)
+ 149:Core/Src/freertos.c ****   {
+ 150:Core/Src/freertos.c ****     // process event manager messages
+ 151:Core/Src/freertos.c ****     if (osMessageQueueGet(EV_MANAGER_Actor.super.osMessageQueueId, &msg, NULL, osWaitForever) == os
+ 152:Core/Src/freertos.c ****       EV_MANAGER_Actor.super.messageHandler(&EV_MANAGER_Actor.super, &msg);
+  49              		.loc 1 152 7 is_stmt 1 view .LVU4
+  50              		.loc 1 152 29 is_stmt 0 view .LVU5
+  51 000a 0748     		ldr	r0, .L6
+  52 000c C368     		ldr	r3, [r0, #12]
+  53              		.loc 1 152 7 view .LVU6
+  54 000e 01A9     		add	r1, sp, #4
+  55 0010 9847     		blx	r3
+  56              	.LVL2:
+  57              	.L2:
+ 145:Core/Src/freertos.c ****   message_t msg;
+  58              		.loc 1 145 3 is_stmt 1 view .LVU7
+ 146:Core/Src/freertos.c ****   /* Infinite loop */
+  59              		.loc 1 146 3 view .LVU8
+ 148:Core/Src/freertos.c ****   {
+  60              		.loc 1 148 3 view .LVU9
+ 151:Core/Src/freertos.c ****       EV_MANAGER_Actor.super.messageHandler(&EV_MANAGER_Actor.super, &msg);
+  61              		.loc 1 151 5 view .LVU10
+ 151:Core/Src/freertos.c ****       EV_MANAGER_Actor.super.messageHandler(&EV_MANAGER_Actor.super, &msg);
+  62              		.loc 1 151 9 is_stmt 0 view .LVU11
+  63 0012 4FF0FF33 		mov	r3, #-1
+  64 0016 0022     		movs	r2, #0
+  65 0018 01A9     		add	r1, sp, #4
+  66 001a 0348     		ldr	r0, .L6
+  67 001c 8068     		ldr	r0, [r0, #8]
+  68 001e FFF7FEFF 		bl	osMessageQueueGet
+  69              	.LVL3:
+ 151:Core/Src/freertos.c ****       EV_MANAGER_Actor.super.messageHandler(&EV_MANAGER_Actor.super, &msg);
+  70              		.loc 1 151 8 view .LVU12
+  71 0022 0028     		cmp	r0, #0
+ARM GAS  /tmp/cchKSsZN.s 			page 5
 
 
-  70 0022 F0E7     		b	.L5
-  71              	.L7:
-  72              		.align	2
-  73              	.L6:
-  74 0024 00000000 		.word	EV_MANAGER_Actor
-  75              		.cfi_endproc
-  76              	.LFE140:
-  78              		.section	.rodata.MX_FREERTOS_Init.str1.4,"aMS",%progbits,1
-  79              		.align	2
-  80              	.LC0:
-  81 0000 6932634D 		.ascii	"i2cMutex\000"
-  81      75746578 
-  81      00
-  82              		.section	.text.MX_FREERTOS_Init,"ax",%progbits
-  83              		.align	1
-  84              		.global	MX_FREERTOS_Init
-  85              		.syntax unified
-  86              		.thumb
-  87              		.thumb_func
-  88              		.fpu fpv4-sp-d16
-  90              	MX_FREERTOS_Init:
-  91              	.LFB139:
-  83:Core/Src/freertos.c ****   /* USER CODE BEGIN Init */
-  92              		.loc 1 83 29 is_stmt 1 view -0
-  93              		.cfi_startproc
-  94              		@ args = 0, pretend = 0, frame = 16
-  95              		@ frame_needed = 0, uses_anonymous_args = 0
-  96 0000 30B5     		push	{r4, r5, lr}
-  97              	.LCFI2:
-  98              		.cfi_def_cfa_offset 12
-  99              		.cfi_offset 4, -12
- 100              		.cfi_offset 5, -8
- 101              		.cfi_offset 14, -4
- 102 0002 85B0     		sub	sp, sp, #20
- 103              	.LCFI3:
- 104              		.cfi_def_cfa_offset 32
-  90:Core/Src/freertos.c ****   /* USER CODE END RTOS_MUTEX */
- 105              		.loc 1 90 3 view .LVU12
-  90:Core/Src/freertos.c ****   /* USER CODE END RTOS_MUTEX */
- 106              		.loc 1 90 47 is_stmt 0 view .LVU13
- 107 0004 0024     		movs	r4, #0
- 108 0006 0094     		str	r4, [sp]
- 109 0008 0194     		str	r4, [sp, #4]
- 110 000a 0294     		str	r4, [sp, #8]
- 111 000c 0394     		str	r4, [sp, #12]
- 112 000e 134B     		ldr	r3, .L10
- 113 0010 0093     		str	r3, [sp]
-  90:Core/Src/freertos.c ****   /* USER CODE END RTOS_MUTEX */
- 114              		.loc 1 90 20 view .LVU14
- 115 0012 6846     		mov	r0, sp
- 116 0014 FFF7FEFF 		bl	osMutexNew
- 117              	.LVL4:
-  90:Core/Src/freertos.c ****   /* USER CODE END RTOS_MUTEX */
- 118              		.loc 1 90 18 view .LVU15
- 119 0018 114B     		ldr	r3, .L10+4
- 120 001a 1860     		str	r0, [r3]
- 107:Core/Src/freertos.c **** 
-ARM GAS  /tmp/cctJwOGF.s 			page 6
+  72 0024 F5D1     		bne	.L2
+  73 0026 F0E7     		b	.L5
+  74              	.L7:
+  75              		.align	2
+  76              	.L6:
+  77 0028 00000000 		.word	EV_MANAGER_Actor
+  78              		.cfi_endproc
+  79              	.LFE140:
+  81              		.section	.rodata.MX_FREERTOS_Init.str1.4,"aMS",%progbits,1
+  82              		.align	2
+  83              	.LC0:
+  84 0000 6932634D 		.ascii	"i2cMutex\000"
+  84      75746578 
+  84      00
+  85              		.section	.text.MX_FREERTOS_Init,"ax",%progbits
+  86              		.align	1
+  87              		.global	MX_FREERTOS_Init
+  88              		.syntax unified
+  89              		.thumb
+  90              		.thumb_func
+  91              		.fpu fpv4-sp-d16
+  93              	MX_FREERTOS_Init:
+  94              	.LFB139:
+  82:Core/Src/freertos.c ****   /* USER CODE BEGIN Init */
+  95              		.loc 1 82 29 is_stmt 1 view -0
+  96              		.cfi_startproc
+  97              		@ args = 0, pretend = 0, frame = 16
+  98              		@ frame_needed = 0, uses_anonymous_args = 0
+  99 0000 30B5     		push	{r4, r5, lr}
+ 100              	.LCFI2:
+ 101              		.cfi_def_cfa_offset 12
+ 102              		.cfi_offset 4, -12
+ 103              		.cfi_offset 5, -8
+ 104              		.cfi_offset 14, -4
+ 105 0002 85B0     		sub	sp, sp, #20
+ 106              	.LCFI3:
+ 107              		.cfi_def_cfa_offset 32
+  89:Core/Src/freertos.c ****   /* USER CODE END RTOS_MUTEX */
+ 108              		.loc 1 89 3 view .LVU14
+  89:Core/Src/freertos.c ****   /* USER CODE END RTOS_MUTEX */
+ 109              		.loc 1 89 47 is_stmt 0 view .LVU15
+ 110 0004 0024     		movs	r4, #0
+ 111 0006 0094     		str	r4, [sp]
+ 112 0008 0194     		str	r4, [sp, #4]
+ 113 000a 0294     		str	r4, [sp, #8]
+ 114 000c 0394     		str	r4, [sp, #12]
+ 115 000e 134B     		ldr	r3, .L10
+ 116 0010 0093     		str	r3, [sp]
+  89:Core/Src/freertos.c ****   /* USER CODE END RTOS_MUTEX */
+ 117              		.loc 1 89 20 view .LVU16
+ 118 0012 6846     		mov	r0, sp
+ 119 0014 FFF7FEFF 		bl	osMutexNew
+ 120              	.LVL4:
+  89:Core/Src/freertos.c ****   /* USER CODE END RTOS_MUTEX */
+ 121              		.loc 1 89 18 view .LVU17
+ 122 0018 114B     		ldr	r3, .L10+4
+ 123 001a 1860     		str	r0, [r3]
+ARM GAS  /tmp/cchKSsZN.s 			page 6
 
 
- 121              		.loc 1 107 3 is_stmt 1 view .LVU16
- 107:Core/Src/freertos.c **** 
- 122              		.loc 1 107 23 is_stmt 0 view .LVU17
- 123 001c 114A     		ldr	r2, .L10+8
- 124 001e 2146     		mov	r1, r4
- 125 0020 1148     		ldr	r0, .L10+12
- 126 0022 FFF7FEFF 		bl	osThreadNew
- 127              	.LVL5:
- 107:Core/Src/freertos.c **** 
- 128              		.loc 1 107 21 view .LVU18
- 129 0026 114D     		ldr	r5, .L10+16
- 130 0028 2860     		str	r0, [r5]
- 110:Core/Src/freertos.c ****   /* add threads, ... */
- 131              		.loc 1 110 3 is_stmt 1 view .LVU19
- 116:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[PWRM_MANAGER_ACTOR_ID]                 = PWRM_MANAGER_ActorInit();
- 132              		.loc 1 116 3 view .LVU20
- 116:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[PWRM_MANAGER_ACTOR_ID]                 = PWRM_MANAGER_ActorInit();
- 133              		.loc 1 116 71 is_stmt 0 view .LVU21
- 134 002a FFF7FEFF 		bl	CRON_ActorInit
- 135              	.LVL6:
- 116:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[PWRM_MANAGER_ACTOR_ID]                 = PWRM_MANAGER_ActorInit();
- 136              		.loc 1 116 69 view .LVU22
- 137 002e 104C     		ldr	r4, .L10+20
- 138 0030 A060     		str	r0, [r4, #8]
- 117:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID]  = TH_SENS_TaskInit();
- 139              		.loc 1 117 3 is_stmt 1 view .LVU23
- 117:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID]  = TH_SENS_TaskInit();
- 140              		.loc 1 117 71 is_stmt 0 view .LVU24
- 141 0032 FFF7FEFF 		bl	PWRM_MANAGER_ActorInit
- 142              	.LVL7:
- 117:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID]  = TH_SENS_TaskInit();
- 143              		.loc 1 117 69 view .LVU25
- 144 0036 E060     		str	r0, [r4, #12]
- 118:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[LIGHT_SENSOR_ACTOR_ID]                 = LIGHT_SENS_TaskInit();
- 145              		.loc 1 118 3 is_stmt 1 view .LVU26
- 118:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[LIGHT_SENSOR_ACTOR_ID]                 = LIGHT_SENS_TaskInit();
- 146              		.loc 1 118 71 is_stmt 0 view .LVU27
- 147 0038 FFF7FEFF 		bl	TH_SENS_TaskInit
- 148              	.LVL8:
- 118:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[LIGHT_SENSOR_ACTOR_ID]                 = LIGHT_SENS_TaskInit();
- 149              		.loc 1 118 69 view .LVU28
- 150 003c A061     		str	r0, [r4, #24]
- 119:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[MEMORY_ACTOR_ID]                       = MEMORY_TaskInit();
- 151              		.loc 1 119 3 is_stmt 1 view .LVU29
- 119:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[MEMORY_ACTOR_ID]                       = MEMORY_TaskInit();
- 152              		.loc 1 119 71 is_stmt 0 view .LVU30
- 153 003e FFF7FEFF 		bl	LIGHT_SENS_TaskInit
- 154              	.LVL9:
- 119:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[MEMORY_ACTOR_ID]                       = MEMORY_TaskInit();
- 155              		.loc 1 119 69 view .LVU31
- 156 0042 E061     		str	r0, [r4, #28]
- 120:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[NFC_ACTOR_ID]                          = NFC_TaskInit();
- 157              		.loc 1 120 3 is_stmt 1 view .LVU32
- 120:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[NFC_ACTOR_ID]                          = NFC_TaskInit();
- 158              		.loc 1 120 71 is_stmt 0 view .LVU33
- 159 0044 FFF7FEFF 		bl	MEMORY_TaskInit
- 160              	.LVL10:
-ARM GAS  /tmp/cctJwOGF.s 			page 7
+ 106:Core/Src/freertos.c **** 
+ 124              		.loc 1 106 3 is_stmt 1 view .LVU18
+ 106:Core/Src/freertos.c **** 
+ 125              		.loc 1 106 23 is_stmt 0 view .LVU19
+ 126 001c 114A     		ldr	r2, .L10+8
+ 127 001e 2146     		mov	r1, r4
+ 128 0020 1148     		ldr	r0, .L10+12
+ 129 0022 FFF7FEFF 		bl	osThreadNew
+ 130              	.LVL5:
+ 106:Core/Src/freertos.c **** 
+ 131              		.loc 1 106 21 view .LVU20
+ 132 0026 114D     		ldr	r5, .L10+16
+ 133 0028 2860     		str	r0, [r5]
+ 109:Core/Src/freertos.c ****   /* add threads, ... */
+ 134              		.loc 1 109 3 is_stmt 1 view .LVU21
+ 115:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[PWRM_MANAGER_ACTOR_ID]                 = PWRM_MANAGER_ActorInit();
+ 135              		.loc 1 115 3 view .LVU22
+ 115:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[PWRM_MANAGER_ACTOR_ID]                 = PWRM_MANAGER_ActorInit();
+ 136              		.loc 1 115 71 is_stmt 0 view .LVU23
+ 137 002a FFF7FEFF 		bl	CRON_ActorInit
+ 138              	.LVL6:
+ 115:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[PWRM_MANAGER_ACTOR_ID]                 = PWRM_MANAGER_ActorInit();
+ 139              		.loc 1 115 69 view .LVU24
+ 140 002e 104C     		ldr	r4, .L10+20
+ 141 0030 A060     		str	r0, [r4, #8]
+ 116:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID]  = TH_SENS_TaskInit();
+ 142              		.loc 1 116 3 is_stmt 1 view .LVU25
+ 116:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID]  = TH_SENS_TaskInit();
+ 143              		.loc 1 116 71 is_stmt 0 view .LVU26
+ 144 0032 FFF7FEFF 		bl	PWRM_MANAGER_ActorInit
+ 145              	.LVL7:
+ 116:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID]  = TH_SENS_TaskInit();
+ 146              		.loc 1 116 69 view .LVU27
+ 147 0036 E060     		str	r0, [r4, #12]
+ 117:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[LIGHT_SENSOR_ACTOR_ID]                 = LIGHT_SENS_TaskInit();
+ 148              		.loc 1 117 3 is_stmt 1 view .LVU28
+ 117:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[LIGHT_SENSOR_ACTOR_ID]                 = LIGHT_SENS_TaskInit();
+ 149              		.loc 1 117 71 is_stmt 0 view .LVU29
+ 150 0038 FFF7FEFF 		bl	TH_SENS_TaskInit
+ 151              	.LVL8:
+ 117:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[LIGHT_SENSOR_ACTOR_ID]                 = LIGHT_SENS_TaskInit();
+ 152              		.loc 1 117 69 view .LVU30
+ 153 003c A061     		str	r0, [r4, #24]
+ 118:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[MEMORY_ACTOR_ID]                       = MEMORY_TaskInit();
+ 154              		.loc 1 118 3 is_stmt 1 view .LVU31
+ 118:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[MEMORY_ACTOR_ID]                       = MEMORY_TaskInit();
+ 155              		.loc 1 118 71 is_stmt 0 view .LVU32
+ 156 003e FFF7FEFF 		bl	LIGHT_SENS_TaskInit
+ 157              	.LVL9:
+ 118:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[MEMORY_ACTOR_ID]                       = MEMORY_TaskInit();
+ 158              		.loc 1 118 69 view .LVU33
+ 159 0042 E061     		str	r0, [r4, #28]
+ 119:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[NFC_ACTOR_ID]                          = NFC_TaskInit();
+ 160              		.loc 1 119 3 is_stmt 1 view .LVU34
+ 119:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[NFC_ACTOR_ID]                          = NFC_TaskInit();
+ 161              		.loc 1 119 71 is_stmt 0 view .LVU35
+ 162 0044 FFF7FEFF 		bl	MEMORY_TaskInit
+ARM GAS  /tmp/cchKSsZN.s 			page 7
 
 
- 120:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[NFC_ACTOR_ID]                          = NFC_TaskInit();
- 161              		.loc 1 120 69 view .LVU34
- 162 0048 2062     		str	r0, [r4, #32]
- 121:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]                   = EV_MANAGER_ActorInit(defaultT
- 163              		.loc 1 121 3 is_stmt 1 view .LVU35
- 121:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]                   = EV_MANAGER_ActorInit(defaultT
- 164              		.loc 1 121 71 is_stmt 0 view .LVU36
- 165 004a FFF7FEFF 		bl	NFC_TaskInit
- 166              	.LVL11:
- 121:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]                   = EV_MANAGER_ActorInit(defaultT
- 167              		.loc 1 121 69 view .LVU37
- 168 004e 2061     		str	r0, [r4, #16]
- 122:Core/Src/freertos.c ****   // TODO
- 169              		.loc 1 122 3 is_stmt 1 view .LVU38
- 122:Core/Src/freertos.c ****   // TODO
- 170              		.loc 1 122 71 is_stmt 0 view .LVU39
- 171 0050 2868     		ldr	r0, [r5]
- 172 0052 FFF7FEFF 		bl	EV_MANAGER_ActorInit
- 173              	.LVL12:
- 122:Core/Src/freertos.c ****   // TODO
- 174              		.loc 1 122 69 view .LVU40
- 175 0056 6060     		str	r0, [r4, #4]
- 132:Core/Src/freertos.c **** 
- 176              		.loc 1 132 1 view .LVU41
- 177 0058 05B0     		add	sp, sp, #20
- 178              	.LCFI4:
- 179              		.cfi_def_cfa_offset 12
- 180              		@ sp needed
- 181 005a 30BD     		pop	{r4, r5, pc}
- 182              	.L11:
- 183              		.align	2
- 184              	.L10:
- 185 005c 00000000 		.word	.LC0
- 186 0060 00000000 		.word	.LANCHOR0
- 187 0064 00000000 		.word	.LANCHOR1
- 188 0068 00000000 		.word	StartDefaultTask
- 189 006c 00000000 		.word	.LANCHOR2
- 190 0070 00000000 		.word	ACTORS_LIST_SystemRegistry
- 191              		.cfi_endproc
- 192              	.LFE139:
- 194              		.global	defaultTask_attributes
- 195              		.section	.rodata.str1.4,"aMS",%progbits,1
- 196              		.align	2
- 197              	.LC1:
- 198 0000 64656661 		.ascii	"defaultTask\000"
- 198      756C7454 
- 198      61736B00 
- 199              		.global	defaultTaskControlBlock
- 200              		.global	defaultTaskBuffer
- 201              		.global	defaultTaskHandle
- 202              		.global	i2cMutexHandle
- 203              		.section	.bss.defaultTaskBuffer,"aw",%nobits
- 204              		.align	2
- 207              	defaultTaskBuffer:
- 208 0000 00000000 		.space	512
- 208      00000000 
- 208      00000000 
-ARM GAS  /tmp/cctJwOGF.s 			page 8
+ 163              	.LVL10:
+ 119:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[NFC_ACTOR_ID]                          = NFC_TaskInit();
+ 164              		.loc 1 119 69 view .LVU36
+ 165 0048 2062     		str	r0, [r4, #32]
+ 120:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]                   = EV_MANAGER_ActorInit(defaultT
+ 166              		.loc 1 120 3 is_stmt 1 view .LVU37
+ 120:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]                   = EV_MANAGER_ActorInit(defaultT
+ 167              		.loc 1 120 71 is_stmt 0 view .LVU38
+ 168 004a FFF7FEFF 		bl	NFC_TaskInit
+ 169              	.LVL11:
+ 120:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]                   = EV_MANAGER_ActorInit(defaultT
+ 170              		.loc 1 120 69 view .LVU39
+ 171 004e 2061     		str	r0, [r4, #16]
+ 121:Core/Src/freertos.c ****   // TODO
+ 172              		.loc 1 121 3 is_stmt 1 view .LVU40
+ 121:Core/Src/freertos.c ****   // TODO
+ 173              		.loc 1 121 71 is_stmt 0 view .LVU41
+ 174 0050 2868     		ldr	r0, [r5]
+ 175 0052 FFF7FEFF 		bl	EV_MANAGER_ActorInit
+ 176              	.LVL12:
+ 121:Core/Src/freertos.c ****   // TODO
+ 177              		.loc 1 121 69 view .LVU42
+ 178 0056 6060     		str	r0, [r4, #4]
+ 131:Core/Src/freertos.c **** 
+ 179              		.loc 1 131 1 view .LVU43
+ 180 0058 05B0     		add	sp, sp, #20
+ 181              	.LCFI4:
+ 182              		.cfi_def_cfa_offset 12
+ 183              		@ sp needed
+ 184 005a 30BD     		pop	{r4, r5, pc}
+ 185              	.L11:
+ 186              		.align	2
+ 187              	.L10:
+ 188 005c 00000000 		.word	.LC0
+ 189 0060 00000000 		.word	.LANCHOR0
+ 190 0064 00000000 		.word	.LANCHOR1
+ 191 0068 00000000 		.word	StartDefaultTask
+ 192 006c 00000000 		.word	.LANCHOR2
+ 193 0070 00000000 		.word	ACTORS_LIST_SystemRegistry
+ 194              		.cfi_endproc
+ 195              	.LFE139:
+ 197              		.global	defaultTask_attributes
+ 198              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 199              		.align	2
+ 200              	.LC1:
+ 201 0000 64656661 		.ascii	"defaultTask\000"
+ 201      756C7454 
+ 201      61736B00 
+ 202              		.global	defaultTaskControlBlock
+ 203              		.global	defaultTaskBuffer
+ 204              		.global	defaultTaskHandle
+ 205              		.global	i2cMutexHandle
+ 206              		.section	.bss.defaultTaskBuffer,"aw",%nobits
+ 207              		.align	2
+ 210              	defaultTaskBuffer:
+ 211 0000 00000000 		.space	512
+ 211      00000000 
+ARM GAS  /tmp/cchKSsZN.s 			page 8
 
 
- 208      00000000 
- 208      00000000 
- 209              		.section	.bss.defaultTaskControlBlock,"aw",%nobits
- 210              		.align	2
- 213              	defaultTaskControlBlock:
- 214 0000 00000000 		.space	92
- 214      00000000 
- 214      00000000 
- 214      00000000 
- 214      00000000 
- 215              		.section	.bss.defaultTaskHandle,"aw",%nobits
- 216              		.align	2
- 217              		.set	.LANCHOR2,. + 0
- 220              	defaultTaskHandle:
- 221 0000 00000000 		.space	4
- 222              		.section	.bss.i2cMutexHandle,"aw",%nobits
- 223              		.align	2
- 224              		.set	.LANCHOR0,. + 0
- 227              	i2cMutexHandle:
- 228 0000 00000000 		.space	4
- 229              		.section	.rodata.defaultTask_attributes,"a"
- 230              		.align	2
- 231              		.set	.LANCHOR1,. + 0
- 234              	defaultTask_attributes:
- 235 0000 00000000 		.word	.LC1
- 236 0004 00000000 		.space	4
- 237 0008 00000000 		.word	defaultTaskControlBlock
- 238 000c 5C000000 		.word	92
- 239 0010 00000000 		.word	defaultTaskBuffer
- 240 0014 00020000 		.word	512
- 241 0018 18000000 		.word	24
- 242 001c 00000000 		.space	8
- 242      00000000 
- 243              		.text
- 244              	.Letext0:
- 245              		.file 2 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h"
- 246              		.file 3 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h"
- 247              		.file 4 "Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h"
- 248              		.file 5 "/usr/include/newlib/sys/_types.h"
- 249              		.file 6 "/usr/include/newlib/sys/types.h"
- 250              		.file 7 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
- 251              		.file 8 "app/core/actor/../../config/events_list/events_list.h"
- 252              		.file 9 "app/core/actor/../../config/actors_list/actors_list.h"
- 253              		.file 10 "app/core/actor/actor.h"
- 254              		.file 11 "app/tasks/event_manager/event_manager.h"
- 255              		.file 12 "app/core/cron/cron.h"
- 256              		.file 13 "app/core/power_mode_manager/power_mode_manager.h"
- 257              		.file 14 "app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.h"
- 258              		.file 15 "app/tasks/light_sensor/light_sensor.h"
- 259              		.file 16 "app/tasks/memory/memory.h"
- 260              		.file 17 "app/tasks/nfc/nfc.h"
-ARM GAS  /tmp/cctJwOGF.s 			page 9
+ 211      00000000 
+ 211      00000000 
+ 211      00000000 
+ 212              		.section	.bss.defaultTaskControlBlock,"aw",%nobits
+ 213              		.align	2
+ 216              	defaultTaskControlBlock:
+ 217 0000 00000000 		.space	92
+ 217      00000000 
+ 217      00000000 
+ 217      00000000 
+ 217      00000000 
+ 218              		.section	.bss.defaultTaskHandle,"aw",%nobits
+ 219              		.align	2
+ 220              		.set	.LANCHOR2,. + 0
+ 223              	defaultTaskHandle:
+ 224 0000 00000000 		.space	4
+ 225              		.section	.bss.i2cMutexHandle,"aw",%nobits
+ 226              		.align	2
+ 227              		.set	.LANCHOR0,. + 0
+ 230              	i2cMutexHandle:
+ 231 0000 00000000 		.space	4
+ 232              		.section	.rodata.defaultTask_attributes,"a"
+ 233              		.align	2
+ 234              		.set	.LANCHOR1,. + 0
+ 237              	defaultTask_attributes:
+ 238 0000 00000000 		.word	.LC1
+ 239 0004 00000000 		.space	4
+ 240 0008 00000000 		.word	defaultTaskControlBlock
+ 241 000c 5C000000 		.word	92
+ 242 0010 00000000 		.word	defaultTaskBuffer
+ 243 0014 00020000 		.word	512
+ 244 0018 18000000 		.word	24
+ 245 001c 00000000 		.space	8
+ 245      00000000 
+ 246              		.text
+ 247              	.Letext0:
+ 248              		.file 2 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h"
+ 249              		.file 3 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h"
+ 250              		.file 4 "Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h"
+ 251              		.file 5 "/usr/include/newlib/sys/_types.h"
+ 252              		.file 6 "/usr/include/newlib/sys/types.h"
+ 253              		.file 7 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
+ 254              		.file 8 "app/core/actor/../../config/events_list/events_list.h"
+ 255              		.file 9 "app/core/actor/../../config/actors_list/actors_list.h"
+ 256              		.file 10 "app/core/actor/actor.h"
+ 257              		.file 11 "app/tasks/event_manager/event_manager.h"
+ 258              		.file 12 "app/core/cron/cron.h"
+ 259              		.file 13 "app/core/power_mode_manager/power_mode_manager.h"
+ 260              		.file 14 "app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.h"
+ 261              		.file 15 "app/tasks/light_sensor/light_sensor.h"
+ 262              		.file 16 "app/tasks/memory/memory.h"
+ 263              		.file 17 "app/tasks/nfc/nfc.h"
+ARM GAS  /tmp/cchKSsZN.s 			page 9
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 freertos.c
-     /tmp/cctJwOGF.s:18     .text.StartDefaultTask:0000000000000000 $t
-     /tmp/cctJwOGF.s:26     .text.StartDefaultTask:0000000000000000 StartDefaultTask
-     /tmp/cctJwOGF.s:74     .text.StartDefaultTask:0000000000000024 $d
-     /tmp/cctJwOGF.s:79     .rodata.MX_FREERTOS_Init.str1.4:0000000000000000 $d
-     /tmp/cctJwOGF.s:83     .text.MX_FREERTOS_Init:0000000000000000 $t
-     /tmp/cctJwOGF.s:90     .text.MX_FREERTOS_Init:0000000000000000 MX_FREERTOS_Init
-     /tmp/cctJwOGF.s:185    .text.MX_FREERTOS_Init:000000000000005c $d
-     /tmp/cctJwOGF.s:234    .rodata.defaultTask_attributes:0000000000000000 defaultTask_attributes
-     /tmp/cctJwOGF.s:196    .rodata.str1.4:0000000000000000 $d
-     /tmp/cctJwOGF.s:213    .bss.defaultTaskControlBlock:0000000000000000 defaultTaskControlBlock
-     /tmp/cctJwOGF.s:207    .bss.defaultTaskBuffer:0000000000000000 defaultTaskBuffer
-     /tmp/cctJwOGF.s:220    .bss.defaultTaskHandle:0000000000000000 defaultTaskHandle
-     /tmp/cctJwOGF.s:227    .bss.i2cMutexHandle:0000000000000000 i2cMutexHandle
-     /tmp/cctJwOGF.s:204    .bss.defaultTaskBuffer:0000000000000000 $d
-     /tmp/cctJwOGF.s:210    .bss.defaultTaskControlBlock:0000000000000000 $d
-     /tmp/cctJwOGF.s:216    .bss.defaultTaskHandle:0000000000000000 $d
-     /tmp/cctJwOGF.s:223    .bss.i2cMutexHandle:0000000000000000 $d
-     /tmp/cctJwOGF.s:230    .rodata.defaultTask_attributes:0000000000000000 $d
+     /tmp/cchKSsZN.s:18     .text.StartDefaultTask:0000000000000000 $t
+     /tmp/cchKSsZN.s:26     .text.StartDefaultTask:0000000000000000 StartDefaultTask
+     /tmp/cchKSsZN.s:77     .text.StartDefaultTask:0000000000000028 $d
+     /tmp/cchKSsZN.s:82     .rodata.MX_FREERTOS_Init.str1.4:0000000000000000 $d
+     /tmp/cchKSsZN.s:86     .text.MX_FREERTOS_Init:0000000000000000 $t
+     /tmp/cchKSsZN.s:93     .text.MX_FREERTOS_Init:0000000000000000 MX_FREERTOS_Init
+     /tmp/cchKSsZN.s:188    .text.MX_FREERTOS_Init:000000000000005c $d
+     /tmp/cchKSsZN.s:237    .rodata.defaultTask_attributes:0000000000000000 defaultTask_attributes
+     /tmp/cchKSsZN.s:199    .rodata.str1.4:0000000000000000 $d
+     /tmp/cchKSsZN.s:216    .bss.defaultTaskControlBlock:0000000000000000 defaultTaskControlBlock
+     /tmp/cchKSsZN.s:210    .bss.defaultTaskBuffer:0000000000000000 defaultTaskBuffer
+     /tmp/cchKSsZN.s:223    .bss.defaultTaskHandle:0000000000000000 defaultTaskHandle
+     /tmp/cchKSsZN.s:230    .bss.i2cMutexHandle:0000000000000000 i2cMutexHandle
+     /tmp/cchKSsZN.s:207    .bss.defaultTaskBuffer:0000000000000000 $d
+     /tmp/cchKSsZN.s:213    .bss.defaultTaskControlBlock:0000000000000000 $d
+     /tmp/cchKSsZN.s:219    .bss.defaultTaskHandle:0000000000000000 $d
+     /tmp/cchKSsZN.s:226    .bss.i2cMutexHandle:0000000000000000 $d
+     /tmp/cchKSsZN.s:233    .rodata.defaultTask_attributes:0000000000000000 $d
 
 UNDEFINED SYMBOLS
+MX_USB_DEVICE_Init
 osMessageQueueGet
 EV_MANAGER_Actor
 osMutexNew

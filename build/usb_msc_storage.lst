@@ -1,0 +1,326 @@
+ARM GAS  /tmp/ccF5M7jJ.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"usb_msc_storage.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.STORAGE_Write,"ax",%progbits
+  18              		.align	1
+  19              		.global	STORAGE_Write
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	STORAGE_Write:
+  27              	.LVL0:
+  28              	.LFB135:
+  29              		.file 1 "app/middlewares/usb_msc_storage/usb_msc_storage.c"
+   1:app/middlewares/usb_msc_storage/usb_msc_storage.c **** /*!
+   2:app/middlewares/usb_msc_storage/usb_msc_storage.c ****  * @file usb_msc_storage.c
+   3:app/middlewares/usb_msc_storage/usb_msc_storage.c ****  * @brief implementation of usb_msc_storage
+   4:app/middlewares/usb_msc_storage/usb_msc_storage.c ****  *
+   5:app/middlewares/usb_msc_storage/usb_msc_storage.c ****  * Detailed description of the implementation file.
+   6:app/middlewares/usb_msc_storage/usb_msc_storage.c ****  *
+   7:app/middlewares/usb_msc_storage/usb_msc_storage.c ****  * @date 02/09/2024
+   8:app/middlewares/usb_msc_storage/usb_msc_storage.c ****  * @author artempolisskyi
+   9:app/middlewares/usb_msc_storage/usb_msc_storage.c ****  */
+  10:app/middlewares/usb_msc_storage/usb_msc_storage.c **** 
+  11:app/middlewares/usb_msc_storage/usb_msc_storage.c **** #include "usb_msc_storage.h"
+  12:app/middlewares/usb_msc_storage/usb_msc_storage.c **** 
+  13:app/middlewares/usb_msc_storage/usb_msc_storage.c **** extern W25Q_HandleTypeDef MEMORY_W25QHandle;
+  14:app/middlewares/usb_msc_storage/usb_msc_storage.c **** 
+  15:app/middlewares/usb_msc_storage/usb_msc_storage.c **** int8_t STORAGE_Write(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t blk_len) {
+  30              		.loc 1 15 86 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  16:app/middlewares/usb_msc_storage/usb_msc_storage.c ****   uint8_t status = HAL_OK;
+  35              		.loc 1 16 3 view .LVU1
+  17:app/middlewares/usb_msc_storage/usb_msc_storage.c ****   // TODO
+  18:app/middlewares/usb_msc_storage/usb_msc_storage.c ****   return (status);
+  36              		.loc 1 18 3 view .LVU2
+  19:app/middlewares/usb_msc_storage/usb_msc_storage.c **** };
+  37              		.loc 1 19 1 is_stmt 0 view .LVU3
+  38 0000 0020     		movs	r0, #0
+  39              	.LVL1:
+ARM GAS  /tmp/ccF5M7jJ.s 			page 2
+
+
+  40              		.loc 1 19 1 view .LVU4
+  41 0002 7047     		bx	lr
+  42              		.cfi_endproc
+  43              	.LFE135:
+  45              		.section	.text.STORAGE_Read,"ax",%progbits
+  46              		.align	1
+  47              		.global	STORAGE_Read
+  48              		.syntax unified
+  49              		.thumb
+  50              		.thumb_func
+  51              		.fpu fpv4-sp-d16
+  53              	STORAGE_Read:
+  54              	.LVL2:
+  55              	.LFB136:
+  20:app/middlewares/usb_msc_storage/usb_msc_storage.c **** 
+  21:app/middlewares/usb_msc_storage/usb_msc_storage.c **** int8_t STORAGE_Read(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t blk_len) {
+  56              		.loc 1 21 85 is_stmt 1 view -0
+  57              		.cfi_startproc
+  58              		@ args = 0, pretend = 0, frame = 0
+  59              		@ frame_needed = 0, uses_anonymous_args = 0
+  60              		.loc 1 21 85 is_stmt 0 view .LVU6
+  61 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+  62              	.LCFI0:
+  63              		.cfi_def_cfa_offset 24
+  64              		.cfi_offset 3, -24
+  65              		.cfi_offset 4, -20
+  66              		.cfi_offset 5, -16
+  67              		.cfi_offset 6, -12
+  68              		.cfi_offset 7, -8
+  69              		.cfi_offset 14, -4
+  70 0002 0F46     		mov	r7, r1
+  71 0004 1D46     		mov	r5, r3
+  22:app/middlewares/usb_msc_storage/usb_msc_storage.c ****   // Calculate the flash address
+  23:app/middlewares/usb_msc_storage/usb_msc_storage.c ****   uint32_t address = blk_addr * STORAGE_BLOCK_SIZE; // Convert block address to byte address
+  72              		.loc 1 23 3 is_stmt 1 view .LVU7
+  73              		.loc 1 23 12 is_stmt 0 view .LVU8
+  74 0006 5602     		lsls	r6, r2, #9
+  75              	.LVL3:
+  24:app/middlewares/usb_msc_storage/usb_msc_storage.c ****   uint8_t status = HAL_OK;
+  76              		.loc 1 24 3 is_stmt 1 view .LVU9
+  25:app/middlewares/usb_msc_storage/usb_msc_storage.c **** 
+  26:app/middlewares/usb_msc_storage/usb_msc_storage.c ****   for (uint16_t blockNumber = 0; blockNumber < blk_len; blockNumber++) {
+  77              		.loc 1 26 3 view .LVU10
+  78              	.LBB2:
+  79              		.loc 1 26 8 view .LVU11
+  80              		.loc 1 26 17 is_stmt 0 view .LVU12
+  81 0008 0024     		movs	r4, #0
+  82              	.LBE2:
+  24:app/middlewares/usb_msc_storage/usb_msc_storage.c ****   uint8_t status = HAL_OK;
+  83              		.loc 1 24 11 view .LVU13
+  84 000a 2046     		mov	r0, r4
+  85              	.LVL4:
+  86              	.LBB4:
+  87              		.loc 1 26 3 view .LVU14
+  88 000c 09E0     		b	.L3
+  89              	.LVL5:
+  90              	.L4:
+ARM GAS  /tmp/ccF5M7jJ.s 			page 3
+
+
+  91              	.LBB3:
+  27:app/middlewares/usb_msc_storage/usb_msc_storage.c ****     uint32_t bufferOffset = blockNumber * STORAGE_BLOCK_SIZE;
+  92              		.loc 1 27 5 is_stmt 1 discriminator 3 view .LVU15
+  28:app/middlewares/usb_msc_storage/usb_msc_storage.c ****     status = W25Q_ReadData(&MEMORY_W25QHandle, &buf[bufferOffset], address, STORAGE_BLOCK_SIZE);
+  93              		.loc 1 28 5 discriminator 3 view .LVU16
+  94              		.loc 1 28 14 is_stmt 0 discriminator 3 view .LVU17
+  95 000e 4FF40073 		mov	r3, #512
+  96 0012 3246     		mov	r2, r6
+  97 0014 07EB4421 		add	r1, r7, r4, lsl #9
+  98 0018 0448     		ldr	r0, .L6
+  99              	.LVL6:
+ 100              		.loc 1 28 14 discriminator 3 view .LVU18
+ 101 001a FFF7FEFF 		bl	W25Q_ReadData
+ 102              	.LVL7:
+ 103              		.loc 1 28 14 discriminator 3 view .LVU19
+ 104              	.LBE3:
+  26:app/middlewares/usb_msc_storage/usb_msc_storage.c ****     uint32_t bufferOffset = blockNumber * STORAGE_BLOCK_SIZE;
+ 105              		.loc 1 26 57 is_stmt 1 discriminator 3 view .LVU20
+  26:app/middlewares/usb_msc_storage/usb_msc_storage.c ****     uint32_t bufferOffset = blockNumber * STORAGE_BLOCK_SIZE;
+ 106              		.loc 1 26 68 is_stmt 0 discriminator 3 view .LVU21
+ 107 001e 0134     		adds	r4, r4, #1
+ 108              	.LVL8:
+  26:app/middlewares/usb_msc_storage/usb_msc_storage.c ****     uint32_t bufferOffset = blockNumber * STORAGE_BLOCK_SIZE;
+ 109              		.loc 1 26 68 discriminator 3 view .LVU22
+ 110 0020 A4B2     		uxth	r4, r4
+ 111              	.LVL9:
+ 112              	.L3:
+  26:app/middlewares/usb_msc_storage/usb_msc_storage.c ****     uint32_t bufferOffset = blockNumber * STORAGE_BLOCK_SIZE;
+ 113              		.loc 1 26 34 is_stmt 1 discriminator 1 view .LVU23
+  26:app/middlewares/usb_msc_storage/usb_msc_storage.c ****     uint32_t bufferOffset = blockNumber * STORAGE_BLOCK_SIZE;
+ 114              		.loc 1 26 3 is_stmt 0 discriminator 1 view .LVU24
+ 115 0022 AC42     		cmp	r4, r5
+ 116 0024 F3D3     		bcc	.L4
+ 117              	.LBE4:
+  29:app/middlewares/usb_msc_storage/usb_msc_storage.c ****   }
+  30:app/middlewares/usb_msc_storage/usb_msc_storage.c **** 
+  31:app/middlewares/usb_msc_storage/usb_msc_storage.c ****   return (status);
+ 118              		.loc 1 31 3 is_stmt 1 view .LVU25
+  32:app/middlewares/usb_msc_storage/usb_msc_storage.c **** }
+ 119              		.loc 1 32 1 is_stmt 0 view .LVU26
+ 120 0026 40B2     		sxtb	r0, r0
+ 121              		.loc 1 32 1 view .LVU27
+ 122 0028 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 123              	.LVL10:
+ 124              	.L7:
+ 125              		.loc 1 32 1 view .LVU28
+ 126 002a 00BF     		.align	2
+ 127              	.L6:
+ 128 002c 00000000 		.word	MEMORY_W25QHandle
+ 129              		.cfi_endproc
+ 130              	.LFE136:
+ 132              		.section	.text.STORAGE_IsReady,"ax",%progbits
+ 133              		.align	1
+ 134              		.global	STORAGE_IsReady
+ 135              		.syntax unified
+ 136              		.thumb
+ 137              		.thumb_func
+ARM GAS  /tmp/ccF5M7jJ.s 			page 4
+
+
+ 138              		.fpu fpv4-sp-d16
+ 140              	STORAGE_IsReady:
+ 141              	.LVL11:
+ 142              	.LFB137:
+  33:app/middlewares/usb_msc_storage/usb_msc_storage.c **** 
+  34:app/middlewares/usb_msc_storage/usb_msc_storage.c **** int8_t STORAGE_IsReady(uint8_t lun) {
+ 143              		.loc 1 34 37 is_stmt 1 view -0
+ 144              		.cfi_startproc
+ 145              		@ args = 0, pretend = 0, frame = 0
+ 146              		@ frame_needed = 0, uses_anonymous_args = 0
+ 147              		.loc 1 34 37 is_stmt 0 view .LVU30
+ 148 0000 10B5     		push	{r4, lr}
+ 149              	.LCFI1:
+ 150              		.cfi_def_cfa_offset 8
+ 151              		.cfi_offset 4, -8
+ 152              		.cfi_offset 14, -4
+  35:app/middlewares/usb_msc_storage/usb_msc_storage.c ****   uint8_t status = W25Q_isBusy(&MEMORY_W25QHandle);
+ 153              		.loc 1 35 3 is_stmt 1 view .LVU31
+ 154              		.loc 1 35 20 is_stmt 0 view .LVU32
+ 155 0002 084C     		ldr	r4, .L13
+ 156 0004 2046     		mov	r0, r4
+ 157              	.LVL12:
+ 158              		.loc 1 35 20 view .LVU33
+ 159 0006 FFF7FEFF 		bl	W25Q_isBusy
+ 160              	.LVL13:
+  36:app/middlewares/usb_msc_storage/usb_msc_storage.c ****   uint8_t isBusy = MEMORY_W25QHandle.status.status1RegBits.busy == 1;
+ 161              		.loc 1 36 3 is_stmt 1 view .LVU34
+ 162              		.loc 1 36 65 is_stmt 0 view .LVU35
+ 163 000a 94F82430 		ldrb	r3, [r4, #36]	@ zero_extendqisi2
+ 164              	.LVL14:
+  37:app/middlewares/usb_msc_storage/usb_msc_storage.c **** 
+  38:app/middlewares/usb_msc_storage/usb_msc_storage.c ****   if (status == HAL_OK && !isBusy) {
+ 165              		.loc 1 38 3 is_stmt 1 view .LVU36
+ 166              		.loc 1 38 6 is_stmt 0 view .LVU37
+ 167 000e 20B9     		cbnz	r0, .L10
+ 168 0010 03F00103 		and	r3, r3, #1
+ 169              	.LVL15:
+ 170              		.loc 1 38 24 discriminator 1 view .LVU38
+ 171 0014 1BB1     		cbz	r3, .L11
+  39:app/middlewares/usb_msc_storage/usb_msc_storage.c ****     return (HAL_OK);
+  40:app/middlewares/usb_msc_storage/usb_msc_storage.c ****   }
+  41:app/middlewares/usb_msc_storage/usb_msc_storage.c ****   return (HAL_ERROR);
+ 172              		.loc 1 41 10 view .LVU39
+ 173 0016 0120     		movs	r0, #1
+ 174              	.LVL16:
+ 175              		.loc 1 41 10 view .LVU40
+ 176 0018 00E0     		b	.L9
+ 177              	.LVL17:
+ 178              	.L10:
+ 179              		.loc 1 41 10 view .LVU41
+ 180 001a 0120     		movs	r0, #1
+ 181              	.LVL18:
+ 182              	.L9:
+  42:app/middlewares/usb_msc_storage/usb_msc_storage.c **** }
+ 183              		.loc 1 42 1 view .LVU42
+ 184 001c 10BD     		pop	{r4, pc}
+ 185              	.LVL19:
+ARM GAS  /tmp/ccF5M7jJ.s 			page 5
+
+
+ 186              	.L11:
+  39:app/middlewares/usb_msc_storage/usb_msc_storage.c ****     return (HAL_OK);
+ 187              		.loc 1 39 12 view .LVU43
+ 188 001e 0020     		movs	r0, #0
+ 189              	.LVL20:
+  39:app/middlewares/usb_msc_storage/usb_msc_storage.c ****     return (HAL_OK);
+ 190              		.loc 1 39 12 view .LVU44
+ 191 0020 FCE7     		b	.L9
+ 192              	.L14:
+ 193 0022 00BF     		.align	2
+ 194              	.L13:
+ 195 0024 00000000 		.word	MEMORY_W25QHandle
+ 196              		.cfi_endproc
+ 197              	.LFE137:
+ 199              		.section	.text.STORAGE_GetCapacity,"ax",%progbits
+ 200              		.align	1
+ 201              		.global	STORAGE_GetCapacity
+ 202              		.syntax unified
+ 203              		.thumb
+ 204              		.thumb_func
+ 205              		.fpu fpv4-sp-d16
+ 207              	STORAGE_GetCapacity:
+ 208              	.LVL21:
+ 209              	.LFB138:
+  43:app/middlewares/usb_msc_storage/usb_msc_storage.c **** 
+  44:app/middlewares/usb_msc_storage/usb_msc_storage.c **** int8_t STORAGE_GetCapacity(uint8_t lun, uint32_t *block_num, uint16_t *block_size) {
+ 210              		.loc 1 44 84 is_stmt 1 view -0
+ 211              		.cfi_startproc
+ 212              		@ args = 0, pretend = 0, frame = 0
+ 213              		@ frame_needed = 0, uses_anonymous_args = 0
+ 214              		@ link register save eliminated.
+  45:app/middlewares/usb_msc_storage/usb_msc_storage.c ****   *block_num  = STORAGE_BLOCK_NUMBER;
+ 215              		.loc 1 45 3 view .LVU46
+ 216              		.loc 1 45 15 is_stmt 0 view .LVU47
+ 217 0000 4FF48043 		mov	r3, #16384
+ 218 0004 0B60     		str	r3, [r1]
+  46:app/middlewares/usb_msc_storage/usb_msc_storage.c ****   *block_size = STORAGE_BLOCK_SIZE;
+ 219              		.loc 1 46 3 is_stmt 1 view .LVU48
+ 220              		.loc 1 46 15 is_stmt 0 view .LVU49
+ 221 0006 4FF40073 		mov	r3, #512
+ 222 000a 1380     		strh	r3, [r2]	@ movhi
+  47:app/middlewares/usb_msc_storage/usb_msc_storage.c ****   return (HAL_OK);
+ 223              		.loc 1 47 3 is_stmt 1 view .LVU50
+  48:app/middlewares/usb_msc_storage/usb_msc_storage.c **** }...
+ 224              		.loc 1 48 1 is_stmt 0 view .LVU51
+ 225 000c 0020     		movs	r0, #0
+ 226              	.LVL22:
+ 227              		.loc 1 48 1 view .LVU52
+ 228 000e 7047     		bx	lr
+ 229              		.cfi_endproc
+ 230              	.LFE138:
+ 232              		.text
+ 233              	.Letext0:
+ 234              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 235              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 236              		.file 4 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l412xx.h"
+ 237              		.file 5 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h"
+ARM GAS  /tmp/ccF5M7jJ.s 			page 6
+
+
+ 238              		.file 6 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_dma.h"
+ 239              		.file 7 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_qspi.h"
+ 240              		.file 8 "app/drivers/w25q/w25q.h"
+ARM GAS  /tmp/ccF5M7jJ.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 usb_msc_storage.c
+     /tmp/ccF5M7jJ.s:18     .text.STORAGE_Write:0000000000000000 $t
+     /tmp/ccF5M7jJ.s:26     .text.STORAGE_Write:0000000000000000 STORAGE_Write
+     /tmp/ccF5M7jJ.s:46     .text.STORAGE_Read:0000000000000000 $t
+     /tmp/ccF5M7jJ.s:53     .text.STORAGE_Read:0000000000000000 STORAGE_Read
+     /tmp/ccF5M7jJ.s:128    .text.STORAGE_Read:000000000000002c $d
+     /tmp/ccF5M7jJ.s:133    .text.STORAGE_IsReady:0000000000000000 $t
+     /tmp/ccF5M7jJ.s:140    .text.STORAGE_IsReady:0000000000000000 STORAGE_IsReady
+     /tmp/ccF5M7jJ.s:195    .text.STORAGE_IsReady:0000000000000024 $d
+     /tmp/ccF5M7jJ.s:200    .text.STORAGE_GetCapacity:0000000000000000 $t
+     /tmp/ccF5M7jJ.s:207    .text.STORAGE_GetCapacity:0000000000000000 STORAGE_GetCapacity
+
+UNDEFINED SYMBOLS
+W25Q_ReadData
+MEMORY_W25QHandle
+W25Q_isBusy

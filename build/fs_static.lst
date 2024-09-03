@@ -1,0 +1,691 @@
+ARM GAS  /tmp/ccC8d8Ef.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"fs_static.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.global	root_dir
+  18              		.global	fat_table
+  19              		.global	boot_sector
+  20              		.section	.rodata.boot_sector,"a"
+  21              		.align	2
+  24              	boot_sector:
+  25 0000 EB       		.byte	-21
+  26 0001 3C       		.byte	60
+  27 0002 90       		.byte	-112
+  28 0003 4D       		.byte	77
+  29 0004 53       		.byte	83
+  30 0005 44       		.byte	68
+  31 0006 4F       		.byte	79
+  32 0007 53       		.byte	83
+  33 0008 35       		.byte	53
+  34 0009 2E       		.byte	46
+  35 000a 30       		.byte	48
+  36 000b 00       		.byte	0
+  37 000c 02       		.byte	2
+  38 000d 08       		.byte	8
+  39 000e 01       		.byte	1
+  40 000f 00       		.byte	0
+  41 0010 02       		.byte	2
+  42 0011 00       		.byte	0
+  43 0012 20       		.byte	32
+  44 0013 00       		.byte	0
+  45 0014 00       		.byte	0
+  46 0015 F8       		.byte	-8
+  47 0016 08       		.byte	8
+  48 0017 00       		.byte	0
+  49 0018 3F       		.byte	63
+  50 0019 00       		.byte	0
+  51 001a FF       		.byte	-1
+  52 001b 00       		.byte	0
+  53 001c 00       		.byte	0
+  54 001d 00       		.byte	0
+  55 001e 00       		.byte	0
+  56 001f 00       		.byte	0
+  57 0020 00       		.byte	0
+  58 0021 40       		.byte	64
+  59 0022 00       		.byte	0
+ARM GAS  /tmp/ccC8d8Ef.s 			page 2
+
+
+  60 0023 00       		.byte	0
+  61 0024 80       		.byte	-128
+  62 0025 00       		.byte	0
+  63 0026 29       		.byte	41
+  64 0027 AA       		.byte	-86
+  65 0028 55       		.byte	85
+  66 0029 AA       		.byte	-86
+  67 002a 55       		.byte	85
+  68 002b 4E       		.byte	78
+  69 002c 4F       		.byte	79
+  70 002d 52       		.byte	82
+  71 002e 20       		.byte	32
+  72 002f 44       		.byte	68
+  73 0030 49       		.byte	73
+  74 0031 53       		.byte	83
+  75 0032 4B       		.byte	75
+  76 0033 46       		.byte	70
+  77 0034 41       		.byte	65
+  78 0035 54       		.byte	84
+  79 0036 31       		.byte	49
+  80 0037 36       		.byte	54
+  81 0038 20       		.byte	32
+  82 0039 20       		.byte	32
+  83 003a 20       		.byte	32
+  84 003b 00       		.byte	0
+  85 003c 00       		.byte	0
+  86 003d 00       		.byte	0
+  87 003e 00       		.byte	0
+  88 003f 00000000 		.space	447
+  88      00000000 
+  88      00000000 
+  88      00000000 
+  88      00000000 
+  89 01fe 55       		.byte	85
+  90 01ff AA       		.byte	-86
+  91              		.section	.rodata.fat_table,"a"
+  92              		.align	2
+  95              	fat_table:
+  96 0000 F8       		.byte	-8
+  97 0001 FF       		.byte	-1
+  98 0002 FF       		.byte	-1
+  99 0003 FF       		.byte	-1
+ 100 0004 00       		.byte	0
+ 101 0005 00       		.byte	0
+ 102 0006 00       		.byte	0
+ 103 0007 00       		.byte	0
+ 104 0008 00       		.byte	0
+ 105 0009 00       		.byte	0
+ 106 000a 00       		.byte	0
+ 107 000b 00       		.byte	0
+ 108 000c 00       		.byte	0
+ 109 000d 00       		.byte	0
+ 110 000e 00       		.byte	0
+ 111 000f 00       		.byte	0
+ 112 0010 00       		.byte	0
+ 113 0011 00       		.byte	0
+ 114 0012 00       		.byte	0
+ARM GAS  /tmp/ccC8d8Ef.s 			page 3
+
+
+ 115 0013 00       		.byte	0
+ 116 0014 00       		.byte	0
+ 117 0015 00       		.byte	0
+ 118 0016 00       		.byte	0
+ 119 0017 00       		.byte	0
+ 120 0018 00       		.byte	0
+ 121 0019 00       		.byte	0
+ 122 001a 00       		.byte	0
+ 123 001b 00       		.byte	0
+ 124 001c 00       		.byte	0
+ 125 001d 00       		.byte	0
+ 126 001e 00       		.byte	0
+ 127 001f 00       		.byte	0
+ 128 0020 00       		.byte	0
+ 129 0021 00       		.byte	0
+ 130 0022 00       		.byte	0
+ 131 0023 00       		.byte	0
+ 132 0024 00       		.byte	0
+ 133 0025 00       		.byte	0
+ 134 0026 00       		.byte	0
+ 135 0027 00       		.byte	0
+ 136 0028 00       		.byte	0
+ 137 0029 00       		.byte	0
+ 138 002a 00       		.byte	0
+ 139 002b 00       		.byte	0
+ 140 002c 00       		.byte	0
+ 141 002d 00       		.byte	0
+ 142 002e 00       		.byte	0
+ 143 002f 00       		.byte	0
+ 144 0030 00       		.byte	0
+ 145 0031 00       		.byte	0
+ 146 0032 00       		.byte	0
+ 147 0033 00       		.byte	0
+ 148 0034 00       		.byte	0
+ 149 0035 00       		.byte	0
+ 150 0036 00       		.byte	0
+ 151 0037 00       		.byte	0
+ 152 0038 00       		.byte	0
+ 153 0039 00       		.byte	0
+ 154 003a 00       		.byte	0
+ 155 003b 00       		.byte	0
+ 156 003c 00       		.byte	0
+ 157 003d 00       		.byte	0
+ 158 003e 00       		.byte	0
+ 159 003f 00       		.byte	0
+ 160 0040 00       		.byte	0
+ 161 0041 00       		.byte	0
+ 162 0042 00       		.byte	0
+ 163 0043 00       		.byte	0
+ 164 0044 00       		.byte	0
+ 165 0045 00       		.byte	0
+ 166 0046 00       		.byte	0
+ 167 0047 00       		.byte	0
+ 168 0048 00       		.byte	0
+ 169 0049 00       		.byte	0
+ 170 004a 00       		.byte	0
+ 171 004b 00       		.byte	0
+ARM GAS  /tmp/ccC8d8Ef.s 			page 4
+
+
+ 172 004c 00       		.byte	0
+ 173 004d 00       		.byte	0
+ 174 004e 00       		.byte	0
+ 175 004f 00       		.byte	0
+ 176 0050 00       		.byte	0
+ 177 0051 00       		.byte	0
+ 178 0052 00       		.byte	0
+ 179 0053 00       		.byte	0
+ 180 0054 00       		.byte	0
+ 181 0055 00       		.byte	0
+ 182 0056 00       		.byte	0
+ 183 0057 00       		.byte	0
+ 184 0058 00       		.byte	0
+ 185 0059 00       		.byte	0
+ 186 005a 00       		.byte	0
+ 187 005b 00       		.byte	0
+ 188 005c 00       		.byte	0
+ 189 005d 00       		.byte	0
+ 190 005e 00       		.byte	0
+ 191 005f 00       		.byte	0
+ 192 0060 00       		.byte	0
+ 193 0061 00       		.byte	0
+ 194 0062 00       		.byte	0
+ 195 0063 00       		.byte	0
+ 196 0064 00       		.byte	0
+ 197 0065 00       		.byte	0
+ 198 0066 00       		.byte	0
+ 199 0067 00       		.byte	0
+ 200 0068 00       		.byte	0
+ 201 0069 00       		.byte	0
+ 202 006a 00       		.byte	0
+ 203 006b 00       		.byte	0
+ 204 006c 00       		.byte	0
+ 205 006d 00       		.byte	0
+ 206 006e 00       		.byte	0
+ 207 006f 00       		.byte	0
+ 208 0070 00       		.byte	0
+ 209 0071 00       		.byte	0
+ 210 0072 00       		.byte	0
+ 211 0073 00       		.byte	0
+ 212 0074 00       		.byte	0
+ 213 0075 00       		.byte	0
+ 214 0076 00       		.byte	0
+ 215 0077 00       		.byte	0
+ 216 0078 00       		.byte	0
+ 217 0079 00       		.byte	0
+ 218 007a 00       		.byte	0
+ 219 007b 00       		.byte	0
+ 220 007c 00       		.byte	0
+ 221 007d 00       		.byte	0
+ 222 007e 00       		.byte	0
+ 223 007f 00       		.byte	0
+ 224 0080 00       		.byte	0
+ 225 0081 00       		.byte	0
+ 226 0082 00       		.byte	0
+ 227 0083 00       		.byte	0
+ 228 0084 00       		.byte	0
+ARM GAS  /tmp/ccC8d8Ef.s 			page 5
+
+
+ 229 0085 00       		.byte	0
+ 230 0086 00       		.byte	0
+ 231 0087 00       		.byte	0
+ 232 0088 00       		.byte	0
+ 233 0089 00       		.byte	0
+ 234 008a 00       		.byte	0
+ 235 008b 00       		.byte	0
+ 236 008c 00       		.byte	0
+ 237 008d 00       		.byte	0
+ 238 008e 00       		.byte	0
+ 239 008f 00       		.byte	0
+ 240 0090 00       		.byte	0
+ 241 0091 00       		.byte	0
+ 242 0092 00       		.byte	0
+ 243 0093 00       		.byte	0
+ 244 0094 00       		.byte	0
+ 245 0095 00       		.byte	0
+ 246 0096 00       		.byte	0
+ 247 0097 00       		.byte	0
+ 248 0098 00       		.byte	0
+ 249 0099 00       		.byte	0
+ 250 009a 00       		.byte	0
+ 251 009b 00       		.byte	0
+ 252 009c 00       		.byte	0
+ 253 009d 00       		.byte	0
+ 254 009e 00       		.byte	0
+ 255 009f 00       		.byte	0
+ 256 00a0 00       		.byte	0
+ 257 00a1 00       		.byte	0
+ 258 00a2 00       		.byte	0
+ 259 00a3 00       		.byte	0
+ 260 00a4 00       		.byte	0
+ 261 00a5 00       		.byte	0
+ 262 00a6 00       		.byte	0
+ 263 00a7 00       		.byte	0
+ 264 00a8 00       		.byte	0
+ 265 00a9 00       		.byte	0
+ 266 00aa 00       		.byte	0
+ 267 00ab 00       		.byte	0
+ 268 00ac 00       		.byte	0
+ 269 00ad 00       		.byte	0
+ 270 00ae 00       		.byte	0
+ 271 00af 00       		.byte	0
+ 272 00b0 00       		.byte	0
+ 273 00b1 00       		.byte	0
+ 274 00b2 00       		.byte	0
+ 275 00b3 00       		.byte	0
+ 276 00b4 00       		.byte	0
+ 277 00b5 00       		.byte	0
+ 278 00b6 00       		.byte	0
+ 279 00b7 00       		.byte	0
+ 280 00b8 00       		.byte	0
+ 281 00b9 00       		.byte	0
+ 282 00ba 00       		.byte	0
+ 283 00bb 00       		.byte	0
+ 284 00bc 00       		.byte	0
+ 285 00bd 00       		.byte	0
+ARM GAS  /tmp/ccC8d8Ef.s 			page 6
+
+
+ 286 00be 00       		.byte	0
+ 287 00bf 00       		.byte	0
+ 288 00c0 00       		.byte	0
+ 289 00c1 00       		.byte	0
+ 290 00c2 00       		.byte	0
+ 291 00c3 00       		.byte	0
+ 292 00c4 00       		.byte	0
+ 293 00c5 00       		.byte	0
+ 294 00c6 00       		.byte	0
+ 295 00c7 00       		.byte	0
+ 296 00c8 00       		.byte	0
+ 297 00c9 00       		.byte	0
+ 298 00ca 00       		.byte	0
+ 299 00cb 00       		.byte	0
+ 300 00cc 00       		.byte	0
+ 301 00cd 00       		.byte	0
+ 302 00ce 00       		.byte	0
+ 303 00cf 00       		.byte	0
+ 304 00d0 00       		.byte	0
+ 305 00d1 00       		.byte	0
+ 306 00d2 00       		.byte	0
+ 307 00d3 00       		.byte	0
+ 308 00d4 00       		.byte	0
+ 309 00d5 00       		.byte	0
+ 310 00d6 00       		.byte	0
+ 311 00d7 00       		.byte	0
+ 312 00d8 00       		.byte	0
+ 313 00d9 00       		.byte	0
+ 314 00da 00       		.byte	0
+ 315 00db 00       		.byte	0
+ 316 00dc 00       		.byte	0
+ 317 00dd 00       		.byte	0
+ 318 00de 00       		.byte	0
+ 319 00df 00       		.byte	0
+ 320 00e0 00       		.byte	0
+ 321 00e1 00       		.byte	0
+ 322 00e2 00       		.byte	0
+ 323 00e3 00       		.byte	0
+ 324 00e4 00       		.byte	0
+ 325 00e5 00       		.byte	0
+ 326 00e6 00       		.byte	0
+ 327 00e7 00       		.byte	0
+ 328 00e8 00       		.byte	0
+ 329 00e9 00       		.byte	0
+ 330 00ea 00       		.byte	0
+ 331 00eb 00       		.byte	0
+ 332 00ec 00       		.byte	0
+ 333 00ed 00       		.byte	0
+ 334 00ee 00       		.byte	0
+ 335 00ef 00       		.byte	0
+ 336 00f0 00       		.byte	0
+ 337 00f1 00       		.byte	0
+ 338 00f2 00       		.byte	0
+ 339 00f3 00       		.byte	0
+ 340 00f4 00       		.byte	0
+ 341 00f5 00       		.byte	0
+ 342 00f6 00       		.byte	0
+ARM GAS  /tmp/ccC8d8Ef.s 			page 7
+
+
+ 343 00f7 00       		.byte	0
+ 344 00f8 00       		.byte	0
+ 345 00f9 00       		.byte	0
+ 346 00fa 00       		.byte	0
+ 347 00fb 00       		.byte	0
+ 348 00fc 00       		.byte	0
+ 349 00fd 00       		.byte	0
+ 350 00fe 00       		.byte	0
+ 351 00ff 00       		.byte	0
+ 352 0100 00       		.byte	0
+ 353 0101 00       		.byte	0
+ 354 0102 00       		.byte	0
+ 355 0103 00       		.byte	0
+ 356 0104 00       		.byte	0
+ 357 0105 00       		.byte	0
+ 358 0106 00       		.byte	0
+ 359 0107 00       		.byte	0
+ 360 0108 00       		.byte	0
+ 361 0109 00       		.byte	0
+ 362 010a 00       		.byte	0
+ 363 010b 00       		.byte	0
+ 364 010c 00       		.byte	0
+ 365 010d 00       		.byte	0
+ 366 010e 00       		.byte	0
+ 367 010f 00       		.byte	0
+ 368 0110 00       		.byte	0
+ 369 0111 00       		.byte	0
+ 370 0112 00       		.byte	0
+ 371 0113 00       		.byte	0
+ 372 0114 00       		.byte	0
+ 373 0115 00       		.byte	0
+ 374 0116 00       		.byte	0
+ 375 0117 00       		.byte	0
+ 376 0118 00       		.byte	0
+ 377 0119 00       		.byte	0
+ 378 011a 00       		.byte	0
+ 379 011b 00       		.byte	0
+ 380 011c 00       		.byte	0
+ 381 011d 00       		.byte	0
+ 382 011e 00       		.byte	0
+ 383 011f 00       		.byte	0
+ 384 0120 00       		.byte	0
+ 385 0121 00       		.byte	0
+ 386 0122 00       		.byte	0
+ 387 0123 00       		.byte	0
+ 388 0124 00       		.byte	0
+ 389 0125 00       		.byte	0
+ 390 0126 00       		.byte	0
+ 391 0127 00       		.byte	0
+ 392 0128 00       		.byte	0
+ 393 0129 00       		.byte	0
+ 394 012a 00       		.byte	0
+ 395 012b 00       		.byte	0
+ 396 012c 00       		.byte	0
+ 397 012d 00       		.byte	0
+ 398 012e 00       		.byte	0
+ 399 012f 00       		.byte	0
+ARM GAS  /tmp/ccC8d8Ef.s 			page 8
+
+
+ 400 0130 00       		.byte	0
+ 401 0131 00       		.byte	0
+ 402 0132 00       		.byte	0
+ 403 0133 00       		.byte	0
+ 404 0134 00       		.byte	0
+ 405 0135 00       		.byte	0
+ 406 0136 00       		.byte	0
+ 407 0137 00       		.byte	0
+ 408 0138 00       		.byte	0
+ 409 0139 00       		.byte	0
+ 410 013a 00       		.byte	0
+ 411 013b 00       		.byte	0
+ 412 013c 00       		.byte	0
+ 413 013d 00       		.byte	0
+ 414 013e 00       		.byte	0
+ 415 013f 00       		.byte	0
+ 416 0140 00       		.byte	0
+ 417 0141 00       		.byte	0
+ 418 0142 00       		.byte	0
+ 419 0143 00       		.byte	0
+ 420 0144 00       		.byte	0
+ 421 0145 00       		.byte	0
+ 422 0146 00       		.byte	0
+ 423 0147 00       		.byte	0
+ 424 0148 00       		.byte	0
+ 425 0149 00       		.byte	0
+ 426 014a 00       		.byte	0
+ 427 014b 00       		.byte	0
+ 428 014c 00       		.byte	0
+ 429 014d 00       		.byte	0
+ 430 014e 00       		.byte	0
+ 431 014f 00       		.byte	0
+ 432 0150 00       		.byte	0
+ 433 0151 00       		.byte	0
+ 434 0152 00       		.byte	0
+ 435 0153 00       		.byte	0
+ 436 0154 00       		.byte	0
+ 437 0155 00       		.byte	0
+ 438 0156 00       		.byte	0
+ 439 0157 00       		.byte	0
+ 440 0158 00       		.byte	0
+ 441 0159 00       		.byte	0
+ 442 015a 00       		.byte	0
+ 443 015b 00       		.byte	0
+ 444 015c 00       		.byte	0
+ 445 015d 00       		.byte	0
+ 446 015e 00       		.byte	0
+ 447 015f 00       		.byte	0
+ 448 0160 00       		.byte	0
+ 449 0161 00       		.byte	0
+ 450 0162 00       		.byte	0
+ 451 0163 00       		.byte	0
+ 452 0164 00       		.byte	0
+ 453 0165 00       		.byte	0
+ 454 0166 00       		.byte	0
+ 455 0167 00       		.byte	0
+ 456 0168 00       		.byte	0
+ARM GAS  /tmp/ccC8d8Ef.s 			page 9
+
+
+ 457 0169 00       		.byte	0
+ 458 016a 00       		.byte	0
+ 459 016b 00       		.byte	0
+ 460 016c 00       		.byte	0
+ 461 016d 00       		.byte	0
+ 462 016e 00       		.byte	0
+ 463 016f 00       		.byte	0
+ 464 0170 00       		.byte	0
+ 465 0171 00       		.byte	0
+ 466 0172 00       		.byte	0
+ 467 0173 00       		.byte	0
+ 468 0174 00       		.byte	0
+ 469 0175 00       		.byte	0
+ 470 0176 00       		.byte	0
+ 471 0177 00       		.byte	0
+ 472 0178 00       		.byte	0
+ 473 0179 00       		.byte	0
+ 474 017a 00       		.byte	0
+ 475 017b 00       		.byte	0
+ 476 017c 00       		.byte	0
+ 477 017d 00       		.byte	0
+ 478 017e 00       		.byte	0
+ 479 017f 00       		.byte	0
+ 480 0180 00       		.byte	0
+ 481 0181 00       		.byte	0
+ 482 0182 00       		.byte	0
+ 483 0183 00       		.byte	0
+ 484 0184 00       		.byte	0
+ 485 0185 00       		.byte	0
+ 486 0186 00       		.byte	0
+ 487 0187 00       		.byte	0
+ 488 0188 00       		.byte	0
+ 489 0189 00       		.byte	0
+ 490 018a 00       		.byte	0
+ 491 018b 00       		.byte	0
+ 492 018c 00       		.byte	0
+ 493 018d 00       		.byte	0
+ 494 018e 00       		.byte	0
+ 495 018f 00       		.byte	0
+ 496 0190 00       		.byte	0
+ 497 0191 00       		.byte	0
+ 498 0192 00       		.byte	0
+ 499 0193 00       		.byte	0
+ 500 0194 00       		.byte	0
+ 501 0195 00       		.byte	0
+ 502 0196 00       		.byte	0
+ 503 0197 00       		.byte	0
+ 504 0198 00       		.byte	0
+ 505 0199 00       		.byte	0
+ 506 019a 00       		.byte	0
+ 507 019b 00       		.byte	0
+ 508 019c 00       		.byte	0
+ 509 019d 00       		.byte	0
+ 510 019e 00       		.byte	0
+ 511 019f 00       		.byte	0
+ 512 01a0 00       		.byte	0
+ 513 01a1 00       		.byte	0
+ARM GAS  /tmp/ccC8d8Ef.s 			page 10
+
+
+ 514 01a2 00       		.byte	0
+ 515 01a3 00       		.byte	0
+ 516 01a4 00       		.byte	0
+ 517 01a5 00       		.byte	0
+ 518 01a6 00       		.byte	0
+ 519 01a7 00       		.byte	0
+ 520 01a8 00       		.byte	0
+ 521 01a9 00       		.byte	0
+ 522 01aa 00       		.byte	0
+ 523 01ab 00       		.byte	0
+ 524 01ac 00       		.byte	0
+ 525 01ad 00       		.byte	0
+ 526 01ae 00       		.byte	0
+ 527 01af 00       		.byte	0
+ 528 01b0 00       		.byte	0
+ 529 01b1 00       		.byte	0
+ 530 01b2 00       		.byte	0
+ 531 01b3 00       		.byte	0
+ 532 01b4 00       		.byte	0
+ 533 01b5 00       		.byte	0
+ 534 01b6 00       		.byte	0
+ 535 01b7 00       		.byte	0
+ 536 01b8 00       		.byte	0
+ 537 01b9 00       		.byte	0
+ 538 01ba 00       		.byte	0
+ 539 01bb 00       		.byte	0
+ 540 01bc 00       		.byte	0
+ 541 01bd 00       		.byte	0
+ 542 01be 00       		.byte	0
+ 543 01bf 00       		.byte	0
+ 544 01c0 00       		.byte	0
+ 545 01c1 00       		.byte	0
+ 546 01c2 00       		.byte	0
+ 547 01c3 00       		.byte	0
+ 548 01c4 00       		.byte	0
+ 549 01c5 00       		.byte	0
+ 550 01c6 00       		.byte	0
+ 551 01c7 00       		.byte	0
+ 552 01c8 00       		.byte	0
+ 553 01c9 00       		.byte	0
+ 554 01ca 00       		.byte	0
+ 555 01cb 00       		.byte	0
+ 556 01cc 00       		.byte	0
+ 557 01cd 00       		.byte	0
+ 558 01ce 00       		.byte	0
+ 559 01cf 00       		.byte	0
+ 560 01d0 00       		.byte	0
+ 561 01d1 00       		.byte	0
+ 562 01d2 00       		.byte	0
+ 563 01d3 00       		.byte	0
+ 564 01d4 00       		.byte	0
+ 565 01d5 00       		.byte	0
+ 566 01d6 00       		.byte	0
+ 567 01d7 00       		.byte	0
+ 568 01d8 00       		.byte	0
+ 569 01d9 00       		.byte	0
+ 570 01da 00       		.byte	0
+ARM GAS  /tmp/ccC8d8Ef.s 			page 11
+
+
+ 571 01db 00       		.byte	0
+ 572 01dc 00       		.byte	0
+ 573 01dd 00       		.byte	0
+ 574 01de 00       		.byte	0
+ 575 01df 00       		.byte	0
+ 576 01e0 00       		.byte	0
+ 577 01e1 00       		.byte	0
+ 578 01e2 00       		.byte	0
+ 579 01e3 00       		.byte	0
+ 580 01e4 00       		.byte	0
+ 581 01e5 00       		.byte	0
+ 582 01e6 00       		.byte	0
+ 583 01e7 00       		.byte	0
+ 584 01e8 00       		.byte	0
+ 585 01e9 00       		.byte	0
+ 586 01ea 00       		.byte	0
+ 587 01eb 00       		.byte	0
+ 588 01ec 00       		.byte	0
+ 589 01ed 00       		.byte	0
+ 590 01ee 00       		.byte	0
+ 591 01ef 00       		.byte	0
+ 592 01f0 00       		.byte	0
+ 593 01f1 00       		.byte	0
+ 594 01f2 00       		.byte	0
+ 595 01f3 00       		.byte	0
+ 596 01f4 00       		.byte	0
+ 597 01f5 00       		.byte	0
+ 598 01f6 00       		.byte	0
+ 599 01f7 00       		.byte	0
+ 600 01f8 00       		.byte	0
+ 601 01f9 00       		.byte	0
+ 602 01fa 00       		.byte	0
+ 603 01fb 00       		.byte	0
+ 604 01fc 00       		.byte	0
+ 605 01fd 00       		.byte	0
+ 606 01fe 00       		.byte	0
+ 607 01ff 00       		.byte	0
+ 608 0200 00000000 		.space	3584
+ 608      00000000 
+ 608      00000000 
+ 608      00000000 
+ 608      00000000 
+ 609              		.section	.rodata.root_dir,"a"
+ 610              		.align	2
+ 613              	root_dir:
+ 614 0000 53455454 		.ascii	"SETTINGSTXT \000\000\000\000\000\000\000\000\001\000"
+ 614      494E4753 
+ 614      54585420 
+ 614      00000000 
+ 614      00000000 
+ 615 0016 00014C4F 		.ascii	"\000\001LOG     HEX \000\000\000\000\000\000\000\000"
+ 615      47202020 
+ 615      20204845 
+ 615      58200000 
+ 615      00000000 
+ 616 002c 02000080 		.ascii	"\002\000\000\200LOG     CSV \000\000\000\000\000\000"
+ 616      4C4F4720 
+ARM GAS  /tmp/ccC8d8Ef.s 			page 12
+
+
+ 616      20202020 
+ 616      43535620 
+ 616      00000000 
+ 617 0042 00008200 		.ascii	"\000\000\202\000\377\377\000"
+ 617      FFFF00
+ 618 0049 00000000 		.space	16311
+ 618      00000000 
+ 618      00000000 
+ 618      00000000 
+ 618      00000000 
+ 619              		.text
+ 620              	.Letext0:
+ 621              		.file 1 "/usr/include/newlib/machine/_default_types.h"
+ 622              		.file 2 "/usr/include/newlib/sys/_stdint.h"
+ 623              		.file 3 "app/core/fs_static/fs_static.c"
+ARM GAS  /tmp/ccC8d8Ef.s 			page 13
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 fs_static.c
+     /tmp/ccC8d8Ef.s:613    .rodata.root_dir:0000000000000000 root_dir
+     /tmp/ccC8d8Ef.s:95     .rodata.fat_table:0000000000000000 fat_table
+     /tmp/ccC8d8Ef.s:24     .rodata.boot_sector:0000000000000000 boot_sector
+     /tmp/ccC8d8Ef.s:21     .rodata.boot_sector:0000000000000000 $d
+     /tmp/ccC8d8Ef.s:92     .rodata.fat_table:0000000000000000 $d
+     /tmp/ccC8d8Ef.s:610    .rodata.root_dir:0000000000000000 $d
+
+NO UNDEFINED SYMBOLS

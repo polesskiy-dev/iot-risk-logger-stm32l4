@@ -53,7 +53,6 @@ build/usbd_storage_if.o: USB_DEVICE/App/usbd_storage_if.c \
  app/core/power_mode_manager/power_mode_manager.h app/tasks/nfc/nfc.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
  Core/Inc/FreeRTOSConfig.h \
- libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/portable.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h \
@@ -77,7 +76,8 @@ build/usbd_storage_if.o: USB_DEVICE/App/usbd_storage_if.c \
  Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h \
  Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc/usbd_msc_scsi.h \
  Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
- Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h
+ Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h \
+ app/middlewares/usb_msc_storage/usb_msc_storage.h
 USB_DEVICE/App/usbd_storage_if.h:
 Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc/usbd_msc.h:
 Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc/usbd_msc_bot.h:
@@ -137,7 +137,6 @@ app/core/power_mode_manager/power_mode_manager.h:
 app/tasks/nfc/nfc.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 Core/Inc/FreeRTOSConfig.h:
-libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/portable.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h:
@@ -171,3 +170,4 @@ Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h:
 Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc/usbd_msc_scsi.h:
 Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h:
 Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h:
+app/middlewares/usb_msc_storage/usb_msc_storage.h:

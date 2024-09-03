@@ -50,7 +50,6 @@ build/usbd_desc.o: USB_DEVICE/App/usbd_desc.c \
  app/core/power_mode_manager/power_mode_manager.h app/tasks/nfc/nfc.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
  Core/Inc/FreeRTOSConfig.h \
- libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/portable.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h \
@@ -130,7 +129,6 @@ app/core/power_mode_manager/power_mode_manager.h:
 app/tasks/nfc/nfc.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 Core/Inc/FreeRTOSConfig.h:
-libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/portable.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h:

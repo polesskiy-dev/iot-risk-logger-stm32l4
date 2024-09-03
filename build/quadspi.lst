@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccgC2hV9.s 			page 1
+ARM GAS  /tmp/ccGj1sCa.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccgC2hV9.s 			page 1
   28:Core/Src/quadspi.c **** 
   29:Core/Src/quadspi.c **** /* QUADSPI init function */
   30:Core/Src/quadspi.c **** void MX_QUADSPI_Init(void)
-ARM GAS  /tmp/ccgC2hV9.s 			page 2
+ARM GAS  /tmp/ccGj1sCa.s 			page 2
 
 
   31:Core/Src/quadspi.c **** {
@@ -85,12 +85,12 @@ ARM GAS  /tmp/ccgC2hV9.s 			page 1
   40 0002 0A48     		ldr	r0, .L5
   41 0004 0A4B     		ldr	r3, .L5+4
   42 0006 0360     		str	r3, [r0]
-  41:Core/Src/quadspi.c ****   hqspi.Init.ClockPrescaler = 1; // half of the system clock e.g. 48MHz/2 = 24MHz
+  41:Core/Src/quadspi.c ****   hqspi.Init.ClockPrescaler = 1;
   43              		.loc 1 41 3 is_stmt 1 view .LVU3
   44              		.loc 1 41 29 is_stmt 0 view .LVU4
   45 0008 0123     		movs	r3, #1
   46 000a 4360     		str	r3, [r0, #4]
-  42:Core/Src/quadspi.c ****   hqspi.Init.FifoThreshold = 1; // 1 byte minimum toi send or receive
+  42:Core/Src/quadspi.c ****   hqspi.Init.FifoThreshold = 1;
   47              		.loc 1 42 3 is_stmt 1 view .LVU5
   48              		.loc 1 42 28 is_stmt 0 view .LVU6
   49 000c 8360     		str	r3, [r0, #8]
@@ -99,7 +99,7 @@ ARM GAS  /tmp/ccgC2hV9.s 			page 1
   51              		.loc 1 43 29 is_stmt 0 view .LVU8
   52 000e 0023     		movs	r3, #0
   53 0010 C360     		str	r3, [r0, #12]
-  44:Core/Src/quadspi.c ****   hqspi.Init.FlashSize = W25Q64JV_FLASH_ADDR_SIZE_BITS;
+  44:Core/Src/quadspi.c ****   hqspi.Init.FlashSize = 24;
   54              		.loc 1 44 3 is_stmt 1 view .LVU9
   55              		.loc 1 44 24 is_stmt 0 view .LVU10
   56 0012 1822     		movs	r2, #24
@@ -118,7 +118,7 @@ ARM GAS  /tmp/ccgC2hV9.s 			page 1
   66 001a C361     		str	r3, [r0, #28]
   48:Core/Src/quadspi.c ****   hqspi.Init.DualFlash = QSPI_DUALFLASH_DISABLE;
   67              		.loc 1 48 3 is_stmt 1 view .LVU17
-ARM GAS  /tmp/ccgC2hV9.s 			page 3
+ARM GAS  /tmp/ccGj1sCa.s 			page 3
 
 
   68              		.loc 1 48 24 is_stmt 0 view .LVU18
@@ -178,7 +178,7 @@ ARM GAS  /tmp/ccgC2hV9.s 			page 1
  111              		.cfi_def_cfa_offset 16
  112              		.cfi_offset 4, -16
  113              		.cfi_offset 5, -12
-ARM GAS  /tmp/ccgC2hV9.s 			page 4
+ARM GAS  /tmp/ccGj1sCa.s 			page 4
 
 
  114              		.cfi_offset 6, -8
@@ -238,7 +238,7 @@ ARM GAS  /tmp/ccgC2hV9.s 			page 1
   93:Core/Src/quadspi.c ****     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
   94:Core/Src/quadspi.c **** 
   95:Core/Src/quadspi.c ****   /* USER CODE BEGIN QUADSPI_MspInit 1 */
-ARM GAS  /tmp/ccgC2hV9.s 			page 5
+ARM GAS  /tmp/ccGj1sCa.s 			page 5
 
 
   96:Core/Src/quadspi.c **** 
@@ -298,7 +298,7 @@ ARM GAS  /tmp/ccgC2hV9.s 			page 1
  175              		.loc 1 71 5 view .LVU43
  176 0046 019A     		ldr	r2, [sp, #4]
  177              	.LBE3:
-ARM GAS  /tmp/ccgC2hV9.s 			page 6
+ARM GAS  /tmp/ccGj1sCa.s 			page 6
 
 
   71:Core/Src/quadspi.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
@@ -358,7 +358,7 @@ ARM GAS  /tmp/ccgC2hV9.s 			page 1
   86:Core/Src/quadspi.c **** 
  215              		.loc 1 86 5 is_stmt 0 view .LVU61
  216 0070 FFF7FEFF 		bl	HAL_GPIO_Init
-ARM GAS  /tmp/ccgC2hV9.s 			page 7
+ARM GAS  /tmp/ccGj1sCa.s 			page 7
 
 
  217              	.LVL6:
@@ -418,7 +418,7 @@ ARM GAS  /tmp/ccgC2hV9.s 			page 1
  102:Core/Src/quadspi.c **** {
  260              		.loc 1 102 1 is_stmt 1 view -0
  261              		.cfi_startproc
-ARM GAS  /tmp/ccgC2hV9.s 			page 8
+ARM GAS  /tmp/ccGj1sCa.s 			page 8
 
 
  262              		@ args = 0, pretend = 0, frame = 0
@@ -478,7 +478,7 @@ ARM GAS  /tmp/ccgC2hV9.s 			page 1
  288              		.loc 1 120 5 view .LVU81
  289 0016 CC21     		movs	r1, #204
  290 0018 4FF09040 		mov	r0, #1207959552
-ARM GAS  /tmp/ccgC2hV9.s 			page 9
+ARM GAS  /tmp/ccGj1sCa.s 			page 9
 
 
  291              	.LVL11:
@@ -522,22 +522,22 @@ ARM GAS  /tmp/ccgC2hV9.s 			page 1
  326              		.file 7 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_qspi.h"
  327              		.file 8 "Core/Inc/main.h"
  328              		.file 9 "Core/Inc/quadspi.h"
-ARM GAS  /tmp/ccgC2hV9.s 			page 10
+ARM GAS  /tmp/ccGj1sCa.s 			page 10
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 quadspi.c
-     /tmp/ccgC2hV9.s:18     .text.MX_QUADSPI_Init:0000000000000000 $t
-     /tmp/ccgC2hV9.s:26     .text.MX_QUADSPI_Init:0000000000000000 MX_QUADSPI_Init
-     /tmp/ccgC2hV9.s:88     .text.MX_QUADSPI_Init:000000000000002c $d
-     /tmp/ccgC2hV9.s:94     .text.HAL_QSPI_MspInit:0000000000000000 $t
-     /tmp/ccgC2hV9.s:101    .text.HAL_QSPI_MspInit:0000000000000000 HAL_QSPI_MspInit
-     /tmp/ccgC2hV9.s:244    .text.HAL_QSPI_MspInit:000000000000008c $d
-     /tmp/ccgC2hV9.s:250    .text.HAL_QSPI_MspDeInit:0000000000000000 $t
-     /tmp/ccgC2hV9.s:257    .text.HAL_QSPI_MspDeInit:0000000000000000 HAL_QSPI_MspDeInit
-     /tmp/ccgC2hV9.s:305    .text.HAL_QSPI_MspDeInit:000000000000002c $d
-     /tmp/ccgC2hV9.s:317    .bss.hqspi:0000000000000000 hqspi
-     /tmp/ccgC2hV9.s:313    .bss.hqspi:0000000000000000 $d
+     /tmp/ccGj1sCa.s:18     .text.MX_QUADSPI_Init:0000000000000000 $t
+     /tmp/ccGj1sCa.s:26     .text.MX_QUADSPI_Init:0000000000000000 MX_QUADSPI_Init
+     /tmp/ccGj1sCa.s:88     .text.MX_QUADSPI_Init:000000000000002c $d
+     /tmp/ccGj1sCa.s:94     .text.HAL_QSPI_MspInit:0000000000000000 $t
+     /tmp/ccGj1sCa.s:101    .text.HAL_QSPI_MspInit:0000000000000000 HAL_QSPI_MspInit
+     /tmp/ccGj1sCa.s:244    .text.HAL_QSPI_MspInit:000000000000008c $d
+     /tmp/ccGj1sCa.s:250    .text.HAL_QSPI_MspDeInit:0000000000000000 $t
+     /tmp/ccGj1sCa.s:257    .text.HAL_QSPI_MspDeInit:0000000000000000 HAL_QSPI_MspDeInit
+     /tmp/ccGj1sCa.s:305    .text.HAL_QSPI_MspDeInit:000000000000002c $d
+     /tmp/ccGj1sCa.s:317    .bss.hqspi:0000000000000000 hqspi
+     /tmp/ccGj1sCa.s:313    .bss.hqspi:0000000000000000 $d
 
 UNDEFINED SYMBOLS
 HAL_QSPI_Init

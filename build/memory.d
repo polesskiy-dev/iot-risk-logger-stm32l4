@@ -48,7 +48,6 @@ build/memory.o: app/tasks/memory/memory.c app/tasks/memory/memory.h \
  app/core/power_mode_manager/power_mode_manager.h app/tasks/nfc/nfc.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
  Core/Inc/FreeRTOSConfig.h \
- libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/portable.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h \
@@ -65,7 +64,18 @@ build/memory.o: app/tasks/memory/memory.c app/tasks/memory/memory.h \
  app/tasks/light_sensor/light_sensor.h app/drivers/opt3001/opt3001.h \
  app/core/cron/cron.h Core/Inc/rtc.h Core/Inc/main.h \
  app/core/info_led/info_led.h app/core/retarget/retarget.h \
- Core/Inc/quadspi.h app/drivers/w25q/w25q.h
+ Core/Inc/quadspi.h app/drivers/w25q/w25q.h \
+ Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc/usbd_msc.h \
+ Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc/usbd_msc_bot.h \
+ Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h \
+ USB_DEVICE/Target/usbd_conf.h \
+ Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
+ Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h \
+ Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h \
+ Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h \
+ Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc/usbd_msc_scsi.h \
+ Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
+ Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h
 app/tasks/memory/memory.h:
 Core/Inc/main.h:
 Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
@@ -121,7 +131,6 @@ app/core/power_mode_manager/power_mode_manager.h:
 app/tasks/nfc/nfc.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 Core/Inc/FreeRTOSConfig.h:
-libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/portable.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h:
@@ -148,3 +157,14 @@ app/core/info_led/info_led.h:
 app/core/retarget/retarget.h:
 Core/Inc/quadspi.h:
 app/drivers/w25q/w25q.h:
+Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc/usbd_msc.h:
+Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc/usbd_msc_bot.h:
+Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h:
+USB_DEVICE/Target/usbd_conf.h:
+Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h:
+Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h:
+Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h:
+Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h:
+Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc/usbd_msc_scsi.h:
+Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h:
+Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h:

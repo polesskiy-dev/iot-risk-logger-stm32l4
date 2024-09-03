@@ -2,13 +2,6 @@ build/nfc.o: app/tasks/nfc/nfc.c app/tasks/nfc/nfc.h \
  Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
  Core/Inc/FreeRTOSConfig.h \
- libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.h \
- libraries/SystemView/SYSVIEW/SEGGER_SYSVIEW.h \
- libraries/SystemView/SEGGER/SEGGER.h \
- libraries/SystemView/Config/Global.h \
- libraries/SystemView/SYSVIEW/SEGGER_SYSVIEW_ConfDefaults.h \
- libraries/SystemView/Config/SEGGER_SYSVIEW_Conf.h \
- libraries/RTT/Config/SEGGER_RTT_Conf.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/portable.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h \
@@ -50,7 +43,12 @@ build/nfc.o: app/tasks/nfc/nfc.c app/tasks/nfc/nfc.h \
  Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc_ex.h \
  Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim.h \
  Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h \
- app/core/actor/actor.h \
+ libraries/SystemView/Config/SEGGER_SYSVIEW_Conf.h \
+ libraries/SystemView/SYSVIEW/SEGGER_SYSVIEW.h \
+ libraries/SystemView/SEGGER/SEGGER.h \
+ libraries/SystemView/Config/Global.h \
+ libraries/SystemView/SYSVIEW/SEGGER_SYSVIEW_ConfDefaults.h \
+ libraries/RTT/Config/SEGGER_RTT_Conf.h app/core/actor/actor.h \
  app/core/actor/../../config/events_list/events_list.h \
  app/core/actor/../../config/actors_list/actors_list.h \
  app/tasks/event_manager/event_manager.h \
@@ -69,13 +67,6 @@ app/tasks/nfc/nfc.h:
 Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 Core/Inc/FreeRTOSConfig.h:
-libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.h:
-libraries/SystemView/SYSVIEW/SEGGER_SYSVIEW.h:
-libraries/SystemView/SEGGER/SEGGER.h:
-libraries/SystemView/Config/Global.h:
-libraries/SystemView/SYSVIEW/SEGGER_SYSVIEW_ConfDefaults.h:
-libraries/SystemView/Config/SEGGER_SYSVIEW_Conf.h:
-libraries/RTT/Config/SEGGER_RTT_Conf.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/portable.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h:
@@ -120,6 +111,12 @@ Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc.h:
 Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc_ex.h:
 Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim.h:
 Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h:
+libraries/SystemView/Config/SEGGER_SYSVIEW_Conf.h:
+libraries/SystemView/SYSVIEW/SEGGER_SYSVIEW.h:
+libraries/SystemView/SEGGER/SEGGER.h:
+libraries/SystemView/Config/Global.h:
+libraries/SystemView/SYSVIEW/SEGGER_SYSVIEW_ConfDefaults.h:
+libraries/RTT/Config/SEGGER_RTT_Conf.h:
 app/core/actor/actor.h:
 app/core/actor/../../config/events_list/events_list.h:
 app/core/actor/../../config/actors_list/actors_list.h:
