@@ -29,9 +29,8 @@
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
-typedef StaticTask_t osStaticThreadDef_t;
 /* USER CODE BEGIN PTD */
-
+typedef StaticTask_t osStaticThreadDef_t;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -141,9 +140,8 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void *argument)
 {
   /* init code for USB_DEVICE */
-
+  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN StartDefaultTask */
-  //  MX_USB_DEVICE_Init();
   (void) argument; // Avoid unused parameter warning
   message_t msg;
   /* Infinite loop */

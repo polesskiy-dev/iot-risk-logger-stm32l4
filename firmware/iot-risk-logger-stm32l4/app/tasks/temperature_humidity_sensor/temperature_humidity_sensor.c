@@ -118,9 +118,9 @@ static osStatus_t handleInit(TH_SENS_Actor_t *this, message_t *message) {
 
     // reset the sensor by pulling down _TEMP_RESET, at least 1uS duration required
     HAL_GPIO_WritePin(_TEMP_RESET_GPIO_Port, _TEMP_RESET_Pin, GPIO_PIN_RESET);
-    delayMs(1);
+    osDelay(1);
     HAL_GPIO_WritePin(_TEMP_RESET_GPIO_Port, _TEMP_RESET_Pin, GPIO_PIN_SET);
-    delayMs(1);
+    osDelay(1);
 
     // read sensor ID
     uint32_t sht3xId = 0x00000000;

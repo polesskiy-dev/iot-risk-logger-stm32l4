@@ -59,8 +59,8 @@ extern "C" {
 
 #define W25Q_ID_SIZE                    (2)
 
-#define FLASH_BUSY_WAIT_CYCLES          (5)        /* 5 ms */
-#define NO_FLASH_BUSY_WAIT_CYCLES_LEFT  (0)        /* 5 ms */
+#define FLASH_BUSY_WAIT_CYCLES          (5)
+#define NO_FLASH_BUSY_WAIT_CYCLES_LEFT  (0)
 
 /* W25Q Handle Structure */
 typedef struct
@@ -107,6 +107,7 @@ HAL_StatusTypeDef W25Q_WriteEnable(W25Q_HandleTypeDef *hflash);
 HAL_StatusTypeDef W25Q_Sleep(W25Q_HandleTypeDef *hflash);
 HAL_StatusTypeDef W25Q_WakeUp(W25Q_HandleTypeDef *hflash);
 HAL_StatusTypeDef W25Q_isBusy(W25Q_HandleTypeDef *hflash);
+HAL_StatusTypeDef W25Q_EnableWright(W25Q_HandleTypeDef *hflash);
 
 #ifdef __cplusplus
 }

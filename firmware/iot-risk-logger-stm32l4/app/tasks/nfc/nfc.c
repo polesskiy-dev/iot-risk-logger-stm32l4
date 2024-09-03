@@ -62,14 +62,14 @@ void NFC_Task(void *argument) {
 }
 
 /** Handle GPO interrupt */
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-  if (GPIO_Pin == _NFC_INT_Pin) {
-    #ifdef DEBUG
-      fprintf(stdout, "NFC GPO Interrupt\n");
-    #endif
-    osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NFC_GPO_INTERRUPT}, 0, 0);
-  }
-}
+//void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+//  if (GPIO_Pin == _NFC_INT_Pin) {
+//    #ifdef DEBUG
+//      fprintf(stdout, "NFC GPO Interrupt\n");
+//    #endif
+//    osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NFC_GPO_INTERRUPT}, 0, 0);
+//  }
+//}
 
 static osStatus_t handleNFCFSM(NFC_Actor_t *this, message_t *message) {
   switch (this->state) {

@@ -9,10 +9,13 @@
  */
 
 #include "memory.h"
+#include "usbd_msc.h"
 
 static osStatus_t handleMemoryFSM(MEMORY_Actor_t *this, message_t *message);
 
 extern actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS];
+
+extern USBD_StorageTypeDef USBD_Storage_Interface_fops_FS;
 
 /**
  * @brief Memory actor struct representing NOR Flash storage
@@ -84,9 +87,24 @@ void MEMORY_Task(void *argument) {
   W25Q_Init(&MEMORY_W25QHandle);
 
   status = W25Q_EraseSector(&MEMORY_W25QHandle, 0);
+  if (status != HAL_OK) {
+    fprintf(stderr, "memory error");
+  }
+
   status = W25Q_WriteData(&MEMORY_W25QHandle, (uint8_t *)dummyToWrite, 0, 13);
+  if (status != HAL_OK) {
+    fprintf(stderr, "memory error");
+  }
+
   status = W25Q_ReadData(&MEMORY_W25QHandle, dummyToRead, 0, 32);
+  if (status != HAL_OK) {
+    fprintf(stderr, "memory error");
+  }
+
   status = W25Q_ReadStatusReg(&MEMORY_W25QHandle);
+
+  // init usb msd TODO move to more suitable place
+
 
   #ifdef DEBUG
     fprintf(stdout, "Memory task initialized\n");
@@ -108,4 +126,31 @@ void MEMORY_Task(void *argument) {
 
 static osStatus_t handleMemoryFSM(MEMORY_Actor_t *this, message_t *message) {
   return osOK;
+}
+
+// TODO move to more suitable place
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+  if (GPIO_Pin == USB_VBUS_SENSE_Pin) {
+    GPIO_PinState usbVBusPin = HAL_GPIO_ReadPin(USB_VBUS_SENSE_GPIO_Port, USB_VBUS_SENSE_Pin);
+    osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
+
+    if (usbVBusPin == GPIO_PIN_SET) {
+      osMessageQueuePut(evManagerQueue, &(message_t) {USB_CONNECTED}, 0, 0);
+      #if DEBUG
+            fprintf(stdout, "USB connected\n");
+      #endif
+    } else {
+      osMessageQueuePut(evManagerQueue, &(message_t) {USB_DISCONNECTED}, 0, 0);
+      #if DEBUG
+            fprintf(stdout, "USB disconnected\n");
+      #endif
+    }
+  }
+
+  if (GPIO_Pin == _NFC_INT_Pin) {
+    #ifdef DEBUG
+        fprintf(stdout, "NFC GPO Interrupt\n");
+    #endif
+    osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NFC_GPO_INTERRUPT}, 0, 0);
+  }
 }

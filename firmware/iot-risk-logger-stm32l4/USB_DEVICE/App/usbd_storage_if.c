@@ -63,8 +63,8 @@
   */
 
 #define STORAGE_LUN_NBR                  1
-#define STORAGE_BLK_NBR                  0x10000
-#define STORAGE_BLK_SIZ                  0x200
+#define STORAGE_BLK_NBR                  STORAGE_BLOCK_NUMBER
+#define STORAGE_BLK_SIZ                  STORAGE_BLOCK_SIZE
 
 /* USER CODE BEGIN PRIVATE_DEFINES */
 
@@ -128,7 +128,7 @@ const int8_t STORAGE_Inquirydata_FS[] = {/* 36 */
 extern USBD_HandleTypeDef hUsbDeviceFS;
 
 /* USER CODE BEGIN EXPORTED_VARIABLES */
-
+extern W25Q_HandleTypeDef MEMORY_W25QHandle;
 /* USER CODE END EXPORTED_VARIABLES */
 
 /**
@@ -191,9 +191,7 @@ int8_t STORAGE_Init_FS(uint8_t lun)
 int8_t STORAGE_GetCapacity_FS(uint8_t lun, uint32_t *block_num, uint16_t *block_size)
 {
   /* USER CODE BEGIN 3 */
-  *block_num  = STORAGE_BLK_NBR;
-  *block_size = STORAGE_BLK_SIZ;
-  return (USBD_OK);
+  return STORAGE_GetCapacity(lun, block_num, block_size);
   /* USER CODE END 3 */
 }
 
@@ -205,7 +203,7 @@ int8_t STORAGE_GetCapacity_FS(uint8_t lun, uint32_t *block_num, uint16_t *block_
 int8_t STORAGE_IsReady_FS(uint8_t lun)
 {
   /* USER CODE BEGIN 4 */
-  return (USBD_OK);
+  return STORAGE_IsReady(lun);
   /* USER CODE END 4 */
 }
 
@@ -229,7 +227,7 @@ int8_t STORAGE_IsWriteProtected_FS(uint8_t lun)
 int8_t STORAGE_Read_FS(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t blk_len)
 {
   /* USER CODE BEGIN 6 */
-  return (USBD_OK);
+  return STORAGE_Read(lun, buf, blk_addr, blk_len);
   /* USER CODE END 6 */
 }
 
@@ -241,7 +239,7 @@ int8_t STORAGE_Read_FS(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t bl
 int8_t STORAGE_Write_FS(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t blk_len)
 {
   /* USER CODE BEGIN 7 */
-  return (USBD_OK);
+  return STORAGE_Write(lun, buf, blk_addr, blk_len);
   /* USER CODE END 7 */
 }
 
