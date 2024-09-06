@@ -1,4 +1,4 @@
-ARM GAS  /tmp/cc3skBTJ.s 			page 1
+ARM GAS  /tmp/ccaOknmQ.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /tmp/cc3skBTJ.s 			page 1
   28:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** TH_SENS_Actor_t TH_SENS_Actor = {
   29:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         .super = {
   30:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****                 .actorId = TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID,
-ARM GAS  /tmp/cc3skBTJ.s 			page 2
+ARM GAS  /tmp/ccaOknmQ.s 			page 2
 
 
   31:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****                 .messageHandler = (messageHandler_t) handleTHSensorFSM,
@@ -118,7 +118,7 @@ ARM GAS  /tmp/cc3skBTJ.s 			page 1
   85:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****           fprintf(stderr, "%s: Error handling event %u in state %ul\n", thSensorTaskDescription.nam
   86:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         #endif
   87:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
-ARM GAS  /tmp/cc3skBTJ.s 			page 3
+ARM GAS  /tmp/ccaOknmQ.s 			page 3
 
 
   88:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMess
@@ -178,7 +178,7 @@ ARM GAS  /tmp/cc3skBTJ.s 			page 1
  142:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
  143:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     TO_STATE(this, TH_SENS_IDLE_STATE);
  144:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   }
-ARM GAS  /tmp/cc3skBTJ.s 			page 4
+ARM GAS  /tmp/ccaOknmQ.s 			page 4
 
 
  145:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
@@ -238,7 +238,7 @@ ARM GAS  /tmp/cc3skBTJ.s 			page 1
   33              		@ link register save eliminated.
  195:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   return osOK;
   34              		.loc 1 195 3 view .LVU1
-ARM GAS  /tmp/cc3skBTJ.s 			page 5
+ARM GAS  /tmp/ccaOknmQ.s 			page 5
 
 
  196:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** }
@@ -298,7 +298,7 @@ ARM GAS  /tmp/cc3skBTJ.s 			page 1
   85              		.cfi_endproc
   86              	.LFE146:
   88              		.section	.rodata.handleInit.str1.4,"aMS",%progbits,1
-ARM GAS  /tmp/cc3skBTJ.s 			page 6
+ARM GAS  /tmp/ccaOknmQ.s 			page 6
 
 
   89              		.align	2
@@ -358,7 +358,7 @@ ARM GAS  /tmp/cc3skBTJ.s 			page 1
  113:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   if (GLOBAL_CMD_INITIALIZE == message->event) {
  128              		.loc 1 113 39 is_stmt 0 view .LVU16
  129 0004 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
-ARM GAS  /tmp/cc3skBTJ.s 			page 7
+ARM GAS  /tmp/ccaOknmQ.s 			page 7
 
 
  113:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   if (GLOBAL_CMD_INITIALIZE == message->event) {
@@ -418,7 +418,7 @@ ARM GAS  /tmp/cc3skBTJ.s 			page 1
  173 002c 1021     		movs	r1, #16
  174 002e 2046     		mov	r0, r4
  175              	.LVL13:
-ARM GAS  /tmp/cc3skBTJ.s 			page 8
+ARM GAS  /tmp/ccaOknmQ.s 			page 8
 
 
  120:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     HAL_GPIO_WritePin(_TEMP_RESET_GPIO_Port, _TEMP_RESET_Pin, GPIO_PIN_RESET);
@@ -478,7 +478,7 @@ ARM GAS  /tmp/cc3skBTJ.s 			page 1
  216 0062 FFF7FEFF 		bl	fprintf
  217              	.LVL20:
  136:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
-ARM GAS  /tmp/cc3skBTJ.s 			page 9
+ARM GAS  /tmp/ccaOknmQ.s 			page 9
 
 
  218              		.loc 1 136 5 is_stmt 1 view .LVU42
@@ -538,7 +538,7 @@ ARM GAS  /tmp/cc3skBTJ.s 			page 1
  143:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     TO_STATE(this, TH_SENS_IDLE_STATE);
  261              		.loc 1 143 5 view .LVU54
  143:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     TO_STATE(this, TH_SENS_IDLE_STATE);
-ARM GAS  /tmp/cc3skBTJ.s 			page 10
+ARM GAS  /tmp/ccaOknmQ.s 			page 10
 
 
  262              		.loc 1 143 39 view .LVU55
@@ -598,7 +598,7 @@ ARM GAS  /tmp/cc3skBTJ.s 			page 1
  311              		.cfi_offset 14, -4
  312 0002 0446     		mov	r4, r0
  150:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   osStatus_t  ioStatus = osOK;
-ARM GAS  /tmp/cc3skBTJ.s 			page 11
+ARM GAS  /tmp/ccaOknmQ.s 			page 11
 
 
  313              		.loc 1 150 3 is_stmt 1 view .LVU59
@@ -658,7 +658,7 @@ ARM GAS  /tmp/cc3skBTJ.s 			page 1
  354 002e 8068     		ldr	r0, [r0, #8]
  355 0030 FFF7FEFF 		bl	fprintf
  356              	.LVL33:
-ARM GAS  /tmp/cc3skBTJ.s 			page 12
+ARM GAS  /tmp/ccaOknmQ.s 			page 12
 
 
  157:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
@@ -718,7 +718,7 @@ ARM GAS  /tmp/cc3skBTJ.s 			page 1
  397 005c 54000000 		.word	.LC3
  398 0060 40000000 		.word	.LC2
  399              		.cfi_endproc
-ARM GAS  /tmp/cc3skBTJ.s 			page 13
+ARM GAS  /tmp/ccaOknmQ.s 			page 13
 
 
  400              	.LFE143:
@@ -778,7 +778,7 @@ ARM GAS  /tmp/cc3skBTJ.s 			page 1
  445 0010 00F11401 		add	r1, r0, #20
  446              	.LVL43:
  177:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       ioStatus = SHT3x_ReadMeasurements(&this->rawTemperature, &this->rawHumidity);
-ARM GAS  /tmp/cc3skBTJ.s 			page 14
+ARM GAS  /tmp/ccaOknmQ.s 			page 14
 
 
  447              		.loc 1 177 18 view .LVU98
@@ -838,7 +838,7 @@ ARM GAS  /tmp/cc3skBTJ.s 			page 1
  489              	.LFE144:
  491              		.section	.text.handleTHSensorFSM,"ax",%progbits
  492              		.align	1
-ARM GAS  /tmp/cc3skBTJ.s 			page 15
+ARM GAS  /tmp/ccaOknmQ.s 			page 15
 
 
  493              		.syntax unified
@@ -898,7 +898,7 @@ ARM GAS  /tmp/cc3skBTJ.s 			page 1
  538              	.LVL52:
  101:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       return handleIdle(this, message);
  539              		.loc 1 101 14 view .LVU121
-ARM GAS  /tmp/cc3skBTJ.s 			page 16
+ARM GAS  /tmp/ccaOknmQ.s 			page 16
 
 
  540 001c FBE7     		b	.L30
@@ -958,7 +958,7 @@ ARM GAS  /tmp/cc3skBTJ.s 			page 1
  576      6E672065 
  577 004e 0000     		.align	2
  578              	.LC8:
-ARM GAS  /tmp/cc3skBTJ.s 			page 17
+ARM GAS  /tmp/ccaOknmQ.s 			page 17
 
 
  579 0050 54485F53 		.ascii	"TH_SENS_STATE_ERROR\000"
@@ -1018,7 +1018,7 @@ ARM GAS  /tmp/cc3skBTJ.s 			page 1
   80:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     if (osMessageQueueGet(TH_SENS_Actor.super.osMessageQueueId, &msg, NULL, osWaitForever) == osOK)
  621              		.loc 1 80 5 view .LVU139
   80:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     if (osMessageQueueGet(TH_SENS_Actor.super.osMessageQueueId, &msg, NULL, osWaitForever) == osOK)
-ARM GAS  /tmp/cc3skBTJ.s 			page 18
+ARM GAS  /tmp/ccaOknmQ.s 			page 18
 
 
  622              		.loc 1 80 9 is_stmt 0 view .LVU140
@@ -1078,7 +1078,7 @@ ARM GAS  /tmp/cc3skBTJ.s 			page 1
  664              		.loc 1 88 71 is_stmt 0 view .LVU152
  665 004a 124B     		ldr	r3, .L44+20
  666 004c 5B68     		ldr	r3, [r3, #4]
-ARM GAS  /tmp/cc3skBTJ.s 			page 19
+ARM GAS  /tmp/ccaOknmQ.s 			page 19
 
 
   88:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMess
@@ -1138,7 +1138,7 @@ ARM GAS  /tmp/cc3skBTJ.s 			page 1
  712              	.LBE3:
  713              		.cfi_endproc
  714              	.LFE140:
-ARM GAS  /tmp/cc3skBTJ.s 			page 20
+ARM GAS  /tmp/ccaOknmQ.s 			page 20
 
 
  716              		.section	.rodata.TH_SENS_TaskInit.str1.4,"aMS",%progbits,1
@@ -1198,7 +1198,7 @@ ARM GAS  /tmp/cc3skBTJ.s 			page 1
   60:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   TH_SENS_Actor.super.osThreadId = osThreadNew(TH_SENS_Task, NULL, &thSensorTaskDescription);
  763              		.loc 1 60 3 is_stmt 1 view .LVU167
   60:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   TH_SENS_Actor.super.osThreadId = osThreadNew(TH_SENS_Task, NULL, &thSensorTaskDescription);
-ARM GAS  /tmp/cc3skBTJ.s 			page 21
+ARM GAS  /tmp/ccaOknmQ.s 			page 21
 
 
  764              		.loc 1 60 36 is_stmt 0 view .LVU168
@@ -1258,7 +1258,7 @@ ARM GAS  /tmp/cc3skBTJ.s 			page 1
  814 0008 00000000 		.word	0
  815 000c 00000000 		.word	handleTHSensorFSM
  816 0010 00       		.byte	0
-ARM GAS  /tmp/cc3skBTJ.s 			page 22
+ARM GAS  /tmp/ccaOknmQ.s 			page 22
 
 
  817 0011 00       		.space	1
@@ -1298,48 +1298,48 @@ ARM GAS  /tmp/cc3skBTJ.s 			page 1
  852              		.file 17 "app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.h"
  853              		.file 18 "app/drivers/sht3x/sht3x.h"
  854              		.file 19 "/usr/include/newlib/stdio.h"
-ARM GAS  /tmp/cc3skBTJ.s 			page 23
+ARM GAS  /tmp/ccaOknmQ.s 			page 23
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 temperature_humidity_sensor.c
-     /tmp/cc3skBTJ.s:18     .text.handleError:0000000000000000 $t
-     /tmp/cc3skBTJ.s:25     .text.handleError:0000000000000000 handleError
-     /tmp/cc3skBTJ.s:44     .text.delayMs:0000000000000000 $t
-     /tmp/cc3skBTJ.s:50     .text.delayMs:0000000000000000 delayMs
-     /tmp/cc3skBTJ.s:84     .text.delayMs:0000000000000018 $d
-     /tmp/cc3skBTJ.s:89     .rodata.handleInit.str1.4:0000000000000000 $d
-     /tmp/cc3skBTJ.s:102    .text.handleInit:0000000000000000 $t
-     /tmp/cc3skBTJ.s:108    .text.handleInit:0000000000000000 handleInit
-     /tmp/cc3skBTJ.s:272    .text.handleInit:00000000000000ac $d
-     /tmp/cc3skBTJ.s:287    .rodata.handleIdle.str1.4:0000000000000000 $d
-     /tmp/cc3skBTJ.s:291    .text.handleIdle:0000000000000000 $t
-     /tmp/cc3skBTJ.s:297    .text.handleIdle:0000000000000000 handleIdle
-     /tmp/cc3skBTJ.s:395    .text.handleIdle:0000000000000054 $d
-     /tmp/cc3skBTJ.s:403    .text.handleContinuousMeasure:0000000000000000 $t
-     /tmp/cc3skBTJ.s:409    .text.handleContinuousMeasure:0000000000000000 handleContinuousMeasure
-     /tmp/cc3skBTJ.s:485    .text.handleContinuousMeasure:000000000000003c $d
-     /tmp/cc3skBTJ.s:492    .text.handleTHSensorFSM:0000000000000000 $t
-     /tmp/cc3skBTJ.s:498    .text.handleTHSensorFSM:0000000000000000 handleTHSensorFSM
-     /tmp/cc3skBTJ.s:519    .text.handleTHSensorFSM:000000000000000c $d
-     /tmp/cc3skBTJ.s:568    .rodata.TH_SENS_Task.str1.4:0000000000000000 $d
-     /tmp/cc3skBTJ.s:581    .text.TH_SENS_Task:0000000000000000 $t
-     /tmp/cc3skBTJ.s:588    .text.TH_SENS_Task:0000000000000000 TH_SENS_Task
-     /tmp/cc3skBTJ.s:703    .text.TH_SENS_Task:0000000000000080 $d
-     /tmp/cc3skBTJ.s:717    .rodata.TH_SENS_TaskInit.str1.4:0000000000000000 $d
-     /tmp/cc3skBTJ.s:721    .text.TH_SENS_TaskInit:0000000000000000 $t
-     /tmp/cc3skBTJ.s:728    .text.TH_SENS_TaskInit:0000000000000000 TH_SENS_TaskInit
-     /tmp/cc3skBTJ.s:783    .text.TH_SENS_TaskInit:0000000000000038 $d
-     /tmp/cc3skBTJ.s:826    .rodata.thSensorTaskDescription:0000000000000000 thSensorTaskDescription
-     /tmp/cc3skBTJ.s:804    .bss.thSensorTaskControlBlock:0000000000000000 thSensorTaskControlBlock
-     /tmp/cc3skBTJ.s:798    .bss.thSensorTaskBuffer:0000000000000000 thSensorTaskBuffer
-     /tmp/cc3skBTJ.s:811    .data.TH_SENS_Actor:0000000000000000 TH_SENS_Actor
-     /tmp/cc3skBTJ.s:795    .bss.thSensorTaskBuffer:0000000000000000 $d
-     /tmp/cc3skBTJ.s:801    .bss.thSensorTaskControlBlock:0000000000000000 $d
-     /tmp/cc3skBTJ.s:807    .data.TH_SENS_Actor:0000000000000000 $d
-     /tmp/cc3skBTJ.s:822    .rodata.thSensorTaskDescription:0000000000000000 $d
-     /tmp/cc3skBTJ.s:524    .text.handleTHSensorFSM:0000000000000011 $d
-     /tmp/cc3skBTJ.s:524    .text.handleTHSensorFSM:0000000000000012 $t
+     /tmp/ccaOknmQ.s:18     .text.handleError:0000000000000000 $t
+     /tmp/ccaOknmQ.s:25     .text.handleError:0000000000000000 handleError
+     /tmp/ccaOknmQ.s:44     .text.delayMs:0000000000000000 $t
+     /tmp/ccaOknmQ.s:50     .text.delayMs:0000000000000000 delayMs
+     /tmp/ccaOknmQ.s:84     .text.delayMs:0000000000000018 $d
+     /tmp/ccaOknmQ.s:89     .rodata.handleInit.str1.4:0000000000000000 $d
+     /tmp/ccaOknmQ.s:102    .text.handleInit:0000000000000000 $t
+     /tmp/ccaOknmQ.s:108    .text.handleInit:0000000000000000 handleInit
+     /tmp/ccaOknmQ.s:272    .text.handleInit:00000000000000ac $d
+     /tmp/ccaOknmQ.s:287    .rodata.handleIdle.str1.4:0000000000000000 $d
+     /tmp/ccaOknmQ.s:291    .text.handleIdle:0000000000000000 $t
+     /tmp/ccaOknmQ.s:297    .text.handleIdle:0000000000000000 handleIdle
+     /tmp/ccaOknmQ.s:395    .text.handleIdle:0000000000000054 $d
+     /tmp/ccaOknmQ.s:403    .text.handleContinuousMeasure:0000000000000000 $t
+     /tmp/ccaOknmQ.s:409    .text.handleContinuousMeasure:0000000000000000 handleContinuousMeasure
+     /tmp/ccaOknmQ.s:485    .text.handleContinuousMeasure:000000000000003c $d
+     /tmp/ccaOknmQ.s:492    .text.handleTHSensorFSM:0000000000000000 $t
+     /tmp/ccaOknmQ.s:498    .text.handleTHSensorFSM:0000000000000000 handleTHSensorFSM
+     /tmp/ccaOknmQ.s:519    .text.handleTHSensorFSM:000000000000000c $d
+     /tmp/ccaOknmQ.s:568    .rodata.TH_SENS_Task.str1.4:0000000000000000 $d
+     /tmp/ccaOknmQ.s:581    .text.TH_SENS_Task:0000000000000000 $t
+     /tmp/ccaOknmQ.s:588    .text.TH_SENS_Task:0000000000000000 TH_SENS_Task
+     /tmp/ccaOknmQ.s:703    .text.TH_SENS_Task:0000000000000080 $d
+     /tmp/ccaOknmQ.s:717    .rodata.TH_SENS_TaskInit.str1.4:0000000000000000 $d
+     /tmp/ccaOknmQ.s:721    .text.TH_SENS_TaskInit:0000000000000000 $t
+     /tmp/ccaOknmQ.s:728    .text.TH_SENS_TaskInit:0000000000000000 TH_SENS_TaskInit
+     /tmp/ccaOknmQ.s:783    .text.TH_SENS_TaskInit:0000000000000038 $d
+     /tmp/ccaOknmQ.s:826    .rodata.thSensorTaskDescription:0000000000000000 thSensorTaskDescription
+     /tmp/ccaOknmQ.s:804    .bss.thSensorTaskControlBlock:0000000000000000 thSensorTaskControlBlock
+     /tmp/ccaOknmQ.s:798    .bss.thSensorTaskBuffer:0000000000000000 thSensorTaskBuffer
+     /tmp/ccaOknmQ.s:811    .data.TH_SENS_Actor:0000000000000000 TH_SENS_Actor
+     /tmp/ccaOknmQ.s:795    .bss.thSensorTaskBuffer:0000000000000000 $d
+     /tmp/ccaOknmQ.s:801    .bss.thSensorTaskControlBlock:0000000000000000 $d
+     /tmp/ccaOknmQ.s:807    .data.TH_SENS_Actor:0000000000000000 $d
+     /tmp/ccaOknmQ.s:822    .rodata.thSensorTaskDescription:0000000000000000 $d
+     /tmp/ccaOknmQ.s:524    .text.handleTHSensorFSM:0000000000000011 $d
+     /tmp/ccaOknmQ.s:524    .text.handleTHSensorFSM:0000000000000012 $t
 
 UNDEFINED SYMBOLS
 osDelay
