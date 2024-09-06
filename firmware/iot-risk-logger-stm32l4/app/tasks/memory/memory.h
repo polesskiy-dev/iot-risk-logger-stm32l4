@@ -20,6 +20,7 @@ extern "C" {
 #include "main.h"
 #include "quadspi.h"
 #include "w25q.h"
+#include "fs_static.h"
 
 /* W25Q64JV Memory Specifications */
 #define W25Q64JV_FLASH_SIZE              (0x800000)  /* 8 MB (64 Mbit) */

@@ -65,7 +65,7 @@ HAL_StatusTypeDef W25Q_ReadData(W25Q_HandleTypeDef *hflash, uint8_t *const dataB
 }
 
 /**
- * @brief Write data to the flash
+ * @brief Write data to the flash page
  *
  * @description The Page Program instruction allows from 1 to 256 bytes of data to be programmed into the memory
  *
@@ -78,7 +78,7 @@ HAL_StatusTypeDef W25Q_ReadData(W25Q_HandleTypeDef *hflash, uint8_t *const dataB
  *
  * @return {HAL_StatusTypeDef} execution status
  */
-HAL_StatusTypeDef W25Q_WriteData(W25Q_HandleTypeDef *hflash, const uint8_t *dataBuffer, uint32_t address, size_t size) {
+HAL_StatusTypeDef W25Q_WritePageData(W25Q_HandleTypeDef *hflash, const uint8_t *dataBuffer, uint32_t address, size_t size) {
   QSPI_CommandTypeDef sCommand = {};
 
   HAL_StatusTypeDef status = HAL_OK;
@@ -118,6 +118,36 @@ HAL_StatusTypeDef W25Q_WriteData(W25Q_HandleTypeDef *hflash, const uint8_t *data
   status = W25Q_WaitBusy(hflash);
   if (status != HAL_OK)
     return status;
+
+  return status;
+}
+
+/**
+ * @brief Write any amount of data to the flash
+ *
+ * @description Uses W25Q_WritePageData to write the data page by page, address should be aligned to the page start
+ *
+ * @warning Place to write should be erased (0xFF) before writing
+ *
+ * @param {W25Q_HandleTypeDef} hflash [in]
+ * @param dataBuffer [in] buffer to write the data from
+ * @param address [in]
+ * @param size [in]
+ *
+ * @return {HAL_StatusTypeDef} execution status
+ */
+HAL_StatusTypeDef W25Q_WriteData(W25Q_HandleTypeDef *hflash, const uint8_t *dataBuffer, uint32_t address, size_t size) {
+  HAL_StatusTypeDef status = HAL_OK;
+
+  size_t pageSize = hflash->geometry.pageSize;
+
+  // Write the data page by page
+  for (size_t addressOffset = 0; addressOffset < size; addressOffset += pageSize) {
+    status = W25Q_WritePageData(hflash, &dataBuffer[addressOffset], address + addressOffset, pageSize);
+
+    if (status != HAL_OK)
+      return status;
+  }
 
   return status;
 }

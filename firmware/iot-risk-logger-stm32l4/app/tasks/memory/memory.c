@@ -14,8 +14,11 @@
 static osStatus_t handleMemoryFSM(MEMORY_Actor_t *this, message_t *message);
 
 extern actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS];
+extern uint8_t FAT12_BootSector[FAT12_BOOT_SECTOR_SIZE];
 
 extern USBD_StorageTypeDef USBD_Storage_Interface_fops_FS;
+
+//uint8_t dummyToRead[512] = {0};
 
 /**
  * @brief Memory actor struct representing NOR Flash storage
@@ -79,29 +82,41 @@ void MEMORY_Task(void *argument) {
   (void) argument; // Avoid unused parameter warning
   message_t msg;
 
-  HAL_StatusTypeDef status = HAL_OK;
-  uint8_t id[W25Q_ID_SIZE] = {0x00, 0x00 };
-  const char *dummyToWrite = "Hello, World!";
-  uint8_t dummyToRead[16] = {0};
-
-  status = W25Q_EraseSector(&MEMORY_W25QHandle, 0);
-  if (status != HAL_OK) {
-    fprintf(stderr, "memory error");
-  }
-
-  status = W25Q_WriteData(&MEMORY_W25QHandle, (uint8_t *)dummyToWrite, 0, 13);
-  if (status != HAL_OK) {
-    fprintf(stderr, "memory error");
-  }
-
-  status = W25Q_ReadData(&MEMORY_W25QHandle, dummyToRead, 0, 16);
-  if (status != HAL_OK) {
-    fprintf(stderr, "memory error");
-  }
-
-  status = W25Q_ReadStatusReg(&MEMORY_W25QHandle);
+//  HAL_StatusTypeDef status = HAL_OK;
+//  uint8_t id[W25Q_ID_SIZE] = {0x00, 0x00 };
+//  const char *dummyToWrite = "Hello, World!";
+//
+//  status = W25Q_EraseSector(&MEMORY_W25QHandle, 0);
+//  if (status != HAL_OK) {
+//    fprintf(stderr, "memory error");
+//  }
+//
+//  status = W25Q_WritePageData(&MEMORY_W25QHandle, (uint8_t *)dummyToWrite, 0, 13);
+//  if (status != HAL_OK) {
+//    fprintf(stderr, "memory error");
+//  }
+//
+//  status = W25Q_ReadData(&MEMORY_W25QHandle, dummyToRead, 0, 16);
+//  if (status != HAL_OK) {
+//    fprintf(stderr, "memory error");
+//  }
+//
+//  status = W25Q_ReadStatusReg(&MEMORY_W25QHandle);
 
   // init usb msd TODO move to more suitable place
+  HAL_StatusTypeDef status = W25Q_EraseChip(&MEMORY_W25QHandle);
+  if (status != HAL_OK)
+    fprintf(stderr, "memory error");
+
+  status = W25Q_WriteData(&MEMORY_W25QHandle, FAT12_BootSector, 0, FAT12_BOOT_SECTOR_SIZE);
+  if (status != HAL_OK)
+    fprintf(stderr, "memory error");
+
+
+//  status = W25Q_ReadData(&MEMORY_W25QHandle, dummyToRead, 0, 512);
+//  if (status != HAL_OK) {
+//    fprintf(stderr, "memory error");
+//  }
 
 
   #ifdef DEBUG

@@ -17,6 +17,10 @@ extern "C" {
 
 #include <stdio.h>
 
+#define FAT12_SECTOR_SIZE       (512)
+#define FAT12_SECTORS           (9)
+#define FAT12_BOOT_SECTOR_SIZE  (FAT12_SECTOR_SIZE * FAT12_SECTORS)
+
 #ifdef __cplusplus
 }
 #endif
