@@ -31,6 +31,7 @@ MEMORY_Actor_t MEMORY_Actor = {
                 .osMessageQueueId = NULL,
                 .osThreadId = NULL,
         },
+        .logFileFreeSpaceAddress = FAT12_BOOT_SECTOR_SIZE + 1,
         .state = MEMORY_NO_STATE
 };
 
@@ -103,14 +104,20 @@ void MEMORY_Task(void *argument) {
 //
 //  status = W25Q_ReadStatusReg(&MEMORY_W25QHandle);
 
+
   // init usb msd TODO move to more suitable place
   HAL_StatusTypeDef status = W25Q_EraseChip(&MEMORY_W25QHandle);
   if (status != HAL_OK)
     fprintf(stderr, "memory error");
 
+  // uncomment it to flash FAT12 boot sector, TODO extract it to settings
   status = W25Q_WriteData(&MEMORY_W25QHandle, FAT12_BootSector, 0, FAT12_BOOT_SECTOR_SIZE);
   if (status != HAL_OK)
     fprintf(stderr, "memory error");
+
+  uint32_t freeSpaceAddress = MEMORY_SeekFirstFreeSpaceAddress();
+
+  fprintf(stdout, "First free space address: %lu\n", freeSpaceAddress);
 
 
 //  status = W25Q_ReadData(&MEMORY_W25QHandle, dummyToRead, 0, 512);
@@ -139,6 +146,35 @@ void MEMORY_Task(void *argument) {
 
 static osStatus_t handleMemoryFSM(MEMORY_Actor_t *this, message_t *message) {
   return osOK;
+}
+
+uint32_t MEMORY_SeekFirstFreeSpaceAddress(void) {
+  uint8_t logEntry[MEMORY_LOG_ENTRY_SIZE] = {0};
+  uint32_t startAddress = FAT12_BOOT_SECTOR_SIZE + 1;
+  uint8_t stepSize = MEMORY_LOG_ENTRY_SIZE;
+  uint32_t stepNumber = 0;
+  bool logEntryHasData = true; // does read log entry contains data other than 0xFF (empty)
+
+  // read until log entry has no data (0xFF)
+  while (logEntryHasData) { // TODO check boundaries
+    // read log entry chunk to buffer
+    uint16_t offset = stepNumber * stepSize;
+    W25Q_ReadData(&MEMORY_W25QHandle, logEntry, startAddress + offset, stepSize);
+
+    // check if log entry has data
+    for (uint8_t iLogEntry = 0; iLogEntry < MEMORY_LOG_ENTRY_SIZE; iLogEntry++) {
+      if (logEntry[iLogEntry] != 0xFF) {
+        logEntryHasData = true;
+        break;
+      }
+      logEntryHasData = false; // just to mark algorithm end
+      return startAddress + offset;
+    }
+
+    stepNumber++;
+  };
+
+
 }
 
 // TODO move to more suitable place

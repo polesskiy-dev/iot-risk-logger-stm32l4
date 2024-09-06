@@ -31,6 +31,11 @@ extern "C" {
 #define W25Q64JV_BLOCK_SIZE_32K          (0x8000)    /* 32 KB */
 #define W25Q64JV_BLOCK_SIZE_64K          (0x10000)   /* 64 KB */
 
+#define MEMORY_TIMESTAMP_ENTRY_SIZE                   (0x04)      /* 4 bytes */
+#define MEMORY_LUX_ENTRY_SIZE                         (0x02)      /* 2 bytes */
+#define MEMORY_TEMPERATURE_HUMIDITY_ENTRY_SIZE        (0x02)      /* 2 bytes */
+#define MEMORY_LOG_ENTRY_SIZE                         (MEMORY_TIMESTAMP_ENTRY_SIZE + MEMORY_TEMPERATURE_HUMIDITY_ENTRY_SIZE + MEMORY_LUX_ENTRY_SIZE)      /* 8 bytes */
+
 typedef enum {
   MEMORY_NO_STATE = 0,
   MEMORY_STATE_ERROR,
@@ -40,10 +45,12 @@ typedef enum {
 typedef struct {
   actor_t super;
   MEMORY_State_t state;
+  uint32_t logFileFreeSpaceAddress;
 } MEMORY_Actor_t;
 
 actor_t* MEMORY_TaskInit(void);
 void MEMORY_Task(void *argument);
+uint32_t MEMORY_SeekFirstFreeSpaceAddress(void);
 
 #ifdef __cplusplus
 }
