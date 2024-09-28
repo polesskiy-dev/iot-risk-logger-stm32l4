@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccMOF7Vm.s 			page 1
+ARM GAS  /tmp/cc8jkhSZ.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -44,62 +44,61 @@ ARM GAS  /tmp/ccMOF7Vm.s 			page 1
   14:app/core/cron/cron.c **** static uint8_t monthStrToNumber(const char* monthStr);
   15:app/core/cron/cron.c **** static osStatus_t setTimeFromUnixTimestamp(int32_t timestamp);
   16:app/core/cron/cron.c **** static osStatus_t setWakeUpPeriod(uint32_t periodSeconds);
-  17:app/core/cron/cron.c **** static int32_t getCurrentUnixTimestamp(void);
-  18:app/core/cron/cron.c **** 
-  19:app/core/cron/cron.c **** static HAL_StatusTypeDef setCurrentTime(void);
-  20:app/core/cron/cron.c **** static HAL_StatusTypeDef setCurrentDate(void);
-  21:app/core/cron/cron.c **** 
-  22:app/core/cron/cron.c **** CRON_Actor_t CRON_Actor = {
-  23:app/core/cron/cron.c ****   .super = {
-  24:app/core/cron/cron.c ****     .actorId = CRON_ACTOR_ID,
-  25:app/core/cron/cron.c ****     .messageHandler = (messageHandler_t) handleCronMessage,
-  26:app/core/cron/cron.c ****     .osMessageQueueId = NULL,
-  27:app/core/cron/cron.c ****     .osThreadId = NULL,
-  28:app/core/cron/cron.c ****   },
-  29:app/core/cron/cron.c **** };
-  30:app/core/cron/cron.c **** 
-ARM GAS  /tmp/ccMOF7Vm.s 			page 2
+  17:app/core/cron/cron.c **** 
+  18:app/core/cron/cron.c **** static HAL_StatusTypeDef setCurrentTime(void);
+  19:app/core/cron/cron.c **** static HAL_StatusTypeDef setCurrentDate(void);
+  20:app/core/cron/cron.c **** 
+  21:app/core/cron/cron.c **** CRON_Actor_t CRON_Actor = {
+  22:app/core/cron/cron.c ****   .super = {
+  23:app/core/cron/cron.c ****     .actorId = CRON_ACTOR_ID,
+  24:app/core/cron/cron.c ****     .messageHandler = (messageHandler_t) handleCronMessage,
+  25:app/core/cron/cron.c ****     .osMessageQueueId = NULL,
+  26:app/core/cron/cron.c ****     .osThreadId = NULL,
+  27:app/core/cron/cron.c ****   },
+  28:app/core/cron/cron.c **** };
+  29:app/core/cron/cron.c **** 
+  30:app/core/cron/cron.c **** actor_t* CRON_ActorInit(void) {
+ARM GAS  /tmp/cc8jkhSZ.s 			page 2
 
 
-  31:app/core/cron/cron.c **** actor_t* CRON_ActorInit(void) {
-  32:app/core/cron/cron.c ****   // set time to current (compilation time)
-  33:app/core/cron/cron.c ****   HAL_StatusTypeDef status = setCurrentTime();
-  34:app/core/cron/cron.c **** 
-  35:app/core/cron/cron.c ****   // set date to current (compilation date)
-  36:app/core/cron/cron.c ****   status |= setCurrentDate();
-  37:app/core/cron/cron.c **** 
-  38:app/core/cron/cron.c ****   // TODO remove after debugging
-  39:app/core/cron/cron.c ****   status |= setWakeUpPeriod(30); // every 30 seconds
-  40:app/core/cron/cron.c **** 
-  41:app/core/cron/cron.c ****   #ifdef DEBUG
-  42:app/core/cron/cron.c ****     fprintf(stdout, "Cron initialized: %d\n", status);
-  43:app/core/cron/cron.c ****   #endif
-  44:app/core/cron/cron.c ****   return &CRON_Actor.super;
-  45:app/core/cron/cron.c **** }
+  31:app/core/cron/cron.c ****   // set time to current (compilation time)
+  32:app/core/cron/cron.c ****   HAL_StatusTypeDef status = setCurrentTime();
+  33:app/core/cron/cron.c **** 
+  34:app/core/cron/cron.c ****   // set date to current (compilation date)
+  35:app/core/cron/cron.c ****   status |= setCurrentDate();
+  36:app/core/cron/cron.c **** 
+  37:app/core/cron/cron.c ****   // TODO remove after debugging
+  38:app/core/cron/cron.c ****   status |= setWakeUpPeriod(30); // every 30 seconds
+  39:app/core/cron/cron.c **** 
+  40:app/core/cron/cron.c ****   #ifdef DEBUG
+  41:app/core/cron/cron.c ****     fprintf(stdout, "Cron initialized: %d\n", status);
+  42:app/core/cron/cron.c ****   #endif
+  43:app/core/cron/cron.c ****   return &CRON_Actor.super;
+  44:app/core/cron/cron.c **** }
+  45:app/core/cron/cron.c **** 
   46:app/core/cron/cron.c **** 
-  47:app/core/cron/cron.c **** 
-  48:app/core/cron/cron.c **** void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc) {
-  49:app/core/cron/cron.c ****   int32_t currentTimestamp = getCurrentUnixTimestamp();
-  50:app/core/cron/cron.c **** 
-  51:app/core/cron/cron.c ****   osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_WAKE_N_READ, .payl
-  52:app/core/cron/cron.c **** }
-  53:app/core/cron/cron.c **** 
-  54:app/core/cron/cron.c **** static osStatus_t handleCronMessage(CRON_Actor_t *this, message_t *message) {
-  55:app/core/cron/cron.c ****   switch (message->event) {
-  56:app/core/cron/cron.c ****     case GLOBAL_CMD_SET_TIME_DATE:
-  57:app/core/cron/cron.c ****       return setTimeFromUnixTimestamp((int32_t)message->payload.value);
-  58:app/core/cron/cron.c ****     case GLOBAL_CMD_SET_WAKE_UP_PERIOD:
-  59:app/core/cron/cron.c ****       return setWakeUpPeriod(message->payload.value);
-  60:app/core/cron/cron.c ****   }
-  61:app/core/cron/cron.c ****   return osOK;
-  62:app/core/cron/cron.c **** }
-  63:app/core/cron/cron.c **** 
-  64:app/core/cron/cron.c **** static osStatus_t setTimeFromUnixTimestamp(int32_t timestamp) {
-  29              		.loc 1 64 63 view -0
+  47:app/core/cron/cron.c **** void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc) {
+  48:app/core/cron/cron.c ****   int32_t currentTimestamp = CRON_GetCurrentUnixTimestamp();
+  49:app/core/cron/cron.c **** 
+  50:app/core/cron/cron.c ****   osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_WAKE_N_READ, .payl
+  51:app/core/cron/cron.c **** }
+  52:app/core/cron/cron.c **** 
+  53:app/core/cron/cron.c **** static osStatus_t handleCronMessage(CRON_Actor_t *this, message_t *message) {
+  54:app/core/cron/cron.c ****   switch (message->event) {
+  55:app/core/cron/cron.c ****     case GLOBAL_CMD_SET_TIME_DATE:
+  56:app/core/cron/cron.c ****       return setTimeFromUnixTimestamp((int32_t)message->payload.value);
+  57:app/core/cron/cron.c ****     case GLOBAL_CMD_SET_WAKE_UP_PERIOD:
+  58:app/core/cron/cron.c ****       return setWakeUpPeriod(message->payload.value);
+  59:app/core/cron/cron.c ****   }
+  60:app/core/cron/cron.c ****   return osOK;
+  61:app/core/cron/cron.c **** }
+  62:app/core/cron/cron.c **** 
+  63:app/core/cron/cron.c **** static osStatus_t setTimeFromUnixTimestamp(int32_t timestamp) {
+  29              		.loc 1 63 63 view -0
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 32
   32              		@ frame_needed = 0, uses_anonymous_args = 0
-  33              		.loc 1 64 63 is_stmt 0 view .LVU1
+  33              		.loc 1 63 63 is_stmt 0 view .LVU1
   34 0000 00B5     		push	{lr}
   35              	.LCFI0:
   36              		.cfi_def_cfa_offset 4
@@ -107,143 +106,143 @@ ARM GAS  /tmp/ccMOF7Vm.s 			page 1
   38 0002 89B0     		sub	sp, sp, #36
   39              	.LCFI1:
   40              		.cfi_def_cfa_offset 40
-  65:app/core/cron/cron.c ****   // Convert Unix timestamp to broken-down time structure
-  66:app/core/cron/cron.c ****   time_t rawTime = timestamp;
-  41              		.loc 1 66 3 is_stmt 1 view .LVU2
-  42              		.loc 1 66 10 is_stmt 0 view .LVU3
+  64:app/core/cron/cron.c ****   // Convert Unix timestamp to broken-down time structure
+  65:app/core/cron/cron.c ****   time_t rawTime = timestamp;
+  41              		.loc 1 65 3 is_stmt 1 view .LVU2
+  42              		.loc 1 65 10 is_stmt 0 view .LVU3
   43 0004 C317     		asrs	r3, r0, #31
   44 0006 0690     		str	r0, [sp, #24]
   45 0008 0793     		str	r3, [sp, #28]
-  67:app/core/cron/cron.c ****   struct tm *timeStruct = gmtime(&rawTime);
-  46              		.loc 1 67 3 is_stmt 1 view .LVU4
-  47              		.loc 1 67 27 is_stmt 0 view .LVU5
+  66:app/core/cron/cron.c ****   struct tm *timeStruct = gmtime(&rawTime);
+  46              		.loc 1 66 3 is_stmt 1 view .LVU4
+  47              		.loc 1 66 27 is_stmt 0 view .LVU5
   48 000a 06A8     		add	r0, sp, #24
-ARM GAS  /tmp/ccMOF7Vm.s 			page 3
-
-
   49              	.LVL1:
-  50              		.loc 1 67 27 view .LVU6
+ARM GAS  /tmp/cc8jkhSZ.s 			page 3
+
+
+  50              		.loc 1 66 27 view .LVU6
   51 000c FFF7FEFF 		bl	gmtime
   52              	.LVL2:
-  68:app/core/cron/cron.c **** 
-  69:app/core/cron/cron.c ****   RTC_TimeTypeDef sTime = {0};
-  53              		.loc 1 69 3 is_stmt 1 view .LVU7
-  54              		.loc 1 69 19 is_stmt 0 view .LVU8
+  67:app/core/cron/cron.c **** 
+  68:app/core/cron/cron.c ****   RTC_TimeTypeDef sTime = {0};
+  53              		.loc 1 68 3 is_stmt 1 view .LVU7
+  54              		.loc 1 68 19 is_stmt 0 view .LVU8
   55 0010 0023     		movs	r3, #0
   56 0012 0193     		str	r3, [sp, #4]
   57 0014 0293     		str	r3, [sp, #8]
   58 0016 0393     		str	r3, [sp, #12]
   59 0018 0493     		str	r3, [sp, #16]
   60 001a 0593     		str	r3, [sp, #20]
-  70:app/core/cron/cron.c ****   RTC_DateTypeDef sDate = {0};
-  61              		.loc 1 70 3 is_stmt 1 view .LVU9
-  62              		.loc 1 70 19 is_stmt 0 view .LVU10
+  69:app/core/cron/cron.c ****   RTC_DateTypeDef sDate = {0};
+  61              		.loc 1 69 3 is_stmt 1 view .LVU9
+  62              		.loc 1 69 19 is_stmt 0 view .LVU10
   63 001c 0093     		str	r3, [sp]
-  71:app/core/cron/cron.c **** 
-  72:app/core/cron/cron.c ****   // Set time
-  73:app/core/cron/cron.c ****   sTime.Hours = timeStruct->tm_hour;
-  64              		.loc 1 73 3 is_stmt 1 view .LVU11
-  65              		.loc 1 73 27 is_stmt 0 view .LVU12
+  70:app/core/cron/cron.c **** 
+  71:app/core/cron/cron.c ****   // Set time
+  72:app/core/cron/cron.c ****   sTime.Hours = timeStruct->tm_hour;
+  64              		.loc 1 72 3 is_stmt 1 view .LVU11
+  65              		.loc 1 72 27 is_stmt 0 view .LVU12
   66 001e 8368     		ldr	r3, [r0, #8]
-  67              		.loc 1 73 15 view .LVU13
+  67              		.loc 1 72 15 view .LVU13
   68 0020 8DF80430 		strb	r3, [sp, #4]
-  74:app/core/cron/cron.c ****   sTime.Minutes = timeStruct->tm_min;
-  69              		.loc 1 74 3 is_stmt 1 view .LVU14
-  70              		.loc 1 74 29 is_stmt 0 view .LVU15
+  73:app/core/cron/cron.c ****   sTime.Minutes = timeStruct->tm_min;
+  69              		.loc 1 73 3 is_stmt 1 view .LVU14
+  70              		.loc 1 73 29 is_stmt 0 view .LVU15
   71 0024 4368     		ldr	r3, [r0, #4]
-  72              		.loc 1 74 17 view .LVU16
+  72              		.loc 1 73 17 view .LVU16
   73 0026 8DF80530 		strb	r3, [sp, #5]
-  75:app/core/cron/cron.c ****   sTime.Seconds = timeStruct->tm_sec;
-  74              		.loc 1 75 3 is_stmt 1 view .LVU17
-  75              		.loc 1 75 29 is_stmt 0 view .LVU18
+  74:app/core/cron/cron.c ****   sTime.Seconds = timeStruct->tm_sec;
+  74              		.loc 1 74 3 is_stmt 1 view .LVU17
+  75              		.loc 1 74 29 is_stmt 0 view .LVU18
   76 002a 0368     		ldr	r3, [r0]
-  77              		.loc 1 75 17 view .LVU19
+  77              		.loc 1 74 17 view .LVU19
   78 002c 8DF80630 		strb	r3, [sp, #6]
-  76:app/core/cron/cron.c ****   sTime.TimeFormat = RTC_HOURFORMAT_24;
-  79              		.loc 1 76 3 is_stmt 1 view .LVU20
-  77:app/core/cron/cron.c ****   sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
-  80              		.loc 1 77 3 view .LVU21
-  78:app/core/cron/cron.c ****   sTime.StoreOperation = RTC_STOREOPERATION_RESET;
-  81              		.loc 1 78 3 view .LVU22
-  79:app/core/cron/cron.c **** 
-  80:app/core/cron/cron.c ****   // Set date
-  81:app/core/cron/cron.c ****   sDate.Year = timeStruct->tm_year - YEARS_FROM_1900_TO_2000; // Adjust year to RTC format (00-99)
-  82              		.loc 1 81 3 view .LVU23
-  83              		.loc 1 81 26 is_stmt 0 view .LVU24
+  75:app/core/cron/cron.c ****   sTime.TimeFormat = RTC_HOURFORMAT_24;
+  79              		.loc 1 75 3 is_stmt 1 view .LVU20
+  76:app/core/cron/cron.c ****   sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+  80              		.loc 1 76 3 view .LVU21
+  77:app/core/cron/cron.c ****   sTime.StoreOperation = RTC_STOREOPERATION_RESET;
+  81              		.loc 1 77 3 view .LVU22
+  78:app/core/cron/cron.c **** 
+  79:app/core/cron/cron.c ****   // Set date
+  80:app/core/cron/cron.c ****   sDate.Year = timeStruct->tm_year - YEARS_FROM_1900_TO_2000; // Adjust year to RTC format (00-99)
+  82              		.loc 1 80 3 view .LVU23
+  83              		.loc 1 80 26 is_stmt 0 view .LVU24
   84 0030 4369     		ldr	r3, [r0, #20]
-  85              		.loc 1 81 36 view .LVU25
+  85              		.loc 1 80 36 view .LVU25
   86 0032 643B     		subs	r3, r3, #100
-  87              		.loc 1 81 14 view .LVU26
+  87              		.loc 1 80 14 view .LVU26
   88 0034 8DF80330 		strb	r3, [sp, #3]
-  82:app/core/cron/cron.c ****   sDate.Month = timeStruct->tm_mon + 1; // Adjust month to RTC format (1-12)
-  89              		.loc 1 82 3 is_stmt 1 view .LVU27
-  90              		.loc 1 82 27 is_stmt 0 view .LVU28
-ARM GAS  /tmp/ccMOF7Vm.s 			page 4
-
-
+  81:app/core/cron/cron.c ****   sDate.Month = timeStruct->tm_mon + 1; // Adjust month to RTC format (1-12)
+  89              		.loc 1 81 3 is_stmt 1 view .LVU27
+  90              		.loc 1 81 27 is_stmt 0 view .LVU28
   91 0038 0369     		ldr	r3, [r0, #16]
-  92              		.loc 1 82 36 view .LVU29
+ARM GAS  /tmp/cc8jkhSZ.s 			page 4
+
+
+  92              		.loc 1 81 36 view .LVU29
   93 003a 0133     		adds	r3, r3, #1
-  94              		.loc 1 82 15 view .LVU30
+  94              		.loc 1 81 15 view .LVU30
   95 003c 8DF80130 		strb	r3, [sp, #1]
-  83:app/core/cron/cron.c ****   sDate.Date = timeStruct->tm_mday;
-  96              		.loc 1 83 3 is_stmt 1 view .LVU31
-  97              		.loc 1 83 26 is_stmt 0 view .LVU32
+  82:app/core/cron/cron.c ****   sDate.Date = timeStruct->tm_mday;
+  96              		.loc 1 82 3 is_stmt 1 view .LVU31
+  97              		.loc 1 82 26 is_stmt 0 view .LVU32
   98 0040 C368     		ldr	r3, [r0, #12]
-  99              		.loc 1 83 14 view .LVU33
+  99              		.loc 1 82 14 view .LVU33
  100 0042 8DF80230 		strb	r3, [sp, #2]
-  84:app/core/cron/cron.c ****   sDate.WeekDay = (timeStruct->tm_wday == 0) ? 7 : timeStruct->tm_wday; // Sunday = 0 in tm struct,
- 101              		.loc 1 84 3 is_stmt 1 view .LVU34
- 102              		.loc 1 84 30 is_stmt 0 view .LVU35
+  83:app/core/cron/cron.c ****   sDate.WeekDay = (timeStruct->tm_wday == 0) ? 7 : timeStruct->tm_wday; // Sunday = 0 in tm struct,
+ 101              		.loc 1 83 3 is_stmt 1 view .LVU34
+ 102              		.loc 1 83 30 is_stmt 0 view .LVU35
  103 0046 8369     		ldr	r3, [r0, #24]
- 104              		.loc 1 84 17 view .LVU36
+ 104              		.loc 1 83 17 view .LVU36
  105 0048 0BB1     		cbz	r3, .L4
- 106              		.loc 1 84 17 discriminator 1 view .LVU37
+ 106              		.loc 1 83 17 discriminator 1 view .LVU37
  107 004a DBB2     		uxtb	r3, r3
  108 004c 00E0     		b	.L2
  109              	.L4:
- 110              		.loc 1 84 17 view .LVU38
+ 110              		.loc 1 83 17 view .LVU38
  111 004e 0723     		movs	r3, #7
  112              	.L2:
- 113              		.loc 1 84 17 discriminator 4 view .LVU39
+ 113              		.loc 1 83 17 discriminator 4 view .LVU39
  114 0050 8DF80030 		strb	r3, [sp]
-  85:app/core/cron/cron.c **** 
-  86:app/core/cron/cron.c ****   // Set RTC time and date
-  87:app/core/cron/cron.c ****   if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BIN) != HAL_OK) {
- 115              		.loc 1 87 3 is_stmt 1 discriminator 4 view .LVU40
- 116              		.loc 1 87 7 is_stmt 0 discriminator 4 view .LVU41
+  84:app/core/cron/cron.c **** 
+  85:app/core/cron/cron.c ****   // Set RTC time and date
+  86:app/core/cron/cron.c ****   if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BIN) != HAL_OK) {
+ 115              		.loc 1 86 3 is_stmt 1 discriminator 4 view .LVU40
+ 116              		.loc 1 86 7 is_stmt 0 discriminator 4 view .LVU41
  117 0054 0022     		movs	r2, #0
  118 0056 01A9     		add	r1, sp, #4
  119 0058 0948     		ldr	r0, .L8
  120              	.LVL3:
- 121              		.loc 1 87 7 discriminator 4 view .LVU42
+ 121              		.loc 1 86 7 discriminator 4 view .LVU42
  122 005a FFF7FEFF 		bl	HAL_RTC_SetTime
  123              	.LVL4:
- 124              		.loc 1 87 6 discriminator 4 view .LVU43
+ 124              		.loc 1 86 6 discriminator 4 view .LVU43
  125 005e 40B9     		cbnz	r0, .L5
-  88:app/core/cron/cron.c ****     return osError;
-  89:app/core/cron/cron.c ****   }
-  90:app/core/cron/cron.c **** 
-  91:app/core/cron/cron.c ****   if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BIN) != HAL_OK) {
- 126              		.loc 1 91 3 is_stmt 1 view .LVU44
- 127              		.loc 1 91 7 is_stmt 0 view .LVU45
+  87:app/core/cron/cron.c ****     return osError;
+  88:app/core/cron/cron.c ****   }
+  89:app/core/cron/cron.c **** 
+  90:app/core/cron/cron.c ****   if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BIN) != HAL_OK) {
+ 126              		.loc 1 90 3 is_stmt 1 view .LVU44
+ 127              		.loc 1 90 7 is_stmt 0 view .LVU45
  128 0060 0022     		movs	r2, #0
  129 0062 6946     		mov	r1, sp
  130 0064 0648     		ldr	r0, .L8
  131 0066 FFF7FEFF 		bl	HAL_RTC_SetDate
  132              	.LVL5:
- 133              		.loc 1 91 6 view .LVU46
+ 133              		.loc 1 90 6 view .LVU46
  134 006a 28B9     		cbnz	r0, .L6
  135              	.L1:
-  92:app/core/cron/cron.c ****     return osError;
-  93:app/core/cron/cron.c ****   }
-  94:app/core/cron/cron.c **** 
-ARM GAS  /tmp/ccMOF7Vm.s 			page 5
+  91:app/core/cron/cron.c ****     return osError;
+  92:app/core/cron/cron.c ****   }
+  93:app/core/cron/cron.c **** 
+  94:app/core/cron/cron.c ****   return osOK;
+ARM GAS  /tmp/cc8jkhSZ.s 			page 5
 
 
-  95:app/core/cron/cron.c ****   return osOK;
-  96:app/core/cron/cron.c **** }
- 136              		.loc 1 96 1 view .LVU47
+  95:app/core/cron/cron.c **** }
+ 136              		.loc 1 95 1 view .LVU47
  137 006c 09B0     		add	sp, sp, #36
  138              	.LCFI2:
  139              		.cfi_remember_state
@@ -253,13 +252,13 @@ ARM GAS  /tmp/ccMOF7Vm.s 			page 1
  143              	.L5:
  144              	.LCFI3:
  145              		.cfi_restore_state
-  88:app/core/cron/cron.c ****     return osError;
- 146              		.loc 1 88 12 view .LVU48
+  87:app/core/cron/cron.c ****     return osError;
+ 146              		.loc 1 87 12 view .LVU48
  147 0072 4FF0FF30 		mov	r0, #-1
  148 0076 F9E7     		b	.L1
  149              	.L6:
-  92:app/core/cron/cron.c ****     return osError;
- 150              		.loc 1 92 12 view .LVU49
+  91:app/core/cron/cron.c ****     return osError;
+ 150              		.loc 1 91 12 view .LVU49
  151 0078 4FF0FF30 		mov	r0, #-1
  152 007c F6E7     		b	.L1
  153              	.L9:
@@ -277,72 +276,72 @@ ARM GAS  /tmp/ccMOF7Vm.s 			page 1
  167              	setWakeUpPeriod:
  168              	.LVL6:
  169              	.LFB143:
-  97:app/core/cron/cron.c **** 
-  98:app/core/cron/cron.c **** static osStatus_t setWakeUpPeriod(uint32_t periodSeconds) {
- 170              		.loc 1 98 59 is_stmt 1 view -0
+  96:app/core/cron/cron.c **** 
+  97:app/core/cron/cron.c **** static osStatus_t setWakeUpPeriod(uint32_t periodSeconds) {
+ 170              		.loc 1 97 59 is_stmt 1 view -0
  171              		.cfi_startproc
  172              		@ args = 0, pretend = 0, frame = 0
  173              		@ frame_needed = 0, uses_anonymous_args = 0
- 174              		.loc 1 98 59 is_stmt 0 view .LVU51
+ 174              		.loc 1 97 59 is_stmt 0 view .LVU51
  175 0000 10B5     		push	{r4, lr}
  176              	.LCFI4:
  177              		.cfi_def_cfa_offset 8
  178              		.cfi_offset 4, -8
  179              		.cfi_offset 14, -4
  180 0002 0446     		mov	r4, r0
-  99:app/core/cron/cron.c ****   // Disable wake-up timer to modify it
- 100:app/core/cron/cron.c ****   if (HAL_RTCEx_DeactivateWakeUpTimer(&hrtc) != HAL_OK) {
- 181              		.loc 1 100 3 is_stmt 1 view .LVU52
- 182              		.loc 1 100 7 is_stmt 0 view .LVU53
+  98:app/core/cron/cron.c ****   // Disable wake-up timer to modify it
+  99:app/core/cron/cron.c ****   if (HAL_RTCEx_DeactivateWakeUpTimer(&hrtc) != HAL_OK) {
+ 181              		.loc 1 99 3 is_stmt 1 view .LVU52
+ 182              		.loc 1 99 7 is_stmt 0 view .LVU53
  183 0004 0848     		ldr	r0, .L15
  184              	.LVL7:
- 185              		.loc 1 100 7 view .LVU54
+ 185              		.loc 1 99 7 view .LVU54
  186 0006 FFF7FEFF 		bl	HAL_RTCEx_DeactivateWakeUpTimer
-ARM GAS  /tmp/ccMOF7Vm.s 			page 6
-
-
  187              	.LVL8:
- 188              		.loc 1 100 6 view .LVU55
+ARM GAS  /tmp/cc8jkhSZ.s 			page 6
+
+
+ 188              		.loc 1 99 6 view .LVU55
  189 000a 38B9     		cbnz	r0, .L12
- 101:app/core/cron/cron.c ****     return osError;
- 102:app/core/cron/cron.c ****   }
- 103:app/core/cron/cron.c **** 
- 104:app/core/cron/cron.c ****   uint32_t wakeUpCounter = periodSeconds - 1; // Adjust for 0-based counter
- 190              		.loc 1 104 3 is_stmt 1 view .LVU56
+ 100:app/core/cron/cron.c ****     return osError;
+ 101:app/core/cron/cron.c ****   }
+ 102:app/core/cron/cron.c **** 
+ 103:app/core/cron/cron.c ****   uint32_t wakeUpCounter = periodSeconds - 1; // Adjust for 0-based counter
+ 190              		.loc 1 103 3 is_stmt 1 view .LVU56
  191              	.LVL9:
- 105:app/core/cron/cron.c **** 
- 106:app/core/cron/cron.c ****   if (HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, wakeUpCounter, RTC_WAKEUPCLOCK_CK_SPRE_16BITS, WAKE_UP_AUT
- 192              		.loc 1 106 3 view .LVU57
- 193              		.loc 1 106 7 is_stmt 0 view .LVU58
+ 104:app/core/cron/cron.c **** 
+ 105:app/core/cron/cron.c ****   if (HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, wakeUpCounter, RTC_WAKEUPCLOCK_CK_SPRE_16BITS, WAKE_UP_AUT
+ 192              		.loc 1 105 3 view .LVU57
+ 193              		.loc 1 105 7 is_stmt 0 view .LVU58
  194 000c 0123     		movs	r3, #1
  195 000e 0422     		movs	r2, #4
  196 0010 611E     		subs	r1, r4, #1
  197              	.LVL10:
- 198              		.loc 1 106 7 view .LVU59
+ 198              		.loc 1 105 7 view .LVU59
  199 0012 0548     		ldr	r0, .L15
  200 0014 FFF7FEFF 		bl	HAL_RTCEx_SetWakeUpTimer_IT
  201              	.LVL11:
- 202              		.loc 1 106 6 view .LVU60
+ 202              		.loc 1 105 6 view .LVU60
  203 0018 18B9     		cbnz	r0, .L13
  204              	.LVL12:
  205              	.L10:
- 107:app/core/cron/cron.c ****     return osError;
- 108:app/core/cron/cron.c ****   }
- 109:app/core/cron/cron.c **** 
- 110:app/core/cron/cron.c ****   return osOK;
- 111:app/core/cron/cron.c **** }
- 206              		.loc 1 111 1 view .LVU61
+ 106:app/core/cron/cron.c ****     return osError;
+ 107:app/core/cron/cron.c ****   }
+ 108:app/core/cron/cron.c **** 
+ 109:app/core/cron/cron.c ****   return osOK;
+ 110:app/core/cron/cron.c **** }
+ 206              		.loc 1 110 1 view .LVU61
  207 001a 10BD     		pop	{r4, pc}
  208              	.LVL13:
  209              	.L12:
- 101:app/core/cron/cron.c ****   }
- 210              		.loc 1 101 12 view .LVU62
+ 100:app/core/cron/cron.c ****   }
+ 210              		.loc 1 100 12 view .LVU62
  211 001c 4FF0FF30 		mov	r0, #-1
  212 0020 FBE7     		b	.L10
  213              	.LVL14:
  214              	.L13:
- 107:app/core/cron/cron.c ****     return osError;
- 215              		.loc 1 107 12 view .LVU63
+ 106:app/core/cron/cron.c ****     return osError;
+ 215              		.loc 1 106 12 view .LVU63
  216 0022 4FF0FF30 		mov	r0, #-1
  217 0026 F8E7     		b	.L10
  218              	.L16:
@@ -358,80 +357,80 @@ ARM GAS  /tmp/ccMOF7Vm.s 			page 1
  229              		.thumb_func
  230              		.fpu fpv4-sp-d16
  232              	handleCronMessage:
-ARM GAS  /tmp/ccMOF7Vm.s 			page 7
-
-
  233              	.LVL15:
+ARM GAS  /tmp/cc8jkhSZ.s 			page 7
+
+
  234              	.LFB141:
-  54:app/core/cron/cron.c ****   switch (message->event) {
- 235              		.loc 1 54 77 is_stmt 1 view -0
+  53:app/core/cron/cron.c ****   switch (message->event) {
+ 235              		.loc 1 53 77 is_stmt 1 view -0
  236              		.cfi_startproc
  237              		@ args = 0, pretend = 0, frame = 0
  238              		@ frame_needed = 0, uses_anonymous_args = 0
-  54:app/core/cron/cron.c ****   switch (message->event) {
- 239              		.loc 1 54 77 is_stmt 0 view .LVU65
+  53:app/core/cron/cron.c ****   switch (message->event) {
+ 239              		.loc 1 53 77 is_stmt 0 view .LVU65
  240 0000 08B5     		push	{r3, lr}
  241              	.LCFI5:
  242              		.cfi_def_cfa_offset 8
  243              		.cfi_offset 3, -8
  244              		.cfi_offset 14, -4
-  55:app/core/cron/cron.c ****     case GLOBAL_CMD_SET_TIME_DATE:
- 245              		.loc 1 55 3 is_stmt 1 view .LVU66
-  55:app/core/cron/cron.c ****     case GLOBAL_CMD_SET_TIME_DATE:
- 246              		.loc 1 55 18 is_stmt 0 view .LVU67
+  54:app/core/cron/cron.c ****     case GLOBAL_CMD_SET_TIME_DATE:
+ 245              		.loc 1 54 3 is_stmt 1 view .LVU66
+  54:app/core/cron/cron.c ****     case GLOBAL_CMD_SET_TIME_DATE:
+ 246              		.loc 1 54 18 is_stmt 0 view .LVU67
  247 0002 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
-  55:app/core/cron/cron.c ****     case GLOBAL_CMD_SET_TIME_DATE:
- 248              		.loc 1 55 3 view .LVU68
- 249 0004 082B     		cmp	r3, #8
+  54:app/core/cron/cron.c ****     case GLOBAL_CMD_SET_TIME_DATE:
+ 248              		.loc 1 54 3 view .LVU68
+ 249 0004 092B     		cmp	r3, #9
  250 0006 03D0     		beq	.L18
- 251 0008 092B     		cmp	r3, #9
+ 251 0008 0A2B     		cmp	r3, #10
  252 000a 05D0     		beq	.L19
  253 000c 0020     		movs	r0, #0
  254              	.LVL16:
  255              	.L17:
-  62:app/core/cron/cron.c **** 
- 256              		.loc 1 62 1 view .LVU69
+  61:app/core/cron/cron.c **** 
+ 256              		.loc 1 61 1 view .LVU69
  257 000e 08BD     		pop	{r3, pc}
  258              	.LVL17:
  259              	.L18:
-  57:app/core/cron/cron.c ****     case GLOBAL_CMD_SET_WAKE_UP_PERIOD:
- 260              		.loc 1 57 7 is_stmt 1 view .LVU70
-  57:app/core/cron/cron.c ****     case GLOBAL_CMD_SET_WAKE_UP_PERIOD:
- 261              		.loc 1 57 14 is_stmt 0 view .LVU71
+  56:app/core/cron/cron.c ****     case GLOBAL_CMD_SET_WAKE_UP_PERIOD:
+ 260              		.loc 1 56 7 is_stmt 1 view .LVU70
+  56:app/core/cron/cron.c ****     case GLOBAL_CMD_SET_WAKE_UP_PERIOD:
+ 261              		.loc 1 56 14 is_stmt 0 view .LVU71
  262 0010 4868     		ldr	r0, [r1, #4]
  263              	.LVL18:
-  57:app/core/cron/cron.c ****     case GLOBAL_CMD_SET_WAKE_UP_PERIOD:
- 264              		.loc 1 57 14 view .LVU72
+  56:app/core/cron/cron.c ****     case GLOBAL_CMD_SET_WAKE_UP_PERIOD:
+ 264              		.loc 1 56 14 view .LVU72
  265 0012 FFF7FEFF 		bl	setTimeFromUnixTimestamp
  266              	.LVL19:
-  57:app/core/cron/cron.c ****     case GLOBAL_CMD_SET_WAKE_UP_PERIOD:
- 267              		.loc 1 57 14 view .LVU73
+  56:app/core/cron/cron.c ****     case GLOBAL_CMD_SET_WAKE_UP_PERIOD:
+ 267              		.loc 1 56 14 view .LVU73
  268 0016 FAE7     		b	.L17
  269              	.LVL20:
  270              	.L19:
-  59:app/core/cron/cron.c ****   }
- 271              		.loc 1 59 7 is_stmt 1 view .LVU74
-  59:app/core/cron/cron.c ****   }
- 272              		.loc 1 59 14 is_stmt 0 view .LVU75
+  58:app/core/cron/cron.c ****   }
+ 271              		.loc 1 58 7 is_stmt 1 view .LVU74
+  58:app/core/cron/cron.c ****   }
+ 272              		.loc 1 58 14 is_stmt 0 view .LVU75
  273 0018 4868     		ldr	r0, [r1, #4]
  274              	.LVL21:
-  59:app/core/cron/cron.c ****   }
- 275              		.loc 1 59 14 view .LVU76
+  58:app/core/cron/cron.c ****   }
+ 275              		.loc 1 58 14 view .LVU76
  276 001a FFF7FEFF 		bl	setWakeUpPeriod
-ARM GAS  /tmp/ccMOF7Vm.s 			page 8
-
-
  277              	.LVL22:
-  59:app/core/cron/cron.c ****   }
- 278              		.loc 1 59 14 view .LVU77
+ARM GAS  /tmp/cc8jkhSZ.s 			page 8
+
+
+  58:app/core/cron/cron.c ****   }
+ 278              		.loc 1 58 14 view .LVU77
  279 001e F6E7     		b	.L17
  280              		.cfi_endproc
  281              	.LFE141:
  283              		.section	.rodata.setCurrentTime.str1.4,"aMS",%progbits,1
  284              		.align	2
  285              	.LC0:
- 286 0000 31353A34 		.ascii	"15:41:52\000"
- 286      313A3532 
+ 286 0000 32303A35 		.ascii	"20:59:43\000"
+ 286      393A3433 
  286      00
  287              		.section	.text.setCurrentTime,"ax",%progbits
  288              		.align	1
@@ -441,32 +440,32 @@ ARM GAS  /tmp/ccMOF7Vm.s 			page 1
  292              		.fpu fpv4-sp-d16
  294              	setCurrentTime:
  295              	.LFB145:
- 112:app/core/cron/cron.c **** 
- 113:app/core/cron/cron.c **** static int32_t getCurrentUnixTimestamp(void) {
- 114:app/core/cron/cron.c ****   RTC_TimeTypeDef sTime = {0};
- 115:app/core/cron/cron.c ****   RTC_DateTypeDef sDate = {0};
- 116:app/core/cron/cron.c **** 
- 117:app/core/cron/cron.c ****   HAL_StatusTypeDef status = HAL_RTC_GetTime (&hrtc, &sTime, RTC_FORMAT_BIN);
- 118:app/core/cron/cron.c ****   status |= HAL_RTC_GetDate (&hrtc, &sDate, RTC_FORMAT_BIN);
- 119:app/core/cron/cron.c **** 
- 120:app/core/cron/cron.c ****   // Convert time and date to Unix timestamp
- 121:app/core/cron/cron.c ****   struct tm timeStruct = {
- 122:app/core/cron/cron.c ****     .tm_sec = sTime.Seconds,
- 123:app/core/cron/cron.c ****     .tm_min = sTime.Minutes,
- 124:app/core/cron/cron.c ****     .tm_hour = sTime.Hours,
- 125:app/core/cron/cron.c ****     .tm_mday = sDate.Date, // day of the month, 1-31
- 126:app/core/cron/cron.c ****     .tm_mon = sDate.Month - 1, // months from 0
- 127:app/core/cron/cron.c ****     .tm_year = sDate.Year + YEARS_FROM_1900_TO_2000, // years from 1900
- 128:app/core/cron/cron.c ****   };
- 129:app/core/cron/cron.c **** 
- 130:app/core/cron/cron.c ****   return mktime(&timeStruct);
- 131:app/core/cron/cron.c **** }
- 132:app/core/cron/cron.c **** 
- 133:app/core/cron/cron.c **** /**
- 134:app/core/cron/cron.c ****  * @brief Set the current time to the compilation time
- 135:app/core/cron/cron.c ****  */
- 136:app/core/cron/cron.c **** static HAL_StatusTypeDef setCurrentTime(void) {
- 296              		.loc 1 136 47 is_stmt 1 view -0
+ 111:app/core/cron/cron.c **** 
+ 112:app/core/cron/cron.c **** int32_t CRON_GetCurrentUnixTimestamp(void) {
+ 113:app/core/cron/cron.c ****   RTC_TimeTypeDef sTime = {0};
+ 114:app/core/cron/cron.c ****   RTC_DateTypeDef sDate = {0};
+ 115:app/core/cron/cron.c **** 
+ 116:app/core/cron/cron.c ****   HAL_StatusTypeDef status = HAL_RTC_GetTime (&hrtc, &sTime, RTC_FORMAT_BIN);
+ 117:app/core/cron/cron.c ****   status |= HAL_RTC_GetDate (&hrtc, &sDate, RTC_FORMAT_BIN);
+ 118:app/core/cron/cron.c **** 
+ 119:app/core/cron/cron.c ****   // Convert time and date to Unix timestamp
+ 120:app/core/cron/cron.c ****   struct tm timeStruct = {
+ 121:app/core/cron/cron.c ****     .tm_sec = sTime.Seconds,
+ 122:app/core/cron/cron.c ****     .tm_min = sTime.Minutes,
+ 123:app/core/cron/cron.c ****     .tm_hour = sTime.Hours,
+ 124:app/core/cron/cron.c ****     .tm_mday = sDate.Date, // day of the month, 1-31
+ 125:app/core/cron/cron.c ****     .tm_mon = sDate.Month - 1, // months from 0
+ 126:app/core/cron/cron.c ****     .tm_year = sDate.Year + YEARS_FROM_1900_TO_2000, // years from 1900
+ 127:app/core/cron/cron.c ****   };
+ 128:app/core/cron/cron.c **** 
+ 129:app/core/cron/cron.c ****   return mktime(&timeStruct);
+ 130:app/core/cron/cron.c **** }
+ 131:app/core/cron/cron.c **** 
+ 132:app/core/cron/cron.c **** /**
+ 133:app/core/cron/cron.c ****  * @brief Set the current time to the compilation time
+ 134:app/core/cron/cron.c ****  */
+ 135:app/core/cron/cron.c **** static HAL_StatusTypeDef setCurrentTime(void) {
+ 296              		.loc 1 135 47 is_stmt 1 view -0
  297              		.cfi_startproc
  298              		@ args = 0, pretend = 0, frame = 32
  299              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -478,81 +477,81 @@ ARM GAS  /tmp/ccMOF7Vm.s 			page 1
  305 0002 88B0     		sub	sp, sp, #32
  306              	.LCFI7:
  307              		.cfi_def_cfa_offset 40
-ARM GAS  /tmp/ccMOF7Vm.s 			page 9
+ 136:app/core/cron/cron.c ****   RTC_TimeTypeDef sTime = {0};
+ARM GAS  /tmp/cc8jkhSZ.s 			page 9
 
 
- 137:app/core/cron/cron.c ****   RTC_TimeTypeDef sTime = {0};
- 308              		.loc 1 137 3 view .LVU79
- 309              		.loc 1 137 19 is_stmt 0 view .LVU80
+ 308              		.loc 1 136 3 view .LVU79
+ 309              		.loc 1 136 19 is_stmt 0 view .LVU80
  310 0004 0024     		movs	r4, #0
  311 0006 0394     		str	r4, [sp, #12]
  312 0008 0494     		str	r4, [sp, #16]
  313 000a 0594     		str	r4, [sp, #20]
  314 000c 0694     		str	r4, [sp, #24]
  315 000e 0794     		str	r4, [sp, #28]
- 138:app/core/cron/cron.c **** 
- 139:app/core/cron/cron.c ****   // __TIME__ is a string in the format "HH:MM:SS"
- 140:app/core/cron/cron.c ****   char timeStr[] = __TIME__; // TODO handle timezone subtraction
- 316              		.loc 1 140 3 is_stmt 1 view .LVU81
- 317              		.loc 1 140 8 is_stmt 0 view .LVU82
+ 137:app/core/cron/cron.c **** 
+ 138:app/core/cron/cron.c ****   // __TIME__ is a string in the format "HH:MM:SS"
+ 139:app/core/cron/cron.c ****   char timeStr[] = __TIME__; // TODO handle timezone subtraction
+ 316              		.loc 1 139 3 is_stmt 1 view .LVU81
+ 317              		.loc 1 139 8 is_stmt 0 view .LVU82
  318 0010 104A     		ldr	r2, .L24
  319 0012 6B46     		mov	r3, sp
  320 0014 07CA     		ldm	r2, {r0, r1, r2}
  321 0016 03C3     		stmia	r3!, {r0, r1}
  322 0018 1A70     		strb	r2, [r3]
- 141:app/core/cron/cron.c **** 
- 142:app/core/cron/cron.c ****   // Extract hours, minutes, and seconds
- 143:app/core/cron/cron.c ****   sTime.Hours = atoi(&timeStr[0]);    // Convert "HH" to integer
- 323              		.loc 1 143 3 is_stmt 1 view .LVU83
- 324              		.loc 1 143 17 is_stmt 0 view .LVU84
+ 140:app/core/cron/cron.c **** 
+ 141:app/core/cron/cron.c ****   // Extract hours, minutes, and seconds
+ 142:app/core/cron/cron.c ****   sTime.Hours = atoi(&timeStr[0]);    // Convert "HH" to integer
+ 323              		.loc 1 142 3 is_stmt 1 view .LVU83
+ 324              		.loc 1 142 17 is_stmt 0 view .LVU84
  325 001a 6846     		mov	r0, sp
  326 001c FFF7FEFF 		bl	atoi
  327              	.LVL23:
- 328              		.loc 1 143 15 view .LVU85
+ 328              		.loc 1 142 15 view .LVU85
  329 0020 8DF80C00 		strb	r0, [sp, #12]
- 144:app/core/cron/cron.c ****   sTime.Minutes = atoi(&timeStr[3]);  // Convert "MM" to integer
- 330              		.loc 1 144 3 is_stmt 1 view .LVU86
- 331              		.loc 1 144 19 is_stmt 0 view .LVU87
+ 143:app/core/cron/cron.c ****   sTime.Minutes = atoi(&timeStr[3]);  // Convert "MM" to integer
+ 330              		.loc 1 143 3 is_stmt 1 view .LVU86
+ 331              		.loc 1 143 19 is_stmt 0 view .LVU87
  332 0024 0DF10300 		add	r0, sp, #3
  333 0028 FFF7FEFF 		bl	atoi
  334              	.LVL24:
- 335              		.loc 1 144 17 view .LVU88
+ 335              		.loc 1 143 17 view .LVU88
  336 002c 8DF80D00 		strb	r0, [sp, #13]
- 145:app/core/cron/cron.c ****   sTime.Seconds = atoi(&timeStr[6]);  // Convert "SS" to integer
- 337              		.loc 1 145 3 is_stmt 1 view .LVU89
- 338              		.loc 1 145 19 is_stmt 0 view .LVU90
+ 144:app/core/cron/cron.c ****   sTime.Seconds = atoi(&timeStr[6]);  // Convert "SS" to integer
+ 337              		.loc 1 144 3 is_stmt 1 view .LVU89
+ 338              		.loc 1 144 19 is_stmt 0 view .LVU90
  339 0030 0DF10600 		add	r0, sp, #6
  340 0034 FFF7FEFF 		bl	atoi
  341              	.LVL25:
- 342              		.loc 1 145 17 view .LVU91
+ 342              		.loc 1 144 17 view .LVU91
  343 0038 8DF80E00 		strb	r0, [sp, #14]
- 146:app/core/cron/cron.c **** 
- 147:app/core/cron/cron.c ****   sTime.TimeFormat = RTC_HOURFORMAT_24;
- 344              		.loc 1 147 3 is_stmt 1 view .LVU92
- 345              		.loc 1 147 20 is_stmt 0 view .LVU93
+ 145:app/core/cron/cron.c **** 
+ 146:app/core/cron/cron.c ****   sTime.TimeFormat = RTC_HOURFORMAT_24;
+ 344              		.loc 1 146 3 is_stmt 1 view .LVU92
+ 345              		.loc 1 146 20 is_stmt 0 view .LVU93
  346 003c 8DF80F40 		strb	r4, [sp, #15]
- 148:app/core/cron/cron.c ****   sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
- 347              		.loc 1 148 3 is_stmt 1 view .LVU94
- 348              		.loc 1 148 24 is_stmt 0 view .LVU95
+ 147:app/core/cron/cron.c ****   sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+ 347              		.loc 1 147 3 is_stmt 1 view .LVU94
+ 348              		.loc 1 147 24 is_stmt 0 view .LVU95
  349 0040 0694     		str	r4, [sp, #24]
- 149:app/core/cron/cron.c ****   sTime.StoreOperation = RTC_STOREOPERATION_RESET;
- 350              		.loc 1 149 3 is_stmt 1 view .LVU96
- 351              		.loc 1 149 24 is_stmt 0 view .LVU97
-ARM GAS  /tmp/ccMOF7Vm.s 			page 10
-
-
+ 148:app/core/cron/cron.c ****   sTime.StoreOperation = RTC_STOREOPERATION_RESET;
+ 350              		.loc 1 148 3 is_stmt 1 view .LVU96
+ 351              		.loc 1 148 24 is_stmt 0 view .LVU97
  352 0042 0794     		str	r4, [sp, #28]
- 150:app/core/cron/cron.c **** 
- 151:app/core/cron/cron.c ****   return HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
- 353              		.loc 1 151 3 is_stmt 1 view .LVU98
- 354              		.loc 1 151 10 is_stmt 0 view .LVU99
+ARM GAS  /tmp/cc8jkhSZ.s 			page 10
+
+
+ 149:app/core/cron/cron.c **** 
+ 150:app/core/cron/cron.c ****   return HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
+ 353              		.loc 1 150 3 is_stmt 1 view .LVU98
+ 354              		.loc 1 150 10 is_stmt 0 view .LVU99
  355 0044 2246     		mov	r2, r4
  356 0046 03A9     		add	r1, sp, #12
  357 0048 0348     		ldr	r0, .L24+4
  358 004a FFF7FEFF 		bl	HAL_RTC_SetTime
  359              	.LVL26:
- 152:app/core/cron/cron.c **** }
- 360              		.loc 1 152 1 view .LVU100
+ 151:app/core/cron/cron.c **** }
+ 360              		.loc 1 151 1 view .LVU100
  361 004e 08B0     		add	sp, sp, #32
  362              	.LCFI8:
  363              		.cfi_def_cfa_offset 8
@@ -598,10 +597,10 @@ ARM GAS  /tmp/ccMOF7Vm.s 			page 1
  404 0024 4F637400 		.ascii	"Oct\000"
  405              		.align	2
  406              	.LC11:
-ARM GAS  /tmp/ccMOF7Vm.s 			page 11
-
-
  407 0028 4E6F7600 		.ascii	"Nov\000"
+ARM GAS  /tmp/cc8jkhSZ.s 			page 11
+
+
  408              		.align	2
  409              	.LC12:
  410 002c 44656300 		.ascii	"Dec\000"
@@ -614,234 +613,234 @@ ARM GAS  /tmp/ccMOF7Vm.s 			page 1
  418              	monthStrToNumber:
  419              	.LVL27:
  420              	.LFB147:
- 153:app/core/cron/cron.c **** 
- 154:app/core/cron/cron.c **** /**
- 155:app/core/cron/cron.c ****  * @brief Set the current date to the compilation date
- 156:app/core/cron/cron.c ****  */
- 157:app/core/cron/cron.c **** static HAL_StatusTypeDef setCurrentDate(void) {
- 158:app/core/cron/cron.c ****   RTC_DateTypeDef sDate = {0};
- 159:app/core/cron/cron.c **** 
- 160:app/core/cron/cron.c ****   // __DATE__ is a string in the format "MMM DD YYYY"
- 161:app/core/cron/cron.c ****   char dateStr[] = __DATE__;
- 162:app/core/cron/cron.c **** 
- 163:app/core/cron/cron.c ****   // Extract and convert the month, day, and year
- 164:app/core/cron/cron.c ****   char monthStr[4] = {dateStr[0], dateStr[1], dateStr[2], '\0'};  // Extract "MMM"
- 165:app/core/cron/cron.c ****   sDate.Month = monthStrToNumber(monthStr);             // Convert month to number
- 166:app/core/cron/cron.c **** 
- 167:app/core/cron/cron.c ****   sDate.Date = atoi(&dateStr[4]);        // Convert "DD" to integer
- 168:app/core/cron/cron.c ****   sDate.Year = atoi(&dateStr[7]) - 2000; // Convert "YYYY" to last two digits (RTC stores only last
- 169:app/core/cron/cron.c **** 
- 170:app/core/cron/cron.c ****   // Set a placeholder weekday; you can adjust this if you need the exact day
- 171:app/core/cron/cron.c ****   sDate.WeekDay = RTC_WEEKDAY_MONDAY; // TODO: Change this based on actual weekday
- 172:app/core/cron/cron.c **** 
- 173:app/core/cron/cron.c ****   return HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BIN);
- 174:app/core/cron/cron.c **** }
- 175:app/core/cron/cron.c **** 
- 176:app/core/cron/cron.c **** /**
- 177:app/core/cron/cron.c ****  * @brief Helper function to convert month string to integer
- 178:app/core/cron/cron.c ****  */
- 179:app/core/cron/cron.c **** static uint8_t monthStrToNumber(const char* monthStr) {
- 421              		.loc 1 179 55 is_stmt 1 view -0
+ 152:app/core/cron/cron.c **** 
+ 153:app/core/cron/cron.c **** /**
+ 154:app/core/cron/cron.c ****  * @brief Set the current date to the compilation date
+ 155:app/core/cron/cron.c ****  */
+ 156:app/core/cron/cron.c **** static HAL_StatusTypeDef setCurrentDate(void) {
+ 157:app/core/cron/cron.c ****   RTC_DateTypeDef sDate = {0};
+ 158:app/core/cron/cron.c **** 
+ 159:app/core/cron/cron.c ****   // __DATE__ is a string in the format "MMM DD YYYY"
+ 160:app/core/cron/cron.c ****   char dateStr[] = __DATE__;
+ 161:app/core/cron/cron.c **** 
+ 162:app/core/cron/cron.c ****   // Extract and convert the month, day, and year
+ 163:app/core/cron/cron.c ****   char monthStr[4] = {dateStr[0], dateStr[1], dateStr[2], '\0'};  // Extract "MMM"
+ 164:app/core/cron/cron.c ****   sDate.Month = monthStrToNumber(monthStr);             // Convert month to number
+ 165:app/core/cron/cron.c **** 
+ 166:app/core/cron/cron.c ****   sDate.Date = atoi(&dateStr[4]);        // Convert "DD" to integer
+ 167:app/core/cron/cron.c ****   sDate.Year = atoi(&dateStr[7]) - 2000; // Convert "YYYY" to last two digits (RTC stores only last
+ 168:app/core/cron/cron.c **** 
+ 169:app/core/cron/cron.c ****   // Set a placeholder weekday; you can adjust this if you need the exact day
+ 170:app/core/cron/cron.c ****   sDate.WeekDay = RTC_WEEKDAY_MONDAY; // TODO: Change this based on actual weekday
+ 171:app/core/cron/cron.c **** 
+ 172:app/core/cron/cron.c ****   return HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BIN);
+ 173:app/core/cron/cron.c **** }
+ 174:app/core/cron/cron.c **** 
+ 175:app/core/cron/cron.c **** /**
+ 176:app/core/cron/cron.c ****  * @brief Helper function to convert month string to integer
+ 177:app/core/cron/cron.c ****  */
+ 178:app/core/cron/cron.c **** static uint8_t monthStrToNumber(const char* monthStr) {
+ 421              		.loc 1 178 55 is_stmt 1 view -0
  422              		.cfi_startproc
  423              		@ args = 0, pretend = 0, frame = 0
  424              		@ frame_needed = 0, uses_anonymous_args = 0
- 425              		.loc 1 179 55 is_stmt 0 view .LVU102
+ 425              		.loc 1 178 55 is_stmt 0 view .LVU102
  426 0000 10B5     		push	{r4, lr}
  427              	.LCFI9:
  428              		.cfi_def_cfa_offset 8
  429              		.cfi_offset 4, -8
  430              		.cfi_offset 14, -4
  431 0002 0446     		mov	r4, r0
- 180:app/core/cron/cron.c ****   if (strcmp(monthStr, "Jan") == 0) return 1;
- 432              		.loc 1 180 3 is_stmt 1 view .LVU103
- 433              		.loc 1 180 7 is_stmt 0 view .LVU104
+ 179:app/core/cron/cron.c ****   if (strcmp(monthStr, "Jan") == 0) return 1;
+ 432              		.loc 1 179 3 is_stmt 1 view .LVU103
+ 433              		.loc 1 179 7 is_stmt 0 view .LVU104
  434 0004 2A49     		ldr	r1, .L41
  435 0006 FFF7FEFF 		bl	strcmp
  436              	.LVL28:
-ARM GAS  /tmp/ccMOF7Vm.s 			page 12
+ 437              		.loc 1 179 6 view .LVU105
+ARM GAS  /tmp/cc8jkhSZ.s 			page 12
 
 
- 437              		.loc 1 180 6 view .LVU105
  438 000a 0028     		cmp	r0, #0
  439 000c 38D0     		beq	.L28
- 181:app/core/cron/cron.c ****   if (strcmp(monthStr, "Feb") == 0) return 2;
- 440              		.loc 1 181 3 is_stmt 1 view .LVU106
- 441              		.loc 1 181 7 is_stmt 0 view .LVU107
+ 180:app/core/cron/cron.c ****   if (strcmp(monthStr, "Feb") == 0) return 2;
+ 440              		.loc 1 180 3 is_stmt 1 view .LVU106
+ 441              		.loc 1 180 7 is_stmt 0 view .LVU107
  442 000e 2949     		ldr	r1, .L41+4
  443 0010 2046     		mov	r0, r4
  444 0012 FFF7FEFF 		bl	strcmp
  445              	.LVL29:
- 446              		.loc 1 181 6 view .LVU108
+ 446              		.loc 1 180 6 view .LVU108
  447 0016 A8B3     		cbz	r0, .L29
- 182:app/core/cron/cron.c ****   if (strcmp(monthStr, "Mar") == 0) return 3;
- 448              		.loc 1 182 3 is_stmt 1 view .LVU109
- 449              		.loc 1 182 7 is_stmt 0 view .LVU110
+ 181:app/core/cron/cron.c ****   if (strcmp(monthStr, "Mar") == 0) return 3;
+ 448              		.loc 1 181 3 is_stmt 1 view .LVU109
+ 449              		.loc 1 181 7 is_stmt 0 view .LVU110
  450 0018 2749     		ldr	r1, .L41+8
  451 001a 2046     		mov	r0, r4
  452 001c FFF7FEFF 		bl	strcmp
  453              	.LVL30:
- 454              		.loc 1 182 6 view .LVU111
+ 454              		.loc 1 181 6 view .LVU111
  455 0020 90B3     		cbz	r0, .L30
- 183:app/core/cron/cron.c ****   if (strcmp(monthStr, "Apr") == 0) return 4;
- 456              		.loc 1 183 3 is_stmt 1 view .LVU112
- 457              		.loc 1 183 7 is_stmt 0 view .LVU113
+ 182:app/core/cron/cron.c ****   if (strcmp(monthStr, "Apr") == 0) return 4;
+ 456              		.loc 1 182 3 is_stmt 1 view .LVU112
+ 457              		.loc 1 182 7 is_stmt 0 view .LVU113
  458 0022 2649     		ldr	r1, .L41+12
  459 0024 2046     		mov	r0, r4
  460 0026 FFF7FEFF 		bl	strcmp
  461              	.LVL31:
- 462              		.loc 1 183 6 view .LVU114
+ 462              		.loc 1 182 6 view .LVU114
  463 002a 78B3     		cbz	r0, .L31
- 184:app/core/cron/cron.c ****   if (strcmp(monthStr, "May") == 0) return 5;
- 464              		.loc 1 184 3 is_stmt 1 view .LVU115
- 465              		.loc 1 184 7 is_stmt 0 view .LVU116
+ 183:app/core/cron/cron.c ****   if (strcmp(monthStr, "May") == 0) return 5;
+ 464              		.loc 1 183 3 is_stmt 1 view .LVU115
+ 465              		.loc 1 183 7 is_stmt 0 view .LVU116
  466 002c 2449     		ldr	r1, .L41+16
  467 002e 2046     		mov	r0, r4
  468 0030 FFF7FEFF 		bl	strcmp
  469              	.LVL32:
- 470              		.loc 1 184 6 view .LVU117
+ 470              		.loc 1 183 6 view .LVU117
  471 0034 60B3     		cbz	r0, .L32
- 185:app/core/cron/cron.c ****   if (strcmp(monthStr, "Jun") == 0) return 6;
- 472              		.loc 1 185 3 is_stmt 1 view .LVU118
- 473              		.loc 1 185 7 is_stmt 0 view .LVU119
+ 184:app/core/cron/cron.c ****   if (strcmp(monthStr, "Jun") == 0) return 6;
+ 472              		.loc 1 184 3 is_stmt 1 view .LVU118
+ 473              		.loc 1 184 7 is_stmt 0 view .LVU119
  474 0036 2349     		ldr	r1, .L41+20
  475 0038 2046     		mov	r0, r4
  476 003a FFF7FEFF 		bl	strcmp
  477              	.LVL33:
- 478              		.loc 1 185 6 view .LVU120
+ 478              		.loc 1 184 6 view .LVU120
  479 003e 48B3     		cbz	r0, .L33
- 186:app/core/cron/cron.c ****   if (strcmp(monthStr, "Jul") == 0) return 7;
- 480              		.loc 1 186 3 is_stmt 1 view .LVU121
- 481              		.loc 1 186 7 is_stmt 0 view .LVU122
+ 185:app/core/cron/cron.c ****   if (strcmp(monthStr, "Jul") == 0) return 7;
+ 480              		.loc 1 185 3 is_stmt 1 view .LVU121
+ 481              		.loc 1 185 7 is_stmt 0 view .LVU122
  482 0040 2149     		ldr	r1, .L41+24
  483 0042 2046     		mov	r0, r4
  484 0044 FFF7FEFF 		bl	strcmp
  485              	.LVL34:
- 486              		.loc 1 186 6 view .LVU123
+ 486              		.loc 1 185 6 view .LVU123
  487 0048 30B3     		cbz	r0, .L34
-ARM GAS  /tmp/ccMOF7Vm.s 			page 13
+ 186:app/core/cron/cron.c ****   if (strcmp(monthStr, "Aug") == 0) return 8;
+ARM GAS  /tmp/cc8jkhSZ.s 			page 13
 
 
- 187:app/core/cron/cron.c ****   if (strcmp(monthStr, "Aug") == 0) return 8;
- 488              		.loc 1 187 3 is_stmt 1 view .LVU124
- 489              		.loc 1 187 7 is_stmt 0 view .LVU125
+ 488              		.loc 1 186 3 is_stmt 1 view .LVU124
+ 489              		.loc 1 186 7 is_stmt 0 view .LVU125
  490 004a 2049     		ldr	r1, .L41+28
  491 004c 2046     		mov	r0, r4
  492 004e FFF7FEFF 		bl	strcmp
  493              	.LVL35:
- 494              		.loc 1 187 6 view .LVU126
+ 494              		.loc 1 186 6 view .LVU126
  495 0052 18B3     		cbz	r0, .L35
- 188:app/core/cron/cron.c ****   if (strcmp(monthStr, "Sep") == 0) return 9;
- 496              		.loc 1 188 3 is_stmt 1 view .LVU127
- 497              		.loc 1 188 7 is_stmt 0 view .LVU128
+ 187:app/core/cron/cron.c ****   if (strcmp(monthStr, "Sep") == 0) return 9;
+ 496              		.loc 1 187 3 is_stmt 1 view .LVU127
+ 497              		.loc 1 187 7 is_stmt 0 view .LVU128
  498 0054 1E49     		ldr	r1, .L41+32
  499 0056 2046     		mov	r0, r4
  500 0058 FFF7FEFF 		bl	strcmp
  501              	.LVL36:
- 502              		.loc 1 188 6 view .LVU129
+ 502              		.loc 1 187 6 view .LVU129
  503 005c 00B3     		cbz	r0, .L36
- 189:app/core/cron/cron.c ****   if (strcmp(monthStr, "Oct") == 0) return 10;
- 504              		.loc 1 189 3 is_stmt 1 view .LVU130
- 505              		.loc 1 189 7 is_stmt 0 view .LVU131
+ 188:app/core/cron/cron.c ****   if (strcmp(monthStr, "Oct") == 0) return 10;
+ 504              		.loc 1 188 3 is_stmt 1 view .LVU130
+ 505              		.loc 1 188 7 is_stmt 0 view .LVU131
  506 005e 1D49     		ldr	r1, .L41+36
  507 0060 2046     		mov	r0, r4
  508 0062 FFF7FEFF 		bl	strcmp
  509              	.LVL37:
- 510              		.loc 1 189 6 view .LVU132
+ 510              		.loc 1 188 6 view .LVU132
  511 0066 E8B1     		cbz	r0, .L37
- 190:app/core/cron/cron.c ****   if (strcmp(monthStr, "Nov") == 0) return 11;
- 512              		.loc 1 190 3 is_stmt 1 view .LVU133
- 513              		.loc 1 190 7 is_stmt 0 view .LVU134
+ 189:app/core/cron/cron.c ****   if (strcmp(monthStr, "Nov") == 0) return 11;
+ 512              		.loc 1 189 3 is_stmt 1 view .LVU133
+ 513              		.loc 1 189 7 is_stmt 0 view .LVU134
  514 0068 1B49     		ldr	r1, .L41+40
  515 006a 2046     		mov	r0, r4
  516 006c FFF7FEFF 		bl	strcmp
  517              	.LVL38:
- 518              		.loc 1 190 6 view .LVU135
+ 518              		.loc 1 189 6 view .LVU135
  519 0070 D0B1     		cbz	r0, .L38
- 191:app/core/cron/cron.c ****   if (strcmp(monthStr, "Dec") == 0) return 12;
- 520              		.loc 1 191 3 is_stmt 1 view .LVU136
- 521              		.loc 1 191 7 is_stmt 0 view .LVU137
+ 190:app/core/cron/cron.c ****   if (strcmp(monthStr, "Dec") == 0) return 12;
+ 520              		.loc 1 190 3 is_stmt 1 view .LVU136
+ 521              		.loc 1 190 7 is_stmt 0 view .LVU137
  522 0072 1A49     		ldr	r1, .L41+44
  523 0074 2046     		mov	r0, r4
  524 0076 FFF7FEFF 		bl	strcmp
  525              	.LVL39:
- 526              		.loc 1 191 6 view .LVU138
+ 526              		.loc 1 190 6 view .LVU138
  527 007a B8B1     		cbz	r0, .L39
- 192:app/core/cron/cron.c ****   return 0; // Return 0 if the month string is invalid
- 528              		.loc 1 192 10 view .LVU139
+ 191:app/core/cron/cron.c ****   return 0; // Return 0 if the month string is invalid
+ 528              		.loc 1 191 10 view .LVU139
  529 007c 0020     		movs	r0, #0
  530 007e 00E0     		b	.L27
  531              	.L28:
- 180:app/core/cron/cron.c ****   if (strcmp(monthStr, "Feb") == 0) return 2;
- 532              		.loc 1 180 44 view .LVU140
+ 179:app/core/cron/cron.c ****   if (strcmp(monthStr, "Feb") == 0) return 2;
+ 532              		.loc 1 179 44 view .LVU140
  533 0080 0120     		movs	r0, #1
  534              	.L27:
- 193:app/core/cron/cron.c **** }...
- 535              		.loc 1 193 1 view .LVU141
+ 192:app/core/cron/cron.c **** }...
+ 535              		.loc 1 192 1 view .LVU141
  536 0082 10BD     		pop	{r4, pc}
-ARM GAS  /tmp/ccMOF7Vm.s 			page 14
-
-
  537              	.LVL40:
+ARM GAS  /tmp/cc8jkhSZ.s 			page 14
+
+
  538              	.L29:
- 181:app/core/cron/cron.c ****   if (strcmp(monthStr, "Feb") == 0) return 2;
- 539              		.loc 1 181 44 view .LVU142
+ 180:app/core/cron/cron.c ****   if (strcmp(monthStr, "Feb") == 0) return 2;
+ 539              		.loc 1 180 44 view .LVU142
  540 0084 0220     		movs	r0, #2
  541 0086 FCE7     		b	.L27
  542              	.L30:
- 182:app/core/cron/cron.c ****   if (strcmp(monthStr, "Mar") == 0) return 3;
- 543              		.loc 1 182 44 view .LVU143
+ 181:app/core/cron/cron.c ****   if (strcmp(monthStr, "Mar") == 0) return 3;
+ 543              		.loc 1 181 44 view .LVU143
  544 0088 0320     		movs	r0, #3
  545 008a FAE7     		b	.L27
  546              	.L31:
- 183:app/core/cron/cron.c ****   if (strcmp(monthStr, "Apr") == 0) return 4;
- 547              		.loc 1 183 44 view .LVU144
+ 182:app/core/cron/cron.c ****   if (strcmp(monthStr, "Apr") == 0) return 4;
+ 547              		.loc 1 182 44 view .LVU144
  548 008c 0420     		movs	r0, #4
  549 008e F8E7     		b	.L27
  550              	.L32:
- 184:app/core/cron/cron.c ****   if (strcmp(monthStr, "May") == 0) return 5;
- 551              		.loc 1 184 44 view .LVU145
+ 183:app/core/cron/cron.c ****   if (strcmp(monthStr, "May") == 0) return 5;
+ 551              		.loc 1 183 44 view .LVU145
  552 0090 0520     		movs	r0, #5
  553 0092 F6E7     		b	.L27
  554              	.L33:
- 185:app/core/cron/cron.c ****   if (strcmp(monthStr, "Jun") == 0) return 6;
- 555              		.loc 1 185 44 view .LVU146
+ 184:app/core/cron/cron.c ****   if (strcmp(monthStr, "Jun") == 0) return 6;
+ 555              		.loc 1 184 44 view .LVU146
  556 0094 0620     		movs	r0, #6
  557 0096 F4E7     		b	.L27
  558              	.L34:
- 186:app/core/cron/cron.c ****   if (strcmp(monthStr, "Jul") == 0) return 7;
- 559              		.loc 1 186 44 view .LVU147
+ 185:app/core/cron/cron.c ****   if (strcmp(monthStr, "Jul") == 0) return 7;
+ 559              		.loc 1 185 44 view .LVU147
  560 0098 0720     		movs	r0, #7
  561 009a F2E7     		b	.L27
  562              	.L35:
- 187:app/core/cron/cron.c ****   if (strcmp(monthStr, "Aug") == 0) return 8;
- 563              		.loc 1 187 44 view .LVU148
+ 186:app/core/cron/cron.c ****   if (strcmp(monthStr, "Aug") == 0) return 8;
+ 563              		.loc 1 186 44 view .LVU148
  564 009c 0820     		movs	r0, #8
  565 009e F0E7     		b	.L27
  566              	.L36:
- 188:app/core/cron/cron.c ****   if (strcmp(monthStr, "Sep") == 0) return 9;
- 567              		.loc 1 188 44 view .LVU149
+ 187:app/core/cron/cron.c ****   if (strcmp(monthStr, "Sep") == 0) return 9;
+ 567              		.loc 1 187 44 view .LVU149
  568 00a0 0920     		movs	r0, #9
  569 00a2 EEE7     		b	.L27
  570              	.L37:
- 189:app/core/cron/cron.c ****   if (strcmp(monthStr, "Oct") == 0) return 10;
- 571              		.loc 1 189 44 view .LVU150
+ 188:app/core/cron/cron.c ****   if (strcmp(monthStr, "Oct") == 0) return 10;
+ 571              		.loc 1 188 44 view .LVU150
  572 00a4 0A20     		movs	r0, #10
  573 00a6 ECE7     		b	.L27
  574              	.L38:
- 190:app/core/cron/cron.c ****   if (strcmp(monthStr, "Nov") == 0) return 11;
- 575              		.loc 1 190 44 view .LVU151
+ 189:app/core/cron/cron.c ****   if (strcmp(monthStr, "Nov") == 0) return 11;
+ 575              		.loc 1 189 44 view .LVU151
  576 00a8 0B20     		movs	r0, #11
  577 00aa EAE7     		b	.L27
  578              	.L39:
- 191:app/core/cron/cron.c ****   if (strcmp(monthStr, "Dec") == 0) return 12;
- 579              		.loc 1 191 44 view .LVU152
+ 190:app/core/cron/cron.c ****   if (strcmp(monthStr, "Dec") == 0) return 12;
+ 579              		.loc 1 190 44 view .LVU152
  580 00ac 0C20     		movs	r0, #12
  581 00ae E8E7     		b	.L27
  582              	.L42:
-ARM GAS  /tmp/ccMOF7Vm.s 			page 15
-
-
  583              		.align	2
+ARM GAS  /tmp/cc8jkhSZ.s 			page 15
+
+
  584              	.L41:
  585 00b0 00000000 		.word	.LC1
  586 00b4 04000000 		.word	.LC2
@@ -860,8 +859,8 @@ ARM GAS  /tmp/ccMOF7Vm.s 			page 1
  600              		.section	.rodata.setCurrentDate.str1.4,"aMS",%progbits,1
  601              		.align	2
  602              	.LC13:
- 603 0000 53657020 		.ascii	"Sep  6 2024\000"
- 603      20362032 
+ 603 0000 53657020 		.ascii	"Sep 28 2024\000"
+ 603      32382032 
  603      30323400 
  604              		.section	.text.setCurrentDate,"ax",%progbits
  605              		.align	1
@@ -871,8 +870,8 @@ ARM GAS  /tmp/ccMOF7Vm.s 			page 1
  609              		.fpu fpv4-sp-d16
  611              	setCurrentDate:
  612              	.LFB146:
- 157:app/core/cron/cron.c **** static HAL_StatusTypeDef setCurrentDate(void) {
- 613              		.loc 1 157 47 is_stmt 1 view -0
+ 156:app/core/cron/cron.c **** static HAL_StatusTypeDef setCurrentDate(void) {
+ 613              		.loc 1 156 47 is_stmt 1 view -0
  614              		.cfi_startproc
  615              		@ args = 0, pretend = 0, frame = 24
  616              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -884,27 +883,27 @@ ARM GAS  /tmp/ccMOF7Vm.s 			page 1
  622 0002 86B0     		sub	sp, sp, #24
  623              	.LCFI11:
  624              		.cfi_def_cfa_offset 32
- 158:app/core/cron/cron.c ****   RTC_DateTypeDef sDate = {0};
- 625              		.loc 1 158 3 view .LVU154
- 158:app/core/cron/cron.c ****   RTC_DateTypeDef sDate = {0};
- 626              		.loc 1 158 19 is_stmt 0 view .LVU155
+ 157:app/core/cron/cron.c ****   RTC_DateTypeDef sDate = {0};
+ 625              		.loc 1 157 3 view .LVU154
+ 157:app/core/cron/cron.c ****   RTC_DateTypeDef sDate = {0};
+ 626              		.loc 1 157 19 is_stmt 0 view .LVU155
  627 0004 0024     		movs	r4, #0
  628 0006 0594     		str	r4, [sp, #20]
- 161:app/core/cron/cron.c ****   char dateStr[] = __DATE__;
- 629              		.loc 1 161 3 is_stmt 1 view .LVU156
- 161:app/core/cron/cron.c ****   char dateStr[] = __DATE__;
- 630              		.loc 1 161 8 is_stmt 0 view .LVU157
+ 160:app/core/cron/cron.c ****   char dateStr[] = __DATE__;
+ 629              		.loc 1 160 3 is_stmt 1 view .LVU156
+ 160:app/core/cron/cron.c ****   char dateStr[] = __DATE__;
+ 630              		.loc 1 160 8 is_stmt 0 view .LVU157
  631 0008 154A     		ldr	r2, .L45
  632 000a 02AB     		add	r3, sp, #8
  633 000c 07CA     		ldm	r2, {r0, r1, r2}
  634 000e 83E80700 		stm	r3, {r0, r1, r2}
-ARM GAS  /tmp/ccMOF7Vm.s 			page 16
+ 163:app/core/cron/cron.c ****   char monthStr[4] = {dateStr[0], dateStr[1], dateStr[2], '\0'};  // Extract "MMM"
+ARM GAS  /tmp/cc8jkhSZ.s 			page 16
 
 
- 164:app/core/cron/cron.c ****   char monthStr[4] = {dateStr[0], dateStr[1], dateStr[2], '\0'};  // Extract "MMM"
- 635              		.loc 1 164 3 is_stmt 1 view .LVU158
- 164:app/core/cron/cron.c ****   char monthStr[4] = {dateStr[0], dateStr[1], dateStr[2], '\0'};  // Extract "MMM"
- 636              		.loc 1 164 8 is_stmt 0 view .LVU159
+ 635              		.loc 1 163 3 is_stmt 1 view .LVU158
+ 163:app/core/cron/cron.c ****   char monthStr[4] = {dateStr[0], dateStr[1], dateStr[2], '\0'};  // Extract "MMM"
+ 636              		.loc 1 163 8 is_stmt 0 view .LVU159
  637 0012 5323     		movs	r3, #83
  638 0014 8DF80430 		strb	r3, [sp, #4]
  639 0018 6523     		movs	r3, #101
@@ -912,59 +911,59 @@ ARM GAS  /tmp/ccMOF7Vm.s 			page 1
  641 001e 7023     		movs	r3, #112
  642 0020 8DF80630 		strb	r3, [sp, #6]
  643 0024 8DF80740 		strb	r4, [sp, #7]
- 165:app/core/cron/cron.c ****   sDate.Month = monthStrToNumber(monthStr);             // Convert month to number
- 644              		.loc 1 165 3 is_stmt 1 view .LVU160
- 165:app/core/cron/cron.c ****   sDate.Month = monthStrToNumber(monthStr);             // Convert month to number
- 645              		.loc 1 165 17 is_stmt 0 view .LVU161
+ 164:app/core/cron/cron.c ****   sDate.Month = monthStrToNumber(monthStr);             // Convert month to number
+ 644              		.loc 1 164 3 is_stmt 1 view .LVU160
+ 164:app/core/cron/cron.c ****   sDate.Month = monthStrToNumber(monthStr);             // Convert month to number
+ 645              		.loc 1 164 17 is_stmt 0 view .LVU161
  646 0028 01A8     		add	r0, sp, #4
  647 002a FFF7FEFF 		bl	monthStrToNumber
  648              	.LVL41:
- 165:app/core/cron/cron.c ****   sDate.Month = monthStrToNumber(monthStr);             // Convert month to number
- 649              		.loc 1 165 15 view .LVU162
+ 164:app/core/cron/cron.c ****   sDate.Month = monthStrToNumber(monthStr);             // Convert month to number
+ 649              		.loc 1 164 15 view .LVU162
  650 002e 8DF81500 		strb	r0, [sp, #21]
- 167:app/core/cron/cron.c ****   sDate.Date = atoi(&dateStr[4]);        // Convert "DD" to integer
- 651              		.loc 1 167 3 is_stmt 1 view .LVU163
- 167:app/core/cron/cron.c ****   sDate.Date = atoi(&dateStr[4]);        // Convert "DD" to integer
- 652              		.loc 1 167 16 is_stmt 0 view .LVU164
+ 166:app/core/cron/cron.c ****   sDate.Date = atoi(&dateStr[4]);        // Convert "DD" to integer
+ 651              		.loc 1 166 3 is_stmt 1 view .LVU163
+ 166:app/core/cron/cron.c ****   sDate.Date = atoi(&dateStr[4]);        // Convert "DD" to integer
+ 652              		.loc 1 166 16 is_stmt 0 view .LVU164
  653 0032 03A8     		add	r0, sp, #12
  654 0034 FFF7FEFF 		bl	atoi
  655              	.LVL42:
- 167:app/core/cron/cron.c ****   sDate.Date = atoi(&dateStr[4]);        // Convert "DD" to integer
- 656              		.loc 1 167 14 view .LVU165
+ 166:app/core/cron/cron.c ****   sDate.Date = atoi(&dateStr[4]);        // Convert "DD" to integer
+ 656              		.loc 1 166 14 view .LVU165
  657 0038 8DF81600 		strb	r0, [sp, #22]
- 168:app/core/cron/cron.c ****   sDate.Year = atoi(&dateStr[7]) - 2000; // Convert "YYYY" to last two digits (RTC stores only last
- 658              		.loc 1 168 3 is_stmt 1 view .LVU166
- 168:app/core/cron/cron.c ****   sDate.Year = atoi(&dateStr[7]) - 2000; // Convert "YYYY" to last two digits (RTC stores only last
- 659              		.loc 1 168 16 is_stmt 0 view .LVU167
+ 167:app/core/cron/cron.c ****   sDate.Year = atoi(&dateStr[7]) - 2000; // Convert "YYYY" to last two digits (RTC stores only last
+ 658              		.loc 1 167 3 is_stmt 1 view .LVU166
+ 167:app/core/cron/cron.c ****   sDate.Year = atoi(&dateStr[7]) - 2000; // Convert "YYYY" to last two digits (RTC stores only last
+ 659              		.loc 1 167 16 is_stmt 0 view .LVU167
  660 003c 0DF10F00 		add	r0, sp, #15
  661 0040 FFF7FEFF 		bl	atoi
  662              	.LVL43:
- 168:app/core/cron/cron.c ****   sDate.Year = atoi(&dateStr[7]) - 2000; // Convert "YYYY" to last two digits (RTC stores only last
- 663              		.loc 1 168 34 view .LVU168
+ 167:app/core/cron/cron.c ****   sDate.Year = atoi(&dateStr[7]) - 2000; // Convert "YYYY" to last two digits (RTC stores only last
+ 663              		.loc 1 167 34 view .LVU168
  664 0044 3030     		adds	r0, r0, #48
- 168:app/core/cron/cron.c ****   sDate.Year = atoi(&dateStr[7]) - 2000; // Convert "YYYY" to last two digits (RTC stores only last
- 665              		.loc 1 168 14 view .LVU169
+ 167:app/core/cron/cron.c ****   sDate.Year = atoi(&dateStr[7]) - 2000; // Convert "YYYY" to last two digits (RTC stores only last
+ 665              		.loc 1 167 14 view .LVU169
  666 0046 8DF81700 		strb	r0, [sp, #23]
- 171:app/core/cron/cron.c ****   sDate.WeekDay = RTC_WEEKDAY_MONDAY; // TODO: Change this based on actual weekday
- 667              		.loc 1 171 3 is_stmt 1 view .LVU170
- 171:app/core/cron/cron.c ****   sDate.WeekDay = RTC_WEEKDAY_MONDAY; // TODO: Change this based on actual weekday
- 668              		.loc 1 171 17 is_stmt 0 view .LVU171
+ 170:app/core/cron/cron.c ****   sDate.WeekDay = RTC_WEEKDAY_MONDAY; // TODO: Change this based on actual weekday
+ 667              		.loc 1 170 3 is_stmt 1 view .LVU170
+ 170:app/core/cron/cron.c ****   sDate.WeekDay = RTC_WEEKDAY_MONDAY; // TODO: Change this based on actual weekday
+ 668              		.loc 1 170 17 is_stmt 0 view .LVU171
  669 004a 0123     		movs	r3, #1
  670 004c 8DF81430 		strb	r3, [sp, #20]
- 173:app/core/cron/cron.c ****   return HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BIN);
- 671              		.loc 1 173 3 is_stmt 1 view .LVU172
- 173:app/core/cron/cron.c ****   return HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BIN);
- 672              		.loc 1 173 10 is_stmt 0 view .LVU173
+ 172:app/core/cron/cron.c ****   return HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BIN);
+ 671              		.loc 1 172 3 is_stmt 1 view .LVU172
+ 172:app/core/cron/cron.c ****   return HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BIN);
+ 672              		.loc 1 172 10 is_stmt 0 view .LVU173
  673 0050 2246     		mov	r2, r4
  674 0052 05A9     		add	r1, sp, #20
  675 0054 0348     		ldr	r0, .L45+4
-ARM GAS  /tmp/ccMOF7Vm.s 			page 17
-
-
  676 0056 FFF7FEFF 		bl	HAL_RTC_SetDate
+ARM GAS  /tmp/cc8jkhSZ.s 			page 17
+
+
  677              	.LVL44:
- 174:app/core/cron/cron.c **** }
- 678              		.loc 1 174 1 view .LVU174
+ 173:app/core/cron/cron.c **** }
+ 678              		.loc 1 173 1 view .LVU174
  679 005a 06B0     		add	sp, sp, #24
  680              	.LCFI12:
  681              		.cfi_def_cfa_offset 8
@@ -977,374 +976,375 @@ ARM GAS  /tmp/ccMOF7Vm.s 			page 1
  688 0064 00000000 		.word	hrtc
  689              		.cfi_endproc
  690              	.LFE146:
- 692              		.section	.text.getCurrentUnixTimestamp,"ax",%progbits
- 693              		.align	1
- 694              		.syntax unified
- 695              		.thumb
- 696              		.thumb_func
- 697              		.fpu fpv4-sp-d16
- 699              	getCurrentUnixTimestamp:
- 700              	.LFB144:
- 113:app/core/cron/cron.c **** static int32_t getCurrentUnixTimestamp(void) {
- 701              		.loc 1 113 46 is_stmt 1 view -0
- 702              		.cfi_startproc
- 703              		@ args = 0, pretend = 0, frame = 64
- 704              		@ frame_needed = 0, uses_anonymous_args = 0
- 705 0000 30B5     		push	{r4, r5, lr}
- 706              	.LCFI13:
- 707              		.cfi_def_cfa_offset 12
- 708              		.cfi_offset 4, -12
- 709              		.cfi_offset 5, -8
- 710              		.cfi_offset 14, -4
- 711 0002 91B0     		sub	sp, sp, #68
- 712              	.LCFI14:
- 713              		.cfi_def_cfa_offset 80
- 114:app/core/cron/cron.c ****   RTC_TimeTypeDef sTime = {0};
- 714              		.loc 1 114 3 view .LVU176
- 114:app/core/cron/cron.c ****   RTC_TimeTypeDef sTime = {0};
- 715              		.loc 1 114 19 is_stmt 0 view .LVU177
- 716 0004 0024     		movs	r4, #0
- 717 0006 0B94     		str	r4, [sp, #44]
- 718 0008 0C94     		str	r4, [sp, #48]
- 719 000a 0D94     		str	r4, [sp, #52]
- 720 000c 0E94     		str	r4, [sp, #56]
- 721 000e 0F94     		str	r4, [sp, #60]
- 115:app/core/cron/cron.c ****   RTC_DateTypeDef sDate = {0};
- 722              		.loc 1 115 3 is_stmt 1 view .LVU178
- 115:app/core/cron/cron.c ****   RTC_DateTypeDef sDate = {0};
- 723              		.loc 1 115 19 is_stmt 0 view .LVU179
- 724 0010 0A94     		str	r4, [sp, #40]
- 117:app/core/cron/cron.c ****   HAL_StatusTypeDef status = HAL_RTC_GetTime (&hrtc, &sTime, RTC_FORMAT_BIN);
- 725              		.loc 1 117 3 is_stmt 1 view .LVU180
- 117:app/core/cron/cron.c ****   HAL_StatusTypeDef status = HAL_RTC_GetTime (&hrtc, &sTime, RTC_FORMAT_BIN);
- 726              		.loc 1 117 30 is_stmt 0 view .LVU181
-ARM GAS  /tmp/ccMOF7Vm.s 			page 18
+ 692              		.section	.rodata.CRON_ActorInit.str1.4,"aMS",%progbits,1
+ 693              		.align	2
+ 694              	.LC14:
+ 695 0000 43726F6E 		.ascii	"Cron initialized: %d\012\000"
+ 695      20696E69 
+ 695      7469616C 
+ 695      697A6564 
+ 695      3A202564 
+ 696              		.section	.text.CRON_ActorInit,"ax",%progbits
+ 697              		.align	1
+ 698              		.global	CRON_ActorInit
+ 699              		.syntax unified
+ 700              		.thumb
+ 701              		.thumb_func
+ 702              		.fpu fpv4-sp-d16
+ 704              	CRON_ActorInit:
+ 705              	.LFB139:
+  30:app/core/cron/cron.c **** actor_t* CRON_ActorInit(void) {
+ 706              		.loc 1 30 31 is_stmt 1 view -0
+ 707              		.cfi_startproc
+ 708              		@ args = 0, pretend = 0, frame = 0
+ 709              		@ frame_needed = 0, uses_anonymous_args = 0
+ 710 0000 10B5     		push	{r4, lr}
+ 711              	.LCFI13:
+ 712              		.cfi_def_cfa_offset 8
+ 713              		.cfi_offset 4, -8
+ 714              		.cfi_offset 14, -4
+  32:app/core/cron/cron.c ****   HAL_StatusTypeDef status = setCurrentTime();
+ 715              		.loc 1 32 3 view .LVU176
+  32:app/core/cron/cron.c ****   HAL_StatusTypeDef status = setCurrentTime();
+ 716              		.loc 1 32 30 is_stmt 0 view .LVU177
+ 717 0002 FFF7FEFF 		bl	setCurrentTime
+ 718              	.LVL45:
+ 719 0006 0446     		mov	r4, r0
+ 720              	.LVL46:
+  35:app/core/cron/cron.c ****   status |= setCurrentDate();
+ 721              		.loc 1 35 3 is_stmt 1 view .LVU178
+  35:app/core/cron/cron.c ****   status |= setCurrentDate();
+ 722              		.loc 1 35 13 is_stmt 0 view .LVU179
+ 723 0008 FFF7FEFF 		bl	setCurrentDate
+ 724              	.LVL47:
+  35:app/core/cron/cron.c ****   status |= setCurrentDate();
+ARM GAS  /tmp/cc8jkhSZ.s 			page 18
 
 
- 727 0012 144D     		ldr	r5, .L49
- 728 0014 2246     		mov	r2, r4
- 729 0016 0BA9     		add	r1, sp, #44
- 730 0018 2846     		mov	r0, r5
- 731 001a FFF7FEFF 		bl	HAL_RTC_GetTime
- 732              	.LVL45:
- 118:app/core/cron/cron.c ****   status |= HAL_RTC_GetDate (&hrtc, &sDate, RTC_FORMAT_BIN);
- 733              		.loc 1 118 3 is_stmt 1 view .LVU182
- 118:app/core/cron/cron.c ****   status |= HAL_RTC_GetDate (&hrtc, &sDate, RTC_FORMAT_BIN);
- 734              		.loc 1 118 13 is_stmt 0 view .LVU183
- 735 001e 2246     		mov	r2, r4
- 736 0020 0AA9     		add	r1, sp, #40
- 737 0022 2846     		mov	r0, r5
- 738 0024 FFF7FEFF 		bl	HAL_RTC_GetDate
- 739              	.LVL46:
- 121:app/core/cron/cron.c ****   struct tm timeStruct = {
- 740              		.loc 1 121 3 is_stmt 1 view .LVU184
- 121:app/core/cron/cron.c ****   struct tm timeStruct = {
- 741              		.loc 1 121 13 is_stmt 0 view .LVU185
- 742 0028 2422     		movs	r2, #36
- 743 002a 2146     		mov	r1, r4
- 744 002c 01A8     		add	r0, sp, #4
- 745 002e FFF7FEFF 		bl	memset
- 746              	.LVL47:
- 122:app/core/cron/cron.c ****     .tm_sec = sTime.Seconds,
- 747              		.loc 1 122 20 view .LVU186
- 748 0032 9DF82E30 		ldrb	r3, [sp, #46]	@ zero_extendqisi2
- 121:app/core/cron/cron.c ****   struct tm timeStruct = {
- 749              		.loc 1 121 13 view .LVU187
- 750 0036 0193     		str	r3, [sp, #4]
- 123:app/core/cron/cron.c ****     .tm_min = sTime.Minutes,
- 751              		.loc 1 123 20 view .LVU188
- 752 0038 9DF82D30 		ldrb	r3, [sp, #45]	@ zero_extendqisi2
- 121:app/core/cron/cron.c ****   struct tm timeStruct = {
- 753              		.loc 1 121 13 view .LVU189
- 754 003c 0293     		str	r3, [sp, #8]
- 124:app/core/cron/cron.c ****     .tm_hour = sTime.Hours,
- 755              		.loc 1 124 21 view .LVU190
- 756 003e 9DF82C30 		ldrb	r3, [sp, #44]	@ zero_extendqisi2
- 121:app/core/cron/cron.c ****   struct tm timeStruct = {
- 757              		.loc 1 121 13 view .LVU191
- 758 0042 0393     		str	r3, [sp, #12]
- 125:app/core/cron/cron.c ****     .tm_mday = sDate.Date, // day of the month, 1-31
- 759              		.loc 1 125 21 view .LVU192
- 760 0044 9DF82A30 		ldrb	r3, [sp, #42]	@ zero_extendqisi2
- 121:app/core/cron/cron.c ****   struct tm timeStruct = {
- 761              		.loc 1 121 13 view .LVU193
- 762 0048 0493     		str	r3, [sp, #16]
- 126:app/core/cron/cron.c ****     .tm_mon = sDate.Month - 1, // months from 0
- 763              		.loc 1 126 20 view .LVU194
- 764 004a 9DF82930 		ldrb	r3, [sp, #41]	@ zero_extendqisi2
- 126:app/core/cron/cron.c ****     .tm_mon = sDate.Month - 1, // months from 0
- 765              		.loc 1 126 27 view .LVU195
- 766 004e 013B     		subs	r3, r3, #1
- 121:app/core/cron/cron.c ****   struct tm timeStruct = {
- 767              		.loc 1 121 13 view .LVU196
- 768 0050 0593     		str	r3, [sp, #20]
-ARM GAS  /tmp/ccMOF7Vm.s 			page 19
+ 725              		.loc 1 35 10 view .LVU180
+ 726 000c 0443     		orrs	r4, r4, r0
+ 727              	.LVL48:
+  35:app/core/cron/cron.c ****   status |= setCurrentDate();
+ 728              		.loc 1 35 10 view .LVU181
+ 729 000e E4B2     		uxtb	r4, r4
+ 730              	.LVL49:
+  38:app/core/cron/cron.c ****   status |= setWakeUpPeriod(30); // every 30 seconds
+ 731              		.loc 1 38 3 is_stmt 1 view .LVU182
+  38:app/core/cron/cron.c ****   status |= setWakeUpPeriod(30); // every 30 seconds
+ 732              		.loc 1 38 13 is_stmt 0 view .LVU183
+ 733 0010 1E20     		movs	r0, #30
+ 734 0012 FFF7FEFF 		bl	setWakeUpPeriod
+ 735              	.LVL50:
+  38:app/core/cron/cron.c ****   status |= setWakeUpPeriod(30); // every 30 seconds
+ 736              		.loc 1 38 10 view .LVU184
+ 737 0016 40EA0402 		orr	r2, r0, r4
+ 738              	.LVL51:
+  41:app/core/cron/cron.c ****     fprintf(stdout, "Cron initialized: %d\n", status);
+ 739              		.loc 1 41 5 is_stmt 1 view .LVU185
+  41:app/core/cron/cron.c ****     fprintf(stdout, "Cron initialized: %d\n", status);
+ 740              		.loc 1 41 13 is_stmt 0 view .LVU186
+ 741 001a 044B     		ldr	r3, .L49
+ 742 001c 1B68     		ldr	r3, [r3]
+  41:app/core/cron/cron.c ****     fprintf(stdout, "Cron initialized: %d\n", status);
+ 743              		.loc 1 41 5 view .LVU187
+ 744 001e D2B2     		uxtb	r2, r2
+  41:app/core/cron/cron.c ****     fprintf(stdout, "Cron initialized: %d\n", status);
+ 745              		.loc 1 41 5 view .LVU188
+ 746 0020 0349     		ldr	r1, .L49+4
+ 747 0022 9868     		ldr	r0, [r3, #8]
+ 748 0024 FFF7FEFF 		bl	fprintf
+ 749              	.LVL52:
+  43:app/core/cron/cron.c ****   return &CRON_Actor.super;
+ 750              		.loc 1 43 3 is_stmt 1 view .LVU189
+  44:app/core/cron/cron.c **** }
+ 751              		.loc 1 44 1 is_stmt 0 view .LVU190
+ 752 0028 0248     		ldr	r0, .L49+8
+ 753 002a 10BD     		pop	{r4, pc}
+ 754              	.L50:
+ 755              		.align	2
+ 756              	.L49:
+ 757 002c 00000000 		.word	_impure_ptr
+ 758 0030 00000000 		.word	.LC14
+ 759 0034 00000000 		.word	.LANCHOR0
+ 760              		.cfi_endproc
+ 761              	.LFE139:
+ 763              		.section	.text.CRON_GetCurrentUnixTimestamp,"ax",%progbits
+ 764              		.align	1
+ 765              		.global	CRON_GetCurrentUnixTimestamp
+ 766              		.syntax unified
+ 767              		.thumb
+ 768              		.thumb_func
+ 769              		.fpu fpv4-sp-d16
+ 771              	CRON_GetCurrentUnixTimestamp:
+ 772              	.LFB144:
+ 112:app/core/cron/cron.c **** int32_t CRON_GetCurrentUnixTimestamp(void) {
+ARM GAS  /tmp/cc8jkhSZ.s 			page 19
 
 
- 127:app/core/cron/cron.c ****     .tm_year = sDate.Year + YEARS_FROM_1900_TO_2000, // years from 1900
- 769              		.loc 1 127 21 view .LVU197
- 770 0052 9DF82B30 		ldrb	r3, [sp, #43]	@ zero_extendqisi2
- 127:app/core/cron/cron.c ****     .tm_year = sDate.Year + YEARS_FROM_1900_TO_2000, // years from 1900
- 771              		.loc 1 127 27 view .LVU198
- 772 0056 6433     		adds	r3, r3, #100
- 121:app/core/cron/cron.c ****   struct tm timeStruct = {
- 773              		.loc 1 121 13 view .LVU199
- 774 0058 0693     		str	r3, [sp, #24]
- 130:app/core/cron/cron.c ****   return mktime(&timeStruct);
- 775              		.loc 1 130 3 is_stmt 1 view .LVU200
- 130:app/core/cron/cron.c ****   return mktime(&timeStruct);
- 776              		.loc 1 130 10 is_stmt 0 view .LVU201
- 777 005a 01A8     		add	r0, sp, #4
- 778 005c FFF7FEFF 		bl	mktime
- 779              	.LVL48:
- 131:app/core/cron/cron.c **** }
- 780              		.loc 1 131 1 view .LVU202
- 781 0060 11B0     		add	sp, sp, #68
- 782              	.LCFI15:
- 783              		.cfi_def_cfa_offset 12
- 784              		@ sp needed
- 785 0062 30BD     		pop	{r4, r5, pc}
- 786              	.L50:
- 787              		.align	2
- 788              	.L49:
- 789 0064 00000000 		.word	hrtc
- 790              		.cfi_endproc
- 791              	.LFE144:
- 793              		.section	.rodata.CRON_ActorInit.str1.4,"aMS",%progbits,1
- 794              		.align	2
- 795              	.LC14:
- 796 0000 43726F6E 		.ascii	"Cron initialized: %d\012\000"
- 796      20696E69 
- 796      7469616C 
- 796      697A6564 
- 796      3A202564 
- 797              		.section	.text.CRON_ActorInit,"ax",%progbits
- 798              		.align	1
- 799              		.global	CRON_ActorInit
- 800              		.syntax unified
- 801              		.thumb
- 802              		.thumb_func
- 803              		.fpu fpv4-sp-d16
- 805              	CRON_ActorInit:
- 806              	.LFB139:
-  31:app/core/cron/cron.c **** actor_t* CRON_ActorInit(void) {
- 807              		.loc 1 31 31 is_stmt 1 view -0
- 808              		.cfi_startproc
- 809              		@ args = 0, pretend = 0, frame = 0
- 810              		@ frame_needed = 0, uses_anonymous_args = 0
- 811 0000 10B5     		push	{r4, lr}
- 812              	.LCFI16:
- 813              		.cfi_def_cfa_offset 8
- 814              		.cfi_offset 4, -8
- 815              		.cfi_offset 14, -4
-  33:app/core/cron/cron.c ****   HAL_StatusTypeDef status = setCurrentTime();
-ARM GAS  /tmp/ccMOF7Vm.s 			page 20
+ 773              		.loc 1 112 44 is_stmt 1 view -0
+ 774              		.cfi_startproc
+ 775              		@ args = 0, pretend = 0, frame = 64
+ 776              		@ frame_needed = 0, uses_anonymous_args = 0
+ 777 0000 30B5     		push	{r4, r5, lr}
+ 778              	.LCFI14:
+ 779              		.cfi_def_cfa_offset 12
+ 780              		.cfi_offset 4, -12
+ 781              		.cfi_offset 5, -8
+ 782              		.cfi_offset 14, -4
+ 783 0002 91B0     		sub	sp, sp, #68
+ 784              	.LCFI15:
+ 785              		.cfi_def_cfa_offset 80
+ 113:app/core/cron/cron.c ****   RTC_TimeTypeDef sTime = {0};
+ 786              		.loc 1 113 3 view .LVU192
+ 113:app/core/cron/cron.c ****   RTC_TimeTypeDef sTime = {0};
+ 787              		.loc 1 113 19 is_stmt 0 view .LVU193
+ 788 0004 0024     		movs	r4, #0
+ 789 0006 0B94     		str	r4, [sp, #44]
+ 790 0008 0C94     		str	r4, [sp, #48]
+ 791 000a 0D94     		str	r4, [sp, #52]
+ 792 000c 0E94     		str	r4, [sp, #56]
+ 793 000e 0F94     		str	r4, [sp, #60]
+ 114:app/core/cron/cron.c ****   RTC_DateTypeDef sDate = {0};
+ 794              		.loc 1 114 3 is_stmt 1 view .LVU194
+ 114:app/core/cron/cron.c ****   RTC_DateTypeDef sDate = {0};
+ 795              		.loc 1 114 19 is_stmt 0 view .LVU195
+ 796 0010 0A94     		str	r4, [sp, #40]
+ 116:app/core/cron/cron.c ****   HAL_StatusTypeDef status = HAL_RTC_GetTime (&hrtc, &sTime, RTC_FORMAT_BIN);
+ 797              		.loc 1 116 3 is_stmt 1 view .LVU196
+ 116:app/core/cron/cron.c ****   HAL_StatusTypeDef status = HAL_RTC_GetTime (&hrtc, &sTime, RTC_FORMAT_BIN);
+ 798              		.loc 1 116 30 is_stmt 0 view .LVU197
+ 799 0012 144D     		ldr	r5, .L53
+ 800 0014 2246     		mov	r2, r4
+ 801 0016 0BA9     		add	r1, sp, #44
+ 802 0018 2846     		mov	r0, r5
+ 803 001a FFF7FEFF 		bl	HAL_RTC_GetTime
+ 804              	.LVL53:
+ 117:app/core/cron/cron.c ****   status |= HAL_RTC_GetDate (&hrtc, &sDate, RTC_FORMAT_BIN);
+ 805              		.loc 1 117 3 is_stmt 1 view .LVU198
+ 117:app/core/cron/cron.c ****   status |= HAL_RTC_GetDate (&hrtc, &sDate, RTC_FORMAT_BIN);
+ 806              		.loc 1 117 13 is_stmt 0 view .LVU199
+ 807 001e 2246     		mov	r2, r4
+ 808 0020 0AA9     		add	r1, sp, #40
+ 809 0022 2846     		mov	r0, r5
+ 810 0024 FFF7FEFF 		bl	HAL_RTC_GetDate
+ 811              	.LVL54:
+ 120:app/core/cron/cron.c ****   struct tm timeStruct = {
+ 812              		.loc 1 120 3 is_stmt 1 view .LVU200
+ 120:app/core/cron/cron.c ****   struct tm timeStruct = {
+ 813              		.loc 1 120 13 is_stmt 0 view .LVU201
+ 814 0028 2422     		movs	r2, #36
+ 815 002a 2146     		mov	r1, r4
+ 816 002c 01A8     		add	r0, sp, #4
+ 817 002e FFF7FEFF 		bl	memset
+ 818              	.LVL55:
+ 121:app/core/cron/cron.c ****     .tm_sec = sTime.Seconds,
+ARM GAS  /tmp/cc8jkhSZ.s 			page 20
 
 
- 816              		.loc 1 33 3 view .LVU204
-  33:app/core/cron/cron.c ****   HAL_StatusTypeDef status = setCurrentTime();
- 817              		.loc 1 33 30 is_stmt 0 view .LVU205
- 818 0002 FFF7FEFF 		bl	setCurrentTime
- 819              	.LVL49:
- 820 0006 0446     		mov	r4, r0
- 821              	.LVL50:
-  36:app/core/cron/cron.c ****   status |= setCurrentDate();
- 822              		.loc 1 36 3 is_stmt 1 view .LVU206
-  36:app/core/cron/cron.c ****   status |= setCurrentDate();
- 823              		.loc 1 36 13 is_stmt 0 view .LVU207
- 824 0008 FFF7FEFF 		bl	setCurrentDate
- 825              	.LVL51:
-  36:app/core/cron/cron.c ****   status |= setCurrentDate();
- 826              		.loc 1 36 10 view .LVU208
- 827 000c 0443     		orrs	r4, r4, r0
- 828              	.LVL52:
-  36:app/core/cron/cron.c ****   status |= setCurrentDate();
- 829              		.loc 1 36 10 view .LVU209
- 830 000e E4B2     		uxtb	r4, r4
- 831              	.LVL53:
-  39:app/core/cron/cron.c ****   status |= setWakeUpPeriod(30); // every 30 seconds
- 832              		.loc 1 39 3 is_stmt 1 view .LVU210
-  39:app/core/cron/cron.c ****   status |= setWakeUpPeriod(30); // every 30 seconds
- 833              		.loc 1 39 13 is_stmt 0 view .LVU211
- 834 0010 1E20     		movs	r0, #30
- 835 0012 FFF7FEFF 		bl	setWakeUpPeriod
- 836              	.LVL54:
-  39:app/core/cron/cron.c ****   status |= setWakeUpPeriod(30); // every 30 seconds
- 837              		.loc 1 39 10 view .LVU212
- 838 0016 40EA0402 		orr	r2, r0, r4
- 839              	.LVL55:
-  42:app/core/cron/cron.c ****     fprintf(stdout, "Cron initialized: %d\n", status);
- 840              		.loc 1 42 5 is_stmt 1 view .LVU213
-  42:app/core/cron/cron.c ****     fprintf(stdout, "Cron initialized: %d\n", status);
- 841              		.loc 1 42 13 is_stmt 0 view .LVU214
- 842 001a 044B     		ldr	r3, .L53
- 843 001c 1B68     		ldr	r3, [r3]
-  42:app/core/cron/cron.c ****     fprintf(stdout, "Cron initialized: %d\n", status);
- 844              		.loc 1 42 5 view .LVU215
- 845 001e D2B2     		uxtb	r2, r2
-  42:app/core/cron/cron.c ****     fprintf(stdout, "Cron initialized: %d\n", status);
- 846              		.loc 1 42 5 view .LVU216
- 847 0020 0349     		ldr	r1, .L53+4
- 848 0022 9868     		ldr	r0, [r3, #8]
- 849 0024 FFF7FEFF 		bl	fprintf
- 850              	.LVL56:
-  44:app/core/cron/cron.c ****   return &CRON_Actor.super;
- 851              		.loc 1 44 3 is_stmt 1 view .LVU217
-  45:app/core/cron/cron.c **** }
- 852              		.loc 1 45 1 is_stmt 0 view .LVU218
- 853 0028 0248     		ldr	r0, .L53+8
- 854 002a 10BD     		pop	{r4, pc}
- 855              	.L54:
- 856              		.align	2
- 857              	.L53:
- 858 002c 00000000 		.word	_impure_ptr
-ARM GAS  /tmp/ccMOF7Vm.s 			page 21
+ 819              		.loc 1 121 20 view .LVU202
+ 820 0032 9DF82E30 		ldrb	r3, [sp, #46]	@ zero_extendqisi2
+ 120:app/core/cron/cron.c ****   struct tm timeStruct = {
+ 821              		.loc 1 120 13 view .LVU203
+ 822 0036 0193     		str	r3, [sp, #4]
+ 122:app/core/cron/cron.c ****     .tm_min = sTime.Minutes,
+ 823              		.loc 1 122 20 view .LVU204
+ 824 0038 9DF82D30 		ldrb	r3, [sp, #45]	@ zero_extendqisi2
+ 120:app/core/cron/cron.c ****   struct tm timeStruct = {
+ 825              		.loc 1 120 13 view .LVU205
+ 826 003c 0293     		str	r3, [sp, #8]
+ 123:app/core/cron/cron.c ****     .tm_hour = sTime.Hours,
+ 827              		.loc 1 123 21 view .LVU206
+ 828 003e 9DF82C30 		ldrb	r3, [sp, #44]	@ zero_extendqisi2
+ 120:app/core/cron/cron.c ****   struct tm timeStruct = {
+ 829              		.loc 1 120 13 view .LVU207
+ 830 0042 0393     		str	r3, [sp, #12]
+ 124:app/core/cron/cron.c ****     .tm_mday = sDate.Date, // day of the month, 1-31
+ 831              		.loc 1 124 21 view .LVU208
+ 832 0044 9DF82A30 		ldrb	r3, [sp, #42]	@ zero_extendqisi2
+ 120:app/core/cron/cron.c ****   struct tm timeStruct = {
+ 833              		.loc 1 120 13 view .LVU209
+ 834 0048 0493     		str	r3, [sp, #16]
+ 125:app/core/cron/cron.c ****     .tm_mon = sDate.Month - 1, // months from 0
+ 835              		.loc 1 125 20 view .LVU210
+ 836 004a 9DF82930 		ldrb	r3, [sp, #41]	@ zero_extendqisi2
+ 125:app/core/cron/cron.c ****     .tm_mon = sDate.Month - 1, // months from 0
+ 837              		.loc 1 125 27 view .LVU211
+ 838 004e 013B     		subs	r3, r3, #1
+ 120:app/core/cron/cron.c ****   struct tm timeStruct = {
+ 839              		.loc 1 120 13 view .LVU212
+ 840 0050 0593     		str	r3, [sp, #20]
+ 126:app/core/cron/cron.c ****     .tm_year = sDate.Year + YEARS_FROM_1900_TO_2000, // years from 1900
+ 841              		.loc 1 126 21 view .LVU213
+ 842 0052 9DF82B30 		ldrb	r3, [sp, #43]	@ zero_extendqisi2
+ 126:app/core/cron/cron.c ****     .tm_year = sDate.Year + YEARS_FROM_1900_TO_2000, // years from 1900
+ 843              		.loc 1 126 27 view .LVU214
+ 844 0056 6433     		adds	r3, r3, #100
+ 120:app/core/cron/cron.c ****   struct tm timeStruct = {
+ 845              		.loc 1 120 13 view .LVU215
+ 846 0058 0693     		str	r3, [sp, #24]
+ 129:app/core/cron/cron.c ****   return mktime(&timeStruct);
+ 847              		.loc 1 129 3 is_stmt 1 view .LVU216
+ 129:app/core/cron/cron.c ****   return mktime(&timeStruct);
+ 848              		.loc 1 129 10 is_stmt 0 view .LVU217
+ 849 005a 01A8     		add	r0, sp, #4
+ 850 005c FFF7FEFF 		bl	mktime
+ 851              	.LVL56:
+ 130:app/core/cron/cron.c **** }
+ 852              		.loc 1 130 1 view .LVU218
+ 853 0060 11B0     		add	sp, sp, #68
+ 854              	.LCFI16:
+ 855              		.cfi_def_cfa_offset 12
+ 856              		@ sp needed
+ 857 0062 30BD     		pop	{r4, r5, pc}
+ 858              	.L54:
+ 859              		.align	2
+ARM GAS  /tmp/cc8jkhSZ.s 			page 21
 
 
- 859 0030 00000000 		.word	.LC14
- 860 0034 00000000 		.word	.LANCHOR0
- 861              		.cfi_endproc
- 862              	.LFE139:
- 864              		.section	.text.HAL_RTCEx_WakeUpTimerEventCallback,"ax",%progbits
- 865              		.align	1
- 866              		.global	HAL_RTCEx_WakeUpTimerEventCallback
- 867              		.syntax unified
- 868              		.thumb
- 869              		.thumb_func
- 870              		.fpu fpv4-sp-d16
- 872              	HAL_RTCEx_WakeUpTimerEventCallback:
- 873              	.LVL57:
- 874              	.LFB140:
-  48:app/core/cron/cron.c **** void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc) {
- 875              		.loc 1 48 66 is_stmt 1 view -0
- 876              		.cfi_startproc
- 877              		@ args = 0, pretend = 0, frame = 16
- 878              		@ frame_needed = 0, uses_anonymous_args = 0
-  48:app/core/cron/cron.c **** void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc) {
- 879              		.loc 1 48 66 is_stmt 0 view .LVU220
- 880 0000 00B5     		push	{lr}
- 881              	.LCFI17:
- 882              		.cfi_def_cfa_offset 4
- 883              		.cfi_offset 14, -4
- 884 0002 85B0     		sub	sp, sp, #20
- 885              	.LCFI18:
- 886              		.cfi_def_cfa_offset 24
-  49:app/core/cron/cron.c ****   int32_t currentTimestamp = getCurrentUnixTimestamp();
- 887              		.loc 1 49 3 is_stmt 1 view .LVU221
-  49:app/core/cron/cron.c ****   int32_t currentTimestamp = getCurrentUnixTimestamp();
- 888              		.loc 1 49 30 is_stmt 0 view .LVU222
- 889 0004 FFF7FEFF 		bl	getCurrentUnixTimestamp
- 890              	.LVL58:
-  51:app/core/cron/cron.c ****   osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_WAKE_N_READ, .payl
- 891              		.loc 1 51 3 is_stmt 1 view .LVU223
-  51:app/core/cron/cron.c ****   osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_WAKE_N_READ, .payl
- 892              		.loc 1 51 74 is_stmt 0 view .LVU224
- 893 0008 0022     		movs	r2, #0
- 894 000a 0192     		str	r2, [sp, #4]
- 895 000c 0292     		str	r2, [sp, #8]
- 896 000e 0392     		str	r2, [sp, #12]
- 897 0010 0323     		movs	r3, #3
- 898 0012 8DF80430 		strb	r3, [sp, #4]
- 899 0016 0290     		str	r0, [sp, #8]
-  51:app/core/cron/cron.c ****   osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_WAKE_N_READ, .payl
- 900              		.loc 1 51 3 view .LVU225
- 901 0018 1346     		mov	r3, r2
- 902 001a 01A9     		add	r1, sp, #4
- 903 001c 0348     		ldr	r0, .L57
- 904              	.LVL59:
-  51:app/core/cron/cron.c ****   osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_WAKE_N_READ, .payl
- 905              		.loc 1 51 3 view .LVU226
- 906 001e 8068     		ldr	r0, [r0, #8]
- 907 0020 FFF7FEFF 		bl	osMessageQueuePut
- 908              	.LVL60:
-  52:app/core/cron/cron.c **** }
-ARM GAS  /tmp/ccMOF7Vm.s 			page 22
+ 860              	.L53:
+ 861 0064 00000000 		.word	hrtc
+ 862              		.cfi_endproc
+ 863              	.LFE144:
+ 865              		.section	.text.HAL_RTCEx_WakeUpTimerEventCallback,"ax",%progbits
+ 866              		.align	1
+ 867              		.global	HAL_RTCEx_WakeUpTimerEventCallback
+ 868              		.syntax unified
+ 869              		.thumb
+ 870              		.thumb_func
+ 871              		.fpu fpv4-sp-d16
+ 873              	HAL_RTCEx_WakeUpTimerEventCallback:
+ 874              	.LVL57:
+ 875              	.LFB140:
+  47:app/core/cron/cron.c **** void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc) {
+ 876              		.loc 1 47 66 is_stmt 1 view -0
+ 877              		.cfi_startproc
+ 878              		@ args = 0, pretend = 0, frame = 16
+ 879              		@ frame_needed = 0, uses_anonymous_args = 0
+  47:app/core/cron/cron.c **** void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc) {
+ 880              		.loc 1 47 66 is_stmt 0 view .LVU220
+ 881 0000 00B5     		push	{lr}
+ 882              	.LCFI17:
+ 883              		.cfi_def_cfa_offset 4
+ 884              		.cfi_offset 14, -4
+ 885 0002 85B0     		sub	sp, sp, #20
+ 886              	.LCFI18:
+ 887              		.cfi_def_cfa_offset 24
+  48:app/core/cron/cron.c ****   int32_t currentTimestamp = CRON_GetCurrentUnixTimestamp();
+ 888              		.loc 1 48 3 is_stmt 1 view .LVU221
+  48:app/core/cron/cron.c ****   int32_t currentTimestamp = CRON_GetCurrentUnixTimestamp();
+ 889              		.loc 1 48 30 is_stmt 0 view .LVU222
+ 890 0004 FFF7FEFF 		bl	CRON_GetCurrentUnixTimestamp
+ 891              	.LVL58:
+  50:app/core/cron/cron.c ****   osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_WAKE_N_READ, .payl
+ 892              		.loc 1 50 3 is_stmt 1 view .LVU223
+  50:app/core/cron/cron.c ****   osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_WAKE_N_READ, .payl
+ 893              		.loc 1 50 74 is_stmt 0 view .LVU224
+ 894 0008 0022     		movs	r2, #0
+ 895 000a 0192     		str	r2, [sp, #4]
+ 896 000c 0292     		str	r2, [sp, #8]
+ 897 000e 0392     		str	r2, [sp, #12]
+ 898 0010 0323     		movs	r3, #3
+ 899 0012 8DF80430 		strb	r3, [sp, #4]
+ 900 0016 0290     		str	r0, [sp, #8]
+  50:app/core/cron/cron.c ****   osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_WAKE_N_READ, .payl
+ 901              		.loc 1 50 3 view .LVU225
+ 902 0018 1346     		mov	r3, r2
+ 903 001a 01A9     		add	r1, sp, #4
+ 904 001c 0348     		ldr	r0, .L57
+ 905              	.LVL59:
+  50:app/core/cron/cron.c ****   osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_WAKE_N_READ, .payl
+ 906              		.loc 1 50 3 view .LVU226
+ 907 001e 8068     		ldr	r0, [r0, #8]
+ 908 0020 FFF7FEFF 		bl	osMessageQueuePut
+ 909              	.LVL60:
+  51:app/core/cron/cron.c **** }
+ARM GAS  /tmp/cc8jkhSZ.s 			page 22
 
 
- 909              		.loc 1 52 1 view .LVU227
- 910 0024 05B0     		add	sp, sp, #20
- 911              	.LCFI19:
- 912              		.cfi_def_cfa_offset 4
- 913              		@ sp needed
- 914 0026 5DF804FB 		ldr	pc, [sp], #4
- 915              	.L58:
- 916 002a 00BF     		.align	2
- 917              	.L57:
- 918 002c 00000000 		.word	EV_MANAGER_Actor
- 919              		.cfi_endproc
- 920              	.LFE140:
- 922              		.global	CRON_Actor
- 923              		.section	.data.CRON_Actor,"aw"
- 924              		.align	2
- 925              		.set	.LANCHOR0,. + 0
- 928              	CRON_Actor:
- 929 0000 02000000 		.word	2
- 930 0004 00000000 		.word	0
- 931 0008 00000000 		.word	0
- 932 000c 00000000 		.word	handleCronMessage
- 933              		.text
- 934              	.Letext0:
- 935              		.file 2 "/usr/include/newlib/machine/_default_types.h"
- 936              		.file 3 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stddef.h"
- 937              		.file 4 "/usr/include/newlib/sys/_types.h"
- 938              		.file 5 "/usr/include/newlib/sys/reent.h"
- 939              		.file 6 "/usr/include/newlib/sys/lock.h"
- 940              		.file 7 "/usr/include/newlib/sys/_stdint.h"
- 941              		.file 8 "/usr/include/newlib/sys/_timeval.h"
- 942              		.file 9 "/usr/include/newlib/sys/types.h"
- 943              		.file 10 "/usr/include/newlib/time.h"
- 944              		.file 11 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l412xx.h"
- 945              		.file 12 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h"
- 946              		.file 13 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc.h"
- 947              		.file 14 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
- 948              		.file 15 "app/core/actor/../../config/events_list/events_list.h"
- 949              		.file 16 "app/core/actor/../../config/actors_list/actors_list.h"
- 950              		.file 17 "app/core/actor/actor.h"
- 951              		.file 18 "app/tasks/event_manager/event_manager.h"
- 952              		.file 19 "Core/Inc/rtc.h"
- 953              		.file 20 "app/core/cron/cron.h"
- 954              		.file 21 "/usr/include/newlib/string.h"
- 955              		.file 22 "/usr/include/newlib/stdlib.h"
- 956              		.file 23 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc_ex.h"
- 957              		.file 24 "/usr/include/newlib/stdio.h"
- 958              		.file 25 "<built-in>"
-ARM GAS  /tmp/ccMOF7Vm.s 			page 23
+ 910              		.loc 1 51 1 view .LVU227
+ 911 0024 05B0     		add	sp, sp, #20
+ 912              	.LCFI19:
+ 913              		.cfi_def_cfa_offset 4
+ 914              		@ sp needed
+ 915 0026 5DF804FB 		ldr	pc, [sp], #4
+ 916              	.L58:
+ 917 002a 00BF     		.align	2
+ 918              	.L57:
+ 919 002c 00000000 		.word	EV_MANAGER_Actor
+ 920              		.cfi_endproc
+ 921              	.LFE140:
+ 923              		.global	CRON_Actor
+ 924              		.section	.data.CRON_Actor,"aw"
+ 925              		.align	2
+ 926              		.set	.LANCHOR0,. + 0
+ 929              	CRON_Actor:
+ 930 0000 02000000 		.word	2
+ 931 0004 00000000 		.word	0
+ 932 0008 00000000 		.word	0
+ 933 000c 00000000 		.word	handleCronMessage
+ 934              		.text
+ 935              	.Letext0:
+ 936              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 937              		.file 3 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stddef.h"
+ 938              		.file 4 "/usr/include/newlib/sys/_types.h"
+ 939              		.file 5 "/usr/include/newlib/sys/reent.h"
+ 940              		.file 6 "/usr/include/newlib/sys/lock.h"
+ 941              		.file 7 "/usr/include/newlib/sys/_stdint.h"
+ 942              		.file 8 "/usr/include/newlib/sys/_timeval.h"
+ 943              		.file 9 "/usr/include/newlib/sys/types.h"
+ 944              		.file 10 "/usr/include/newlib/time.h"
+ 945              		.file 11 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l412xx.h"
+ 946              		.file 12 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h"
+ 947              		.file 13 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc.h"
+ 948              		.file 14 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
+ 949              		.file 15 "app/core/actor/../../config/events_list/events_list.h"
+ 950              		.file 16 "app/core/actor/../../config/actors_list/actors_list.h"
+ 951              		.file 17 "app/core/actor/actor.h"
+ 952              		.file 18 "app/tasks/event_manager/event_manager.h"
+ 953              		.file 19 "Core/Inc/rtc.h"
+ 954              		.file 20 "app/core/cron/cron.h"
+ 955              		.file 21 "/usr/include/newlib/string.h"
+ 956              		.file 22 "/usr/include/newlib/stdlib.h"
+ 957              		.file 23 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc_ex.h"
+ 958              		.file 24 "/usr/include/newlib/stdio.h"
+ 959              		.file 25 "<built-in>"
+ARM GAS  /tmp/cc8jkhSZ.s 			page 23
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 cron.c
-     /tmp/ccMOF7Vm.s:18     .text.setTimeFromUnixTimestamp:0000000000000000 $t
-     /tmp/ccMOF7Vm.s:25     .text.setTimeFromUnixTimestamp:0000000000000000 setTimeFromUnixTimestamp
-     /tmp/ccMOF7Vm.s:156    .text.setTimeFromUnixTimestamp:0000000000000080 $d
-     /tmp/ccMOF7Vm.s:161    .text.setWakeUpPeriod:0000000000000000 $t
-     /tmp/ccMOF7Vm.s:167    .text.setWakeUpPeriod:0000000000000000 setWakeUpPeriod
-     /tmp/ccMOF7Vm.s:221    .text.setWakeUpPeriod:0000000000000028 $d
-     /tmp/ccMOF7Vm.s:226    .text.handleCronMessage:0000000000000000 $t
-     /tmp/ccMOF7Vm.s:232    .text.handleCronMessage:0000000000000000 handleCronMessage
-     /tmp/ccMOF7Vm.s:284    .rodata.setCurrentTime.str1.4:0000000000000000 $d
-     /tmp/ccMOF7Vm.s:288    .text.setCurrentTime:0000000000000000 $t
-     /tmp/ccMOF7Vm.s:294    .text.setCurrentTime:0000000000000000 setCurrentTime
-     /tmp/ccMOF7Vm.s:369    .text.setCurrentTime:0000000000000054 $d
-     /tmp/ccMOF7Vm.s:375    .rodata.monthStrToNumber.str1.4:0000000000000000 $d
-     /tmp/ccMOF7Vm.s:412    .text.monthStrToNumber:0000000000000000 $t
-     /tmp/ccMOF7Vm.s:418    .text.monthStrToNumber:0000000000000000 monthStrToNumber
-     /tmp/ccMOF7Vm.s:585    .text.monthStrToNumber:00000000000000b0 $d
-     /tmp/ccMOF7Vm.s:601    .rodata.setCurrentDate.str1.4:0000000000000000 $d
-     /tmp/ccMOF7Vm.s:605    .text.setCurrentDate:0000000000000000 $t
-     /tmp/ccMOF7Vm.s:611    .text.setCurrentDate:0000000000000000 setCurrentDate
-     /tmp/ccMOF7Vm.s:687    .text.setCurrentDate:0000000000000060 $d
-     /tmp/ccMOF7Vm.s:693    .text.getCurrentUnixTimestamp:0000000000000000 $t
-     /tmp/ccMOF7Vm.s:699    .text.getCurrentUnixTimestamp:0000000000000000 getCurrentUnixTimestamp
-     /tmp/ccMOF7Vm.s:789    .text.getCurrentUnixTimestamp:0000000000000064 $d
-     /tmp/ccMOF7Vm.s:794    .rodata.CRON_ActorInit.str1.4:0000000000000000 $d
-     /tmp/ccMOF7Vm.s:798    .text.CRON_ActorInit:0000000000000000 $t
-     /tmp/ccMOF7Vm.s:805    .text.CRON_ActorInit:0000000000000000 CRON_ActorInit
-     /tmp/ccMOF7Vm.s:858    .text.CRON_ActorInit:000000000000002c $d
-     /tmp/ccMOF7Vm.s:865    .text.HAL_RTCEx_WakeUpTimerEventCallback:0000000000000000 $t
-     /tmp/ccMOF7Vm.s:872    .text.HAL_RTCEx_WakeUpTimerEventCallback:0000000000000000 HAL_RTCEx_WakeUpTimerEventCallback
-     /tmp/ccMOF7Vm.s:918    .text.HAL_RTCEx_WakeUpTimerEventCallback:000000000000002c $d
-     /tmp/ccMOF7Vm.s:928    .data.CRON_Actor:0000000000000000 CRON_Actor
-     /tmp/ccMOF7Vm.s:924    .data.CRON_Actor:0000000000000000 $d
+     /tmp/cc8jkhSZ.s:18     .text.setTimeFromUnixTimestamp:0000000000000000 $t
+     /tmp/cc8jkhSZ.s:25     .text.setTimeFromUnixTimestamp:0000000000000000 setTimeFromUnixTimestamp
+     /tmp/cc8jkhSZ.s:156    .text.setTimeFromUnixTimestamp:0000000000000080 $d
+     /tmp/cc8jkhSZ.s:161    .text.setWakeUpPeriod:0000000000000000 $t
+     /tmp/cc8jkhSZ.s:167    .text.setWakeUpPeriod:0000000000000000 setWakeUpPeriod
+     /tmp/cc8jkhSZ.s:221    .text.setWakeUpPeriod:0000000000000028 $d
+     /tmp/cc8jkhSZ.s:226    .text.handleCronMessage:0000000000000000 $t
+     /tmp/cc8jkhSZ.s:232    .text.handleCronMessage:0000000000000000 handleCronMessage
+     /tmp/cc8jkhSZ.s:284    .rodata.setCurrentTime.str1.4:0000000000000000 $d
+     /tmp/cc8jkhSZ.s:288    .text.setCurrentTime:0000000000000000 $t
+     /tmp/cc8jkhSZ.s:294    .text.setCurrentTime:0000000000000000 setCurrentTime
+     /tmp/cc8jkhSZ.s:369    .text.setCurrentTime:0000000000000054 $d
+     /tmp/cc8jkhSZ.s:375    .rodata.monthStrToNumber.str1.4:0000000000000000 $d
+     /tmp/cc8jkhSZ.s:412    .text.monthStrToNumber:0000000000000000 $t
+     /tmp/cc8jkhSZ.s:418    .text.monthStrToNumber:0000000000000000 monthStrToNumber
+     /tmp/cc8jkhSZ.s:585    .text.monthStrToNumber:00000000000000b0 $d
+     /tmp/cc8jkhSZ.s:601    .rodata.setCurrentDate.str1.4:0000000000000000 $d
+     /tmp/cc8jkhSZ.s:605    .text.setCurrentDate:0000000000000000 $t
+     /tmp/cc8jkhSZ.s:611    .text.setCurrentDate:0000000000000000 setCurrentDate
+     /tmp/cc8jkhSZ.s:687    .text.setCurrentDate:0000000000000060 $d
+     /tmp/cc8jkhSZ.s:693    .rodata.CRON_ActorInit.str1.4:0000000000000000 $d
+     /tmp/cc8jkhSZ.s:697    .text.CRON_ActorInit:0000000000000000 $t
+     /tmp/cc8jkhSZ.s:704    .text.CRON_ActorInit:0000000000000000 CRON_ActorInit
+     /tmp/cc8jkhSZ.s:757    .text.CRON_ActorInit:000000000000002c $d
+     /tmp/cc8jkhSZ.s:764    .text.CRON_GetCurrentUnixTimestamp:0000000000000000 $t
+     /tmp/cc8jkhSZ.s:771    .text.CRON_GetCurrentUnixTimestamp:0000000000000000 CRON_GetCurrentUnixTimestamp
+     /tmp/cc8jkhSZ.s:861    .text.CRON_GetCurrentUnixTimestamp:0000000000000064 $d
+     /tmp/cc8jkhSZ.s:866    .text.HAL_RTCEx_WakeUpTimerEventCallback:0000000000000000 $t
+     /tmp/cc8jkhSZ.s:873    .text.HAL_RTCEx_WakeUpTimerEventCallback:0000000000000000 HAL_RTCEx_WakeUpTimerEventCallback
+     /tmp/cc8jkhSZ.s:919    .text.HAL_RTCEx_WakeUpTimerEventCallback:000000000000002c $d
+     /tmp/cc8jkhSZ.s:929    .data.CRON_Actor:0000000000000000 CRON_Actor
+     /tmp/cc8jkhSZ.s:925    .data.CRON_Actor:0000000000000000 $d
 
 UNDEFINED SYMBOLS
 gmtime
@@ -1355,11 +1355,11 @@ HAL_RTCEx_DeactivateWakeUpTimer
 HAL_RTCEx_SetWakeUpTimer_IT
 atoi
 strcmp
+fprintf
+_impure_ptr
 HAL_RTC_GetTime
 HAL_RTC_GetDate
 memset
 mktime
-fprintf
-_impure_ptr
 osMessageQueuePut
 EV_MANAGER_Actor
