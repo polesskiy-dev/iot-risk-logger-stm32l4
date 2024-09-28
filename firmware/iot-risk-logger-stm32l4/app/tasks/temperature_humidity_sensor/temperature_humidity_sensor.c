@@ -184,6 +184,10 @@ static osStatus_t handleContinuousMeasure(TH_SENS_Actor_t *this, message_t *mess
 //        fprintf(stdout, "Temperature: %d humidity %d\n", t, rh);
 //      #endif
 
+      // publish to event manager that temperature and humidity are ready with the pointer to the TH actor
+      osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
+      osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_TEMPERATURE_HUMIDITY_MEASUREMENTS_READY, .payload.ptr = this /* TH Actor */}, 0, 0);
+
       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
       return osOK;
     default:

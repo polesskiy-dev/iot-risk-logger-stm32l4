@@ -215,7 +215,13 @@ static osStatus_t handleContinuousMeasure(LIGHT_SENS_Actor_t *this, message_t *m
       ioStatus = OPT3001_ReadResultRawLux(&this->rawLux);
       if (ioStatus != osOK) return osError;
 
-      fprintf(stdout, "milliLux %lu\n", OPT3001_RawToMilliLux(this->rawLux));
+      #ifdef DEBUG
+        fprintf(stdout, "milliLux %lu\n", OPT3001_RawToMilliLux(this->rawLux));
+      #endif
+
+      // publish to event manager that lux measurement is ready with the pointer to the LIGHT actor
+      osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
+      osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_LIGHT_MEASUREMENTS_READY, .payload.ptr = this /* LIGHT Actor */}, 0, 0);
 
       TO_STATE(this, LIGHT_SENS_CONTINUOUS_MEASURE_STATE);
       return osOK;

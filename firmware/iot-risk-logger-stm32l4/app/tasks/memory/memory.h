@@ -33,24 +33,46 @@ extern "C" {
 
 #define MEMORY_TIMESTAMP_ENTRY_SIZE                   (0x04)      /* 4 bytes */
 #define MEMORY_LUX_ENTRY_SIZE                         (0x02)      /* 2 bytes */
-#define MEMORY_TEMPERATURE_HUMIDITY_ENTRY_SIZE        (0x02)      /* 2 bytes */
-#define MEMORY_LOG_ENTRY_SIZE                         (MEMORY_TIMESTAMP_ENTRY_SIZE + MEMORY_TEMPERATURE_HUMIDITY_ENTRY_SIZE + MEMORY_LUX_ENTRY_SIZE)      /* 8 bytes */
+#define MEMORY_TEMPERATURE_ENTRY_SIZE                 (0x02)      /* 2 bytes */
+#define MEMORY_HUMIDITY_ENTRY_SIZE                    (0x04)      /* 2 bytes */
+#define RESERVED_ENTRY_SIZE                           (0x04)      /* 4 bytes */
+#define MEMORY_LOG_ENTRY_SIZE                         (MEMORY_TIMESTAMP_ENTRY_SIZE + MEMORY_TEMPERATURE_ENTRY_SIZE + MEMORY_HUMIDITY_ENTRY_SIZE + MEMORY_LUX_ENTRY_SIZE + RESERVED_ENTRY_SIZE)      /* 8 bytes */
+
+typedef enum {
+  TEMPERATURE_HUMIDITY_MEASUREMENTS_READY_EVENT_FLAG = 0x01,
+  LIGHT_MEASUREMENTS_READY_EVENT_FLAG = 0x02
+} MEMORY_MeasurementEventFlag_t;
 
 typedef enum {
   MEMORY_NO_STATE = 0,
+  MEMORY_SLEEP_STATE,
+  MEMORY_WRITE_STATE,
   MEMORY_STATE_ERROR,
   MEMORY_MAX_STATE
 } MEMORY_State_t;
 
+/**
+ * @brief Sensors measurements log entry
+ * 16 bytes size
+ * Contains timestamp, raw temperature, raw humidity, raw lux and reserved fields
+ */
+typedef struct __attribute__((packed)) {
+  int32_t timestamp;
+  uint16_t rawTemperature;
+  uint16_t rawHumidity;
+  uint16_t rawLux;
+  uint32_t reserved; // 4 bytes reserved, can be event type, Accelerometer data, etc.
+} MEMORY_SensorsMeasurementEntry_t;
+
 typedef struct {
   actor_t super;
   MEMORY_State_t state;
-  uint32_t logFileFreeSpaceAddress;
+  uint32_t logFileTailAddress; ///< Address of the last free space to append into the log file
 } MEMORY_Actor_t;
 
 actor_t* MEMORY_TaskInit(void);
 void MEMORY_Task(void *argument);
-uint32_t MEMORY_SeekFirstFreeSpaceAddress(void);
+uint32_t MEMORY_SeekFreeSpaceFirstByteAddress(void);
 
 #ifdef __cplusplus
 }

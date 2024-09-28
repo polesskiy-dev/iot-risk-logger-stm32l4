@@ -31,6 +31,7 @@ typedef struct {
 } CRON_Actor_t;
 
 actor_t* CRON_ActorInit(void);
+int32_t CRON_GetCurrentUnixTimestamp(void);
 void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc);
 
 #ifdef __cplusplus

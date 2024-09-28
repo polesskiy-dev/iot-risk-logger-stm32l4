@@ -29,6 +29,7 @@ typedef enum {
   GLOBAL_WAKE_N_READ, ///> RTC wakes up event, mostly leads to the sensor measurements read
   GLOBAL_TEMPERATURE_HUMIDITY_MEASUREMENTS_READY, ///< Temperature and humidity measurements are ready
   GLOBAL_LIGHT_MEASUREMENTS_READY, ///< Light measurements are ready
+  GLOBAL_MEASUREMENTS_WRITE_SUCCESS, ///< Sensors measurements are successfully written to the NOR memory
   GLOBAL_CMD_INFO_LED_ON,
   GLOBAL_CMD_INFO_LED_OFF,
   GLOBAL_CMD_SET_TIME_DATE, ///< Set time and date from int32 UNIX timestamp
@@ -57,6 +58,7 @@ typedef enum {
   LIGHT_SENS_RECOVER,
   LIGHT_SENS_ERROR,
   // MEMORY
+  MEMORY_MEASUREMENTS_WRITE,
   // USB
   USB_CONNECTED,
   USB_DISCONNECTED,
