@@ -77,7 +77,7 @@ void LIGHT_SENS_Task(void *argument) {
       osStatus_t handleMessageStatus = LIGHT_SENS_Actor.super.messageHandler((actor_t *) &LIGHT_SENS_Actor, &msg);
 
       if (handleMessageStatus != osOK) {
-        fprintf(stderr, "%s: Error handling event %u in state %ul\n", lightSensorTaskDescription.name, msg.event, LIGHT_SENS_Actor.state);
+        fprintf(stderr,  "%s: Error handling event %u in state %ul\n", lightSensorTaskDescription.name, msg.event, LIGHT_SENS_Actor.state);
         osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
         osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = LIGHT_SENSOR_ACTOR_ID}, 0, 0);
         TO_STATE(&LIGHT_SENS_Actor, LIGHT_SENS_STATE_ERROR);

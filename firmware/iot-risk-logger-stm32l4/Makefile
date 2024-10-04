@@ -24,6 +24,10 @@ DEBUG = 1
 # optimization
 OPT = -Og
 
+# NOR Flash: erase & write FAT12 filesystem boot header
+ERASE_CHIP_AND_FLASH_FAT12_BOOT_SECTOR = 1
+
+
 
 #######################################
 # paths
@@ -113,7 +117,6 @@ app/core/actor/actor.c \
 app/config/actors_list/actors_list.c \
 app/config/events_list/events_list.c \
 app/config/bsp_bus/bsp_bus.c \
-app/core/retarget/retarget.c \
 app/core/power_mode_manager/power_mode_manager.c \
 app/tasks/event_manager/event_manager.c \
 app/core/cron/cron.c \
@@ -216,7 +219,6 @@ C_INCLUDES =  \
 -Iapp/config/events_list/events_list \
 -Iapp/config/bsp_bus \
 -Iapp/core/trace \
--Iapp/core/retarget \
 -Iapp/core/power_mode_manager \
 -Iapp/core/fs_static \
 -Iapp/tasks/event_manager \
@@ -231,7 +233,6 @@ C_INCLUDES =  \
 -Iapp/tasks/light_sensor \
 -Iapp/tasks/nfc
 
-
 # compile gcc flags
 ASFLAGS = $(MCU) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections --print-memory-usage
 
@@ -239,6 +240,10 @@ CFLAGS += $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction
 
 ifeq ($(DEBUG), 1)
 CFLAGS += -g -gdwarf-2 -DDEBUG
+endif
+
+ifeq ($(ERASE_CHIP_AND_FLASH_FAT12_BOOT_SECTOR), 1)
+CFLAGS += -DERASE_CHIP_AND_FLASH_FAT12_BOOT_SECTOR
 endif
 
 

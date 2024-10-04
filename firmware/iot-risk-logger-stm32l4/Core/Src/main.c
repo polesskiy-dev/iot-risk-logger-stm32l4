@@ -26,6 +26,7 @@
 #include "rtc.h"
 #include "usb_device.h"
 #include "gpio.h"
+#include "SEGGER_RTT.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -100,9 +101,9 @@ int main(void)
   /* USER CODE BEGIN 2 */
   BSP_I2C1_Init(); // init i2c
 
-  RETARGET_Init(); // init stdio, debug
+//  RETARGET_Init(); // init stdio, debug
+  SEGGER_RTT_Init();
   INFO_LED_Init();
-
 
   #ifdef DEBUG
 //      __HAL_RCC_DBGMCU_CLK_ENABLE();    // Enable clocks for Debug register

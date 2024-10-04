@@ -13,7 +13,7 @@ int32_t NFC_ST25DVInit(ST25DV_Object_t *pObj) {
   int32_t status = ST25DV_RegisterBusIO(pObj, &IO);
   if (status != NFCTAG_OK) {
     #ifdef DEBUG
-      fprintf(stderr, "ST25DV RegisterBusIO Error: %ld\n", status);
+      fprintf(stderr,  "ST25DV RegisterBusIO Error: %ld\n", status);
     #endif
 
     return NFCTAG_ERROR;
@@ -22,7 +22,7 @@ int32_t NFC_ST25DVInit(ST25DV_Object_t *pObj) {
   status = St25Dv_Drv.Init(pObj);
   if (status != NFCTAG_OK) {
     #ifdef DEBUG
-      fprintf(stderr, "ST25DV Driver Init Error: %ld\n", status);
+      fprintf(stderr,  "ST25DV Driver Init Error: %ld\n", status);
     #endif
 
     return NFCTAG_ERROR;

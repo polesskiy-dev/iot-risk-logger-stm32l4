@@ -271,7 +271,41 @@ HAL_StatusTypeDef W25Q_Sleep(W25Q_HandleTypeDef *hflash) {
 }
 
 /**
- * @brief Read the W25Q device ID
+ * @brief Wake up the W25Q device from the sleep mode
+ *
+ * @param hflash [in]
+ *
+ * @return {HAL_StatusTypeDef} execution status
+ */
+HAL_StatusTypeDef W25Q_WakeUp(W25Q_HandleTypeDef *hflash) {
+  QSPI_CommandTypeDef sCommand = {};
+
+  HAL_StatusTypeDef status = HAL_OK;
+
+  // Set up the QSPI command
+  sCommand.InstructionMode   = QSPI_INSTRUCTION_1_LINE;
+  sCommand.Instruction       = W25Q_CMD_RELEASE_POWER_DOWN;
+
+  sCommand.AddressMode       = QSPI_ADDRESS_NONE;
+
+  sCommand.AlternateByteMode  = QSPI_ALTERNATE_BYTES_NONE;
+
+  sCommand.DataMode = QSPI_DATA_NONE;
+
+  sCommand.DdrMode           = QSPI_DDR_MODE_DISABLE;
+  sCommand.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+  sCommand.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+
+  // Send the command
+  status = HAL_QSPI_Command(hflash->hqspi, &sCommand, W25Q_TIMEOUT_DEFAULT);
+  if (status != HAL_OK)
+    return status;
+
+  return status;
+}
+
+/**
+ * @brief Read the W25Q Manufacturer & Device ID
  *
  * The instruction is initiated by driving the /CS pin low and shifting the instruction code “94h” followed by a
  * four clock dummy cycles and then a 24-bit address (A23-A0) of 000000h, but with the capability to input the

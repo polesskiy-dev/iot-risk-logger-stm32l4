@@ -12,17 +12,19 @@
 #include "usbd_msc.h"
 
 static osStatus_t handleMemoryFSM(MEMORY_Actor_t *this, message_t *message);
-static osStatus_t writeFAT12BootSector(MEMORY_Actor_t *this);
 static osStatus_t handleInit(MEMORY_Actor_t *this, message_t *message);
 static osStatus_t handleSleep(MEMORY_Actor_t *this, message_t *message);
 static osStatus_t handleWrite(MEMORY_Actor_t *this, message_t *message);
+static osStatus_t writeFAT12BootSector(MEMORY_Actor_t *this);
+static void publishMemoryWriteOnMeasurementsReady(MEMORY_Actor_t *this);
+static osStatus_t appendMeasurementsToNORFlashLogTail(MEMORY_Actor_t *this);
 
 extern actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS];
 extern uint8_t FAT12_BootSector[FAT12_BOOT_SECTOR_SIZE];
 
 extern USBD_StorageTypeDef USBD_Storage_Interface_fops_FS;
 
-//uint8_t dummyToRead[512] = {0};
+uint8_t dummyToRead[32] = {0};
 
 osEventFlagsId_t measurementsReadyEventFlags;
 
@@ -91,28 +93,6 @@ void MEMORY_Task(void *argument) {
   (void) argument; // Avoid unused parameter warning
   message_t msg;
 
-//  HAL_StatusTypeDef status = HAL_OK;
-//  uint8_t id[W25Q_ID_SIZE] = {0x00, 0x00 };
-//  const char *dummyToWrite = "Hello, World!";
-//
-//  status = W25Q_EraseSector(&MEMORY_W25QHandle, 0);
-//  if (status != HAL_OK) {
-//    fprintf(stderr, "memory error");
-//  }
-//
-//  status = W25Q_WritePageData(&MEMORY_W25QHandle, (uint8_t *)dummyToWrite, 0, 13);
-//  if (status != HAL_OK) {
-//    fprintf(stderr, "memory error");
-//  }
-//
-//  status = W25Q_ReadData(&MEMORY_W25QHandle, dummyToRead, 0, 16);
-//  if (status != HAL_OK) {
-//    fprintf(stderr, "memory error");
-//  }
-//
-//  status = W25Q_ReadStatusReg(&MEMORY_W25QHandle);
-
-
   for (;;) {
     // Wait for messages from the queue
     if (osMessageQueueGet(MEMORY_Actor.super.osMessageQueueId, &msg, NULL, osWaitForever) == osOK) {
@@ -142,34 +122,40 @@ static osStatus_t handleMemoryFSM(MEMORY_Actor_t *this, message_t *message) {
   return osOK;
 }
 
-// TODO cover by unit tests, check could it be splitted into smaller functions
-uint32_t MEMORY_SeekFreeSpaceFirstByteAddress(void) {
-  uint8_t logEntry[MEMORY_LOG_ENTRY_SIZE] = {0};
-  uint32_t startAddress = FAT12_BOOT_SECTOR_SIZE + 1;
-  uint8_t stepSize = MEMORY_LOG_ENTRY_SIZE;
+uint32_t MEMORY_SeekFreeSpaceAddress(void) {
+  uint8_t readBuff[MEMORY_LOG_ENTRY_SIZE] = {0};
+  uint8_t emptyLogEntryTemplate[MEMORY_LOG_ENTRY_SIZE] = {0xFF};
+  const uint32_t startAddress = FAT12_BOOT_SECTOR_SIZE + 1;
+  const uint8_t stepSize = MEMORY_LOG_ENTRY_SIZE;
+
+  uint32_t offset = 0;
   uint32_t stepNumber = 0;
-  bool logEntryHasData = true; // does read log entry contains data other than 0xFF (empty)
+  uint32_t addr = 0;
+  bool isFreeSpaceForLog = false; // does read log entry contains data other than 0xFF (0xFF means empty)
 
-  // read until log entry has no data (0xFF)
-  while (logEntryHasData) { // TODO check boundaries
-    // read log entry chunk to buffer
-    uint16_t offset = stepNumber * stepSize;
-    W25Q_ReadData(&MEMORY_W25QHandle, logEntry, startAddress + offset, stepSize);
+  // create an empty log entry template to compare with
+  memset(emptyLogEntryTemplate, 0xFF, MEMORY_LOG_ENTRY_SIZE);
 
-    // check if log entry has data
-    for (uint8_t iLogEntry = 0; iLogEntry < MEMORY_LOG_ENTRY_SIZE; iLogEntry++) {
-      if (logEntry[iLogEntry] != 0xFF) {
-        logEntryHasData = true;
-        break;
-      }
-      logEntryHasData = false; // just to mark algorithm end
-      return startAddress + offset;
+  do {
+    // address offset from FS boot sector
+    offset = stepNumber * stepSize;
+    addr = startAddress + offset;
+
+    // read data chunk equal to log entry
+    W25Q_ReadData(&MEMORY_W25QHandle, readBuff, addr, stepSize); // @warning: io status check is omitted here
+
+    // check if space for log entry don't contain any data
+    isFreeSpaceForLog = MEMORY_CHUNKS_ARE_EQUAL == memcmp(readBuff, emptyLogEntryTemplate, MEMORY_LOG_ENTRY_SIZE);
+
+    if (isFreeSpaceForLog) {
+      return addr;
     }
 
     stepNumber++;
-  };
 
+  } while (addr < W25Q64JV_FLASH_SIZE);
 
+  return addr;
 }
 
 // TODO move to more suitable place
@@ -208,7 +194,7 @@ static osStatus_t writeFAT12BootSector(MEMORY_Actor_t *this) {
   HAL_StatusTypeDef status = W25Q_EraseChip(&MEMORY_W25QHandle);
   if (status != HAL_OK) {
     #ifdef DEBUG
-      fprintf(stderr, "memory error");
+      fprintf(stderr,  "memory error on chip erase");
     #endif
     return status;
   }
@@ -217,10 +203,14 @@ static osStatus_t writeFAT12BootSector(MEMORY_Actor_t *this) {
   status = W25Q_WriteData(&MEMORY_W25QHandle, FAT12_BootSector, 0, FAT12_BOOT_SECTOR_SIZE);
   if (status != HAL_OK) {
     #ifdef DEBUG
-      fprintf(stderr, "memory error");
+      fprintf(stderr,  "memory error on FAT12 write");
     #endif
     return status;
   }
+
+  #ifdef DEBUG
+    fprintf(stdout,  "FS FAT12 boot sector has been written on NOR Flash");
+  #endif
 
   return status;
 }
@@ -229,20 +219,24 @@ static osStatus_t handleInit(MEMORY_Actor_t *this, message_t *message) {
   if (GLOBAL_CMD_INITIALIZE == message->event) {
     uint8_t norFlashID[W25Q_ID_SIZE] = {0x00, 0x00};
 
+    // wake up the chip
+    osStatus_t ioStatus = W25Q_WakeUp(&MEMORY_W25QHandle);
+    if (ioStatus != osOK) return osError;
+
     // read ID
-    osStatus_t ioStatus = W25Q_ReadID(&MEMORY_W25QHandle, norFlashID);
+    ioStatus = W25Q_ReadID(&MEMORY_W25QHandle, norFlashID);
     if (ioStatus != osOK) return osError;
 
     #ifdef DEBUG
-        fprintf(stdout, "W25Q NOR Flash ID: %x%x\n", norFlashID[0], norFlashID[1]);
+        fprintf(stdout, "W25Q NOR MF ID: 0x%x, Device ID: 0x%x\n", norFlashID[0], norFlashID[1]);
     #endif
 
     #ifdef ERASE_CHIP_AND_FLASH_FAT12_BOOT_SECTOR
         writeFAT12BootSector(&MEMORY_Actor);
     #endif
 
-    // find first free space address
-    uint32_t freeSpaceAddress = MEMORY_SeekFreeSpaceFirstByteAddress();
+    // find the first free space address on NOR flash (to append log to)
+    uint32_t freeSpaceAddress = MEMORY_SeekFreeSpaceAddress();
     MEMORY_Actor.logFileTailAddress = freeSpaceAddress;
 
     // put memory to sleep
@@ -254,7 +248,7 @@ static osStatus_t handleInit(MEMORY_Actor_t *this, message_t *message) {
     osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_INITIALIZE_SUCCESS, .payload.value = MEMORY_ACTOR_ID}, 0, 0);
 
     #ifdef DEBUG
-        fprintf(stdout, "First free space address: %lu\n", freeSpaceAddress);
+        fprintf(stdout, "First free space address: %x\n", freeSpaceAddress);
         fprintf(stdout, "Memory task initialized\n");
     #endif
 
@@ -264,16 +258,15 @@ static osStatus_t handleInit(MEMORY_Actor_t *this, message_t *message) {
 };
 
 static osStatus_t handleSleep(MEMORY_Actor_t *this, message_t *message) {
+  osStatus_t ioStatus = osOK;
+
   switch (message->event) {
     case GLOBAL_TEMPERATURE_HUMIDITY_MEASUREMENTS_READY:
       // set appropriate event flag
       osEventFlagsSet(measurementsReadyEventFlags, TEMPERATURE_HUMIDITY_MEASUREMENTS_READY_EVENT_FLAG);
 
       // if both measurements are ready, emit write to the memory message
-      if (osEventFlagsGet(measurementsReadyEventFlags) == (TEMPERATURE_HUMIDITY_MEASUREMENTS_READY_EVENT_FLAG | LIGHT_MEASUREMENTS_READY_EVENT_FLAG)) {
-        osEventFlagsClear(measurementsReadyEventFlags, TEMPERATURE_HUMIDITY_MEASUREMENTS_READY_EVENT_FLAG | LIGHT_MEASUREMENTS_READY_EVENT_FLAG);
-        osMessageQueuePut(this->super.osMessageQueueId, &(message_t) {MEMORY_MEASUREMENTS_WRITE}, 0, 0);
-      }
+      publishMemoryWriteOnMeasurementsReady(this);
 
       TO_STATE(this, MEMORY_SLEEP_STATE);
       return osOK;
@@ -283,13 +276,22 @@ static osStatus_t handleSleep(MEMORY_Actor_t *this, message_t *message) {
       osEventFlagsSet(measurementsReadyEventFlags, LIGHT_MEASUREMENTS_READY_EVENT_FLAG);
 
       // if both measurements are ready, emit write to the memory message
-      if (osEventFlagsGet(measurementsReadyEventFlags) == (TEMPERATURE_HUMIDITY_MEASUREMENTS_READY_EVENT_FLAG | LIGHT_MEASUREMENTS_READY_EVENT_FLAG)) {
-        osEventFlagsClear(measurementsReadyEventFlags, TEMPERATURE_HUMIDITY_MEASUREMENTS_READY_EVENT_FLAG | LIGHT_MEASUREMENTS_READY_EVENT_FLAG);
-        osMessageQueuePut(this->super.osMessageQueueId, &(message_t) {MEMORY_MEASUREMENTS_WRITE}, 0, 0);
-      }
+      publishMemoryWriteOnMeasurementsReady(this);
 
       TO_STATE(this, MEMORY_SLEEP_STATE);
       return osOK;
+
+    case MEMORY_MEASUREMENTS_WRITE:
+      // wake up the chip
+      W25Q_WakeUp(&MEMORY_W25QHandle);
+
+      // save measurements to the memory, increment log tail address
+      ioStatus = appendMeasurementsToNORFlashLogTail(this);
+
+      osMessageQueuePut(this->super.osMessageQueueId, &(message_t) {GLOBAL_MEASUREMENTS_WRITE_SUCCESS}, 0, 0);
+
+      TO_STATE(this, MEMORY_WRITE_STATE);
+      return ioStatus;
 
     default:
       TO_STATE(this, MEMORY_SLEEP_STATE);
@@ -298,8 +300,32 @@ static osStatus_t handleSleep(MEMORY_Actor_t *this, message_t *message) {
 };
 
 static osStatus_t handleWrite(MEMORY_Actor_t *this, message_t *message) {
-  osStatus_t ioStatus;
+  osStatus_t ioStatus = osOK;
 
+  switch (message->event) {
+    case GLOBAL_MEASUREMENTS_WRITE_SUCCESS:
+      ioStatus = W25Q_Sleep(&MEMORY_W25QHandle);
+
+      TO_STATE(this, MEMORY_SLEEP_STATE);
+      return ioStatus;
+
+    default:
+      TO_STATE(this, MEMORY_WRITE_STATE);
+      return osOK;
+  }
+}
+
+/**
+ * @brief Publishes MEMORY_MEASUREMENTS_WRITE message to the memory task on both measurements ready
+ */
+static void publishMemoryWriteOnMeasurementsReady(MEMORY_Actor_t *this) {
+  if (osEventFlagsGet(measurementsReadyEventFlags) == (TEMPERATURE_HUMIDITY_MEASUREMENTS_READY_EVENT_FLAG | LIGHT_MEASUREMENTS_READY_EVENT_FLAG)) {
+    osEventFlagsClear(measurementsReadyEventFlags, TEMPERATURE_HUMIDITY_MEASUREMENTS_READY_EVENT_FLAG | LIGHT_MEASUREMENTS_READY_EVENT_FLAG);
+    osMessageQueuePut(this->super.osMessageQueueId, &(message_t) {MEMORY_MEASUREMENTS_WRITE}, 0, 0);
+  }
+}
+
+static osStatus_t appendMeasurementsToNORFlashLogTail(MEMORY_Actor_t *this) {
   // sensors actors pointers from the system registry
   TH_SENS_Actor_t *thSensActor = (TH_SENS_Actor_t *)ACTORS_LIST_SystemRegistry[TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID];
   LIGHT_SENS_Actor_t *lightSensorActor = (LIGHT_SENS_Actor_t *)ACTORS_LIST_SystemRegistry[LIGHT_SENSOR_ACTOR_ID];
@@ -316,39 +342,20 @@ static osStatus_t handleWrite(MEMORY_Actor_t *this, message_t *message) {
           .reserved = 0x00000000
   };
 
-  switch (message->event) {
-    case MEMORY_MEASUREMENTS_WRITE:
-      #ifdef DEBUG
-            fprintf(stdout, "Log entry to write:\n timestamp: %ld\n rawTemperature: %d\n rawHumidity: %d\n rawLux: %d\n reserved: %ld\n",
+  #ifdef DEBUG
+  fprintf(stdout, "Log entry to write:\n timestamp: %ld\n rawTemperature: 0x%x\n rawHumidity: 0x%x\n rawLux: 0x%x\n reserved: %ld\n",
             sensorsMeasurementEntry.timestamp,
             sensorsMeasurementEntry.rawTemperature,
             sensorsMeasurementEntry.rawHumidity,
             sensorsMeasurementEntry.rawLux,
             sensorsMeasurementEntry.reserved);
-            fprintf(stdout, "Memory task initialized\n");
-      #endif
+  #endif
 
-      // TODO write measurements to the memory
-//      ioStatus = W25Q_WriteData(&MEMORY_W25QHandle, (uint8_t *) &sensorsMeasurementEntry, this->logFileTailAddress, MEMORY_LOG_ENTRY_SIZE);
-//      this->logFileTailAddress += MEMORY_LOG_ENTRY_SIZE; // increment tail free space address for the next entry
-//      if (ioStatus != osOK) return osError;
+  // write measurements to the memory
+  osStatus_t ioStatus = osOK; //W25Q_WriteData(&MEMORY_W25QHandle, (uint8_t *) &sensorsMeasurementEntry, this->logFileTailAddress, MEMORY_LOG_ENTRY_SIZE);
 
-      // publish to event manager that measurements has been written, ev manager should publish it back to the memory task
-      osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
-      osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_MEASUREMENTS_WRITE_SUCCESS}, 0, 0);
+  // increment tail free space address for the next entry
+  this->logFileTailAddress += MEMORY_LOG_ENTRY_SIZE;
 
-      TO_STATE(this, MEMORY_WRITE_STATE);
-      return osOK;
-
-    case GLOBAL_MEASUREMENTS_WRITE_SUCCESS:
-      ioStatus = W25Q_Sleep(&MEMORY_W25QHandle);
-      if (ioStatus != osOK) return osError;
-
-      TO_STATE(this, MEMORY_SLEEP_STATE);
-      return osOK;
-
-    default:
-      TO_STATE(this, MEMORY_WRITE_STATE);
-      return osOK;
-  }
+  return ioStatus;
 }

@@ -38,6 +38,8 @@ extern "C" {
 #define RESERVED_ENTRY_SIZE                           (0x04)      /* 4 bytes */
 #define MEMORY_LOG_ENTRY_SIZE                         (MEMORY_TIMESTAMP_ENTRY_SIZE + MEMORY_TEMPERATURE_ENTRY_SIZE + MEMORY_HUMIDITY_ENTRY_SIZE + MEMORY_LUX_ENTRY_SIZE + RESERVED_ENTRY_SIZE)      /* 8 bytes */
 
+#define MEMORY_CHUNKS_ARE_EQUAL                       (0)
+
 typedef enum {
   TEMPERATURE_HUMIDITY_MEASUREMENTS_READY_EVENT_FLAG = 0x01,
   LIGHT_MEASUREMENTS_READY_EVENT_FLAG = 0x02
@@ -72,7 +74,7 @@ typedef struct {
 
 actor_t* MEMORY_TaskInit(void);
 void MEMORY_Task(void *argument);
-uint32_t MEMORY_SeekFreeSpaceFirstByteAddress(void);
+uint32_t MEMORY_SeekFreeSpaceAddress(void);
 
 #ifdef __cplusplus
 }

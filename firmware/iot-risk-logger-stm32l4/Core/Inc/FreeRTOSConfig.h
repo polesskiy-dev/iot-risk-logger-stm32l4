@@ -167,4 +167,7 @@ standard names. */
 /* Section where parameter definitions can be added (for instance, to override default ones in FreeRTOS.h) */
 /* USER CODE END Defines */
 
+// @note Include SEGGER_SYSVIEW_FreeRTOS.h at the end of the file FreeRTOSConfig.h to override some RTOS definitions of tracing functions.
+#include "SEGGER_SYSVIEW_FreeRTOS.h"
+
 #endif /* FREERTOS_CONFIG_H */

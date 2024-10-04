@@ -81,11 +81,14 @@ static osStatus_t handleEvManagerMessage(EV_MANAGER_Actor_t *this, message_t *me
       // TODO remove from here, emit only in NFC
       osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_CMD_START_CONTINUOUS_SENSING}, 0, 0);
       return osOK;
+    case GLOBAL_WAKE_N_READ:
+    case GLOBAL_TEMPERATURE_HUMIDITY_MEASUREMENTS_READY:
+    case GLOBAL_LIGHT_MEASUREMENTS_READY:
+    case GLOBAL_MEASUREMENTS_WRITE_SUCCESS:
+    case GLOBAL_CMD_START_CONTINUOUS_SENSING:
     case GLOBAL_CMD_SET_TIME_DATE:
     case GLOBAL_CMD_SET_WAKE_UP_PERIOD:
-    case GLOBAL_WAKE_N_READ:
     case GLOBAL_CMD_TURN_OFF:
-    case GLOBAL_CMD_START_CONTINUOUS_SENSING:
       publishEventToSubscribers(message);
       return osOK;
   }
@@ -124,7 +127,7 @@ static osStatus_t publishEventToSubscribers(message_t *message) {
     actor_t* subscribedActor = ACTORS_LIST_SystemRegistry[subscribedActorId];
 
     if (subscribedActor == NULL) {
-      fprintf(stderr, "Actor with ID %d subscribed on event %d is not found, check ACTORS_LIST_SystemRegistry\n", subscribedActorId, message->event);
+      fprintf(stderr,  "Actor with ID %d subscribed on event %d is not found, check ACTORS_LIST_SystemRegistry\n", subscribedActorId, message->event);
       continue;
     }
 

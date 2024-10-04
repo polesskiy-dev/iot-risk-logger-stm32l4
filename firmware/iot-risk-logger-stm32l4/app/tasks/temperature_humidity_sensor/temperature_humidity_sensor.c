@@ -82,7 +82,7 @@ void TH_SENS_Task(void *argument) {
 
       if (handleMessageStatus != osOK) {
         #ifdef DEBUG
-          fprintf(stderr, "%s: Error handling event %u in state %ul\n", thSensorTaskDescription.name, msg.event, TH_SENS_Actor.state);
+          fprintf(stderr,  "%s: Error handling event %u in state %ul\n", thSensorTaskDescription.name, msg.event, TH_SENS_Actor.state);
         #endif
 
         osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
