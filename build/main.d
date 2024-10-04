@@ -48,6 +48,7 @@ build/main.o: Core/Src/main.c Core/Inc/main.h \
  app/core/power_mode_manager/power_mode_manager.h app/tasks/nfc/nfc.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
  Core/Inc/FreeRTOSConfig.h \
+ libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/portable.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h \
@@ -64,7 +65,6 @@ build/main.o: Core/Src/main.c Core/Inc/main.h \
  app/config/bsp_bus/bsp_bus.h app/drivers/sht3x/sht3x.h \
  app/tasks/light_sensor/light_sensor.h app/drivers/opt3001/opt3001.h \
  app/core/cron/cron.h Core/Inc/rtc.h app/core/info_led/info_led.h \
- app/core/retarget/retarget.h \
  Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/list.h \
@@ -72,7 +72,9 @@ build/main.o: Core/Src/main.c Core/Inc/main.h \
  Core/Inc/crc.h Core/Inc/lptim.h Core/Inc/rng.h \
  USB_DEVICE/App/usb_device.h \
  Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
- USB_DEVICE/Target/usbd_conf.h Core/Inc/gpio.h
+ USB_DEVICE/Target/usbd_conf.h Core/Inc/gpio.h \
+ libraries/RTT/RTT/SEGGER_RTT.h \
+ libraries/RTT/RTT/../Config/SEGGER_RTT_Conf.h
 Core/Inc/main.h:
 Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
 Core/Inc/stm32l4xx_hal_conf.h:
@@ -127,6 +129,7 @@ app/core/power_mode_manager/power_mode_manager.h:
 app/tasks/nfc/nfc.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 Core/Inc/FreeRTOSConfig.h:
+libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/portable.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h:
@@ -153,7 +156,6 @@ app/drivers/opt3001/opt3001.h:
 app/core/cron/cron.h:
 Core/Inc/rtc.h:
 app/core/info_led/info_led.h:
-app/core/retarget/retarget.h:
 Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/task.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/list.h:
@@ -165,3 +167,5 @@ USB_DEVICE/App/usb_device.h:
 Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h:
 USB_DEVICE/Target/usbd_conf.h:
 Core/Inc/gpio.h:
+libraries/RTT/RTT/SEGGER_RTT.h:
+libraries/RTT/RTT/../Config/SEGGER_RTT_Conf.h:

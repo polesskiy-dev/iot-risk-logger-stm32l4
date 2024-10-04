@@ -49,6 +49,7 @@ build/nfc_handlers.o: app/tasks/nfc/nfc_handlers.c \
  app/core/power_mode_manager/power_mode_manager.h app/tasks/nfc/nfc.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
  Core/Inc/FreeRTOSConfig.h \
+ libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/portable.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h \
@@ -64,7 +65,7 @@ build/nfc_handlers.o: app/tasks/nfc/nfc_handlers.c \
  app/config/bsp_bus/bsp_bus.h app/drivers/sht3x/sht3x.h \
  app/tasks/light_sensor/light_sensor.h app/drivers/opt3001/opt3001.h \
  app/core/cron/cron.h Core/Inc/rtc.h app/core/info_led/info_led.h \
- app/core/retarget/retarget.h app/tasks/nfc/nfc.h
+ app/tasks/nfc/nfc.h
 app/tasks/nfc/nfc_handlers.h:
 Core/Inc/main.h:
 Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
@@ -120,6 +121,7 @@ app/core/power_mode_manager/power_mode_manager.h:
 app/tasks/nfc/nfc.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 Core/Inc/FreeRTOSConfig.h:
+libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/portable.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h:
@@ -144,5 +146,4 @@ app/drivers/opt3001/opt3001.h:
 app/core/cron/cron.h:
 Core/Inc/rtc.h:
 app/core/info_led/info_led.h:
-app/core/retarget/retarget.h:
 app/tasks/nfc/nfc.h:

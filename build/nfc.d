@@ -2,6 +2,13 @@ build/nfc.o: app/tasks/nfc/nfc.c app/tasks/nfc/nfc.h \
  Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
  Core/Inc/FreeRTOSConfig.h \
+ libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.h \
+ libraries/SystemView/SYSVIEW/SEGGER_SYSVIEW.h \
+ libraries/SystemView/SEGGER/SEGGER.h \
+ libraries/SystemView/Config/Global.h \
+ libraries/SystemView/SYSVIEW/SEGGER_SYSVIEW_ConfDefaults.h \
+ libraries/SystemView/Config/SEGGER_SYSVIEW_Conf.h \
+ libraries/RTT/Config/SEGGER_RTT_Conf.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/portable.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h \
@@ -43,12 +50,7 @@ build/nfc.o: app/tasks/nfc/nfc.c app/tasks/nfc/nfc.h \
  Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc_ex.h \
  Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim.h \
  Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h \
- libraries/SystemView/Config/SEGGER_SYSVIEW_Conf.h \
- libraries/SystemView/SYSVIEW/SEGGER_SYSVIEW.h \
- libraries/SystemView/SEGGER/SEGGER.h \
- libraries/SystemView/Config/Global.h \
- libraries/SystemView/SYSVIEW/SEGGER_SYSVIEW_ConfDefaults.h \
- libraries/RTT/Config/SEGGER_RTT_Conf.h app/core/actor/actor.h \
+ app/core/actor/actor.h \
  app/core/actor/../../config/events_list/events_list.h \
  app/core/actor/../../config/actors_list/actors_list.h \
  app/tasks/event_manager/event_manager.h \
@@ -60,13 +62,20 @@ build/nfc.o: app/tasks/nfc/nfc.c app/tasks/nfc/nfc.h \
  Core/Inc/custom_conf.h Core/Inc/custom_errno.h app/drivers/sht3x/sht3x.h \
  app/tasks/light_sensor/light_sensor.h app/drivers/opt3001/opt3001.h \
  app/core/cron/cron.h Core/Inc/rtc.h app/core/info_led/info_led.h \
- app/core/retarget/retarget.h Drivers/BSP/Components/ST25DV/st25dv_reg.h \
+ Drivers/BSP/Components/ST25DV/st25dv_reg.h \
  Drivers/BSP/Components/ST25DV/st25dv.h \
  Drivers/BSP/Components/ST25DV/st25dv_reg.h app/tasks/nfc/nfc_handlers.h
 app/tasks/nfc/nfc.h:
 Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 Core/Inc/FreeRTOSConfig.h:
+libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.h:
+libraries/SystemView/SYSVIEW/SEGGER_SYSVIEW.h:
+libraries/SystemView/SEGGER/SEGGER.h:
+libraries/SystemView/Config/Global.h:
+libraries/SystemView/SYSVIEW/SEGGER_SYSVIEW_ConfDefaults.h:
+libraries/SystemView/Config/SEGGER_SYSVIEW_Conf.h:
+libraries/RTT/Config/SEGGER_RTT_Conf.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/portable.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h:
@@ -111,12 +120,6 @@ Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc.h:
 Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rtc_ex.h:
 Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim.h:
 Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h:
-libraries/SystemView/Config/SEGGER_SYSVIEW_Conf.h:
-libraries/SystemView/SYSVIEW/SEGGER_SYSVIEW.h:
-libraries/SystemView/SEGGER/SEGGER.h:
-libraries/SystemView/Config/Global.h:
-libraries/SystemView/SYSVIEW/SEGGER_SYSVIEW_ConfDefaults.h:
-libraries/RTT/Config/SEGGER_RTT_Conf.h:
 app/core/actor/actor.h:
 app/core/actor/../../config/events_list/events_list.h:
 app/core/actor/../../config/actors_list/actors_list.h:
@@ -139,7 +142,6 @@ app/drivers/opt3001/opt3001.h:
 app/core/cron/cron.h:
 Core/Inc/rtc.h:
 app/core/info_led/info_led.h:
-app/core/retarget/retarget.h:
 Drivers/BSP/Components/ST25DV/st25dv_reg.h:
 Drivers/BSP/Components/ST25DV/st25dv.h:
 Drivers/BSP/Components/ST25DV/st25dv_reg.h:

@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccibuNVT.s 			page 1
+ARM GAS  /tmp/ccbavidT.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccibuNVT.s 			page 1
   28:app/tasks/nfc/nfc.c ****         .name = "nfcTask",
   29:app/tasks/nfc/nfc.c ****         .cb_mem = &nfcTaskControlBlock,
   30:app/tasks/nfc/nfc.c ****         .cb_size = sizeof(nfcTaskControlBlock),
-ARM GAS  /tmp/ccibuNVT.s 			page 2
+ARM GAS  /tmp/ccbavidT.s 			page 2
 
 
   31:app/tasks/nfc/nfc.c ****         .stack_mem = &nfcTaskBuffer[0],
@@ -118,7 +118,7 @@ ARM GAS  /tmp/ccibuNVT.s 			page 1
   85:app/tasks/nfc/nfc.c **** 
   86:app/tasks/nfc/nfc.c **** //  switch (message->event) {
   87:app/tasks/nfc/nfc.c **** //    case NFC_GPO_INTERRUPT:
-ARM GAS  /tmp/ccibuNVT.s 			page 3
+ARM GAS  /tmp/ccbavidT.s 			page 3
 
 
   88:app/tasks/nfc/nfc.c **** //      NFC_HandleGPOInterrupt(&st25dv);
@@ -178,7 +178,7 @@ ARM GAS  /tmp/ccibuNVT.s 			page 1
   52              		.cfi_offset 14, -4
   53 000c 0446     		mov	r4, r0
  108:app/tasks/nfc/nfc.c ****       status = NFC_ST25DVInit(&this->st25dv);
-ARM GAS  /tmp/ccibuNVT.s 			page 4
+ARM GAS  /tmp/ccbavidT.s 			page 4
 
 
   54              		.loc 1 108 7 is_stmt 1 view .LVU8
@@ -238,7 +238,7 @@ ARM GAS  /tmp/ccibuNVT.s 			page 1
   99              	.LCFI1:
  100              		.cfi_def_cfa_offset 8
  101              		.cfi_offset 3, -8
-ARM GAS  /tmp/ccibuNVT.s 			page 5
+ARM GAS  /tmp/ccbavidT.s 			page 5
 
 
  102              		.cfi_offset 14, -4
@@ -298,7 +298,7 @@ ARM GAS  /tmp/ccibuNVT.s 			page 1
   46:app/tasks/nfc/nfc.c ****   (void) argument; // Avoid unused parameter warning
  149              		.loc 1 46 3 is_stmt 1 view .LVU30
   47:app/tasks/nfc/nfc.c ****   message_t msg;
-ARM GAS  /tmp/ccibuNVT.s 			page 6
+ARM GAS  /tmp/ccbavidT.s 			page 6
 
 
  150              		.loc 1 47 3 view .LVU31
@@ -358,7 +358,7 @@ ARM GAS  /tmp/ccibuNVT.s 			page 1
  194 0000 6E666351 		.ascii	"nfcQueue\000"
  194      75657565 
  194      00
-ARM GAS  /tmp/ccibuNVT.s 			page 7
+ARM GAS  /tmp/ccbavidT.s 			page 7
 
 
  195              		.section	.text.NFC_TaskInit,"ax",%progbits
@@ -418,7 +418,7 @@ ARM GAS  /tmp/ccibuNVT.s 			page 1
  243 002a FFF7FEFF 		bl	osThreadNew
  244              	.LVL17:
   40:app/tasks/nfc/nfc.c ****   NFC_Actor.super.osThreadId = osThreadNew(NFC_Task, NULL, &nfcTaskDescription);
-ARM GAS  /tmp/ccibuNVT.s 			page 8
+ARM GAS  /tmp/ccbavidT.s 			page 8
 
 
  245              		.loc 1 40 30 view .LVU50
@@ -478,7 +478,7 @@ ARM GAS  /tmp/ccibuNVT.s 			page 1
  295 0010 00       		.byte	0
  296 0011 00000000 		.space	299
  296      00000000 
-ARM GAS  /tmp/ccibuNVT.s 			page 9
+ARM GAS  /tmp/ccbavidT.s 			page 9
 
 
  296      00000000 
@@ -513,31 +513,31 @@ ARM GAS  /tmp/ccibuNVT.s 			page 1
  324              		.file 13 "Drivers/BSP/Components/ST25DV/st25dv.h"
  325              		.file 14 "app/tasks/nfc/nfc.h"
  326              		.file 15 "app/tasks/nfc/nfc_handlers.h"
-ARM GAS  /tmp/ccibuNVT.s 			page 10
+ARM GAS  /tmp/ccbavidT.s 			page 10
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 nfc.c
-     /tmp/ccibuNVT.s:18     .text.handleInit:0000000000000000 $t
-     /tmp/ccibuNVT.s:25     .text.handleInit:0000000000000000 handleInit
-     /tmp/ccibuNVT.s:84     .text.handleNFCFSM:0000000000000000 $t
-     /tmp/ccibuNVT.s:90     .text.handleNFCFSM:0000000000000000 handleNFCFSM
-     /tmp/ccibuNVT.s:125    .text.NFC_Task:0000000000000000 $t
-     /tmp/ccibuNVT.s:132    .text.NFC_Task:0000000000000000 NFC_Task
-     /tmp/ccibuNVT.s:186    .text.NFC_Task:000000000000002c $d
-     /tmp/ccibuNVT.s:192    .rodata.NFC_TaskInit.str1.4:0000000000000000 $d
-     /tmp/ccibuNVT.s:196    .text.NFC_TaskInit:0000000000000000 $t
-     /tmp/ccibuNVT.s:203    .text.NFC_TaskInit:0000000000000000 NFC_TaskInit
-     /tmp/ccibuNVT.s:258    .text.NFC_TaskInit:0000000000000038 $d
-     /tmp/ccibuNVT.s:302    .rodata.nfcTaskDescription:0000000000000000 nfcTaskDescription
-     /tmp/ccibuNVT.s:267    .rodata.str1.4:0000000000000000 $d
-     /tmp/ccibuNVT.s:283    .bss.nfcTaskControlBlock:0000000000000000 nfcTaskControlBlock
-     /tmp/ccibuNVT.s:277    .bss.nfcTaskBuffer:0000000000000000 nfcTaskBuffer
-     /tmp/ccibuNVT.s:290    .data.NFC_Actor:0000000000000000 NFC_Actor
-     /tmp/ccibuNVT.s:274    .bss.nfcTaskBuffer:0000000000000000 $d
-     /tmp/ccibuNVT.s:280    .bss.nfcTaskControlBlock:0000000000000000 $d
-     /tmp/ccibuNVT.s:286    .data.NFC_Actor:0000000000000000 $d
-     /tmp/ccibuNVT.s:298    .rodata.nfcTaskDescription:0000000000000000 $d
+     /tmp/ccbavidT.s:18     .text.handleInit:0000000000000000 $t
+     /tmp/ccbavidT.s:25     .text.handleInit:0000000000000000 handleInit
+     /tmp/ccbavidT.s:84     .text.handleNFCFSM:0000000000000000 $t
+     /tmp/ccbavidT.s:90     .text.handleNFCFSM:0000000000000000 handleNFCFSM
+     /tmp/ccbavidT.s:125    .text.NFC_Task:0000000000000000 $t
+     /tmp/ccbavidT.s:132    .text.NFC_Task:0000000000000000 NFC_Task
+     /tmp/ccbavidT.s:186    .text.NFC_Task:000000000000002c $d
+     /tmp/ccbavidT.s:192    .rodata.NFC_TaskInit.str1.4:0000000000000000 $d
+     /tmp/ccbavidT.s:196    .text.NFC_TaskInit:0000000000000000 $t
+     /tmp/ccbavidT.s:203    .text.NFC_TaskInit:0000000000000000 NFC_TaskInit
+     /tmp/ccbavidT.s:258    .text.NFC_TaskInit:0000000000000038 $d
+     /tmp/ccbavidT.s:302    .rodata.nfcTaskDescription:0000000000000000 nfcTaskDescription
+     /tmp/ccbavidT.s:267    .rodata.str1.4:0000000000000000 $d
+     /tmp/ccbavidT.s:283    .bss.nfcTaskControlBlock:0000000000000000 nfcTaskControlBlock
+     /tmp/ccbavidT.s:277    .bss.nfcTaskBuffer:0000000000000000 nfcTaskBuffer
+     /tmp/ccbavidT.s:290    .data.NFC_Actor:0000000000000000 NFC_Actor
+     /tmp/ccbavidT.s:274    .bss.nfcTaskBuffer:0000000000000000 $d
+     /tmp/ccbavidT.s:280    .bss.nfcTaskControlBlock:0000000000000000 $d
+     /tmp/ccbavidT.s:286    .data.NFC_Actor:0000000000000000 $d
+     /tmp/ccbavidT.s:298    .rodata.nfcTaskDescription:0000000000000000 $d
 
 UNDEFINED SYMBOLS
 NFC_ST25DVInit

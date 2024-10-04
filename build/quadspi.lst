@@ -1,4 +1,4 @@
-ARM GAS  /tmp/cc12hIY7.s 			page 1
+ARM GAS  /tmp/ccHuASEZ.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /tmp/cc12hIY7.s 			page 1
   28:Core/Src/quadspi.c **** 
   29:Core/Src/quadspi.c **** /* QUADSPI init function */
   30:Core/Src/quadspi.c **** void MX_QUADSPI_Init(void)
-ARM GAS  /tmp/cc12hIY7.s 			page 2
+ARM GAS  /tmp/ccHuASEZ.s 			page 2
 
 
   31:Core/Src/quadspi.c **** {
@@ -82,55 +82,56 @@ ARM GAS  /tmp/cc12hIY7.s 			page 1
   40:Core/Src/quadspi.c ****   hqspi.Instance = QUADSPI;
   38              		.loc 1 40 3 view .LVU1
   39              		.loc 1 40 18 is_stmt 0 view .LVU2
-  40 0002 0A48     		ldr	r0, .L5
-  41 0004 0A4B     		ldr	r3, .L5+4
+  40 0002 0B48     		ldr	r0, .L5
+  41 0004 0B4B     		ldr	r3, .L5+4
   42 0006 0360     		str	r3, [r0]
-  41:Core/Src/quadspi.c ****   hqspi.Init.ClockPrescaler = 1;
+  41:Core/Src/quadspi.c ****   hqspi.Init.ClockPrescaler = 4; // half of the system clock e.g. = 2: 48MHz/2 = 24MHz
   43              		.loc 1 41 3 is_stmt 1 view .LVU3
   44              		.loc 1 41 29 is_stmt 0 view .LVU4
-  45 0008 0123     		movs	r3, #1
+  45 0008 0423     		movs	r3, #4
   46 000a 4360     		str	r3, [r0, #4]
-  42:Core/Src/quadspi.c ****   hqspi.Init.FifoThreshold = 1;
+  42:Core/Src/quadspi.c ****   hqspi.Init.FifoThreshold = 1; // 1 byte minimum to send or receive
   47              		.loc 1 42 3 is_stmt 1 view .LVU5
   48              		.loc 1 42 28 is_stmt 0 view .LVU6
-  49 000c 8360     		str	r3, [r0, #8]
+  49 000c 0123     		movs	r3, #1
+  50 000e 8360     		str	r3, [r0, #8]
   43:Core/Src/quadspi.c ****   hqspi.Init.SampleShifting = QSPI_SAMPLE_SHIFTING_NONE;
-  50              		.loc 1 43 3 is_stmt 1 view .LVU7
-  51              		.loc 1 43 29 is_stmt 0 view .LVU8
-  52 000e 0023     		movs	r3, #0
-  53 0010 C360     		str	r3, [r0, #12]
-  44:Core/Src/quadspi.c ****   hqspi.Init.FlashSize = 24;
-  54              		.loc 1 44 3 is_stmt 1 view .LVU9
-  55              		.loc 1 44 24 is_stmt 0 view .LVU10
-  56 0012 1822     		movs	r2, #24
-  57 0014 0261     		str	r2, [r0, #16]
+  51              		.loc 1 43 3 is_stmt 1 view .LVU7
+  52              		.loc 1 43 29 is_stmt 0 view .LVU8
+  53 0010 0023     		movs	r3, #0
+  54 0012 C360     		str	r3, [r0, #12]
+  44:Core/Src/quadspi.c ****   hqspi.Init.FlashSize = W25Q64JV_FLASH_ADDR_SIZE_BITS;
+  55              		.loc 1 44 3 is_stmt 1 view .LVU9
+  56              		.loc 1 44 24 is_stmt 0 view .LVU10
+  57 0014 1822     		movs	r2, #24
+  58 0016 0261     		str	r2, [r0, #16]
   45:Core/Src/quadspi.c ****   hqspi.Init.ChipSelectHighTime = QSPI_CS_HIGH_TIME_1_CYCLE;
-  58              		.loc 1 45 3 is_stmt 1 view .LVU11
-  59              		.loc 1 45 33 is_stmt 0 view .LVU12
-  60 0016 4361     		str	r3, [r0, #20]
+  59              		.loc 1 45 3 is_stmt 1 view .LVU11
+  60              		.loc 1 45 33 is_stmt 0 view .LVU12
+  61 0018 4361     		str	r3, [r0, #20]
   46:Core/Src/quadspi.c ****   hqspi.Init.ClockMode = QSPI_CLOCK_MODE_0;
-  61              		.loc 1 46 3 is_stmt 1 view .LVU13
-  62              		.loc 1 46 24 is_stmt 0 view .LVU14
-  63 0018 8361     		str	r3, [r0, #24]
+  62              		.loc 1 46 3 is_stmt 1 view .LVU13
+  63              		.loc 1 46 24 is_stmt 0 view .LVU14
+  64 001a 8361     		str	r3, [r0, #24]
   47:Core/Src/quadspi.c ****   hqspi.Init.FlashID = QSPI_FLASH_ID_1;
-  64              		.loc 1 47 3 is_stmt 1 view .LVU15
-  65              		.loc 1 47 22 is_stmt 0 view .LVU16
-  66 001a C361     		str	r3, [r0, #28]
+  65              		.loc 1 47 3 is_stmt 1 view .LVU15
+  66              		.loc 1 47 22 is_stmt 0 view .LVU16
+  67 001c C361     		str	r3, [r0, #28]
   48:Core/Src/quadspi.c ****   hqspi.Init.DualFlash = QSPI_DUALFLASH_DISABLE;
-  67              		.loc 1 48 3 is_stmt 1 view .LVU17
-ARM GAS  /tmp/cc12hIY7.s 			page 3
+ARM GAS  /tmp/ccHuASEZ.s 			page 3
 
 
-  68              		.loc 1 48 24 is_stmt 0 view .LVU18
-  69 001c 0362     		str	r3, [r0, #32]
+  68              		.loc 1 48 3 is_stmt 1 view .LVU17
+  69              		.loc 1 48 24 is_stmt 0 view .LVU18
+  70 001e 0362     		str	r3, [r0, #32]
   49:Core/Src/quadspi.c ****   if (HAL_QSPI_Init(&hqspi) != HAL_OK)
-  70              		.loc 1 49 3 is_stmt 1 view .LVU19
-  71              		.loc 1 49 7 is_stmt 0 view .LVU20
-  72 001e FFF7FEFF 		bl	HAL_QSPI_Init
-  73              	.LVL0:
-  74              		.loc 1 49 6 view .LVU21
-  75 0022 00B9     		cbnz	r0, .L4
-  76              	.L1:
+  71              		.loc 1 49 3 is_stmt 1 view .LVU19
+  72              		.loc 1 49 7 is_stmt 0 view .LVU20
+  73 0020 FFF7FEFF 		bl	HAL_QSPI_Init
+  74              	.LVL0:
+  75              		.loc 1 49 6 view .LVU21
+  76 0024 00B9     		cbnz	r0, .L4
+  77              	.L1:
   50:Core/Src/quadspi.c ****   {
   51:Core/Src/quadspi.c ****     Error_Handler();
   52:Core/Src/quadspi.c ****   }
@@ -139,73 +140,73 @@ ARM GAS  /tmp/cc12hIY7.s 			page 1
   55:Core/Src/quadspi.c ****   /* USER CODE END QUADSPI_Init 2 */
   56:Core/Src/quadspi.c **** 
   57:Core/Src/quadspi.c **** }
-  77              		.loc 1 57 1 view .LVU22
-  78 0024 08BD     		pop	{r3, pc}
-  79              	.L4:
+  78              		.loc 1 57 1 view .LVU22
+  79 0026 08BD     		pop	{r3, pc}
+  80              	.L4:
   51:Core/Src/quadspi.c ****   }
-  80              		.loc 1 51 5 is_stmt 1 view .LVU23
-  81 0026 FFF7FEFF 		bl	Error_Handler
-  82              	.LVL1:
-  83              		.loc 1 57 1 is_stmt 0 view .LVU24
-  84 002a FBE7     		b	.L1
-  85              	.L6:
-  86              		.align	2
-  87              	.L5:
-  88 002c 00000000 		.word	.LANCHOR0
-  89 0030 001000A0 		.word	-1610608640
-  90              		.cfi_endproc
-  91              	.LFE139:
-  93              		.section	.text.HAL_QSPI_MspInit,"ax",%progbits
-  94              		.align	1
-  95              		.global	HAL_QSPI_MspInit
-  96              		.syntax unified
-  97              		.thumb
-  98              		.thumb_func
-  99              		.fpu fpv4-sp-d16
- 101              	HAL_QSPI_MspInit:
- 102              	.LVL2:
- 103              	.LFB140:
+  81              		.loc 1 51 5 is_stmt 1 view .LVU23
+  82 0028 FFF7FEFF 		bl	Error_Handler
+  83              	.LVL1:
+  84              		.loc 1 57 1 is_stmt 0 view .LVU24
+  85 002c FBE7     		b	.L1
+  86              	.L6:
+  87 002e 00BF     		.align	2
+  88              	.L5:
+  89 0030 00000000 		.word	.LANCHOR0
+  90 0034 001000A0 		.word	-1610608640
+  91              		.cfi_endproc
+  92              	.LFE139:
+  94              		.section	.text.HAL_QSPI_MspInit,"ax",%progbits
+  95              		.align	1
+  96              		.global	HAL_QSPI_MspInit
+  97              		.syntax unified
+  98              		.thumb
+  99              		.thumb_func
+ 100              		.fpu fpv4-sp-d16
+ 102              	HAL_QSPI_MspInit:
+ 103              	.LVL2:
+ 104              	.LFB140:
   58:Core/Src/quadspi.c **** 
   59:Core/Src/quadspi.c **** void HAL_QSPI_MspInit(QSPI_HandleTypeDef* qspiHandle)
   60:Core/Src/quadspi.c **** {
- 104              		.loc 1 60 1 is_stmt 1 view -0
- 105              		.cfi_startproc
- 106              		@ args = 0, pretend = 0, frame = 32
- 107              		@ frame_needed = 0, uses_anonymous_args = 0
- 108              		.loc 1 60 1 is_stmt 0 view .LVU26
- 109 0000 70B5     		push	{r4, r5, r6, lr}
- 110              	.LCFI1:
- 111              		.cfi_def_cfa_offset 16
- 112              		.cfi_offset 4, -16
- 113              		.cfi_offset 5, -12
-ARM GAS  /tmp/cc12hIY7.s 			page 4
+ 105              		.loc 1 60 1 is_stmt 1 view -0
+ 106              		.cfi_startproc
+ 107              		@ args = 0, pretend = 0, frame = 32
+ 108              		@ frame_needed = 0, uses_anonymous_args = 0
+ 109              		.loc 1 60 1 is_stmt 0 view .LVU26
+ 110 0000 70B5     		push	{r4, r5, r6, lr}
+ 111              	.LCFI1:
+ 112              		.cfi_def_cfa_offset 16
+ 113              		.cfi_offset 4, -16
+ARM GAS  /tmp/ccHuASEZ.s 			page 4
 
 
- 114              		.cfi_offset 6, -8
- 115              		.cfi_offset 14, -4
- 116 0002 88B0     		sub	sp, sp, #32
- 117              	.LCFI2:
- 118              		.cfi_def_cfa_offset 48
+ 114              		.cfi_offset 5, -12
+ 115              		.cfi_offset 6, -8
+ 116              		.cfi_offset 14, -4
+ 117 0002 88B0     		sub	sp, sp, #32
+ 118              	.LCFI2:
+ 119              		.cfi_def_cfa_offset 48
   61:Core/Src/quadspi.c **** 
   62:Core/Src/quadspi.c ****   GPIO_InitTypeDef GPIO_InitStruct = {0};
- 119              		.loc 1 62 3 is_stmt 1 view .LVU27
- 120              		.loc 1 62 20 is_stmt 0 view .LVU28
- 121 0004 0023     		movs	r3, #0
- 122 0006 0393     		str	r3, [sp, #12]
- 123 0008 0493     		str	r3, [sp, #16]
- 124 000a 0593     		str	r3, [sp, #20]
- 125 000c 0693     		str	r3, [sp, #24]
- 126 000e 0793     		str	r3, [sp, #28]
+ 120              		.loc 1 62 3 is_stmt 1 view .LVU27
+ 121              		.loc 1 62 20 is_stmt 0 view .LVU28
+ 122 0004 0023     		movs	r3, #0
+ 123 0006 0393     		str	r3, [sp, #12]
+ 124 0008 0493     		str	r3, [sp, #16]
+ 125 000a 0593     		str	r3, [sp, #20]
+ 126 000c 0693     		str	r3, [sp, #24]
+ 127 000e 0793     		str	r3, [sp, #28]
   63:Core/Src/quadspi.c ****   if(qspiHandle->Instance==QUADSPI)
- 127              		.loc 1 63 3 is_stmt 1 view .LVU29
- 128              		.loc 1 63 16 is_stmt 0 view .LVU30
- 129 0010 0268     		ldr	r2, [r0]
- 130              		.loc 1 63 5 view .LVU31
- 131 0012 1E4B     		ldr	r3, .L11
- 132 0014 9A42     		cmp	r2, r3
- 133 0016 01D0     		beq	.L10
- 134              	.LVL3:
- 135              	.L7:
+ 128              		.loc 1 63 3 is_stmt 1 view .LVU29
+ 129              		.loc 1 63 16 is_stmt 0 view .LVU30
+ 130 0010 0268     		ldr	r2, [r0]
+ 131              		.loc 1 63 5 view .LVU31
+ 132 0012 1E4B     		ldr	r3, .L11
+ 133 0014 9A42     		cmp	r2, r3
+ 134 0016 01D0     		beq	.L10
+ 135              	.LVL3:
+ 136              	.L7:
   64:Core/Src/quadspi.c ****   {
   65:Core/Src/quadspi.c ****   /* USER CODE BEGIN QUADSPI_MspInit 0 */
   66:Core/Src/quadspi.c **** 
@@ -237,209 +238,209 @@ ARM GAS  /tmp/cc12hIY7.s 			page 1
   92:Core/Src/quadspi.c ****     GPIO_InitStruct.Alternate = GPIO_AF10_QUADSPI;
   93:Core/Src/quadspi.c ****     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
   94:Core/Src/quadspi.c **** 
+ARM GAS  /tmp/ccHuASEZ.s 			page 5
+
+
   95:Core/Src/quadspi.c ****   /* USER CODE BEGIN QUADSPI_MspInit 1 */
-ARM GAS  /tmp/cc12hIY7.s 			page 5
-
-
   96:Core/Src/quadspi.c **** 
   97:Core/Src/quadspi.c ****   /* USER CODE END QUADSPI_MspInit 1 */
   98:Core/Src/quadspi.c ****   }
   99:Core/Src/quadspi.c **** }
- 136              		.loc 1 99 1 view .LVU32
- 137 0018 08B0     		add	sp, sp, #32
- 138              	.LCFI3:
- 139              		.cfi_remember_state
- 140              		.cfi_def_cfa_offset 16
- 141              		@ sp needed
- 142 001a 70BD     		pop	{r4, r5, r6, pc}
- 143              	.LVL4:
- 144              	.L10:
- 145              	.LCFI4:
- 146              		.cfi_restore_state
+ 137              		.loc 1 99 1 view .LVU32
+ 138 0018 08B0     		add	sp, sp, #32
+ 139              	.LCFI3:
+ 140              		.cfi_remember_state
+ 141              		.cfi_def_cfa_offset 16
+ 142              		@ sp needed
+ 143 001a 70BD     		pop	{r4, r5, r6, pc}
+ 144              	.LVL4:
+ 145              	.L10:
+ 146              	.LCFI4:
+ 147              		.cfi_restore_state
   69:Core/Src/quadspi.c **** 
- 147              		.loc 1 69 5 is_stmt 1 view .LVU33
- 148              	.LBB2:
+ 148              		.loc 1 69 5 is_stmt 1 view .LVU33
+ 149              	.LBB2:
   69:Core/Src/quadspi.c **** 
- 149              		.loc 1 69 5 view .LVU34
+ 150              		.loc 1 69 5 view .LVU34
   69:Core/Src/quadspi.c **** 
- 150              		.loc 1 69 5 view .LVU35
- 151 001c 03F12043 		add	r3, r3, #-1610612736
- 152 0020 03F50033 		add	r3, r3, #131072
- 153 0024 1A6D     		ldr	r2, [r3, #80]
- 154 0026 42F48072 		orr	r2, r2, #256
- 155 002a 1A65     		str	r2, [r3, #80]
+ 151              		.loc 1 69 5 view .LVU35
+ 152 001c 03F12043 		add	r3, r3, #-1610612736
+ 153 0020 03F50033 		add	r3, r3, #131072
+ 154 0024 1A6D     		ldr	r2, [r3, #80]
+ 155 0026 42F48072 		orr	r2, r2, #256
+ 156 002a 1A65     		str	r2, [r3, #80]
   69:Core/Src/quadspi.c **** 
- 156              		.loc 1 69 5 view .LVU36
- 157 002c 1A6D     		ldr	r2, [r3, #80]
- 158 002e 02F48072 		and	r2, r2, #256
- 159 0032 0092     		str	r2, [sp]
+ 157              		.loc 1 69 5 view .LVU36
+ 158 002c 1A6D     		ldr	r2, [r3, #80]
+ 159 002e 02F48072 		and	r2, r2, #256
+ 160 0032 0092     		str	r2, [sp]
   69:Core/Src/quadspi.c **** 
- 160              		.loc 1 69 5 view .LVU37
- 161 0034 009A     		ldr	r2, [sp]
- 162              	.LBE2:
+ 161              		.loc 1 69 5 view .LVU37
+ 162 0034 009A     		ldr	r2, [sp]
+ 163              	.LBE2:
   69:Core/Src/quadspi.c **** 
- 163              		.loc 1 69 5 view .LVU38
+ 164              		.loc 1 69 5 view .LVU38
   71:Core/Src/quadspi.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
- 164              		.loc 1 71 5 view .LVU39
- 165              	.LBB3:
+ 165              		.loc 1 71 5 view .LVU39
+ 166              	.LBB3:
   71:Core/Src/quadspi.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
- 166              		.loc 1 71 5 view .LVU40
+ 167              		.loc 1 71 5 view .LVU40
   71:Core/Src/quadspi.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
- 167              		.loc 1 71 5 view .LVU41
- 168 0036 DA6C     		ldr	r2, [r3, #76]
- 169 0038 42F00102 		orr	r2, r2, #1
- 170 003c DA64     		str	r2, [r3, #76]
+ 168              		.loc 1 71 5 view .LVU41
+ 169 0036 DA6C     		ldr	r2, [r3, #76]
+ 170 0038 42F00102 		orr	r2, r2, #1
+ 171 003c DA64     		str	r2, [r3, #76]
   71:Core/Src/quadspi.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
- 171              		.loc 1 71 5 view .LVU42
- 172 003e DA6C     		ldr	r2, [r3, #76]
- 173 0040 02F00102 		and	r2, r2, #1
- 174 0044 0192     		str	r2, [sp, #4]
+ 172              		.loc 1 71 5 view .LVU42
+ 173 003e DA6C     		ldr	r2, [r3, #76]
+ 174 0040 02F00102 		and	r2, r2, #1
+ 175 0044 0192     		str	r2, [sp, #4]
   71:Core/Src/quadspi.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
- 175              		.loc 1 71 5 view .LVU43
- 176 0046 019A     		ldr	r2, [sp, #4]
- 177              	.LBE3:
-ARM GAS  /tmp/cc12hIY7.s 			page 6
+ 176              		.loc 1 71 5 view .LVU43
+ 177 0046 019A     		ldr	r2, [sp, #4]
+ARM GAS  /tmp/ccHuASEZ.s 			page 6
 
 
+ 178              	.LBE3:
   71:Core/Src/quadspi.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
- 178              		.loc 1 71 5 view .LVU44
+ 179              		.loc 1 71 5 view .LVU44
   72:Core/Src/quadspi.c ****     /**QUADSPI GPIO Configuration
- 179              		.loc 1 72 5 view .LVU45
- 180              	.LBB4:
+ 180              		.loc 1 72 5 view .LVU45
+ 181              	.LBB4:
   72:Core/Src/quadspi.c ****     /**QUADSPI GPIO Configuration
- 181              		.loc 1 72 5 view .LVU46
+ 182              		.loc 1 72 5 view .LVU46
   72:Core/Src/quadspi.c ****     /**QUADSPI GPIO Configuration
- 182              		.loc 1 72 5 view .LVU47
- 183 0048 DA6C     		ldr	r2, [r3, #76]
- 184 004a 42F00202 		orr	r2, r2, #2
- 185 004e DA64     		str	r2, [r3, #76]
+ 183              		.loc 1 72 5 view .LVU47
+ 184 0048 DA6C     		ldr	r2, [r3, #76]
+ 185 004a 42F00202 		orr	r2, r2, #2
+ 186 004e DA64     		str	r2, [r3, #76]
   72:Core/Src/quadspi.c ****     /**QUADSPI GPIO Configuration
- 186              		.loc 1 72 5 view .LVU48
- 187 0050 DB6C     		ldr	r3, [r3, #76]
- 188 0052 03F00203 		and	r3, r3, #2
- 189 0056 0293     		str	r3, [sp, #8]
+ 187              		.loc 1 72 5 view .LVU48
+ 188 0050 DB6C     		ldr	r3, [r3, #76]
+ 189 0052 03F00203 		and	r3, r3, #2
+ 190 0056 0293     		str	r3, [sp, #8]
   72:Core/Src/quadspi.c ****     /**QUADSPI GPIO Configuration
- 190              		.loc 1 72 5 view .LVU49
- 191 0058 029B     		ldr	r3, [sp, #8]
- 192              	.LBE4:
+ 191              		.loc 1 72 5 view .LVU49
+ 192 0058 029B     		ldr	r3, [sp, #8]
+ 193              	.LBE4:
   72:Core/Src/quadspi.c ****     /**QUADSPI GPIO Configuration
- 193              		.loc 1 72 5 view .LVU50
+ 194              		.loc 1 72 5 view .LVU50
   81:Core/Src/quadspi.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
- 194              		.loc 1 81 5 view .LVU51
+ 195              		.loc 1 81 5 view .LVU51
   81:Core/Src/quadspi.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
- 195              		.loc 1 81 25 is_stmt 0 view .LVU52
- 196 005a CC23     		movs	r3, #204
- 197 005c 0393     		str	r3, [sp, #12]
+ 196              		.loc 1 81 25 is_stmt 0 view .LVU52
+ 197 005a CC23     		movs	r3, #204
+ 198 005c 0393     		str	r3, [sp, #12]
   82:Core/Src/quadspi.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
- 198              		.loc 1 82 5 is_stmt 1 view .LVU53
+ 199              		.loc 1 82 5 is_stmt 1 view .LVU53
   82:Core/Src/quadspi.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
- 199              		.loc 1 82 26 is_stmt 0 view .LVU54
- 200 005e 0226     		movs	r6, #2
- 201 0060 0496     		str	r6, [sp, #16]
+ 200              		.loc 1 82 26 is_stmt 0 view .LVU54
+ 201 005e 0226     		movs	r6, #2
+ 202 0060 0496     		str	r6, [sp, #16]
   83:Core/Src/quadspi.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
- 202              		.loc 1 83 5 is_stmt 1 view .LVU55
+ 203              		.loc 1 83 5 is_stmt 1 view .LVU55
   84:Core/Src/quadspi.c ****     GPIO_InitStruct.Alternate = GPIO_AF10_QUADSPI;
- 203              		.loc 1 84 5 view .LVU56
+ 204              		.loc 1 84 5 view .LVU56
   84:Core/Src/quadspi.c ****     GPIO_InitStruct.Alternate = GPIO_AF10_QUADSPI;
- 204              		.loc 1 84 27 is_stmt 0 view .LVU57
- 205 0062 0324     		movs	r4, #3
- 206 0064 0694     		str	r4, [sp, #24]
+ 205              		.loc 1 84 27 is_stmt 0 view .LVU57
+ 206 0062 0324     		movs	r4, #3
+ 207 0064 0694     		str	r4, [sp, #24]
   85:Core/Src/quadspi.c ****     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
- 207              		.loc 1 85 5 is_stmt 1 view .LVU58
+ 208              		.loc 1 85 5 is_stmt 1 view .LVU58
   85:Core/Src/quadspi.c ****     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
- 208              		.loc 1 85 31 is_stmt 0 view .LVU59
- 209 0066 0A25     		movs	r5, #10
- 210 0068 0795     		str	r5, [sp, #28]
+ 209              		.loc 1 85 31 is_stmt 0 view .LVU59
+ 210 0066 0A25     		movs	r5, #10
+ 211 0068 0795     		str	r5, [sp, #28]
   86:Core/Src/quadspi.c **** 
- 211              		.loc 1 86 5 is_stmt 1 view .LVU60
- 212 006a 03A9     		add	r1, sp, #12
- 213 006c 4FF09040 		mov	r0, #1207959552
- 214              	.LVL5:
+ 212              		.loc 1 86 5 is_stmt 1 view .LVU60
+ 213 006a 03A9     		add	r1, sp, #12
+ 214 006c 4FF09040 		mov	r0, #1207959552
+ 215              	.LVL5:
   86:Core/Src/quadspi.c **** 
- 215              		.loc 1 86 5 is_stmt 0 view .LVU61
- 216 0070 FFF7FEFF 		bl	HAL_GPIO_Init
-ARM GAS  /tmp/cc12hIY7.s 			page 7
+ 216              		.loc 1 86 5 is_stmt 0 view .LVU61
+ARM GAS  /tmp/ccHuASEZ.s 			page 7
 
 
- 217              	.LVL6:
+ 217 0070 FFF7FEFF 		bl	HAL_GPIO_Init
+ 218              	.LVL6:
   88:Core/Src/quadspi.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
- 218              		.loc 1 88 5 is_stmt 1 view .LVU62
+ 219              		.loc 1 88 5 is_stmt 1 view .LVU62
   88:Core/Src/quadspi.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
- 219              		.loc 1 88 25 is_stmt 0 view .LVU63
- 220 0074 0394     		str	r4, [sp, #12]
+ 220              		.loc 1 88 25 is_stmt 0 view .LVU63
+ 221 0074 0394     		str	r4, [sp, #12]
   89:Core/Src/quadspi.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
- 221              		.loc 1 89 5 is_stmt 1 view .LVU64
+ 222              		.loc 1 89 5 is_stmt 1 view .LVU64
   89:Core/Src/quadspi.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
- 222              		.loc 1 89 26 is_stmt 0 view .LVU65
- 223 0076 0496     		str	r6, [sp, #16]
+ 223              		.loc 1 89 26 is_stmt 0 view .LVU65
+ 224 0076 0496     		str	r6, [sp, #16]
   90:Core/Src/quadspi.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
- 224              		.loc 1 90 5 is_stmt 1 view .LVU66
+ 225              		.loc 1 90 5 is_stmt 1 view .LVU66
   90:Core/Src/quadspi.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
- 225              		.loc 1 90 26 is_stmt 0 view .LVU67
- 226 0078 0023     		movs	r3, #0
- 227 007a 0593     		str	r3, [sp, #20]
+ 226              		.loc 1 90 26 is_stmt 0 view .LVU67
+ 227 0078 0023     		movs	r3, #0
+ 228 007a 0593     		str	r3, [sp, #20]
   91:Core/Src/quadspi.c ****     GPIO_InitStruct.Alternate = GPIO_AF10_QUADSPI;
- 228              		.loc 1 91 5 is_stmt 1 view .LVU68
+ 229              		.loc 1 91 5 is_stmt 1 view .LVU68
   91:Core/Src/quadspi.c ****     GPIO_InitStruct.Alternate = GPIO_AF10_QUADSPI;
- 229              		.loc 1 91 27 is_stmt 0 view .LVU69
- 230 007c 0694     		str	r4, [sp, #24]
+ 230              		.loc 1 91 27 is_stmt 0 view .LVU69
+ 231 007c 0694     		str	r4, [sp, #24]
   92:Core/Src/quadspi.c ****     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
- 231              		.loc 1 92 5 is_stmt 1 view .LVU70
+ 232              		.loc 1 92 5 is_stmt 1 view .LVU70
   92:Core/Src/quadspi.c ****     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
- 232              		.loc 1 92 31 is_stmt 0 view .LVU71
- 233 007e 0795     		str	r5, [sp, #28]
+ 233              		.loc 1 92 31 is_stmt 0 view .LVU71
+ 234 007e 0795     		str	r5, [sp, #28]
   93:Core/Src/quadspi.c **** 
- 234              		.loc 1 93 5 is_stmt 1 view .LVU72
- 235 0080 03A9     		add	r1, sp, #12
- 236 0082 0348     		ldr	r0, .L11+4
- 237 0084 FFF7FEFF 		bl	HAL_GPIO_Init
- 238              	.LVL7:
- 239              		.loc 1 99 1 is_stmt 0 view .LVU73
- 240 0088 C6E7     		b	.L7
- 241              	.L12:
- 242 008a 00BF     		.align	2
- 243              	.L11:
- 244 008c 001000A0 		.word	-1610608640
- 245 0090 00040048 		.word	1207960576
- 246              		.cfi_endproc
- 247              	.LFE140:
- 249              		.section	.text.HAL_QSPI_MspDeInit,"ax",%progbits
- 250              		.align	1
- 251              		.global	HAL_QSPI_MspDeInit
- 252              		.syntax unified
- 253              		.thumb
- 254              		.thumb_func
- 255              		.fpu fpv4-sp-d16
- 257              	HAL_QSPI_MspDeInit:
- 258              	.LVL8:
- 259              	.LFB141:
+ 235              		.loc 1 93 5 is_stmt 1 view .LVU72
+ 236 0080 03A9     		add	r1, sp, #12
+ 237 0082 0348     		ldr	r0, .L11+4
+ 238 0084 FFF7FEFF 		bl	HAL_GPIO_Init
+ 239              	.LVL7:
+ 240              		.loc 1 99 1 is_stmt 0 view .LVU73
+ 241 0088 C6E7     		b	.L7
+ 242              	.L12:
+ 243 008a 00BF     		.align	2
+ 244              	.L11:
+ 245 008c 001000A0 		.word	-1610608640
+ 246 0090 00040048 		.word	1207960576
+ 247              		.cfi_endproc
+ 248              	.LFE140:
+ 250              		.section	.text.HAL_QSPI_MspDeInit,"ax",%progbits
+ 251              		.align	1
+ 252              		.global	HAL_QSPI_MspDeInit
+ 253              		.syntax unified
+ 254              		.thumb
+ 255              		.thumb_func
+ 256              		.fpu fpv4-sp-d16
+ 258              	HAL_QSPI_MspDeInit:
+ 259              	.LVL8:
+ 260              	.LFB141:
  100:Core/Src/quadspi.c **** 
  101:Core/Src/quadspi.c **** void HAL_QSPI_MspDeInit(QSPI_HandleTypeDef* qspiHandle)
  102:Core/Src/quadspi.c **** {
- 260              		.loc 1 102 1 is_stmt 1 view -0
- 261              		.cfi_startproc
-ARM GAS  /tmp/cc12hIY7.s 			page 8
+ 261              		.loc 1 102 1 is_stmt 1 view -0
+ARM GAS  /tmp/ccHuASEZ.s 			page 8
 
 
- 262              		@ args = 0, pretend = 0, frame = 0
- 263              		@ frame_needed = 0, uses_anonymous_args = 0
- 264              		.loc 1 102 1 is_stmt 0 view .LVU75
- 265 0000 08B5     		push	{r3, lr}
- 266              	.LCFI5:
- 267              		.cfi_def_cfa_offset 8
- 268              		.cfi_offset 3, -8
- 269              		.cfi_offset 14, -4
+ 262              		.cfi_startproc
+ 263              		@ args = 0, pretend = 0, frame = 0
+ 264              		@ frame_needed = 0, uses_anonymous_args = 0
+ 265              		.loc 1 102 1 is_stmt 0 view .LVU75
+ 266 0000 08B5     		push	{r3, lr}
+ 267              	.LCFI5:
+ 268              		.cfi_def_cfa_offset 8
+ 269              		.cfi_offset 3, -8
+ 270              		.cfi_offset 14, -4
  103:Core/Src/quadspi.c **** 
  104:Core/Src/quadspi.c ****   if(qspiHandle->Instance==QUADSPI)
- 270              		.loc 1 104 3 is_stmt 1 view .LVU76
- 271              		.loc 1 104 16 is_stmt 0 view .LVU77
- 272 0002 0268     		ldr	r2, [r0]
- 273              		.loc 1 104 5 view .LVU78
- 274 0004 094B     		ldr	r3, .L17
- 275 0006 9A42     		cmp	r2, r3
- 276 0008 00D0     		beq	.L16
- 277              	.LVL9:
- 278              	.L13:
+ 271              		.loc 1 104 3 is_stmt 1 view .LVU76
+ 272              		.loc 1 104 16 is_stmt 0 view .LVU77
+ 273 0002 0268     		ldr	r2, [r0]
+ 274              		.loc 1 104 5 view .LVU78
+ 275 0004 094B     		ldr	r3, .L17
+ 276 0006 9A42     		cmp	r2, r3
+ 277 0008 00D0     		beq	.L16
+ 278              	.LVL9:
+ 279              	.L13:
  105:Core/Src/quadspi.c ****   {
  106:Core/Src/quadspi.c ****   /* USER CODE BEGIN QUADSPI_MspDeInit 0 */
  107:Core/Src/quadspi.c **** 
@@ -464,80 +465,80 @@ ARM GAS  /tmp/cc12hIY7.s 			page 1
  126:Core/Src/quadspi.c ****   /* USER CODE END QUADSPI_MspDeInit 1 */
  127:Core/Src/quadspi.c ****   }
  128:Core/Src/quadspi.c **** }
- 279              		.loc 1 128 1 view .LVU79
- 280 000a 08BD     		pop	{r3, pc}
- 281              	.LVL10:
- 282              	.L16:
+ 280              		.loc 1 128 1 view .LVU79
+ 281 000a 08BD     		pop	{r3, pc}
+ 282              	.LVL10:
+ 283              	.L16:
  110:Core/Src/quadspi.c **** 
- 283              		.loc 1 110 5 is_stmt 1 view .LVU80
- 284 000c 084A     		ldr	r2, .L17+4
- 285 000e 136D     		ldr	r3, [r2, #80]
- 286 0010 23F48073 		bic	r3, r3, #256
- 287 0014 1365     		str	r3, [r2, #80]
+ 284              		.loc 1 110 5 is_stmt 1 view .LVU80
+ 285 000c 084A     		ldr	r2, .L17+4
+ 286 000e 136D     		ldr	r3, [r2, #80]
+ 287 0010 23F48073 		bic	r3, r3, #256
+ 288 0014 1365     		str	r3, [r2, #80]
  120:Core/Src/quadspi.c **** 
- 288              		.loc 1 120 5 view .LVU81
- 289 0016 CC21     		movs	r1, #204
- 290 0018 4FF09040 		mov	r0, #1207959552
-ARM GAS  /tmp/cc12hIY7.s 			page 9
+ 289              		.loc 1 120 5 view .LVU81
+ 290 0016 CC21     		movs	r1, #204
+ARM GAS  /tmp/ccHuASEZ.s 			page 9
 
 
- 291              	.LVL11:
+ 291 0018 4FF09040 		mov	r0, #1207959552
+ 292              	.LVL11:
  120:Core/Src/quadspi.c **** 
- 292              		.loc 1 120 5 is_stmt 0 view .LVU82
- 293 001c FFF7FEFF 		bl	HAL_GPIO_DeInit
- 294              	.LVL12:
+ 293              		.loc 1 120 5 is_stmt 0 view .LVU82
+ 294 001c FFF7FEFF 		bl	HAL_GPIO_DeInit
+ 295              	.LVL12:
  122:Core/Src/quadspi.c **** 
- 295              		.loc 1 122 5 is_stmt 1 view .LVU83
- 296 0020 0321     		movs	r1, #3
- 297 0022 0448     		ldr	r0, .L17+8
- 298 0024 FFF7FEFF 		bl	HAL_GPIO_DeInit
- 299              	.LVL13:
- 300              		.loc 1 128 1 is_stmt 0 view .LVU84
- 301 0028 EFE7     		b	.L13
- 302              	.L18:
- 303 002a 00BF     		.align	2
- 304              	.L17:
- 305 002c 001000A0 		.word	-1610608640
- 306 0030 00100240 		.word	1073876992
- 307 0034 00040048 		.word	1207960576
- 308              		.cfi_endproc
- 309              	.LFE141:
- 311              		.global	hqspi
- 312              		.section	.bss.hqspi,"aw",%nobits
- 313              		.align	2
- 314              		.set	.LANCHOR0,. + 0
- 317              	hqspi:
- 318 0000 00000000 		.space	76
- 318      00000000 
- 318      00000000 
- 318      00000000 
- 318      00000000 
- 319              		.text
- 320              	.Letext0:
- 321              		.file 2 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h"
- 322              		.file 3 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l412xx.h"
- 323              		.file 4 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h"
- 324              		.file 5 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_gpio.h"
- 325              		.file 6 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_dma.h"
- 326              		.file 7 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_qspi.h"
- 327              		.file 8 "Core/Inc/main.h"
- 328              		.file 9 "Core/Inc/quadspi.h"
-ARM GAS  /tmp/cc12hIY7.s 			page 10
+ 296              		.loc 1 122 5 is_stmt 1 view .LVU83
+ 297 0020 0321     		movs	r1, #3
+ 298 0022 0448     		ldr	r0, .L17+8
+ 299 0024 FFF7FEFF 		bl	HAL_GPIO_DeInit
+ 300              	.LVL13:
+ 301              		.loc 1 128 1 is_stmt 0 view .LVU84
+ 302 0028 EFE7     		b	.L13
+ 303              	.L18:
+ 304 002a 00BF     		.align	2
+ 305              	.L17:
+ 306 002c 001000A0 		.word	-1610608640
+ 307 0030 00100240 		.word	1073876992
+ 308 0034 00040048 		.word	1207960576
+ 309              		.cfi_endproc
+ 310              	.LFE141:
+ 312              		.global	hqspi
+ 313              		.section	.bss.hqspi,"aw",%nobits
+ 314              		.align	2
+ 315              		.set	.LANCHOR0,. + 0
+ 318              	hqspi:
+ 319 0000 00000000 		.space	76
+ 319      00000000 
+ 319      00000000 
+ 319      00000000 
+ 319      00000000 
+ 320              		.text
+ 321              	.Letext0:
+ 322              		.file 2 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h"
+ 323              		.file 3 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l412xx.h"
+ 324              		.file 4 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h"
+ 325              		.file 5 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_gpio.h"
+ 326              		.file 6 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_dma.h"
+ 327              		.file 7 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_qspi.h"
+ 328              		.file 8 "Core/Inc/main.h"
+ 329              		.file 9 "Core/Inc/quadspi.h"
+ARM GAS  /tmp/ccHuASEZ.s 			page 10
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 quadspi.c
-     /tmp/cc12hIY7.s:18     .text.MX_QUADSPI_Init:0000000000000000 $t
-     /tmp/cc12hIY7.s:26     .text.MX_QUADSPI_Init:0000000000000000 MX_QUADSPI_Init
-     /tmp/cc12hIY7.s:88     .text.MX_QUADSPI_Init:000000000000002c $d
-     /tmp/cc12hIY7.s:94     .text.HAL_QSPI_MspInit:0000000000000000 $t
-     /tmp/cc12hIY7.s:101    .text.HAL_QSPI_MspInit:0000000000000000 HAL_QSPI_MspInit
-     /tmp/cc12hIY7.s:244    .text.HAL_QSPI_MspInit:000000000000008c $d
-     /tmp/cc12hIY7.s:250    .text.HAL_QSPI_MspDeInit:0000000000000000 $t
-     /tmp/cc12hIY7.s:257    .text.HAL_QSPI_MspDeInit:0000000000000000 HAL_QSPI_MspDeInit
-     /tmp/cc12hIY7.s:305    .text.HAL_QSPI_MspDeInit:000000000000002c $d
-     /tmp/cc12hIY7.s:317    .bss.hqspi:0000000000000000 hqspi
-     /tmp/cc12hIY7.s:313    .bss.hqspi:0000000000000000 $d
+     /tmp/ccHuASEZ.s:18     .text.MX_QUADSPI_Init:0000000000000000 $t
+     /tmp/ccHuASEZ.s:26     .text.MX_QUADSPI_Init:0000000000000000 MX_QUADSPI_Init
+     /tmp/ccHuASEZ.s:89     .text.MX_QUADSPI_Init:0000000000000030 $d
+     /tmp/ccHuASEZ.s:95     .text.HAL_QSPI_MspInit:0000000000000000 $t
+     /tmp/ccHuASEZ.s:102    .text.HAL_QSPI_MspInit:0000000000000000 HAL_QSPI_MspInit
+     /tmp/ccHuASEZ.s:245    .text.HAL_QSPI_MspInit:000000000000008c $d
+     /tmp/ccHuASEZ.s:251    .text.HAL_QSPI_MspDeInit:0000000000000000 $t
+     /tmp/ccHuASEZ.s:258    .text.HAL_QSPI_MspDeInit:0000000000000000 HAL_QSPI_MspDeInit
+     /tmp/ccHuASEZ.s:306    .text.HAL_QSPI_MspDeInit:000000000000002c $d
+     /tmp/ccHuASEZ.s:318    .bss.hqspi:0000000000000000 hqspi
+     /tmp/ccHuASEZ.s:314    .bss.hqspi:0000000000000000 $d
 
 UNDEFINED SYMBOLS
 HAL_QSPI_Init
