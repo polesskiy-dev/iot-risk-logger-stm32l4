@@ -25,7 +25,7 @@ DEBUG = 1
 OPT = -Og
 
 # NOR Flash: erase & write FAT12 filesystem boot header
-ERASE_CHIP_AND_FLASH_FAT12_BOOT_SECTOR = 1
+ERASE_CHIP_AND_FLASH_FAT12_BOOT_SECTOR = 0
 
 
 

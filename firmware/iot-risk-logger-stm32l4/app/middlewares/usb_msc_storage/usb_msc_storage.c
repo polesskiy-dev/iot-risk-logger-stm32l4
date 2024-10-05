@@ -21,21 +21,27 @@ int8_t STORAGE_Write(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t blk_
 int8_t STORAGE_Read(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t blk_len) {
   // Calculate the flash address
   uint32_t address = blk_addr * STORAGE_BLOCK_SIZE; // Convert block address to byte address
-  uint8_t status = HAL_OK;
+  uint8_t ioStatus = HAL_OK;
+
+  // wake up the memory
+  ioStatus = W25Q_WakeUp(&MEMORY_W25QHandle);
 
   for (uint16_t blockNumber = 0; blockNumber < blk_len; blockNumber++) {
     uint32_t bufferOffset = blockNumber * STORAGE_BLOCK_SIZE;
-    status = W25Q_ReadData(&MEMORY_W25QHandle, &buf[bufferOffset], address, STORAGE_BLOCK_SIZE);
+    ioStatus = ioStatus || W25Q_ReadData(&MEMORY_W25QHandle, &buf[bufferOffset], address, STORAGE_BLOCK_SIZE);
   }
 
-  return (status);
+  // put the memory to sleep, not very optimal but it significantly simplifies the flow. Power consumption is not a concern here due to USB powering.
+  ioStatus = ioStatus || W25Q_Sleep(&MEMORY_W25QHandle);
+
+  return (ioStatus);
 }
 
 int8_t STORAGE_IsReady(uint8_t lun) {
-  uint8_t status = W25Q_isBusy(&MEMORY_W25QHandle);
+  uint8_t ioStatus = W25Q_isBusy(&MEMORY_W25QHandle);
   uint8_t isBusy = MEMORY_W25QHandle.status.status1RegBits.busy == 1;
 
-  if (status == HAL_OK && !isBusy) {
+  if (ioStatus == HAL_OK && !isBusy) {
     return (HAL_OK);
   }
   return (HAL_ERROR);

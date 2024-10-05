@@ -24,8 +24,6 @@ extern uint8_t FAT12_BootSector[FAT12_BOOT_SECTOR_SIZE];
 
 extern USBD_StorageTypeDef USBD_Storage_Interface_fops_FS;
 
-uint8_t dummyToRead[32] = {0};
-
 osEventFlagsId_t measurementsReadyEventFlags;
 
 /**
