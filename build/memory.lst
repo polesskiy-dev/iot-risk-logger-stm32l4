@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccaLOqDG.s 			page 1
+ARM GAS  /tmp/cc6wBZaU.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccaLOqDG.s 			page 1
    8:app/tasks/memory/memory.c ****  * @author artempolisskyi
    9:app/tasks/memory/memory.c ****  */
   10:app/tasks/memory/memory.c **** 
-ARM GAS  /tmp/ccaLOqDG.s 			page 2
+ARM GAS  /tmp/cc6wBZaU.s 			page 2
 
 
   11:app/tasks/memory/memory.c **** #include "memory.h"
@@ -77,7 +77,7 @@ ARM GAS  /tmp/ccaLOqDG.s 			page 1
   24:app/tasks/memory/memory.c **** 
   25:app/tasks/memory/memory.c **** extern USBD_StorageTypeDef USBD_Storage_Interface_fops_FS;
   26:app/tasks/memory/memory.c **** 
-  27:app/tasks/memory/memory.c **** uint8_t dummyToRead[32] = {0};
+  27:app/tasks/memory/memory.c **** uint8_t dummyToRead[512] = {0};
   28:app/tasks/memory/memory.c **** 
   29:app/tasks/memory/memory.c **** osEventFlagsId_t measurementsReadyEventFlags;
   30:app/tasks/memory/memory.c **** 
@@ -118,7 +118,7 @@ ARM GAS  /tmp/ccaLOqDG.s 			page 1
   65:app/tasks/memory/memory.c ****                 .blockSize32K   = W25Q64JV_BLOCK_SIZE_32K,
   66:app/tasks/memory/memory.c ****                 .blockSize64K   = W25Q64JV_BLOCK_SIZE_64K
   67:app/tasks/memory/memory.c ****         },
-ARM GAS  /tmp/ccaLOqDG.s 			page 3
+ARM GAS  /tmp/cc6wBZaU.s 			page 3
 
 
   68:app/tasks/memory/memory.c ****         .status.status1Reg      = 0x00,
@@ -149,230 +149,243 @@ ARM GAS  /tmp/ccaLOqDG.s 			page 1
   93:app/tasks/memory/memory.c ****   (void) argument; // Avoid unused parameter warning
   94:app/tasks/memory/memory.c ****   message_t msg;
   95:app/tasks/memory/memory.c **** 
-  96:app/tasks/memory/memory.c ****   for (;;) {
-  97:app/tasks/memory/memory.c ****     // Wait for messages from the queue
-  98:app/tasks/memory/memory.c ****     if (osMessageQueueGet(MEMORY_Actor.super.osMessageQueueId, &msg, NULL, osWaitForever) == osOK) 
-  99:app/tasks/memory/memory.c ****       osStatus_t status = MEMORY_Actor.super.messageHandler((actor_t *) &MEMORY_Actor, &msg);
- 100:app/tasks/memory/memory.c **** 
- 101:app/tasks/memory/memory.c ****       if (status != osOK) {
- 102:app/tasks/memory/memory.c ****         osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMess
- 103:app/tasks/memory/memory.c ****         osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = MEMORY_ACTOR_
- 104:app/tasks/memory/memory.c ****         TO_STATE(&MEMORY_Actor, MEMORY_STATE_ERROR);
- 105:app/tasks/memory/memory.c ****       }
- 106:app/tasks/memory/memory.c ****     }
- 107:app/tasks/memory/memory.c ****   }
- 108:app/tasks/memory/memory.c **** }
- 109:app/tasks/memory/memory.c **** 
- 110:app/tasks/memory/memory.c **** static osStatus_t handleMemoryFSM(MEMORY_Actor_t *this, message_t *message) {
- 111:app/tasks/memory/memory.c ****   switch (this->state) {
- 112:app/tasks/memory/memory.c ****     case MEMORY_NO_STATE:
- 113:app/tasks/memory/memory.c ****       return handleInit(this, message);
- 114:app/tasks/memory/memory.c ****     case MEMORY_SLEEP_STATE:
- 115:app/tasks/memory/memory.c ****       return handleSleep(this, message);
- 116:app/tasks/memory/memory.c ****     case MEMORY_WRITE_STATE:
- 117:app/tasks/memory/memory.c ****       return handleWrite(this, message);
- 118:app/tasks/memory/memory.c ****     default:
- 119:app/tasks/memory/memory.c ****       return osOK;
+  96:app/tasks/memory/memory.c ****     HAL_StatusTypeDef status = HAL_OK;
+  97:app/tasks/memory/memory.c **** 
+  98:app/tasks/memory/memory.c ****   // wake up the chip
+  99:app/tasks/memory/memory.c **** //  status = W25Q_WakeUp(&MEMORY_W25QHandle);
+ 100:app/tasks/memory/memory.c **** //  if (status != HAL_OK) {
+ 101:app/tasks/memory/memory.c **** //    fprintf(stderr,  "memory error");
+ 102:app/tasks/memory/memory.c **** //  }
+ 103:app/tasks/memory/memory.c **** //
+ 104:app/tasks/memory/memory.c **** //  status = W25Q_ReadData(&MEMORY_W25QHandle, dummyToRead, 0, 512);
+ 105:app/tasks/memory/memory.c **** //  if (status != HAL_OK) {
+ 106:app/tasks/memory/memory.c **** //    fprintf(stderr,  "memory error");
+ 107:app/tasks/memory/memory.c **** //  }
+ 108:app/tasks/memory/memory.c **** 
+ 109:app/tasks/memory/memory.c ****   for (;;) {
+ 110:app/tasks/memory/memory.c ****     // Wait for messages from the queue
+ 111:app/tasks/memory/memory.c ****     if (osMessageQueueGet(MEMORY_Actor.super.osMessageQueueId, &msg, NULL, osWaitForever) == osOK) 
+ 112:app/tasks/memory/memory.c ****       osStatus_t status = MEMORY_Actor.super.messageHandler((actor_t *) &MEMORY_Actor, &msg);
+ 113:app/tasks/memory/memory.c **** 
+ 114:app/tasks/memory/memory.c ****       if (status != osOK) {
+ 115:app/tasks/memory/memory.c ****         osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMess
+ 116:app/tasks/memory/memory.c ****         osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = MEMORY_ACTOR_
+ 117:app/tasks/memory/memory.c ****         TO_STATE(&MEMORY_Actor, MEMORY_STATE_ERROR);
+ 118:app/tasks/memory/memory.c ****       }
+ 119:app/tasks/memory/memory.c ****     }
  120:app/tasks/memory/memory.c ****   }
- 121:app/tasks/memory/memory.c **** 
- 122:app/tasks/memory/memory.c ****   return osOK;
- 123:app/tasks/memory/memory.c **** }
- 124:app/tasks/memory/memory.c **** 
-ARM GAS  /tmp/ccaLOqDG.s 			page 4
+ 121:app/tasks/memory/memory.c **** }
+ 122:app/tasks/memory/memory.c **** 
+ 123:app/tasks/memory/memory.c **** static osStatus_t handleMemoryFSM(MEMORY_Actor_t *this, message_t *message) {
+ 124:app/tasks/memory/memory.c ****   switch (this->state) {
+ARM GAS  /tmp/cc6wBZaU.s 			page 4
 
 
- 125:app/tasks/memory/memory.c **** uint32_t MEMORY_SeekFreeSpaceAddress(void) {
- 126:app/tasks/memory/memory.c ****   uint8_t readBuff[MEMORY_LOG_ENTRY_SIZE] = {0};
- 127:app/tasks/memory/memory.c ****   uint8_t emptyLogEntryTemplate[MEMORY_LOG_ENTRY_SIZE] = {0xFF};
- 128:app/tasks/memory/memory.c ****   const uint32_t startAddress = FAT12_BOOT_SECTOR_SIZE + 1;
- 129:app/tasks/memory/memory.c ****   const uint8_t stepSize = MEMORY_LOG_ENTRY_SIZE;
- 130:app/tasks/memory/memory.c **** 
- 131:app/tasks/memory/memory.c ****   uint32_t offset = 0;
- 132:app/tasks/memory/memory.c ****   uint32_t stepNumber = 0;
- 133:app/tasks/memory/memory.c ****   uint32_t addr = 0;
- 134:app/tasks/memory/memory.c ****   bool isFreeSpaceForLog = false; // does read log entry contains data other than 0xFF (0xFF means 
- 135:app/tasks/memory/memory.c **** 
- 136:app/tasks/memory/memory.c ****   // create an empty log entry template to compare with
- 137:app/tasks/memory/memory.c ****   memset(emptyLogEntryTemplate, 0xFF, MEMORY_LOG_ENTRY_SIZE);
- 138:app/tasks/memory/memory.c **** 
- 139:app/tasks/memory/memory.c ****   do {
- 140:app/tasks/memory/memory.c ****     // address offset from FS boot sector
- 141:app/tasks/memory/memory.c ****     offset = stepNumber * stepSize;
- 142:app/tasks/memory/memory.c ****     addr = startAddress + offset;
+ 125:app/tasks/memory/memory.c ****     case MEMORY_NO_STATE:
+ 126:app/tasks/memory/memory.c ****       return handleInit(this, message);
+ 127:app/tasks/memory/memory.c ****     case MEMORY_SLEEP_STATE:
+ 128:app/tasks/memory/memory.c ****       return handleSleep(this, message);
+ 129:app/tasks/memory/memory.c ****     case MEMORY_WRITE_STATE:
+ 130:app/tasks/memory/memory.c ****       return handleWrite(this, message);
+ 131:app/tasks/memory/memory.c ****     default:
+ 132:app/tasks/memory/memory.c ****       return osOK;
+ 133:app/tasks/memory/memory.c ****   }
+ 134:app/tasks/memory/memory.c **** 
+ 135:app/tasks/memory/memory.c ****   return osOK;
+ 136:app/tasks/memory/memory.c **** }
+ 137:app/tasks/memory/memory.c **** 
+ 138:app/tasks/memory/memory.c **** uint32_t MEMORY_SeekFreeSpaceAddress(void) {
+ 139:app/tasks/memory/memory.c ****   uint8_t readBuff[MEMORY_LOG_ENTRY_SIZE] = {0};
+ 140:app/tasks/memory/memory.c ****   uint8_t emptyLogEntryTemplate[MEMORY_LOG_ENTRY_SIZE] = {0xFF};
+ 141:app/tasks/memory/memory.c ****   const uint32_t startAddress = FAT12_BOOT_SECTOR_SIZE + 1;
+ 142:app/tasks/memory/memory.c ****   const uint8_t stepSize = MEMORY_LOG_ENTRY_SIZE;
  143:app/tasks/memory/memory.c **** 
- 144:app/tasks/memory/memory.c ****     // read data chunk equal to log entry
- 145:app/tasks/memory/memory.c ****     W25Q_ReadData(&MEMORY_W25QHandle, readBuff, addr, stepSize); // @warning: io status check is om
- 146:app/tasks/memory/memory.c **** 
- 147:app/tasks/memory/memory.c ****     // check if space for log entry don't contain any data
- 148:app/tasks/memory/memory.c ****     isFreeSpaceForLog = MEMORY_CHUNKS_ARE_EQUAL == memcmp(readBuff, emptyLogEntryTemplate, MEMORY_L
- 149:app/tasks/memory/memory.c **** 
- 150:app/tasks/memory/memory.c ****     if (isFreeSpaceForLog) {
- 151:app/tasks/memory/memory.c ****       return addr;
- 152:app/tasks/memory/memory.c ****     }
- 153:app/tasks/memory/memory.c **** 
- 154:app/tasks/memory/memory.c ****     stepNumber++;
- 155:app/tasks/memory/memory.c **** 
- 156:app/tasks/memory/memory.c ****   } while (addr < W25Q64JV_FLASH_SIZE);
- 157:app/tasks/memory/memory.c **** 
- 158:app/tasks/memory/memory.c ****   return addr;
- 159:app/tasks/memory/memory.c **** }
- 160:app/tasks/memory/memory.c **** 
- 161:app/tasks/memory/memory.c **** // TODO move to more suitable place
- 162:app/tasks/memory/memory.c **** void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
- 163:app/tasks/memory/memory.c ****   if (GPIO_Pin == USB_VBUS_SENSE_Pin) {
- 164:app/tasks/memory/memory.c ****     GPIO_PinState usbVBusPin = HAL_GPIO_ReadPin(USB_VBUS_SENSE_GPIO_Port, USB_VBUS_SENSE_Pin);
- 165:app/tasks/memory/memory.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
+ 144:app/tasks/memory/memory.c ****   uint32_t offset = 0;
+ 145:app/tasks/memory/memory.c ****   uint32_t stepNumber = 0;
+ 146:app/tasks/memory/memory.c ****   uint32_t addr = 0;
+ 147:app/tasks/memory/memory.c ****   bool isFreeSpaceForLog = false; // does read log entry contains data other than 0xFF (0xFF means 
+ 148:app/tasks/memory/memory.c **** 
+ 149:app/tasks/memory/memory.c ****   // create an empty log entry template to compare with
+ 150:app/tasks/memory/memory.c ****   memset(emptyLogEntryTemplate, 0xFF, MEMORY_LOG_ENTRY_SIZE);
+ 151:app/tasks/memory/memory.c **** 
+ 152:app/tasks/memory/memory.c ****   do {
+ 153:app/tasks/memory/memory.c ****     // address offset from FS boot sector
+ 154:app/tasks/memory/memory.c ****     offset = stepNumber * stepSize;
+ 155:app/tasks/memory/memory.c ****     addr = startAddress + offset;
+ 156:app/tasks/memory/memory.c **** 
+ 157:app/tasks/memory/memory.c ****     // read data chunk equal to log entry
+ 158:app/tasks/memory/memory.c ****     W25Q_ReadData(&MEMORY_W25QHandle, readBuff, addr, stepSize); // @warning: io status check is om
+ 159:app/tasks/memory/memory.c **** 
+ 160:app/tasks/memory/memory.c ****     // check if space for log entry don't contain any data
+ 161:app/tasks/memory/memory.c ****     isFreeSpaceForLog = MEMORY_CHUNKS_ARE_EQUAL == memcmp(readBuff, emptyLogEntryTemplate, MEMORY_L
+ 162:app/tasks/memory/memory.c **** 
+ 163:app/tasks/memory/memory.c ****     if (isFreeSpaceForLog) {
+ 164:app/tasks/memory/memory.c ****       return addr;
+ 165:app/tasks/memory/memory.c ****     }
  166:app/tasks/memory/memory.c **** 
- 167:app/tasks/memory/memory.c ****     if (usbVBusPin == GPIO_PIN_SET) {
- 168:app/tasks/memory/memory.c ****       osMessageQueuePut(evManagerQueue, &(message_t) {USB_CONNECTED}, 0, 0);
- 169:app/tasks/memory/memory.c ****       #if DEBUG
- 170:app/tasks/memory/memory.c ****             fprintf(stdout, "USB connected\n");
- 171:app/tasks/memory/memory.c ****       #endif
- 172:app/tasks/memory/memory.c ****     } else {
- 173:app/tasks/memory/memory.c ****       osMessageQueuePut(evManagerQueue, &(message_t) {USB_DISCONNECTED}, 0, 0);
- 174:app/tasks/memory/memory.c ****       #if DEBUG
- 175:app/tasks/memory/memory.c ****             fprintf(stdout, "USB disconnected\n");
- 176:app/tasks/memory/memory.c ****       #endif
- 177:app/tasks/memory/memory.c ****     }
- 178:app/tasks/memory/memory.c ****   }
+ 167:app/tasks/memory/memory.c ****     stepNumber++;
+ 168:app/tasks/memory/memory.c **** 
+ 169:app/tasks/memory/memory.c ****   } while (addr < W25Q64JV_FLASH_SIZE);
+ 170:app/tasks/memory/memory.c **** 
+ 171:app/tasks/memory/memory.c ****   return addr;
+ 172:app/tasks/memory/memory.c **** }
+ 173:app/tasks/memory/memory.c **** 
+ 174:app/tasks/memory/memory.c **** // TODO move to more suitable place
+ 175:app/tasks/memory/memory.c **** void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+ 176:app/tasks/memory/memory.c ****   if (GPIO_Pin == USB_VBUS_SENSE_Pin) {
+ 177:app/tasks/memory/memory.c ****     GPIO_PinState usbVBusPin = HAL_GPIO_ReadPin(USB_VBUS_SENSE_GPIO_Port, USB_VBUS_SENSE_Pin);
+ 178:app/tasks/memory/memory.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
  179:app/tasks/memory/memory.c **** 
- 180:app/tasks/memory/memory.c ****   if (GPIO_Pin == _NFC_INT_Pin) {
- 181:app/tasks/memory/memory.c ****     #ifdef DEBUG
-ARM GAS  /tmp/ccaLOqDG.s 			page 5
+ 180:app/tasks/memory/memory.c ****     if (usbVBusPin == GPIO_PIN_SET) {
+ 181:app/tasks/memory/memory.c ****       osMessageQueuePut(evManagerQueue, &(message_t) {USB_CONNECTED}, 0, 0);
+ARM GAS  /tmp/cc6wBZaU.s 			page 5
 
 
- 182:app/tasks/memory/memory.c ****         fprintf(stdout, "NFC GPO Interrupt\n");
- 183:app/tasks/memory/memory.c ****     #endif
- 184:app/tasks/memory/memory.c ****     osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NFC_GPO_INTERRUPT}, 0, 0);
- 185:app/tasks/memory/memory.c ****   }
- 186:app/tasks/memory/memory.c **** }
- 187:app/tasks/memory/memory.c **** 
- 188:app/tasks/memory/memory.c **** /**
- 189:app/tasks/memory/memory.c ****  * @brief Writes FAT12 boot sector to the NOR Flash
- 190:app/tasks/memory/memory.c ****  * Required for USB MSD to work
- 191:app/tasks/memory/memory.c ****  */
- 192:app/tasks/memory/memory.c **** static osStatus_t writeFAT12BootSector(MEMORY_Actor_t *this) {
- 193:app/tasks/memory/memory.c ****   // erase chip
- 194:app/tasks/memory/memory.c ****   HAL_StatusTypeDef status = W25Q_EraseChip(&MEMORY_W25QHandle);
- 195:app/tasks/memory/memory.c ****   if (status != HAL_OK) {
- 196:app/tasks/memory/memory.c ****     #ifdef DEBUG
- 197:app/tasks/memory/memory.c ****       fprintf(stderr,  "memory error on chip erase");
- 198:app/tasks/memory/memory.c ****     #endif
- 199:app/tasks/memory/memory.c ****     return status;
- 200:app/tasks/memory/memory.c ****   }
- 201:app/tasks/memory/memory.c **** 
- 202:app/tasks/memory/memory.c ****   // flash FAT12 boot sector
- 203:app/tasks/memory/memory.c ****   status = W25Q_WriteData(&MEMORY_W25QHandle, FAT12_BootSector, 0, FAT12_BOOT_SECTOR_SIZE);
- 204:app/tasks/memory/memory.c ****   if (status != HAL_OK) {
- 205:app/tasks/memory/memory.c ****     #ifdef DEBUG
- 206:app/tasks/memory/memory.c ****       fprintf(stderr,  "memory error on FAT12 write");
- 207:app/tasks/memory/memory.c ****     #endif
- 208:app/tasks/memory/memory.c ****     return status;
- 209:app/tasks/memory/memory.c ****   }
- 210:app/tasks/memory/memory.c **** 
- 211:app/tasks/memory/memory.c ****   #ifdef DEBUG
- 212:app/tasks/memory/memory.c ****     fprintf(stdout,  "FS FAT12 boot sector has been written on NOR Flash");
- 213:app/tasks/memory/memory.c ****   #endif
+ 182:app/tasks/memory/memory.c ****       #if DEBUG
+ 183:app/tasks/memory/memory.c ****             fprintf(stdout, "USB connected\n");
+ 184:app/tasks/memory/memory.c ****       #endif
+ 185:app/tasks/memory/memory.c ****     } else {
+ 186:app/tasks/memory/memory.c ****       osMessageQueuePut(evManagerQueue, &(message_t) {USB_DISCONNECTED}, 0, 0);
+ 187:app/tasks/memory/memory.c ****       #if DEBUG
+ 188:app/tasks/memory/memory.c ****             fprintf(stdout, "USB disconnected\n");
+ 189:app/tasks/memory/memory.c ****       #endif
+ 190:app/tasks/memory/memory.c ****     }
+ 191:app/tasks/memory/memory.c ****   }
+ 192:app/tasks/memory/memory.c **** 
+ 193:app/tasks/memory/memory.c ****   if (GPIO_Pin == _NFC_INT_Pin) {
+ 194:app/tasks/memory/memory.c ****     #ifdef DEBUG
+ 195:app/tasks/memory/memory.c ****         fprintf(stdout, "NFC GPO Interrupt\n");
+ 196:app/tasks/memory/memory.c ****     #endif
+ 197:app/tasks/memory/memory.c ****     osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NFC_GPO_INTERRUPT}, 0, 0);
+ 198:app/tasks/memory/memory.c ****   }
+ 199:app/tasks/memory/memory.c **** }
+ 200:app/tasks/memory/memory.c **** 
+ 201:app/tasks/memory/memory.c **** /**
+ 202:app/tasks/memory/memory.c ****  * @brief Writes FAT12 boot sector to the NOR Flash
+ 203:app/tasks/memory/memory.c ****  * Required for USB MSD to work
+ 204:app/tasks/memory/memory.c ****  */
+ 205:app/tasks/memory/memory.c **** static osStatus_t writeFAT12BootSector(MEMORY_Actor_t *this) {
+ 206:app/tasks/memory/memory.c ****   // erase chip
+ 207:app/tasks/memory/memory.c ****   HAL_StatusTypeDef status = W25Q_EraseChip(&MEMORY_W25QHandle);
+ 208:app/tasks/memory/memory.c ****   if (status != HAL_OK) {
+ 209:app/tasks/memory/memory.c ****     #ifdef DEBUG
+ 210:app/tasks/memory/memory.c ****       fprintf(stderr,  "memory error on chip erase");
+ 211:app/tasks/memory/memory.c ****     #endif
+ 212:app/tasks/memory/memory.c ****     return status;
+ 213:app/tasks/memory/memory.c ****   }
  214:app/tasks/memory/memory.c **** 
- 215:app/tasks/memory/memory.c ****   return status;
- 216:app/tasks/memory/memory.c **** }
- 217:app/tasks/memory/memory.c **** 
- 218:app/tasks/memory/memory.c **** static osStatus_t handleInit(MEMORY_Actor_t *this, message_t *message) {
- 219:app/tasks/memory/memory.c ****   if (GLOBAL_CMD_INITIALIZE == message->event) {
- 220:app/tasks/memory/memory.c ****     uint8_t norFlashID[W25Q_ID_SIZE] = {0x00, 0x00};
- 221:app/tasks/memory/memory.c **** 
- 222:app/tasks/memory/memory.c ****     // wake up the chip
- 223:app/tasks/memory/memory.c ****     osStatus_t ioStatus = W25Q_WakeUp(&MEMORY_W25QHandle);
- 224:app/tasks/memory/memory.c ****     if (ioStatus != osOK) return osError;
- 225:app/tasks/memory/memory.c **** 
- 226:app/tasks/memory/memory.c ****     // read ID
- 227:app/tasks/memory/memory.c ****     ioStatus = W25Q_ReadID(&MEMORY_W25QHandle, norFlashID);
- 228:app/tasks/memory/memory.c ****     if (ioStatus != osOK) return osError;
- 229:app/tasks/memory/memory.c **** 
- 230:app/tasks/memory/memory.c ****     #ifdef DEBUG
- 231:app/tasks/memory/memory.c ****         fprintf(stdout, "W25Q NOR MF ID: 0x%x, Device ID: 0x%x\n", norFlashID[0], norFlashID[1]);
- 232:app/tasks/memory/memory.c ****     #endif
- 233:app/tasks/memory/memory.c **** 
- 234:app/tasks/memory/memory.c ****     #ifdef ERASE_CHIP_AND_FLASH_FAT12_BOOT_SECTOR
- 235:app/tasks/memory/memory.c ****         writeFAT12BootSector(&MEMORY_Actor);
- 236:app/tasks/memory/memory.c ****     #endif
- 237:app/tasks/memory/memory.c **** 
- 238:app/tasks/memory/memory.c ****     // find the first free space address on NOR flash (to append log to)
-ARM GAS  /tmp/ccaLOqDG.s 			page 6
+ 215:app/tasks/memory/memory.c ****   // flash FAT12 boot sector
+ 216:app/tasks/memory/memory.c ****   status = W25Q_WriteData(&MEMORY_W25QHandle, FAT12_BootSector, 0, FAT12_BOOT_SECTOR_SIZE);
+ 217:app/tasks/memory/memory.c ****   if (status != HAL_OK) {
+ 218:app/tasks/memory/memory.c ****     #ifdef DEBUG
+ 219:app/tasks/memory/memory.c ****       fprintf(stderr,  "memory error on FAT12 write");
+ 220:app/tasks/memory/memory.c ****     #endif
+ 221:app/tasks/memory/memory.c ****     return status;
+ 222:app/tasks/memory/memory.c ****   }
+ 223:app/tasks/memory/memory.c **** 
+ 224:app/tasks/memory/memory.c ****   #ifdef DEBUG
+ 225:app/tasks/memory/memory.c ****     fprintf(stdout,  "FS FAT12 boot sector has been written on NOR Flash");
+ 226:app/tasks/memory/memory.c ****   #endif
+ 227:app/tasks/memory/memory.c **** 
+ 228:app/tasks/memory/memory.c ****   return status;
+ 229:app/tasks/memory/memory.c **** }
+ 230:app/tasks/memory/memory.c **** 
+ 231:app/tasks/memory/memory.c **** static osStatus_t handleInit(MEMORY_Actor_t *this, message_t *message) {
+ 232:app/tasks/memory/memory.c ****   if (GLOBAL_CMD_INITIALIZE == message->event) {
+ 233:app/tasks/memory/memory.c ****     uint8_t norFlashID[W25Q_ID_SIZE] = {0x00, 0x00};
+ 234:app/tasks/memory/memory.c **** 
+ 235:app/tasks/memory/memory.c ****     // wake up the chip
+ 236:app/tasks/memory/memory.c ****     osStatus_t ioStatus = W25Q_WakeUp(&MEMORY_W25QHandle);
+ 237:app/tasks/memory/memory.c ****     if (ioStatus != osOK) return osError;
+ 238:app/tasks/memory/memory.c **** 
+ARM GAS  /tmp/cc6wBZaU.s 			page 6
 
 
- 239:app/tasks/memory/memory.c ****     uint32_t freeSpaceAddress = MEMORY_SeekFreeSpaceAddress();
- 240:app/tasks/memory/memory.c ****     MEMORY_Actor.logFileTailAddress = freeSpaceAddress;
- 241:app/tasks/memory/memory.c **** 
- 242:app/tasks/memory/memory.c ****     // put memory to sleep
- 243:app/tasks/memory/memory.c ****     ioStatus = W25Q_Sleep(&MEMORY_W25QHandle);
- 244:app/tasks/memory/memory.c ****     if (ioStatus != osOK) return osError;
- 245:app/tasks/memory/memory.c **** 
- 246:app/tasks/memory/memory.c ****     // publish to event manager that memory is initialized
- 247:app/tasks/memory/memory.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
- 248:app/tasks/memory/memory.c ****     osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_INITIALIZE_SUCCESS, .payload.value = MEMO
- 249:app/tasks/memory/memory.c **** 
- 250:app/tasks/memory/memory.c ****     #ifdef DEBUG
- 251:app/tasks/memory/memory.c ****         fprintf(stdout, "First free space address: %x\n", freeSpaceAddress);
- 252:app/tasks/memory/memory.c ****         fprintf(stdout, "Memory task initialized\n");
- 253:app/tasks/memory/memory.c ****     #endif
+ 239:app/tasks/memory/memory.c ****     // read ID
+ 240:app/tasks/memory/memory.c ****     ioStatus = W25Q_ReadID(&MEMORY_W25QHandle, norFlashID);
+ 241:app/tasks/memory/memory.c ****     if (ioStatus != osOK) return osError;
+ 242:app/tasks/memory/memory.c **** 
+ 243:app/tasks/memory/memory.c ****     #ifdef DEBUG
+ 244:app/tasks/memory/memory.c ****         fprintf(stdout, "W25Q NOR MF ID: 0x%x, Device ID: 0x%x\n", norFlashID[0], norFlashID[1]);
+ 245:app/tasks/memory/memory.c ****     #endif
+ 246:app/tasks/memory/memory.c **** 
+ 247:app/tasks/memory/memory.c ****     #ifdef ERASE_CHIP_AND_FLASH_FAT12_BOOT_SECTOR
+ 248:app/tasks/memory/memory.c ****         writeFAT12BootSector(&MEMORY_Actor);
+ 249:app/tasks/memory/memory.c ****     #endif
+ 250:app/tasks/memory/memory.c **** 
+ 251:app/tasks/memory/memory.c ****     // find the first free space address on NOR flash (to append log to)
+ 252:app/tasks/memory/memory.c ****     uint32_t freeSpaceAddress = MEMORY_SeekFreeSpaceAddress();
+ 253:app/tasks/memory/memory.c ****     MEMORY_Actor.logFileTailAddress = freeSpaceAddress;
  254:app/tasks/memory/memory.c **** 
- 255:app/tasks/memory/memory.c ****     TO_STATE(this, MEMORY_SLEEP_STATE);
- 256:app/tasks/memory/memory.c ****     return osOK;
- 257:app/tasks/memory/memory.c ****   }
- 258:app/tasks/memory/memory.c **** };
- 259:app/tasks/memory/memory.c **** 
- 260:app/tasks/memory/memory.c **** static osStatus_t handleSleep(MEMORY_Actor_t *this, message_t *message) {
- 261:app/tasks/memory/memory.c ****   osStatus_t ioStatus = osOK;
+ 255:app/tasks/memory/memory.c ****     // put memory to sleep
+ 256:app/tasks/memory/memory.c ****     ioStatus = W25Q_Sleep(&MEMORY_W25QHandle);
+ 257:app/tasks/memory/memory.c ****     if (ioStatus != osOK) return osError;
+ 258:app/tasks/memory/memory.c **** 
+ 259:app/tasks/memory/memory.c ****     // publish to event manager that memory is initialized
+ 260:app/tasks/memory/memory.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
+ 261:app/tasks/memory/memory.c ****     osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_INITIALIZE_SUCCESS, .payload.value = MEMO
  262:app/tasks/memory/memory.c **** 
- 263:app/tasks/memory/memory.c ****   switch (message->event) {
- 264:app/tasks/memory/memory.c ****     case GLOBAL_TEMPERATURE_HUMIDITY_MEASUREMENTS_READY:
- 265:app/tasks/memory/memory.c ****       // set appropriate event flag
- 266:app/tasks/memory/memory.c ****       osEventFlagsSet(measurementsReadyEventFlags, TEMPERATURE_HUMIDITY_MEASUREMENTS_READY_EVENT_FL
+ 263:app/tasks/memory/memory.c ****     #ifdef DEBUG
+ 264:app/tasks/memory/memory.c ****         fprintf(stdout, "First free space address: %x\n", freeSpaceAddress);
+ 265:app/tasks/memory/memory.c ****         fprintf(stdout, "Memory task initialized\n");
+ 266:app/tasks/memory/memory.c ****     #endif
  267:app/tasks/memory/memory.c **** 
- 268:app/tasks/memory/memory.c ****       // if both measurements are ready, emit write to the memory message
- 269:app/tasks/memory/memory.c ****       publishMemoryWriteOnMeasurementsReady(this);
- 270:app/tasks/memory/memory.c **** 
- 271:app/tasks/memory/memory.c ****       TO_STATE(this, MEMORY_SLEEP_STATE);
- 272:app/tasks/memory/memory.c ****       return osOK;
- 273:app/tasks/memory/memory.c **** 
- 274:app/tasks/memory/memory.c ****     case GLOBAL_LIGHT_MEASUREMENTS_READY:
- 275:app/tasks/memory/memory.c ****       // set appropriate event flag
- 276:app/tasks/memory/memory.c ****       osEventFlagsSet(measurementsReadyEventFlags, LIGHT_MEASUREMENTS_READY_EVENT_FLAG);
- 277:app/tasks/memory/memory.c **** 
- 278:app/tasks/memory/memory.c ****       // if both measurements are ready, emit write to the memory message
- 279:app/tasks/memory/memory.c ****       publishMemoryWriteOnMeasurementsReady(this);
+ 268:app/tasks/memory/memory.c ****     TO_STATE(this, MEMORY_SLEEP_STATE);
+ 269:app/tasks/memory/memory.c ****     return osOK;
+ 270:app/tasks/memory/memory.c ****   }
+ 271:app/tasks/memory/memory.c **** };
+ 272:app/tasks/memory/memory.c **** 
+ 273:app/tasks/memory/memory.c **** static osStatus_t handleSleep(MEMORY_Actor_t *this, message_t *message) {
+ 274:app/tasks/memory/memory.c ****   osStatus_t ioStatus = osOK;
+ 275:app/tasks/memory/memory.c **** 
+ 276:app/tasks/memory/memory.c ****   switch (message->event) {
+ 277:app/tasks/memory/memory.c ****     case GLOBAL_TEMPERATURE_HUMIDITY_MEASUREMENTS_READY:
+ 278:app/tasks/memory/memory.c ****       // set appropriate event flag
+ 279:app/tasks/memory/memory.c ****       osEventFlagsSet(measurementsReadyEventFlags, TEMPERATURE_HUMIDITY_MEASUREMENTS_READY_EVENT_FL
  280:app/tasks/memory/memory.c **** 
- 281:app/tasks/memory/memory.c ****       TO_STATE(this, MEMORY_SLEEP_STATE);
- 282:app/tasks/memory/memory.c ****       return osOK;
+ 281:app/tasks/memory/memory.c ****       // if both measurements are ready, emit write to the memory message
+ 282:app/tasks/memory/memory.c ****       publishMemoryWriteOnMeasurementsReady(this);
  283:app/tasks/memory/memory.c **** 
- 284:app/tasks/memory/memory.c ****     case MEMORY_MEASUREMENTS_WRITE:
- 285:app/tasks/memory/memory.c ****       // wake up the chip
- 286:app/tasks/memory/memory.c ****       W25Q_WakeUp(&MEMORY_W25QHandle);
- 287:app/tasks/memory/memory.c **** 
- 288:app/tasks/memory/memory.c ****       // save measurements to the memory, increment log tail address
- 289:app/tasks/memory/memory.c ****       ioStatus = appendMeasurementsToNORFlashLogTail(this);
+ 284:app/tasks/memory/memory.c ****       TO_STATE(this, MEMORY_SLEEP_STATE);
+ 285:app/tasks/memory/memory.c ****       return osOK;
+ 286:app/tasks/memory/memory.c **** 
+ 287:app/tasks/memory/memory.c ****     case GLOBAL_LIGHT_MEASUREMENTS_READY:
+ 288:app/tasks/memory/memory.c ****       // set appropriate event flag
+ 289:app/tasks/memory/memory.c ****       osEventFlagsSet(measurementsReadyEventFlags, LIGHT_MEASUREMENTS_READY_EVENT_FLAG);
  290:app/tasks/memory/memory.c **** 
- 291:app/tasks/memory/memory.c ****       osMessageQueuePut(this->super.osMessageQueueId, &(message_t) {GLOBAL_MEASUREMENTS_WRITE_SUCCE
- 292:app/tasks/memory/memory.c **** 
- 293:app/tasks/memory/memory.c ****       TO_STATE(this, MEMORY_WRITE_STATE);
- 294:app/tasks/memory/memory.c ****       return ioStatus;
- 295:app/tasks/memory/memory.c **** 
-ARM GAS  /tmp/ccaLOqDG.s 			page 7
+ 291:app/tasks/memory/memory.c ****       // if both measurements are ready, emit write to the memory message
+ 292:app/tasks/memory/memory.c ****       publishMemoryWriteOnMeasurementsReady(this);
+ 293:app/tasks/memory/memory.c **** 
+ 294:app/tasks/memory/memory.c ****       TO_STATE(this, MEMORY_SLEEP_STATE);
+ 295:app/tasks/memory/memory.c ****       return osOK;
+ARM GAS  /tmp/cc6wBZaU.s 			page 7
 
 
- 296:app/tasks/memory/memory.c ****     default:
- 297:app/tasks/memory/memory.c ****       TO_STATE(this, MEMORY_SLEEP_STATE);
- 298:app/tasks/memory/memory.c ****       return osOK;
- 299:app/tasks/memory/memory.c ****   }
- 300:app/tasks/memory/memory.c **** };
- 301:app/tasks/memory/memory.c **** 
- 302:app/tasks/memory/memory.c **** static osStatus_t handleWrite(MEMORY_Actor_t *this, message_t *message) {
-  39              		.loc 1 302 73 view -0
+ 296:app/tasks/memory/memory.c **** 
+ 297:app/tasks/memory/memory.c ****     case MEMORY_MEASUREMENTS_WRITE:
+ 298:app/tasks/memory/memory.c ****       // wake up the chip
+ 299:app/tasks/memory/memory.c ****       W25Q_WakeUp(&MEMORY_W25QHandle);
+ 300:app/tasks/memory/memory.c **** 
+ 301:app/tasks/memory/memory.c ****       // save measurements to the memory, increment log tail address
+ 302:app/tasks/memory/memory.c ****       ioStatus = appendMeasurementsToNORFlashLogTail(this);
+ 303:app/tasks/memory/memory.c **** 
+ 304:app/tasks/memory/memory.c ****       osMessageQueuePut(this->super.osMessageQueueId, &(message_t) {GLOBAL_MEASUREMENTS_WRITE_SUCCE
+ 305:app/tasks/memory/memory.c **** 
+ 306:app/tasks/memory/memory.c ****       TO_STATE(this, MEMORY_WRITE_STATE);
+ 307:app/tasks/memory/memory.c ****       return ioStatus;
+ 308:app/tasks/memory/memory.c **** 
+ 309:app/tasks/memory/memory.c ****     default:
+ 310:app/tasks/memory/memory.c ****       TO_STATE(this, MEMORY_SLEEP_STATE);
+ 311:app/tasks/memory/memory.c ****       return osOK;
+ 312:app/tasks/memory/memory.c ****   }
+ 313:app/tasks/memory/memory.c **** };
+ 314:app/tasks/memory/memory.c **** 
+ 315:app/tasks/memory/memory.c **** static osStatus_t handleWrite(MEMORY_Actor_t *this, message_t *message) {
+  39              		.loc 1 315 73 view -0
   40              		.cfi_startproc
   41              		@ args = 0, pretend = 0, frame = 0
   42              		@ frame_needed = 0, uses_anonymous_args = 0
-  43              		.loc 1 302 73 is_stmt 0 view .LVU1
+  43              		.loc 1 315 73 is_stmt 0 view .LVU1
   44 0000 38B5     		push	{r3, r4, r5, lr}
   45              	.LCFI0:
   46              		.cfi_def_cfa_offset 16
@@ -381,106 +394,106 @@ ARM GAS  /tmp/ccaLOqDG.s 			page 1
   49              		.cfi_offset 5, -8
   50              		.cfi_offset 14, -4
   51 0002 0446     		mov	r4, r0
- 303:app/tasks/memory/memory.c ****   osStatus_t ioStatus = osOK;
-  52              		.loc 1 303 3 is_stmt 1 view .LVU2
+ 316:app/tasks/memory/memory.c ****   osStatus_t ioStatus = osOK;
+  52              		.loc 1 316 3 is_stmt 1 view .LVU2
   53              	.LVL1:
- 304:app/tasks/memory/memory.c **** 
- 305:app/tasks/memory/memory.c ****   switch (message->event) {
-  54              		.loc 1 305 3 view .LVU3
-  55              		.loc 1 305 18 is_stmt 0 view .LVU4
+ 317:app/tasks/memory/memory.c **** 
+ 318:app/tasks/memory/memory.c ****   switch (message->event) {
+  54              		.loc 1 318 3 view .LVU3
+  55              		.loc 1 318 18 is_stmt 0 view .LVU4
   56 0004 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
-  57              		.loc 1 305 3 view .LVU5
+  57              		.loc 1 318 3 view .LVU5
   58 0006 062B     		cmp	r3, #6
   59 0008 0CD0     		beq	.L5
- 306:app/tasks/memory/memory.c ****     case GLOBAL_MEASUREMENTS_WRITE_SUCCESS:
- 307:app/tasks/memory/memory.c ****       ioStatus = W25Q_Sleep(&MEMORY_W25QHandle);
- 308:app/tasks/memory/memory.c **** 
- 309:app/tasks/memory/memory.c ****       TO_STATE(this, MEMORY_SLEEP_STATE);
- 310:app/tasks/memory/memory.c ****       return ioStatus;
- 311:app/tasks/memory/memory.c **** 
- 312:app/tasks/memory/memory.c ****     default:
- 313:app/tasks/memory/memory.c ****       TO_STATE(this, MEMORY_WRITE_STATE);
-  60              		.loc 1 313 7 is_stmt 1 view .LVU6
-  61              		.loc 1 313 7 view .LVU7
+ 319:app/tasks/memory/memory.c ****     case GLOBAL_MEASUREMENTS_WRITE_SUCCESS:
+ 320:app/tasks/memory/memory.c ****       ioStatus = W25Q_Sleep(&MEMORY_W25QHandle);
+ 321:app/tasks/memory/memory.c **** 
+ 322:app/tasks/memory/memory.c ****       TO_STATE(this, MEMORY_SLEEP_STATE);
+ 323:app/tasks/memory/memory.c ****       return ioStatus;
+ 324:app/tasks/memory/memory.c **** 
+ 325:app/tasks/memory/memory.c ****     default:
+ 326:app/tasks/memory/memory.c ****       TO_STATE(this, MEMORY_WRITE_STATE);
+  60              		.loc 1 326 7 is_stmt 1 view .LVU6
+  61              		.loc 1 326 7 view .LVU7
   62 000a 0223     		movs	r3, #2
   63 000c 0374     		strb	r3, [r0, #16]
-  64              		.loc 1 313 7 view .LVU8
+  64              		.loc 1 326 7 view .LVU8
+ARM GAS  /tmp/cc6wBZaU.s 			page 8
+
+
   65 000e 0D4B     		ldr	r3, .L6
   66 0010 1868     		ldr	r0, [r3]
   67              	.LVL2:
-  68              		.loc 1 313 7 is_stmt 0 view .LVU9
+  68              		.loc 1 326 7 is_stmt 0 view .LVU9
   69 0012 0D4B     		ldr	r3, .L6+4
   70 0014 2268     		ldr	r2, [r4]
   71 0016 0D49     		ldr	r1, .L6+8
   72              	.LVL3:
-  73              		.loc 1 313 7 view .LVU10
+  73              		.loc 1 326 7 view .LVU10
   74 0018 8068     		ldr	r0, [r0, #8]
   75 001a FFF7FEFF 		bl	fprintf
   76              	.LVL4:
-  77              		.loc 1 313 7 is_stmt 1 view .LVU11
-ARM GAS  /tmp/ccaLOqDG.s 			page 8
-
-
-  78              		.loc 1 313 41 view .LVU12
- 314:app/tasks/memory/memory.c ****       return osOK;
-  79              		.loc 1 314 7 view .LVU13
-  80              		.loc 1 314 14 is_stmt 0 view .LVU14
+  77              		.loc 1 326 7 is_stmt 1 view .LVU11
+  78              		.loc 1 326 41 view .LVU12
+ 327:app/tasks/memory/memory.c ****       return osOK;
+  79              		.loc 1 327 7 view .LVU13
+  80              		.loc 1 327 14 is_stmt 0 view .LVU14
   81 001e 0025     		movs	r5, #0
   82              	.LVL5:
   83              	.L1:
- 315:app/tasks/memory/memory.c ****   }
- 316:app/tasks/memory/memory.c **** }
-  84              		.loc 1 316 1 view .LVU15
+ 328:app/tasks/memory/memory.c ****   }
+ 329:app/tasks/memory/memory.c **** }
+  84              		.loc 1 329 1 view .LVU15
   85 0020 2846     		mov	r0, r5
   86 0022 38BD     		pop	{r3, r4, r5, pc}
   87              	.LVL6:
   88              	.L5:
- 307:app/tasks/memory/memory.c **** 
-  89              		.loc 1 307 7 is_stmt 1 view .LVU16
- 307:app/tasks/memory/memory.c **** 
-  90              		.loc 1 307 18 is_stmt 0 view .LVU17
+ 320:app/tasks/memory/memory.c **** 
+  89              		.loc 1 320 7 is_stmt 1 view .LVU16
+ 320:app/tasks/memory/memory.c **** 
+  90              		.loc 1 320 18 is_stmt 0 view .LVU17
   91 0024 0A48     		ldr	r0, .L6+12
   92              	.LVL7:
- 307:app/tasks/memory/memory.c **** 
-  93              		.loc 1 307 18 view .LVU18
+ 320:app/tasks/memory/memory.c **** 
+  93              		.loc 1 320 18 view .LVU18
   94 0026 FFF7FEFF 		bl	W25Q_Sleep
   95              	.LVL8:
- 307:app/tasks/memory/memory.c **** 
-  96              		.loc 1 307 16 view .LVU19
+ 320:app/tasks/memory/memory.c **** 
+  96              		.loc 1 320 16 view .LVU19
   97 002a 0546     		mov	r5, r0
   98              	.LVL9:
- 309:app/tasks/memory/memory.c ****       return ioStatus;
-  99              		.loc 1 309 7 is_stmt 1 view .LVU20
- 309:app/tasks/memory/memory.c ****       return ioStatus;
- 100              		.loc 1 309 7 view .LVU21
+ 322:app/tasks/memory/memory.c ****       return ioStatus;
+  99              		.loc 1 322 7 is_stmt 1 view .LVU20
+ 322:app/tasks/memory/memory.c ****       return ioStatus;
+ 100              		.loc 1 322 7 view .LVU21
  101 002c 0123     		movs	r3, #1
  102 002e 2374     		strb	r3, [r4, #16]
- 309:app/tasks/memory/memory.c ****       return ioStatus;
- 103              		.loc 1 309 7 view .LVU22
+ 322:app/tasks/memory/memory.c ****       return ioStatus;
+ 103              		.loc 1 322 7 view .LVU22
  104 0030 044B     		ldr	r3, .L6
  105 0032 1868     		ldr	r0, [r3]
  106              	.LVL10:
- 309:app/tasks/memory/memory.c ****       return ioStatus;
- 107              		.loc 1 309 7 is_stmt 0 view .LVU23
+ 322:app/tasks/memory/memory.c ****       return ioStatus;
+ 107              		.loc 1 322 7 is_stmt 0 view .LVU23
  108 0034 074B     		ldr	r3, .L6+16
  109 0036 2268     		ldr	r2, [r4]
  110 0038 0449     		ldr	r1, .L6+8
+ARM GAS  /tmp/cc6wBZaU.s 			page 9
+
+
  111 003a 8068     		ldr	r0, [r0, #8]
  112 003c FFF7FEFF 		bl	fprintf
  113              	.LVL11:
- 309:app/tasks/memory/memory.c ****       return ioStatus;
- 114              		.loc 1 309 7 is_stmt 1 view .LVU24
- 309:app/tasks/memory/memory.c ****       return ioStatus;
- 115              		.loc 1 309 41 view .LVU25
- 310:app/tasks/memory/memory.c **** 
- 116              		.loc 1 310 7 view .LVU26
- 310:app/tasks/memory/memory.c **** 
- 117              		.loc 1 310 14 is_stmt 0 view .LVU27
+ 322:app/tasks/memory/memory.c ****       return ioStatus;
+ 114              		.loc 1 322 7 is_stmt 1 view .LVU24
+ 322:app/tasks/memory/memory.c ****       return ioStatus;
+ 115              		.loc 1 322 41 view .LVU25
+ 323:app/tasks/memory/memory.c **** 
+ 116              		.loc 1 323 7 view .LVU26
+ 323:app/tasks/memory/memory.c **** 
+ 117              		.loc 1 323 14 is_stmt 0 view .LVU27
  118 0040 EEE7     		b	.L1
  119              	.L7:
-ARM GAS  /tmp/ccaLOqDG.s 			page 9
-
-
  120 0042 00BF     		.align	2
  121              	.L6:
  122 0044 00000000 		.word	_impure_ptr
@@ -490,1910 +503,1717 @@ ARM GAS  /tmp/ccaLOqDG.s 			page 1
  126 0054 00000000 		.word	.LC0
  127              		.cfi_endproc
  128              	.LFE148:
- 130              		.section	.rodata.writeFAT12BootSector.str1.4,"aMS",%progbits,1
- 131              		.align	2
- 132              	.LC3:
- 133 0000 6D656D6F 		.ascii	"memory error on chip erase\000"
- 133      72792065 
- 133      72726F72 
- 133      206F6E20 
- 133      63686970 
- 134 001b 00       		.align	2
- 135              	.LC4:
- 136 001c 6D656D6F 		.ascii	"memory error on FAT12 write\000"
- 136      72792065 
- 136      72726F72 
- 136      206F6E20 
- 136      46415431 
- 137              		.align	2
- 138              	.LC5:
- 139 0038 46532046 		.ascii	"FS FAT12 boot sector has been written on NOR Flash\000"
- 139      41543132 
- 139      20626F6F 
- 139      74207365 
- 139      63746F72 
- 140              		.section	.text.writeFAT12BootSector,"ax",%progbits
- 141              		.align	1
- 142              		.syntax unified
- 143              		.thumb
- 144              		.thumb_func
- 145              		.fpu fpv4-sp-d16
- 147              	writeFAT12BootSector:
- 148              	.LVL12:
- 149              	.LFB145:
- 192:app/tasks/memory/memory.c ****   // erase chip
- 150              		.loc 1 192 62 is_stmt 1 view -0
- 151              		.cfi_startproc
- 152              		@ args = 0, pretend = 0, frame = 0
- 153              		@ frame_needed = 0, uses_anonymous_args = 0
- 192:app/tasks/memory/memory.c ****   // erase chip
- 154              		.loc 1 192 62 is_stmt 0 view .LVU29
- 155 0000 10B5     		push	{r4, lr}
- 156              	.LCFI1:
- 157              		.cfi_def_cfa_offset 8
- 158              		.cfi_offset 4, -8
- 159              		.cfi_offset 14, -4
- 194:app/tasks/memory/memory.c ****   if (status != HAL_OK) {
- 160              		.loc 1 194 3 is_stmt 1 view .LVU30
- 194:app/tasks/memory/memory.c ****   if (status != HAL_OK) {
- 161              		.loc 1 194 30 is_stmt 0 view .LVU31
- 162 0002 1648     		ldr	r0, .L15
-ARM GAS  /tmp/ccaLOqDG.s 			page 10
+ 130              		.section	.text.publishMemoryWriteOnMeasurementsReady,"ax",%progbits
+ 131              		.align	1
+ 132              		.syntax unified
+ 133              		.thumb
+ 134              		.thumb_func
+ 135              		.fpu fpv4-sp-d16
+ 137              	publishMemoryWriteOnMeasurementsReady:
+ 138              	.LVL12:
+ 139              	.LFB149:
+ 330:app/tasks/memory/memory.c **** 
+ 331:app/tasks/memory/memory.c **** /**
+ 332:app/tasks/memory/memory.c ****  * @brief Publishes MEMORY_MEASUREMENTS_WRITE message to the memory task on both measurements ready
+ 333:app/tasks/memory/memory.c ****  */
+ 334:app/tasks/memory/memory.c **** static void publishMemoryWriteOnMeasurementsReady(MEMORY_Actor_t *this) {
+ 140              		.loc 1 334 73 is_stmt 1 view -0
+ 141              		.cfi_startproc
+ 142              		@ args = 0, pretend = 0, frame = 16
+ 143              		@ frame_needed = 0, uses_anonymous_args = 0
+ 144              		.loc 1 334 73 is_stmt 0 view .LVU29
+ 145 0000 10B5     		push	{r4, lr}
+ 146              	.LCFI1:
+ 147              		.cfi_def_cfa_offset 8
+ 148              		.cfi_offset 4, -8
+ 149              		.cfi_offset 14, -4
+ 150 0002 84B0     		sub	sp, sp, #16
+ 151              	.LCFI2:
+ 152              		.cfi_def_cfa_offset 24
+ 153 0004 0446     		mov	r4, r0
+ 335:app/tasks/memory/memory.c ****   if (osEventFlagsGet(measurementsReadyEventFlags) == (TEMPERATURE_HUMIDITY_MEASUREMENTS_READY_EVEN
+ 154              		.loc 1 335 3 is_stmt 1 view .LVU30
+ 155              		.loc 1 335 7 is_stmt 0 view .LVU31
+ 156 0006 0D4B     		ldr	r3, .L12
+ 157 0008 1868     		ldr	r0, [r3]
+ 158              	.LVL13:
+ 159              		.loc 1 335 7 view .LVU32
+ARM GAS  /tmp/cc6wBZaU.s 			page 10
 
 
- 163              	.LVL13:
- 194:app/tasks/memory/memory.c ****   if (status != HAL_OK) {
- 164              		.loc 1 194 30 view .LVU32
- 165 0004 FFF7FEFF 		bl	W25Q_EraseChip
- 166              	.LVL14:
- 195:app/tasks/memory/memory.c ****     #ifdef DEBUG
- 167              		.loc 1 195 3 is_stmt 1 view .LVU33
- 195:app/tasks/memory/memory.c ****     #ifdef DEBUG
- 168              		.loc 1 195 6 is_stmt 0 view .LVU34
- 169 0008 90B9     		cbnz	r0, .L13
- 203:app/tasks/memory/memory.c ****   if (status != HAL_OK) {
- 170              		.loc 1 203 3 is_stmt 1 view .LVU35
- 203:app/tasks/memory/memory.c ****   if (status != HAL_OK) {
- 171              		.loc 1 203 12 is_stmt 0 view .LVU36
- 172 000a 4FF49053 		mov	r3, #4608
- 173 000e 0022     		movs	r2, #0
- 174 0010 1349     		ldr	r1, .L15+4
- 175 0012 1248     		ldr	r0, .L15
- 176              	.LVL15:
- 203:app/tasks/memory/memory.c ****   if (status != HAL_OK) {
- 177              		.loc 1 203 12 view .LVU37
- 178 0014 FFF7FEFF 		bl	W25Q_WriteData
- 179              	.LVL16:
- 204:app/tasks/memory/memory.c ****     #ifdef DEBUG
- 180              		.loc 1 204 3 is_stmt 1 view .LVU38
- 204:app/tasks/memory/memory.c ****     #ifdef DEBUG
- 181              		.loc 1 204 6 is_stmt 0 view .LVU39
- 182 0018 0446     		mov	r4, r0
- 183 001a A0B9     		cbnz	r0, .L14
- 212:app/tasks/memory/memory.c ****   #endif
- 184              		.loc 1 212 5 is_stmt 1 view .LVU40
- 212:app/tasks/memory/memory.c ****   #endif
- 185              		.loc 1 212 13 is_stmt 0 view .LVU41
- 186 001c 114B     		ldr	r3, .L15+8
- 187 001e 1B68     		ldr	r3, [r3]
- 212:app/tasks/memory/memory.c ****   #endif
- 188              		.loc 1 212 5 view .LVU42
- 189 0020 9B68     		ldr	r3, [r3, #8]
- 190 0022 3222     		movs	r2, #50
- 191 0024 0121     		movs	r1, #1
- 192 0026 1048     		ldr	r0, .L15+12
- 193              	.LVL17:
- 212:app/tasks/memory/memory.c ****   #endif
- 194              		.loc 1 212 5 view .LVU43
- 195 0028 FFF7FEFF 		bl	fwrite
- 196              	.LVL18:
- 215:app/tasks/memory/memory.c **** }
- 197              		.loc 1 215 3 is_stmt 1 view .LVU44
- 215:app/tasks/memory/memory.c **** }
- 198              		.loc 1 215 10 is_stmt 0 view .LVU45
- 199 002c 2046     		mov	r0, r4
- 200              	.L8:
- 216:app/tasks/memory/memory.c **** 
- 201              		.loc 1 216 1 view .LVU46
- 202 002e 10BD     		pop	{r4, pc}
- 203              	.LVL19:
- 204              	.L13:
-ARM GAS  /tmp/ccaLOqDG.s 			page 11
+ 160 000a FFF7FEFF 		bl	osEventFlagsGet
+ 161              	.LVL14:
+ 162              		.loc 1 335 6 view .LVU33
+ 163 000e 0328     		cmp	r0, #3
+ 164 0010 01D0     		beq	.L11
+ 165              	.L8:
+ 336:app/tasks/memory/memory.c ****     osEventFlagsClear(measurementsReadyEventFlags, TEMPERATURE_HUMIDITY_MEASUREMENTS_READY_EVENT_FL
+ 337:app/tasks/memory/memory.c ****     osMessageQueuePut(this->super.osMessageQueueId, &(message_t) {MEMORY_MEASUREMENTS_WRITE}, 0, 0)
+ 338:app/tasks/memory/memory.c ****   }
+ 339:app/tasks/memory/memory.c **** }
+ 166              		.loc 1 339 1 view .LVU34
+ 167 0012 04B0     		add	sp, sp, #16
+ 168              	.LCFI3:
+ 169              		.cfi_remember_state
+ 170              		.cfi_def_cfa_offset 8
+ 171              		@ sp needed
+ 172 0014 10BD     		pop	{r4, pc}
+ 173              	.LVL15:
+ 174              	.L11:
+ 175              	.LCFI4:
+ 176              		.cfi_restore_state
+ 177              	.LBB2:
+ 336:app/tasks/memory/memory.c ****     osEventFlagsClear(measurementsReadyEventFlags, TEMPERATURE_HUMIDITY_MEASUREMENTS_READY_EVENT_FL
+ 178              		.loc 1 336 5 is_stmt 1 view .LVU35
+ 179 0016 0321     		movs	r1, #3
+ 180 0018 084B     		ldr	r3, .L12
+ 181 001a 1868     		ldr	r0, [r3]
+ 182 001c FFF7FEFF 		bl	osEventFlagsClear
+ 183              	.LVL16:
+ 337:app/tasks/memory/memory.c ****   }
+ 184              		.loc 1 337 5 view .LVU36
+ 337:app/tasks/memory/memory.c ****   }
+ 185              		.loc 1 337 66 is_stmt 0 view .LVU37
+ 186 0020 0022     		movs	r2, #0
+ 187 0022 0192     		str	r2, [sp, #4]
+ 188 0024 0292     		str	r2, [sp, #8]
+ 189 0026 0392     		str	r2, [sp, #12]
+ 190 0028 1C23     		movs	r3, #28
+ 191 002a 8DF80430 		strb	r3, [sp, #4]
+ 337:app/tasks/memory/memory.c ****   }
+ 192              		.loc 1 337 5 view .LVU38
+ 193 002e 1346     		mov	r3, r2
+ 194 0030 01A9     		add	r1, sp, #4
+ 195 0032 A068     		ldr	r0, [r4, #8]
+ 196 0034 FFF7FEFF 		bl	osMessageQueuePut
+ 197              	.LVL17:
+ 198              	.LBE2:
+ 199              		.loc 1 339 1 view .LVU39
+ 200 0038 EBE7     		b	.L8
+ 201              	.L13:
+ 202 003a 00BF     		.align	2
+ 203              	.L12:
+ 204 003c 00000000 		.word	.LANCHOR1
+ 205              		.cfi_endproc
+ 206              	.LFE149:
+ 208              		.section	.rodata.appendMeasurementsToNORFlashLogTail.str1.4,"aMS",%progbits,1
+ 209              		.align	2
+ARM GAS  /tmp/cc6wBZaU.s 			page 11
 
 
- 216:app/tasks/memory/memory.c **** 
- 205              		.loc 1 216 1 view .LVU47
- 206 0030 0446     		mov	r4, r0
- 197:app/tasks/memory/memory.c ****     #endif
- 207              		.loc 1 197 7 is_stmt 1 view .LVU48
- 197:app/tasks/memory/memory.c ****     #endif
- 208              		.loc 1 197 15 is_stmt 0 view .LVU49
- 209 0032 0C4B     		ldr	r3, .L15+8
- 210 0034 1B68     		ldr	r3, [r3]
- 197:app/tasks/memory/memory.c ****     #endif
- 211              		.loc 1 197 7 view .LVU50
- 212 0036 DB68     		ldr	r3, [r3, #12]
- 213 0038 1A22     		movs	r2, #26
- 214 003a 0121     		movs	r1, #1
- 215 003c 0B48     		ldr	r0, .L15+16
- 216              	.LVL20:
- 197:app/tasks/memory/memory.c ****     #endif
- 217              		.loc 1 197 7 view .LVU51
- 218 003e FFF7FEFF 		bl	fwrite
- 219              	.LVL21:
- 199:app/tasks/memory/memory.c ****   }
- 220              		.loc 1 199 5 is_stmt 1 view .LVU52
- 199:app/tasks/memory/memory.c ****   }
- 221              		.loc 1 199 12 is_stmt 0 view .LVU53
- 222 0042 2046     		mov	r0, r4
- 223 0044 F3E7     		b	.L8
- 224              	.LVL22:
- 225              	.L14:
- 206:app/tasks/memory/memory.c ****     #endif
- 226              		.loc 1 206 7 is_stmt 1 view .LVU54
- 206:app/tasks/memory/memory.c ****     #endif
- 227              		.loc 1 206 15 is_stmt 0 view .LVU55
- 228 0046 074B     		ldr	r3, .L15+8
- 229 0048 1B68     		ldr	r3, [r3]
- 206:app/tasks/memory/memory.c ****     #endif
- 230              		.loc 1 206 7 view .LVU56
- 231 004a DB68     		ldr	r3, [r3, #12]
- 232 004c 1B22     		movs	r2, #27
- 233 004e 0121     		movs	r1, #1
- 234 0050 0748     		ldr	r0, .L15+20
- 235              	.LVL23:
- 206:app/tasks/memory/memory.c ****     #endif
- 236              		.loc 1 206 7 view .LVU57
- 237 0052 FFF7FEFF 		bl	fwrite
- 238              	.LVL24:
- 208:app/tasks/memory/memory.c ****   }
- 239              		.loc 1 208 5 is_stmt 1 view .LVU58
- 208:app/tasks/memory/memory.c ****   }
- 240              		.loc 1 208 12 is_stmt 0 view .LVU59
- 241 0056 2046     		mov	r0, r4
- 242 0058 E9E7     		b	.L8
- 243              	.L16:
- 244 005a 00BF     		.align	2
- 245              	.L15:
- 246 005c 00000000 		.word	.LANCHOR0
- 247 0060 00000000 		.word	FAT12_BootSector
- 248 0064 00000000 		.word	_impure_ptr
-ARM GAS  /tmp/ccaLOqDG.s 			page 12
+ 210              	.LC3:
+ 211 0000 4C6F6720 		.ascii	"Log entry to write:\012 timestamp: %ld\012 rawTempe"
+ 211      656E7472 
+ 211      7920746F 
+ 211      20777269 
+ 211      74653A0A 
+ 212 002d 72617475 		.ascii	"rature: 0x%x\012 rawHumidity: 0x%x\012 rawLux: 0x%x"
+ 212      72653A20 
+ 212      30782578 
+ 212      0A207261 
+ 212      7748756D 
+ 213 005a 0A207265 		.ascii	"\012 reserved: %ld\012\000"
+ 213      73657276 
+ 213      65643A20 
+ 213      256C640A 
+ 213      00
+ 214              		.section	.text.appendMeasurementsToNORFlashLogTail,"ax",%progbits
+ 215              		.align	1
+ 216              		.syntax unified
+ 217              		.thumb
+ 218              		.thumb_func
+ 219              		.fpu fpv4-sp-d16
+ 221              	appendMeasurementsToNORFlashLogTail:
+ 222              	.LVL18:
+ 223              	.LFB150:
+ 340:app/tasks/memory/memory.c **** 
+ 341:app/tasks/memory/memory.c **** static osStatus_t appendMeasurementsToNORFlashLogTail(MEMORY_Actor_t *this) {
+ 224              		.loc 1 341 77 is_stmt 1 view -0
+ 225              		.cfi_startproc
+ 226              		@ args = 0, pretend = 0, frame = 16
+ 227              		@ frame_needed = 0, uses_anonymous_args = 0
+ 228              		.loc 1 341 77 is_stmt 0 view .LVU41
+ 229 0000 70B5     		push	{r4, r5, r6, lr}
+ 230              	.LCFI5:
+ 231              		.cfi_def_cfa_offset 16
+ 232              		.cfi_offset 4, -16
+ 233              		.cfi_offset 5, -12
+ 234              		.cfi_offset 6, -8
+ 235              		.cfi_offset 14, -4
+ 236 0002 88B0     		sub	sp, sp, #32
+ 237              	.LCFI6:
+ 238              		.cfi_def_cfa_offset 48
+ 239 0004 0546     		mov	r5, r0
+ 342:app/tasks/memory/memory.c ****   // sensors actors pointers from the system registry
+ 343:app/tasks/memory/memory.c ****   TH_SENS_Actor_t *thSensActor = (TH_SENS_Actor_t *)ACTORS_LIST_SystemRegistry[TEMPERATURE_HUMIDITY
+ 240              		.loc 1 343 3 is_stmt 1 view .LVU42
+ 241              		.loc 1 343 20 is_stmt 0 view .LVU43
+ 242 0006 124B     		ldr	r3, .L16
+ 243 0008 9C69     		ldr	r4, [r3, #24]
+ 244              	.LVL19:
+ 344:app/tasks/memory/memory.c ****   LIGHT_SENS_Actor_t *lightSensorActor = (LIGHT_SENS_Actor_t *)ACTORS_LIST_SystemRegistry[LIGHT_SEN
+ 245              		.loc 1 344 3 is_stmt 1 view .LVU44
+ 246              		.loc 1 344 23 is_stmt 0 view .LVU45
+ 247 000a DE69     		ldr	r6, [r3, #28]
+ 248              	.LVL20:
+ 345:app/tasks/memory/memory.c **** 
+ 346:app/tasks/memory/memory.c ****   // current timestamp in UNIX format
+ARM GAS  /tmp/cc6wBZaU.s 			page 12
 
 
- 249 0068 38000000 		.word	.LC5
- 250 006c 00000000 		.word	.LC3
- 251 0070 1C000000 		.word	.LC4
- 252              		.cfi_endproc
- 253              	.LFE145:
- 255              		.section	.text.publishMemoryWriteOnMeasurementsReady,"ax",%progbits
- 256              		.align	1
- 257              		.syntax unified
- 258              		.thumb
- 259              		.thumb_func
- 260              		.fpu fpv4-sp-d16
- 262              	publishMemoryWriteOnMeasurementsReady:
- 263              	.LVL25:
- 264              	.LFB149:
- 317:app/tasks/memory/memory.c **** 
- 318:app/tasks/memory/memory.c **** /**
- 319:app/tasks/memory/memory.c ****  * @brief Publishes MEMORY_MEASUREMENTS_WRITE message to the memory task on both measurements ready
- 320:app/tasks/memory/memory.c ****  */
- 321:app/tasks/memory/memory.c **** static void publishMemoryWriteOnMeasurementsReady(MEMORY_Actor_t *this) {
- 265              		.loc 1 321 73 is_stmt 1 view -0
- 266              		.cfi_startproc
- 267              		@ args = 0, pretend = 0, frame = 16
- 268              		@ frame_needed = 0, uses_anonymous_args = 0
- 269              		.loc 1 321 73 is_stmt 0 view .LVU61
- 270 0000 10B5     		push	{r4, lr}
- 271              	.LCFI2:
- 272              		.cfi_def_cfa_offset 8
- 273              		.cfi_offset 4, -8
- 274              		.cfi_offset 14, -4
- 275 0002 84B0     		sub	sp, sp, #16
- 276              	.LCFI3:
- 277              		.cfi_def_cfa_offset 24
- 278 0004 0446     		mov	r4, r0
- 322:app/tasks/memory/memory.c ****   if (osEventFlagsGet(measurementsReadyEventFlags) == (TEMPERATURE_HUMIDITY_MEASUREMENTS_READY_EVEN
- 279              		.loc 1 322 3 is_stmt 1 view .LVU62
- 280              		.loc 1 322 7 is_stmt 0 view .LVU63
- 281 0006 0D4B     		ldr	r3, .L21
- 282 0008 1868     		ldr	r0, [r3]
- 283              	.LVL26:
- 284              		.loc 1 322 7 view .LVU64
- 285 000a FFF7FEFF 		bl	osEventFlagsGet
- 286              	.LVL27:
- 287              		.loc 1 322 6 view .LVU65
- 288 000e 0328     		cmp	r0, #3
- 289 0010 01D0     		beq	.L20
- 290              	.L17:
- 323:app/tasks/memory/memory.c ****     osEventFlagsClear(measurementsReadyEventFlags, TEMPERATURE_HUMIDITY_MEASUREMENTS_READY_EVENT_FL
- 324:app/tasks/memory/memory.c ****     osMessageQueuePut(this->super.osMessageQueueId, &(message_t) {MEMORY_MEASUREMENTS_WRITE}, 0, 0)
- 325:app/tasks/memory/memory.c ****   }
- 326:app/tasks/memory/memory.c **** }
- 291              		.loc 1 326 1 view .LVU66
- 292 0012 04B0     		add	sp, sp, #16
- 293              	.LCFI4:
- 294              		.cfi_remember_state
- 295              		.cfi_def_cfa_offset 8
- 296              		@ sp needed
- 297 0014 10BD     		pop	{r4, pc}
-ARM GAS  /tmp/ccaLOqDG.s 			page 13
+ 347:app/tasks/memory/memory.c ****   int32_t timestamp = CRON_GetCurrentUnixTimestamp();
+ 249              		.loc 1 347 3 is_stmt 1 view .LVU46
+ 250              		.loc 1 347 23 is_stmt 0 view .LVU47
+ 251 000c FFF7FEFF 		bl	CRON_GetCurrentUnixTimestamp
+ 252              	.LVL21:
+ 253              		.loc 1 347 23 view .LVU48
+ 254 0010 0246     		mov	r2, r0
+ 255              	.LVL22:
+ 348:app/tasks/memory/memory.c **** 
+ 349:app/tasks/memory/memory.c ****   // create measurements log entry
+ 350:app/tasks/memory/memory.c ****   MEMORY_SensorsMeasurementEntry_t sensorsMeasurementEntry = {
+ 256              		.loc 1 350 3 is_stmt 1 view .LVU49
+ 257              		.loc 1 350 36 is_stmt 0 view .LVU50
+ 258 0012 0490     		str	r0, [sp, #16]
+ 351:app/tasks/memory/memory.c ****           .timestamp = timestamp,
+ 352:app/tasks/memory/memory.c ****           .rawTemperature = thSensActor->rawTemperature,
+ 259              		.loc 1 352 40 view .LVU51
+ 260 0014 638A     		ldrh	r3, [r4, #18]
+ 350:app/tasks/memory/memory.c ****           .timestamp = timestamp,
+ 261              		.loc 1 350 36 view .LVU52
+ 262 0016 ADF81430 		strh	r3, [sp, #20]	@ movhi
+ 353:app/tasks/memory/memory.c ****           .rawHumidity = thSensActor->rawHumidity,
+ 263              		.loc 1 353 37 view .LVU53
+ 264 001a A18A     		ldrh	r1, [r4, #20]
+ 350:app/tasks/memory/memory.c ****           .timestamp = timestamp,
+ 265              		.loc 1 350 36 view .LVU54
+ 266 001c ADF81610 		strh	r1, [sp, #22]	@ movhi
+ 354:app/tasks/memory/memory.c ****           .rawLux = lightSensorActor->rawLux,
+ 267              		.loc 1 354 37 view .LVU55
+ 268 0020 768A     		ldrh	r6, [r6, #18]
+ 269              	.LVL23:
+ 350:app/tasks/memory/memory.c ****           .timestamp = timestamp,
+ 270              		.loc 1 350 36 view .LVU56
+ 271 0022 ADF81860 		strh	r6, [sp, #24]	@ movhi
+ 272 0026 0024     		movs	r4, #0
+ 273              	.LVL24:
+ 350:app/tasks/memory/memory.c ****           .timestamp = timestamp,
+ 274              		.loc 1 350 36 view .LVU57
+ 275 0028 ADF81A40 		strh	r4, [sp, #26]	@ movhi
+ 276 002c ADF81C40 		strh	r4, [sp, #28]	@ movhi
+ 355:app/tasks/memory/memory.c ****           .reserved = 0x00000000
+ 356:app/tasks/memory/memory.c ****   };
+ 357:app/tasks/memory/memory.c **** 
+ 358:app/tasks/memory/memory.c ****   #ifdef DEBUG
+ 359:app/tasks/memory/memory.c ****   fprintf(stdout, "Log entry to write:\n timestamp: %ld\n rawTemperature: 0x%x\n rawHumidity: 0x%x\
+ 277              		.loc 1 359 3 is_stmt 1 view .LVU58
+ 278              		.loc 1 359 11 is_stmt 0 view .LVU59
+ 279 0030 0848     		ldr	r0, .L16+4
+ 280              	.LVL25:
+ 281              		.loc 1 359 11 view .LVU60
+ 282 0032 0068     		ldr	r0, [r0]
+ 283 0034 8068     		ldr	r0, [r0, #8]
+ 284              		.loc 1 359 3 view .LVU61
+ 285 0036 0294     		str	r4, [sp, #8]
+ 286 0038 0196     		str	r6, [sp, #4]
+ 287 003a 0091     		str	r1, [sp]
+ 288 003c 0649     		ldr	r1, .L16+8
+ARM GAS  /tmp/cc6wBZaU.s 			page 13
 
 
- 298              	.LVL28:
- 299              	.L20:
- 300              	.LCFI5:
- 301              		.cfi_restore_state
- 302              	.LBB2:
- 323:app/tasks/memory/memory.c ****     osEventFlagsClear(measurementsReadyEventFlags, TEMPERATURE_HUMIDITY_MEASUREMENTS_READY_EVENT_FL
- 303              		.loc 1 323 5 is_stmt 1 view .LVU67
- 304 0016 0321     		movs	r1, #3
- 305 0018 084B     		ldr	r3, .L21
- 306 001a 1868     		ldr	r0, [r3]
- 307 001c FFF7FEFF 		bl	osEventFlagsClear
- 308              	.LVL29:
- 324:app/tasks/memory/memory.c ****   }
- 309              		.loc 1 324 5 view .LVU68
- 324:app/tasks/memory/memory.c ****   }
- 310              		.loc 1 324 66 is_stmt 0 view .LVU69
- 311 0020 0022     		movs	r2, #0
- 312 0022 0192     		str	r2, [sp, #4]
- 313 0024 0292     		str	r2, [sp, #8]
- 314 0026 0392     		str	r2, [sp, #12]
- 315 0028 1C23     		movs	r3, #28
- 316 002a 8DF80430 		strb	r3, [sp, #4]
- 324:app/tasks/memory/memory.c ****   }
- 317              		.loc 1 324 5 view .LVU70
- 318 002e 1346     		mov	r3, r2
- 319 0030 01A9     		add	r1, sp, #4
- 320 0032 A068     		ldr	r0, [r4, #8]
- 321 0034 FFF7FEFF 		bl	osMessageQueuePut
- 322              	.LVL30:
- 323              	.LBE2:
- 324              		.loc 1 326 1 view .LVU71
- 325 0038 EBE7     		b	.L17
- 326              	.L22:
- 327 003a 00BF     		.align	2
- 328              	.L21:
- 329 003c 00000000 		.word	.LANCHOR1
- 330              		.cfi_endproc
- 331              	.LFE149:
- 333              		.section	.rodata.appendMeasurementsToNORFlashLogTail.str1.4,"aMS",%progbits,1
- 334              		.align	2
- 335              	.LC6:
- 336 0000 4C6F6720 		.ascii	"Log entry to write:\012 timestamp: %ld\012 rawTempe"
- 336      656E7472 
- 336      7920746F 
- 336      20777269 
- 336      74653A0A 
- 337 002d 72617475 		.ascii	"rature: 0x%x\012 rawHumidity: 0x%x\012 rawLux: 0x%x"
- 337      72653A20 
- 337      30782578 
- 337      0A207261 
- 337      7748756D 
- 338 005a 0A207265 		.ascii	"\012 reserved: %ld\012\000"
- 338      73657276 
- 338      65643A20 
- 338      256C640A 
- 338      00
- 339              		.section	.text.appendMeasurementsToNORFlashLogTail,"ax",%progbits
-ARM GAS  /tmp/ccaLOqDG.s 			page 14
+ 289 003e FFF7FEFF 		bl	fprintf
+ 290              	.LVL26:
+ 360:app/tasks/memory/memory.c ****             sensorsMeasurementEntry.timestamp,
+ 361:app/tasks/memory/memory.c ****             sensorsMeasurementEntry.rawTemperature,
+ 362:app/tasks/memory/memory.c ****             sensorsMeasurementEntry.rawHumidity,
+ 363:app/tasks/memory/memory.c ****             sensorsMeasurementEntry.rawLux,
+ 364:app/tasks/memory/memory.c ****             sensorsMeasurementEntry.reserved);
+ 365:app/tasks/memory/memory.c ****   #endif
+ 366:app/tasks/memory/memory.c **** 
+ 367:app/tasks/memory/memory.c ****   // write measurements to the memory
+ 368:app/tasks/memory/memory.c ****   osStatus_t ioStatus = osOK; //W25Q_WriteData(&MEMORY_W25QHandle, (uint8_t *) &sensorsMeasurementE
+ 291              		.loc 1 368 3 is_stmt 1 view .LVU62
+ 369:app/tasks/memory/memory.c **** 
+ 370:app/tasks/memory/memory.c ****   // increment tail free space address for the next entry
+ 371:app/tasks/memory/memory.c ****   this->logFileTailAddress += MEMORY_LOG_ENTRY_SIZE;
+ 292              		.loc 1 371 3 view .LVU63
+ 293              		.loc 1 371 28 is_stmt 0 view .LVU64
+ 294 0042 6B69     		ldr	r3, [r5, #20]
+ 295 0044 1033     		adds	r3, r3, #16
+ 296 0046 6B61     		str	r3, [r5, #20]
+ 372:app/tasks/memory/memory.c **** 
+ 373:app/tasks/memory/memory.c ****   return ioStatus;
+ 297              		.loc 1 373 3 is_stmt 1 view .LVU65
+ 374:app/tasks/memory/memory.c **** }
+ 298              		.loc 1 374 1 is_stmt 0 view .LVU66
+ 299 0048 2046     		mov	r0, r4
+ 300 004a 08B0     		add	sp, sp, #32
+ 301              	.LCFI7:
+ 302              		.cfi_def_cfa_offset 16
+ 303              		@ sp needed
+ 304 004c 70BD     		pop	{r4, r5, r6, pc}
+ 305              	.LVL27:
+ 306              	.L17:
+ 307              		.loc 1 374 1 view .LVU67
+ 308 004e 00BF     		.align	2
+ 309              	.L16:
+ 310 0050 00000000 		.word	ACTORS_LIST_SystemRegistry
+ 311 0054 00000000 		.word	_impure_ptr
+ 312 0058 00000000 		.word	.LC3
+ 313              		.cfi_endproc
+ 314              	.LFE150:
+ 316              		.section	.text.handleSleep,"ax",%progbits
+ 317              		.align	1
+ 318              		.syntax unified
+ 319              		.thumb
+ 320              		.thumb_func
+ 321              		.fpu fpv4-sp-d16
+ 323              	handleSleep:
+ 324              	.LVL28:
+ 325              	.LFB147:
+ 273:app/tasks/memory/memory.c ****   osStatus_t ioStatus = osOK;
+ 326              		.loc 1 273 73 is_stmt 1 view -0
+ 327              		.cfi_startproc
+ 328              		@ args = 0, pretend = 0, frame = 16
+ 329              		@ frame_needed = 0, uses_anonymous_args = 0
+ 273:app/tasks/memory/memory.c ****   osStatus_t ioStatus = osOK;
+ 330              		.loc 1 273 73 is_stmt 0 view .LVU69
+ARM GAS  /tmp/cc6wBZaU.s 			page 14
 
 
- 340              		.align	1
- 341              		.syntax unified
- 342              		.thumb
- 343              		.thumb_func
- 344              		.fpu fpv4-sp-d16
- 346              	appendMeasurementsToNORFlashLogTail:
- 347              	.LVL31:
- 348              	.LFB150:
- 327:app/tasks/memory/memory.c **** 
- 328:app/tasks/memory/memory.c **** static osStatus_t appendMeasurementsToNORFlashLogTail(MEMORY_Actor_t *this) {
- 349              		.loc 1 328 77 is_stmt 1 view -0
- 350              		.cfi_startproc
- 351              		@ args = 0, pretend = 0, frame = 16
- 352              		@ frame_needed = 0, uses_anonymous_args = 0
- 353              		.loc 1 328 77 is_stmt 0 view .LVU73
- 354 0000 70B5     		push	{r4, r5, r6, lr}
- 355              	.LCFI6:
- 356              		.cfi_def_cfa_offset 16
- 357              		.cfi_offset 4, -16
- 358              		.cfi_offset 5, -12
- 359              		.cfi_offset 6, -8
- 360              		.cfi_offset 14, -4
- 361 0002 88B0     		sub	sp, sp, #32
- 362              	.LCFI7:
- 363              		.cfi_def_cfa_offset 48
- 364 0004 0546     		mov	r5, r0
- 329:app/tasks/memory/memory.c ****   // sensors actors pointers from the system registry
- 330:app/tasks/memory/memory.c ****   TH_SENS_Actor_t *thSensActor = (TH_SENS_Actor_t *)ACTORS_LIST_SystemRegistry[TEMPERATURE_HUMIDITY
- 365              		.loc 1 330 3 is_stmt 1 view .LVU74
- 366              		.loc 1 330 20 is_stmt 0 view .LVU75
- 367 0006 124B     		ldr	r3, .L25
- 368 0008 9C69     		ldr	r4, [r3, #24]
- 369              	.LVL32:
- 331:app/tasks/memory/memory.c ****   LIGHT_SENS_Actor_t *lightSensorActor = (LIGHT_SENS_Actor_t *)ACTORS_LIST_SystemRegistry[LIGHT_SEN
- 370              		.loc 1 331 3 is_stmt 1 view .LVU76
- 371              		.loc 1 331 23 is_stmt 0 view .LVU77
- 372 000a DE69     		ldr	r6, [r3, #28]
- 373              	.LVL33:
- 332:app/tasks/memory/memory.c **** 
- 333:app/tasks/memory/memory.c ****   // current timestamp in UNIX format
- 334:app/tasks/memory/memory.c ****   int32_t timestamp = CRON_GetCurrentUnixTimestamp();
- 374              		.loc 1 334 3 is_stmt 1 view .LVU78
- 375              		.loc 1 334 23 is_stmt 0 view .LVU79
- 376 000c FFF7FEFF 		bl	CRON_GetCurrentUnixTimestamp
- 377              	.LVL34:
- 378              		.loc 1 334 23 view .LVU80
- 379 0010 0246     		mov	r2, r0
- 380              	.LVL35:
- 335:app/tasks/memory/memory.c **** 
- 336:app/tasks/memory/memory.c ****   // create measurements log entry
- 337:app/tasks/memory/memory.c ****   MEMORY_SensorsMeasurementEntry_t sensorsMeasurementEntry = {
- 381              		.loc 1 337 3 is_stmt 1 view .LVU81
- 382              		.loc 1 337 36 is_stmt 0 view .LVU82
- 383 0012 0490     		str	r0, [sp, #16]
- 338:app/tasks/memory/memory.c ****           .timestamp = timestamp,
- 339:app/tasks/memory/memory.c ****           .rawTemperature = thSensActor->rawTemperature,
- 384              		.loc 1 339 40 view .LVU83
-ARM GAS  /tmp/ccaLOqDG.s 			page 15
+ 331 0000 30B5     		push	{r4, r5, lr}
+ 332              	.LCFI8:
+ 333              		.cfi_def_cfa_offset 12
+ 334              		.cfi_offset 4, -12
+ 335              		.cfi_offset 5, -8
+ 336              		.cfi_offset 14, -4
+ 337 0002 85B0     		sub	sp, sp, #20
+ 338              	.LCFI9:
+ 339              		.cfi_def_cfa_offset 32
+ 340 0004 0446     		mov	r4, r0
+ 274:app/tasks/memory/memory.c **** 
+ 341              		.loc 1 274 3 is_stmt 1 view .LVU70
+ 342              	.LVL29:
+ 276:app/tasks/memory/memory.c ****     case GLOBAL_TEMPERATURE_HUMIDITY_MEASUREMENTS_READY:
+ 343              		.loc 1 276 3 view .LVU71
+ 276:app/tasks/memory/memory.c ****     case GLOBAL_TEMPERATURE_HUMIDITY_MEASUREMENTS_READY:
+ 344              		.loc 1 276 18 is_stmt 0 view .LVU72
+ 345 0006 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
+ 276:app/tasks/memory/memory.c ****     case GLOBAL_TEMPERATURE_HUMIDITY_MEASUREMENTS_READY:
+ 346              		.loc 1 276 3 view .LVU73
+ 347 0008 052B     		cmp	r3, #5
+ 348 000a 25D0     		beq	.L19
+ 349 000c 1C2B     		cmp	r3, #28
+ 350 000e 37D0     		beq	.L20
+ 351 0010 042B     		cmp	r3, #4
+ 352 0012 0BD0     		beq	.L24
+ 353              	.LBB3:
+ 310:app/tasks/memory/memory.c ****       return osOK;
+ 354              		.loc 1 310 7 is_stmt 1 view .LVU74
+ 310:app/tasks/memory/memory.c ****       return osOK;
+ 355              		.loc 1 310 7 view .LVU75
+ 356 0014 0123     		movs	r3, #1
+ 357 0016 0374     		strb	r3, [r0, #16]
+ 310:app/tasks/memory/memory.c ****       return osOK;
+ 358              		.loc 1 310 7 view .LVU76
+ 359 0018 284B     		ldr	r3, .L25
+ 360 001a 1868     		ldr	r0, [r3]
+ 361              	.LVL30:
+ 310:app/tasks/memory/memory.c ****       return osOK;
+ 362              		.loc 1 310 7 is_stmt 0 view .LVU77
+ 363 001c 284B     		ldr	r3, .L25+4
+ 364 001e 2268     		ldr	r2, [r4]
+ 365 0020 2849     		ldr	r1, .L25+8
+ 366              	.LVL31:
+ 310:app/tasks/memory/memory.c ****       return osOK;
+ 367              		.loc 1 310 7 view .LVU78
+ 368 0022 8068     		ldr	r0, [r0, #8]
+ 369 0024 FFF7FEFF 		bl	fprintf
+ 370              	.LVL32:
+ 310:app/tasks/memory/memory.c ****       return osOK;
+ 371              		.loc 1 310 7 is_stmt 1 view .LVU79
+ 310:app/tasks/memory/memory.c ****       return osOK;
+ 372              		.loc 1 310 41 view .LVU80
+ 311:app/tasks/memory/memory.c ****   }
+ 373              		.loc 1 311 7 view .LVU81
+ 311:app/tasks/memory/memory.c ****   }
+ 374              		.loc 1 311 14 is_stmt 0 view .LVU82
+ARM GAS  /tmp/cc6wBZaU.s 			page 15
 
 
- 385 0014 638A     		ldrh	r3, [r4, #18]
- 337:app/tasks/memory/memory.c ****           .timestamp = timestamp,
- 386              		.loc 1 337 36 view .LVU84
- 387 0016 ADF81430 		strh	r3, [sp, #20]	@ movhi
- 340:app/tasks/memory/memory.c ****           .rawHumidity = thSensActor->rawHumidity,
- 388              		.loc 1 340 37 view .LVU85
- 389 001a A18A     		ldrh	r1, [r4, #20]
- 337:app/tasks/memory/memory.c ****           .timestamp = timestamp,
- 390              		.loc 1 337 36 view .LVU86
- 391 001c ADF81610 		strh	r1, [sp, #22]	@ movhi
- 341:app/tasks/memory/memory.c ****           .rawLux = lightSensorActor->rawLux,
- 392              		.loc 1 341 37 view .LVU87
- 393 0020 768A     		ldrh	r6, [r6, #18]
- 394              	.LVL36:
- 337:app/tasks/memory/memory.c ****           .timestamp = timestamp,
- 395              		.loc 1 337 36 view .LVU88
- 396 0022 ADF81860 		strh	r6, [sp, #24]	@ movhi
- 397 0026 0024     		movs	r4, #0
- 398              	.LVL37:
- 337:app/tasks/memory/memory.c ****           .timestamp = timestamp,
- 399              		.loc 1 337 36 view .LVU89
- 400 0028 ADF81A40 		strh	r4, [sp, #26]	@ movhi
- 401 002c ADF81C40 		strh	r4, [sp, #28]	@ movhi
- 342:app/tasks/memory/memory.c ****           .reserved = 0x00000000
- 343:app/tasks/memory/memory.c ****   };
- 344:app/tasks/memory/memory.c **** 
- 345:app/tasks/memory/memory.c ****   #ifdef DEBUG
- 346:app/tasks/memory/memory.c ****   fprintf(stdout, "Log entry to write:\n timestamp: %ld\n rawTemperature: 0x%x\n rawHumidity: 0x%x\
- 402              		.loc 1 346 3 is_stmt 1 view .LVU90
- 403              		.loc 1 346 11 is_stmt 0 view .LVU91
- 404 0030 0848     		ldr	r0, .L25+4
- 405              	.LVL38:
- 406              		.loc 1 346 11 view .LVU92
- 407 0032 0068     		ldr	r0, [r0]
- 408 0034 8068     		ldr	r0, [r0, #8]
- 409              		.loc 1 346 3 view .LVU93
- 410 0036 0294     		str	r4, [sp, #8]
- 411 0038 0196     		str	r6, [sp, #4]
- 412 003a 0091     		str	r1, [sp]
- 413 003c 0649     		ldr	r1, .L25+8
- 414 003e FFF7FEFF 		bl	fprintf
- 415              	.LVL39:
- 347:app/tasks/memory/memory.c ****             sensorsMeasurementEntry.timestamp,
- 348:app/tasks/memory/memory.c ****             sensorsMeasurementEntry.rawTemperature,
- 349:app/tasks/memory/memory.c ****             sensorsMeasurementEntry.rawHumidity,
- 350:app/tasks/memory/memory.c ****             sensorsMeasurementEntry.rawLux,
- 351:app/tasks/memory/memory.c ****             sensorsMeasurementEntry.reserved);
- 352:app/tasks/memory/memory.c ****   #endif
- 353:app/tasks/memory/memory.c **** 
- 354:app/tasks/memory/memory.c ****   // write measurements to the memory
- 355:app/tasks/memory/memory.c ****   osStatus_t ioStatus = osOK; //W25Q_WriteData(&MEMORY_W25QHandle, (uint8_t *) &sensorsMeasurementE
- 416              		.loc 1 355 3 is_stmt 1 view .LVU94
- 356:app/tasks/memory/memory.c **** 
- 357:app/tasks/memory/memory.c ****   // increment tail free space address for the next entry
- 358:app/tasks/memory/memory.c ****   this->logFileTailAddress += MEMORY_LOG_ENTRY_SIZE;
- 417              		.loc 1 358 3 view .LVU95
- 418              		.loc 1 358 28 is_stmt 0 view .LVU96
-ARM GAS  /tmp/ccaLOqDG.s 			page 16
-
-
- 419 0042 6B69     		ldr	r3, [r5, #20]
- 420 0044 1033     		adds	r3, r3, #16
- 421 0046 6B61     		str	r3, [r5, #20]
- 359:app/tasks/memory/memory.c **** 
- 360:app/tasks/memory/memory.c ****   return ioStatus;
- 422              		.loc 1 360 3 is_stmt 1 view .LVU97
- 361:app/tasks/memory/memory.c **** }
- 423              		.loc 1 361 1 is_stmt 0 view .LVU98
- 424 0048 2046     		mov	r0, r4
- 425 004a 08B0     		add	sp, sp, #32
- 426              	.LCFI8:
- 427              		.cfi_def_cfa_offset 16
- 428              		@ sp needed
- 429 004c 70BD     		pop	{r4, r5, r6, pc}
- 430              	.LVL40:
- 431              	.L26:
- 432              		.loc 1 361 1 view .LVU99
- 433 004e 00BF     		.align	2
- 434              	.L25:
- 435 0050 00000000 		.word	ACTORS_LIST_SystemRegistry
- 436 0054 00000000 		.word	_impure_ptr
- 437 0058 00000000 		.word	.LC6
- 438              		.cfi_endproc
- 439              	.LFE150:
- 441              		.section	.text.handleSleep,"ax",%progbits
- 442              		.align	1
- 443              		.syntax unified
- 444              		.thumb
- 445              		.thumb_func
- 446              		.fpu fpv4-sp-d16
- 448              	handleSleep:
- 449              	.LVL41:
- 450              	.LFB147:
- 260:app/tasks/memory/memory.c ****   osStatus_t ioStatus = osOK;
- 451              		.loc 1 260 73 is_stmt 1 view -0
- 452              		.cfi_startproc
- 453              		@ args = 0, pretend = 0, frame = 16
- 454              		@ frame_needed = 0, uses_anonymous_args = 0
- 260:app/tasks/memory/memory.c ****   osStatus_t ioStatus = osOK;
- 455              		.loc 1 260 73 is_stmt 0 view .LVU101
- 456 0000 30B5     		push	{r4, r5, lr}
- 457              	.LCFI9:
- 458              		.cfi_def_cfa_offset 12
- 459              		.cfi_offset 4, -12
- 460              		.cfi_offset 5, -8
- 461              		.cfi_offset 14, -4
- 462 0002 85B0     		sub	sp, sp, #20
- 463              	.LCFI10:
- 464              		.cfi_def_cfa_offset 32
- 465 0004 0446     		mov	r4, r0
- 261:app/tasks/memory/memory.c **** 
- 466              		.loc 1 261 3 is_stmt 1 view .LVU102
- 467              	.LVL42:
- 263:app/tasks/memory/memory.c ****     case GLOBAL_TEMPERATURE_HUMIDITY_MEASUREMENTS_READY:
- 468              		.loc 1 263 3 view .LVU103
- 263:app/tasks/memory/memory.c ****     case GLOBAL_TEMPERATURE_HUMIDITY_MEASUREMENTS_READY:
- 469              		.loc 1 263 18 is_stmt 0 view .LVU104
-ARM GAS  /tmp/ccaLOqDG.s 			page 17
-
-
- 470 0006 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
- 263:app/tasks/memory/memory.c ****     case GLOBAL_TEMPERATURE_HUMIDITY_MEASUREMENTS_READY:
- 471              		.loc 1 263 3 view .LVU105
- 472 0008 052B     		cmp	r3, #5
- 473 000a 25D0     		beq	.L28
- 474 000c 1C2B     		cmp	r3, #28
- 475 000e 37D0     		beq	.L29
- 476 0010 042B     		cmp	r3, #4
- 477 0012 0BD0     		beq	.L33
- 478              	.LBB3:
- 297:app/tasks/memory/memory.c ****       return osOK;
- 479              		.loc 1 297 7 is_stmt 1 view .LVU106
- 297:app/tasks/memory/memory.c ****       return osOK;
- 480              		.loc 1 297 7 view .LVU107
- 481 0014 0123     		movs	r3, #1
- 482 0016 0374     		strb	r3, [r0, #16]
- 297:app/tasks/memory/memory.c ****       return osOK;
- 483              		.loc 1 297 7 view .LVU108
- 484 0018 284B     		ldr	r3, .L34
- 485 001a 1868     		ldr	r0, [r3]
- 486              	.LVL43:
- 297:app/tasks/memory/memory.c ****       return osOK;
- 487              		.loc 1 297 7 is_stmt 0 view .LVU109
- 488 001c 284B     		ldr	r3, .L34+4
- 489 001e 2268     		ldr	r2, [r4]
- 490 0020 2849     		ldr	r1, .L34+8
- 491              	.LVL44:
- 297:app/tasks/memory/memory.c ****       return osOK;
- 492              		.loc 1 297 7 view .LVU110
- 493 0022 8068     		ldr	r0, [r0, #8]
- 494 0024 FFF7FEFF 		bl	fprintf
- 495              	.LVL45:
- 297:app/tasks/memory/memory.c ****       return osOK;
- 496              		.loc 1 297 7 is_stmt 1 view .LVU111
- 297:app/tasks/memory/memory.c ****       return osOK;
- 497              		.loc 1 297 41 view .LVU112
- 298:app/tasks/memory/memory.c ****   }
- 498              		.loc 1 298 7 view .LVU113
- 298:app/tasks/memory/memory.c ****   }
- 499              		.loc 1 298 14 is_stmt 0 view .LVU114
- 500 0028 0025     		movs	r5, #0
- 501 002a 12E0     		b	.L27
- 502              	.LVL46:
- 503              	.L33:
- 266:app/tasks/memory/memory.c **** 
- 504              		.loc 1 266 7 is_stmt 1 view .LVU115
- 505 002c 0121     		movs	r1, #1
- 506              	.LVL47:
- 266:app/tasks/memory/memory.c **** 
- 507              		.loc 1 266 7 is_stmt 0 view .LVU116
- 508 002e 264B     		ldr	r3, .L34+12
- 509 0030 1868     		ldr	r0, [r3]
- 510              	.LVL48:
- 266:app/tasks/memory/memory.c **** 
- 511              		.loc 1 266 7 view .LVU117
- 512 0032 FFF7FEFF 		bl	osEventFlagsSet
- 513              	.LVL49:
-ARM GAS  /tmp/ccaLOqDG.s 			page 18
-
-
- 269:app/tasks/memory/memory.c **** 
- 514              		.loc 1 269 7 is_stmt 1 view .LVU118
- 515 0036 2046     		mov	r0, r4
- 516 0038 FFF7FEFF 		bl	publishMemoryWriteOnMeasurementsReady
- 517              	.LVL50:
- 271:app/tasks/memory/memory.c ****       return osOK;
- 518              		.loc 1 271 7 view .LVU119
- 271:app/tasks/memory/memory.c ****       return osOK;
- 519              		.loc 1 271 7 view .LVU120
- 520 003c 0123     		movs	r3, #1
- 521 003e 2374     		strb	r3, [r4, #16]
- 271:app/tasks/memory/memory.c ****       return osOK;
- 522              		.loc 1 271 7 view .LVU121
- 523 0040 1E4B     		ldr	r3, .L34
- 524 0042 1868     		ldr	r0, [r3]
- 525 0044 1E4B     		ldr	r3, .L34+4
- 526 0046 2268     		ldr	r2, [r4]
- 527 0048 1E49     		ldr	r1, .L34+8
- 528 004a 8068     		ldr	r0, [r0, #8]
- 529 004c FFF7FEFF 		bl	fprintf
- 530              	.LVL51:
- 271:app/tasks/memory/memory.c ****       return osOK;
- 531              		.loc 1 271 7 view .LVU122
- 271:app/tasks/memory/memory.c ****       return osOK;
- 532              		.loc 1 271 41 view .LVU123
- 272:app/tasks/memory/memory.c **** 
- 533              		.loc 1 272 7 view .LVU124
- 272:app/tasks/memory/memory.c **** 
- 534              		.loc 1 272 14 is_stmt 0 view .LVU125
- 535 0050 0025     		movs	r5, #0
- 536              	.LVL52:
- 537              	.L27:
- 272:app/tasks/memory/memory.c **** 
- 538              		.loc 1 272 14 view .LVU126
- 539              	.LBE3:
- 300:app/tasks/memory/memory.c **** 
- 540              		.loc 1 300 1 view .LVU127
- 541 0052 2846     		mov	r0, r5
- 542 0054 05B0     		add	sp, sp, #20
- 543              	.LCFI11:
- 544              		.cfi_remember_state
- 545              		.cfi_def_cfa_offset 12
- 546              		@ sp needed
- 547 0056 30BD     		pop	{r4, r5, pc}
- 548              	.LVL53:
- 549              	.L28:
- 550              	.LCFI12:
- 551              		.cfi_restore_state
- 552              	.LBB4:
- 276:app/tasks/memory/memory.c **** 
- 553              		.loc 1 276 7 is_stmt 1 view .LVU128
- 554 0058 0221     		movs	r1, #2
- 555              	.LVL54:
- 276:app/tasks/memory/memory.c **** 
- 556              		.loc 1 276 7 is_stmt 0 view .LVU129
- 557 005a 1B4B     		ldr	r3, .L34+12
- 558 005c 1868     		ldr	r0, [r3]
-ARM GAS  /tmp/ccaLOqDG.s 			page 19
-
-
- 559              	.LVL55:
- 276:app/tasks/memory/memory.c **** 
- 560              		.loc 1 276 7 view .LVU130
- 561 005e FFF7FEFF 		bl	osEventFlagsSet
- 562              	.LVL56:
+ 375 0028 0025     		movs	r5, #0
+ 376 002a 12E0     		b	.L18
+ 377              	.LVL33:
+ 378              	.L24:
  279:app/tasks/memory/memory.c **** 
- 563              		.loc 1 279 7 is_stmt 1 view .LVU131
- 564 0062 2046     		mov	r0, r4
- 565 0064 FFF7FEFF 		bl	publishMemoryWriteOnMeasurementsReady
- 566              	.LVL57:
- 281:app/tasks/memory/memory.c ****       return osOK;
- 567              		.loc 1 281 7 view .LVU132
- 281:app/tasks/memory/memory.c ****       return osOK;
- 568              		.loc 1 281 7 view .LVU133
- 569 0068 0123     		movs	r3, #1
- 570 006a 2374     		strb	r3, [r4, #16]
- 281:app/tasks/memory/memory.c ****       return osOK;
- 571              		.loc 1 281 7 view .LVU134
- 572 006c 134B     		ldr	r3, .L34
- 573 006e 1868     		ldr	r0, [r3]
- 574 0070 134B     		ldr	r3, .L34+4
- 575 0072 2268     		ldr	r2, [r4]
- 576 0074 1349     		ldr	r1, .L34+8
- 577 0076 8068     		ldr	r0, [r0, #8]
- 578 0078 FFF7FEFF 		bl	fprintf
- 579              	.LVL58:
- 281:app/tasks/memory/memory.c ****       return osOK;
- 580              		.loc 1 281 7 view .LVU135
- 281:app/tasks/memory/memory.c ****       return osOK;
- 581              		.loc 1 281 41 view .LVU136
+ 379              		.loc 1 279 7 is_stmt 1 view .LVU83
+ 380 002c 0121     		movs	r1, #1
+ 381              	.LVL34:
+ 279:app/tasks/memory/memory.c **** 
+ 382              		.loc 1 279 7 is_stmt 0 view .LVU84
+ 383 002e 264B     		ldr	r3, .L25+12
+ 384 0030 1868     		ldr	r0, [r3]
+ 385              	.LVL35:
+ 279:app/tasks/memory/memory.c **** 
+ 386              		.loc 1 279 7 view .LVU85
+ 387 0032 FFF7FEFF 		bl	osEventFlagsSet
+ 388              	.LVL36:
  282:app/tasks/memory/memory.c **** 
- 582              		.loc 1 282 7 view .LVU137
- 282:app/tasks/memory/memory.c **** 
- 583              		.loc 1 282 14 is_stmt 0 view .LVU138
- 584 007c 0025     		movs	r5, #0
- 585 007e E8E7     		b	.L27
- 586              	.LVL59:
- 587              	.L29:
- 286:app/tasks/memory/memory.c **** 
- 588              		.loc 1 286 7 is_stmt 1 view .LVU139
- 589 0080 1248     		ldr	r0, .L34+16
- 590              	.LVL60:
- 286:app/tasks/memory/memory.c **** 
- 591              		.loc 1 286 7 is_stmt 0 view .LVU140
- 592 0082 FFF7FEFF 		bl	W25Q_WakeUp
- 593              	.LVL61:
+ 389              		.loc 1 282 7 is_stmt 1 view .LVU86
+ 390 0036 2046     		mov	r0, r4
+ 391 0038 FFF7FEFF 		bl	publishMemoryWriteOnMeasurementsReady
+ 392              	.LVL37:
+ 284:app/tasks/memory/memory.c ****       return osOK;
+ 393              		.loc 1 284 7 view .LVU87
+ 284:app/tasks/memory/memory.c ****       return osOK;
+ 394              		.loc 1 284 7 view .LVU88
+ 395 003c 0123     		movs	r3, #1
+ 396 003e 2374     		strb	r3, [r4, #16]
+ 284:app/tasks/memory/memory.c ****       return osOK;
+ 397              		.loc 1 284 7 view .LVU89
+ 398 0040 1E4B     		ldr	r3, .L25
+ 399 0042 1868     		ldr	r0, [r3]
+ 400 0044 1E4B     		ldr	r3, .L25+4
+ 401 0046 2268     		ldr	r2, [r4]
+ 402 0048 1E49     		ldr	r1, .L25+8
+ 403 004a 8068     		ldr	r0, [r0, #8]
+ 404 004c FFF7FEFF 		bl	fprintf
+ 405              	.LVL38:
+ 284:app/tasks/memory/memory.c ****       return osOK;
+ 406              		.loc 1 284 7 view .LVU90
+ 284:app/tasks/memory/memory.c ****       return osOK;
+ 407              		.loc 1 284 41 view .LVU91
+ 285:app/tasks/memory/memory.c **** 
+ 408              		.loc 1 285 7 view .LVU92
+ 285:app/tasks/memory/memory.c **** 
+ 409              		.loc 1 285 14 is_stmt 0 view .LVU93
+ 410 0050 0025     		movs	r5, #0
+ 411              	.LVL39:
+ 412              	.L18:
+ 285:app/tasks/memory/memory.c **** 
+ 413              		.loc 1 285 14 view .LVU94
+ 414              	.LBE3:
+ 313:app/tasks/memory/memory.c **** 
+ 415              		.loc 1 313 1 view .LVU95
+ 416 0052 2846     		mov	r0, r5
+ 417 0054 05B0     		add	sp, sp, #20
+ 418              	.LCFI10:
+ARM GAS  /tmp/cc6wBZaU.s 			page 16
+
+
+ 419              		.cfi_remember_state
+ 420              		.cfi_def_cfa_offset 12
+ 421              		@ sp needed
+ 422 0056 30BD     		pop	{r4, r5, pc}
+ 423              	.LVL40:
+ 424              	.L19:
+ 425              	.LCFI11:
+ 426              		.cfi_restore_state
+ 427              	.LBB4:
  289:app/tasks/memory/memory.c **** 
- 594              		.loc 1 289 7 is_stmt 1 view .LVU141
+ 428              		.loc 1 289 7 is_stmt 1 view .LVU96
+ 429 0058 0221     		movs	r1, #2
+ 430              	.LVL41:
  289:app/tasks/memory/memory.c **** 
- 595              		.loc 1 289 18 is_stmt 0 view .LVU142
- 596 0086 2046     		mov	r0, r4
- 597 0088 FFF7FEFF 		bl	appendMeasurementsToNORFlashLogTail
- 598              	.LVL62:
- 599 008c 0546     		mov	r5, r0
- 600              	.LVL63:
- 291:app/tasks/memory/memory.c **** 
- 601              		.loc 1 291 7 is_stmt 1 view .LVU143
-ARM GAS  /tmp/ccaLOqDG.s 			page 20
+ 431              		.loc 1 289 7 is_stmt 0 view .LVU97
+ 432 005a 1B4B     		ldr	r3, .L25+12
+ 433 005c 1868     		ldr	r0, [r3]
+ 434              	.LVL42:
+ 289:app/tasks/memory/memory.c **** 
+ 435              		.loc 1 289 7 view .LVU98
+ 436 005e FFF7FEFF 		bl	osEventFlagsSet
+ 437              	.LVL43:
+ 292:app/tasks/memory/memory.c **** 
+ 438              		.loc 1 292 7 is_stmt 1 view .LVU99
+ 439 0062 2046     		mov	r0, r4
+ 440 0064 FFF7FEFF 		bl	publishMemoryWriteOnMeasurementsReady
+ 441              	.LVL44:
+ 294:app/tasks/memory/memory.c ****       return osOK;
+ 442              		.loc 1 294 7 view .LVU100
+ 294:app/tasks/memory/memory.c ****       return osOK;
+ 443              		.loc 1 294 7 view .LVU101
+ 444 0068 0123     		movs	r3, #1
+ 445 006a 2374     		strb	r3, [r4, #16]
+ 294:app/tasks/memory/memory.c ****       return osOK;
+ 446              		.loc 1 294 7 view .LVU102
+ 447 006c 134B     		ldr	r3, .L25
+ 448 006e 1868     		ldr	r0, [r3]
+ 449 0070 134B     		ldr	r3, .L25+4
+ 450 0072 2268     		ldr	r2, [r4]
+ 451 0074 1349     		ldr	r1, .L25+8
+ 452 0076 8068     		ldr	r0, [r0, #8]
+ 453 0078 FFF7FEFF 		bl	fprintf
+ 454              	.LVL45:
+ 294:app/tasks/memory/memory.c ****       return osOK;
+ 455              		.loc 1 294 7 view .LVU103
+ 294:app/tasks/memory/memory.c ****       return osOK;
+ 456              		.loc 1 294 41 view .LVU104
+ 295:app/tasks/memory/memory.c **** 
+ 457              		.loc 1 295 7 view .LVU105
+ 295:app/tasks/memory/memory.c **** 
+ 458              		.loc 1 295 14 is_stmt 0 view .LVU106
+ 459 007c 0025     		movs	r5, #0
+ 460 007e E8E7     		b	.L18
+ 461              	.LVL46:
+ 462              	.L20:
+ 299:app/tasks/memory/memory.c **** 
+ 463              		.loc 1 299 7 is_stmt 1 view .LVU107
+ARM GAS  /tmp/cc6wBZaU.s 			page 17
 
 
- 291:app/tasks/memory/memory.c **** 
- 602              		.loc 1 291 68 is_stmt 0 view .LVU144
- 603 008e 0022     		movs	r2, #0
- 604 0090 0192     		str	r2, [sp, #4]
- 605 0092 0292     		str	r2, [sp, #8]
- 606 0094 0392     		str	r2, [sp, #12]
- 607 0096 0623     		movs	r3, #6
- 608 0098 8DF80430 		strb	r3, [sp, #4]
- 291:app/tasks/memory/memory.c **** 
- 609              		.loc 1 291 7 view .LVU145
- 610 009c 1346     		mov	r3, r2
- 611 009e 01A9     		add	r1, sp, #4
- 612 00a0 A068     		ldr	r0, [r4, #8]
- 613              	.LVL64:
- 291:app/tasks/memory/memory.c **** 
- 614              		.loc 1 291 7 view .LVU146
- 615 00a2 FFF7FEFF 		bl	osMessageQueuePut
- 616              	.LVL65:
- 293:app/tasks/memory/memory.c ****       return ioStatus;
- 617              		.loc 1 293 7 is_stmt 1 view .LVU147
- 293:app/tasks/memory/memory.c ****       return ioStatus;
- 618              		.loc 1 293 7 view .LVU148
- 619 00a6 0223     		movs	r3, #2
- 620 00a8 2374     		strb	r3, [r4, #16]
- 293:app/tasks/memory/memory.c ****       return ioStatus;
- 621              		.loc 1 293 7 view .LVU149
- 622 00aa 044B     		ldr	r3, .L34
- 623 00ac 1868     		ldr	r0, [r3]
- 624 00ae 084B     		ldr	r3, .L34+20
- 625 00b0 2268     		ldr	r2, [r4]
- 626 00b2 0449     		ldr	r1, .L34+8
- 627 00b4 8068     		ldr	r0, [r0, #8]
- 628 00b6 FFF7FEFF 		bl	fprintf
- 629              	.LVL66:
- 293:app/tasks/memory/memory.c ****       return ioStatus;
- 630              		.loc 1 293 7 view .LVU150
- 293:app/tasks/memory/memory.c ****       return ioStatus;
- 631              		.loc 1 293 41 view .LVU151
- 294:app/tasks/memory/memory.c **** 
- 632              		.loc 1 294 7 view .LVU152
- 294:app/tasks/memory/memory.c **** 
- 633              		.loc 1 294 14 is_stmt 0 view .LVU153
- 634 00ba CAE7     		b	.L27
- 635              	.L35:
- 636              		.align	2
- 637              	.L34:
- 638 00bc 00000000 		.word	_impure_ptr
- 639 00c0 00000000 		.word	.LC0
- 640 00c4 14000000 		.word	.LC1
- 641 00c8 00000000 		.word	.LANCHOR1
- 642 00cc 00000000 		.word	.LANCHOR0
- 643 00d0 20000000 		.word	.LC2
- 644              	.LBE4:
- 645              		.cfi_endproc
- 646              	.LFE147:
- 648              		.section	.rodata.MEMORY_Task.str1.4,"aMS",%progbits,1
- 649              		.align	2
-ARM GAS  /tmp/ccaLOqDG.s 			page 21
+ 464 0080 1248     		ldr	r0, .L25+16
+ 465              	.LVL47:
+ 299:app/tasks/memory/memory.c **** 
+ 466              		.loc 1 299 7 is_stmt 0 view .LVU108
+ 467 0082 FFF7FEFF 		bl	W25Q_WakeUp
+ 468              	.LVL48:
+ 302:app/tasks/memory/memory.c **** 
+ 469              		.loc 1 302 7 is_stmt 1 view .LVU109
+ 302:app/tasks/memory/memory.c **** 
+ 470              		.loc 1 302 18 is_stmt 0 view .LVU110
+ 471 0086 2046     		mov	r0, r4
+ 472 0088 FFF7FEFF 		bl	appendMeasurementsToNORFlashLogTail
+ 473              	.LVL49:
+ 474 008c 0546     		mov	r5, r0
+ 475              	.LVL50:
+ 304:app/tasks/memory/memory.c **** 
+ 476              		.loc 1 304 7 is_stmt 1 view .LVU111
+ 304:app/tasks/memory/memory.c **** 
+ 477              		.loc 1 304 68 is_stmt 0 view .LVU112
+ 478 008e 0022     		movs	r2, #0
+ 479 0090 0192     		str	r2, [sp, #4]
+ 480 0092 0292     		str	r2, [sp, #8]
+ 481 0094 0392     		str	r2, [sp, #12]
+ 482 0096 0623     		movs	r3, #6
+ 483 0098 8DF80430 		strb	r3, [sp, #4]
+ 304:app/tasks/memory/memory.c **** 
+ 484              		.loc 1 304 7 view .LVU113
+ 485 009c 1346     		mov	r3, r2
+ 486 009e 01A9     		add	r1, sp, #4
+ 487 00a0 A068     		ldr	r0, [r4, #8]
+ 488              	.LVL51:
+ 304:app/tasks/memory/memory.c **** 
+ 489              		.loc 1 304 7 view .LVU114
+ 490 00a2 FFF7FEFF 		bl	osMessageQueuePut
+ 491              	.LVL52:
+ 306:app/tasks/memory/memory.c ****       return ioStatus;
+ 492              		.loc 1 306 7 is_stmt 1 view .LVU115
+ 306:app/tasks/memory/memory.c ****       return ioStatus;
+ 493              		.loc 1 306 7 view .LVU116
+ 494 00a6 0223     		movs	r3, #2
+ 495 00a8 2374     		strb	r3, [r4, #16]
+ 306:app/tasks/memory/memory.c ****       return ioStatus;
+ 496              		.loc 1 306 7 view .LVU117
+ 497 00aa 044B     		ldr	r3, .L25
+ 498 00ac 1868     		ldr	r0, [r3]
+ 499 00ae 084B     		ldr	r3, .L25+20
+ 500 00b0 2268     		ldr	r2, [r4]
+ 501 00b2 0449     		ldr	r1, .L25+8
+ 502 00b4 8068     		ldr	r0, [r0, #8]
+ 503 00b6 FFF7FEFF 		bl	fprintf
+ 504              	.LVL53:
+ 306:app/tasks/memory/memory.c ****       return ioStatus;
+ 505              		.loc 1 306 7 view .LVU118
+ 306:app/tasks/memory/memory.c ****       return ioStatus;
+ 506              		.loc 1 306 41 view .LVU119
+ 307:app/tasks/memory/memory.c **** 
+ 507              		.loc 1 307 7 view .LVU120
+ARM GAS  /tmp/cc6wBZaU.s 			page 18
 
 
- 650              	.LC7:
- 651 0000 4D454D4F 		.ascii	"MEMORY_STATE_ERROR\000"
- 651      52595F53 
- 651      54415445 
- 651      5F455252 
- 651      4F5200
- 652              		.section	.text.MEMORY_Task,"ax",%progbits
- 653              		.align	1
- 654              		.global	MEMORY_Task
- 655              		.syntax unified
- 656              		.thumb
- 657              		.thumb_func
- 658              		.fpu fpv4-sp-d16
- 660              	MEMORY_Task:
- 661              	.LFB141:
+ 307:app/tasks/memory/memory.c **** 
+ 508              		.loc 1 307 14 is_stmt 0 view .LVU121
+ 509 00ba CAE7     		b	.L18
+ 510              	.L26:
+ 511              		.align	2
+ 512              	.L25:
+ 513 00bc 00000000 		.word	_impure_ptr
+ 514 00c0 00000000 		.word	.LC0
+ 515 00c4 14000000 		.word	.LC1
+ 516 00c8 00000000 		.word	.LANCHOR1
+ 517 00cc 00000000 		.word	.LANCHOR0
+ 518 00d0 20000000 		.word	.LC2
+ 519              	.LBE4:
+ 520              		.cfi_endproc
+ 521              	.LFE147:
+ 523              		.section	.rodata.MEMORY_Task.str1.4,"aMS",%progbits,1
+ 524              		.align	2
+ 525              	.LC4:
+ 526 0000 4D454D4F 		.ascii	"MEMORY_STATE_ERROR\000"
+ 526      52595F53 
+ 526      54415445 
+ 526      5F455252 
+ 526      4F5200
+ 527              		.section	.text.MEMORY_Task,"ax",%progbits
+ 528              		.align	1
+ 529              		.global	MEMORY_Task
+ 530              		.syntax unified
+ 531              		.thumb
+ 532              		.thumb_func
+ 533              		.fpu fpv4-sp-d16
+ 535              	MEMORY_Task:
+ 536              	.LFB141:
   92:app/tasks/memory/memory.c ****   (void) argument; // Avoid unused parameter warning
- 662              		.loc 1 92 34 is_stmt 1 view -0
- 663              		.cfi_startproc
- 664              		@ args = 0, pretend = 0, frame = 24
- 665              		@ frame_needed = 0, uses_anonymous_args = 0
- 666              	.LVL67:
+ 537              		.loc 1 92 34 is_stmt 1 view -0
+ 538              		.cfi_startproc
+ 539              		@ args = 0, pretend = 0, frame = 24
+ 540              		@ frame_needed = 0, uses_anonymous_args = 0
+ 541              	.LVL54:
   92:app/tasks/memory/memory.c ****   (void) argument; // Avoid unused parameter warning
- 667              		.loc 1 92 34 is_stmt 0 view .LVU155
- 668 0000 00B5     		push	{lr}
- 669              	.LCFI13:
- 670              		.cfi_def_cfa_offset 4
- 671              		.cfi_offset 14, -4
- 672 0002 87B0     		sub	sp, sp, #28
- 673              	.LCFI14:
- 674              		.cfi_def_cfa_offset 32
- 675              	.LVL68:
- 676              	.L37:
-  93:app/tasks/memory/memory.c ****   message_t msg;
- 677              		.loc 1 93 3 is_stmt 1 view .LVU156
-  94:app/tasks/memory/memory.c **** 
- 678              		.loc 1 94 3 view .LVU157
-  96:app/tasks/memory/memory.c ****     // Wait for messages from the queue
- 679              		.loc 1 96 3 view .LVU158
-  98:app/tasks/memory/memory.c ****       osStatus_t status = MEMORY_Actor.super.messageHandler((actor_t *) &MEMORY_Actor, &msg);
- 680              		.loc 1 98 5 view .LVU159
-  98:app/tasks/memory/memory.c ****       osStatus_t status = MEMORY_Actor.super.messageHandler((actor_t *) &MEMORY_Actor, &msg);
- 681              		.loc 1 98 9 is_stmt 0 view .LVU160
- 682 0004 4FF0FF33 		mov	r3, #-1
- 683 0008 0022     		movs	r2, #0
- 684 000a 6946     		mov	r1, sp
- 685 000c 1348     		ldr	r0, .L41
- 686 000e 8068     		ldr	r0, [r0, #8]
- 687 0010 FFF7FEFF 		bl	osMessageQueueGet
- 688              	.LVL69:
-  98:app/tasks/memory/memory.c ****       osStatus_t status = MEMORY_Actor.super.messageHandler((actor_t *) &MEMORY_Actor, &msg);
- 689              		.loc 1 98 8 view .LVU161
- 690 0014 0028     		cmp	r0, #0
- 691 0016 F5D1     		bne	.L37
- 692              	.LBB5:
-  99:app/tasks/memory/memory.c **** 
- 693              		.loc 1 99 7 is_stmt 1 view .LVU162
-  99:app/tasks/memory/memory.c **** 
-ARM GAS  /tmp/ccaLOqDG.s 			page 22
+ 542              		.loc 1 92 34 is_stmt 0 view .LVU123
+ 543 0000 00B5     		push	{lr}
+ 544              	.LCFI12:
+ 545              		.cfi_def_cfa_offset 4
+ 546              		.cfi_offset 14, -4
+ 547 0002 87B0     		sub	sp, sp, #28
+ 548              	.LCFI13:
+ 549              		.cfi_def_cfa_offset 32
+ 550              	.LVL55:
+ 551              	.L28:
+ 109:app/tasks/memory/memory.c ****     // Wait for messages from the queue
+ 552              		.loc 1 109 3 is_stmt 1 view .LVU124
+ 111:app/tasks/memory/memory.c ****       osStatus_t status = MEMORY_Actor.super.messageHandler((actor_t *) &MEMORY_Actor, &msg);
+ 553              		.loc 1 111 5 view .LVU125
+ 111:app/tasks/memory/memory.c ****       osStatus_t status = MEMORY_Actor.super.messageHandler((actor_t *) &MEMORY_Actor, &msg);
+ 554              		.loc 1 111 9 is_stmt 0 view .LVU126
+ 555 0004 4FF0FF33 		mov	r3, #-1
+ 556 0008 0022     		movs	r2, #0
+ARM GAS  /tmp/cc6wBZaU.s 			page 19
 
 
- 694              		.loc 1 99 45 is_stmt 0 view .LVU163
- 695 0018 1048     		ldr	r0, .L41
- 696 001a C368     		ldr	r3, [r0, #12]
-  99:app/tasks/memory/memory.c **** 
- 697              		.loc 1 99 27 view .LVU164
- 698 001c 6946     		mov	r1, sp
- 699 001e 9847     		blx	r3
- 700              	.LVL70:
- 101:app/tasks/memory/memory.c ****         osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMess
- 701              		.loc 1 101 7 is_stmt 1 view .LVU165
- 101:app/tasks/memory/memory.c ****         osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMess
- 702              		.loc 1 101 10 is_stmt 0 view .LVU166
- 703 0020 0028     		cmp	r0, #0
- 704 0022 EFD0     		beq	.L37
- 705              	.LBB6:
- 102:app/tasks/memory/memory.c ****         osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = MEMORY_ACTOR_
- 706              		.loc 1 102 9 is_stmt 1 view .LVU167
- 102:app/tasks/memory/memory.c ****         osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = MEMORY_ACTOR_
- 707              		.loc 1 102 71 is_stmt 0 view .LVU168
- 708 0024 0E4B     		ldr	r3, .L41+4
- 709 0026 5B68     		ldr	r3, [r3, #4]
- 102:app/tasks/memory/memory.c ****         osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = MEMORY_ACTOR_
- 710              		.loc 1 102 28 view .LVU169
- 711 0028 9868     		ldr	r0, [r3, #8]
- 712              	.LVL71:
- 103:app/tasks/memory/memory.c ****         TO_STATE(&MEMORY_Actor, MEMORY_STATE_ERROR);
- 713              		.loc 1 103 9 is_stmt 1 view .LVU170
- 103:app/tasks/memory/memory.c ****         TO_STATE(&MEMORY_Actor, MEMORY_STATE_ERROR);
- 714              		.loc 1 103 55 is_stmt 0 view .LVU171
- 715 002a 0022     		movs	r2, #0
- 716 002c 0392     		str	r2, [sp, #12]
- 717 002e 0492     		str	r2, [sp, #16]
- 718 0030 0592     		str	r2, [sp, #20]
- 719 0032 0D23     		movs	r3, #13
- 720 0034 8DF80C30 		strb	r3, [sp, #12]
- 721 0038 0823     		movs	r3, #8
- 722 003a 0493     		str	r3, [sp, #16]
- 103:app/tasks/memory/memory.c ****         TO_STATE(&MEMORY_Actor, MEMORY_STATE_ERROR);
- 723              		.loc 1 103 9 view .LVU172
- 724 003c 1346     		mov	r3, r2
- 725 003e 03A9     		add	r1, sp, #12
- 726 0040 FFF7FEFF 		bl	osMessageQueuePut
- 727              	.LVL72:
- 104:app/tasks/memory/memory.c ****       }
- 728              		.loc 1 104 9 is_stmt 1 view .LVU173
- 104:app/tasks/memory/memory.c ****       }
- 729              		.loc 1 104 9 view .LVU174
- 730 0044 054A     		ldr	r2, .L41
- 731 0046 0323     		movs	r3, #3
- 732 0048 1374     		strb	r3, [r2, #16]
- 104:app/tasks/memory/memory.c ****       }
- 733              		.loc 1 104 9 view .LVU175
- 734 004a 064B     		ldr	r3, .L41+8
- 735 004c 1868     		ldr	r0, [r3]
- 736 004e 064B     		ldr	r3, .L41+12
- 737 0050 1268     		ldr	r2, [r2]
- 738 0052 0649     		ldr	r1, .L41+16
-ARM GAS  /tmp/ccaLOqDG.s 			page 23
+ 557 000a 6946     		mov	r1, sp
+ 558 000c 1348     		ldr	r0, .L32
+ 559 000e 8068     		ldr	r0, [r0, #8]
+ 560 0010 FFF7FEFF 		bl	osMessageQueueGet
+ 561              	.LVL56:
+ 111:app/tasks/memory/memory.c ****       osStatus_t status = MEMORY_Actor.super.messageHandler((actor_t *) &MEMORY_Actor, &msg);
+ 562              		.loc 1 111 8 view .LVU127
+ 563 0014 0028     		cmp	r0, #0
+ 564 0016 F5D1     		bne	.L28
+ 565              	.LBB5:
+ 112:app/tasks/memory/memory.c **** 
+ 566              		.loc 1 112 7 is_stmt 1 view .LVU128
+ 112:app/tasks/memory/memory.c **** 
+ 567              		.loc 1 112 45 is_stmt 0 view .LVU129
+ 568 0018 1048     		ldr	r0, .L32
+ 569 001a C368     		ldr	r3, [r0, #12]
+ 112:app/tasks/memory/memory.c **** 
+ 570              		.loc 1 112 27 view .LVU130
+ 571 001c 6946     		mov	r1, sp
+ 572 001e 9847     		blx	r3
+ 573              	.LVL57:
+ 114:app/tasks/memory/memory.c ****         osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMess
+ 574              		.loc 1 114 7 is_stmt 1 view .LVU131
+ 114:app/tasks/memory/memory.c ****         osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMess
+ 575              		.loc 1 114 10 is_stmt 0 view .LVU132
+ 576 0020 0028     		cmp	r0, #0
+ 577 0022 EFD0     		beq	.L28
+ 578              	.LBB6:
+ 115:app/tasks/memory/memory.c ****         osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = MEMORY_ACTOR_
+ 579              		.loc 1 115 9 is_stmt 1 view .LVU133
+ 115:app/tasks/memory/memory.c ****         osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = MEMORY_ACTOR_
+ 580              		.loc 1 115 71 is_stmt 0 view .LVU134
+ 581 0024 0E4B     		ldr	r3, .L32+4
+ 582 0026 5B68     		ldr	r3, [r3, #4]
+ 115:app/tasks/memory/memory.c ****         osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = MEMORY_ACTOR_
+ 583              		.loc 1 115 28 view .LVU135
+ 584 0028 9868     		ldr	r0, [r3, #8]
+ 585              	.LVL58:
+ 116:app/tasks/memory/memory.c ****         TO_STATE(&MEMORY_Actor, MEMORY_STATE_ERROR);
+ 586              		.loc 1 116 9 is_stmt 1 view .LVU136
+ 116:app/tasks/memory/memory.c ****         TO_STATE(&MEMORY_Actor, MEMORY_STATE_ERROR);
+ 587              		.loc 1 116 55 is_stmt 0 view .LVU137
+ 588 002a 0022     		movs	r2, #0
+ 589 002c 0392     		str	r2, [sp, #12]
+ 590 002e 0492     		str	r2, [sp, #16]
+ 591 0030 0592     		str	r2, [sp, #20]
+ 592 0032 0D23     		movs	r3, #13
+ 593 0034 8DF80C30 		strb	r3, [sp, #12]
+ 594 0038 0823     		movs	r3, #8
+ 595 003a 0493     		str	r3, [sp, #16]
+ 116:app/tasks/memory/memory.c ****         TO_STATE(&MEMORY_Actor, MEMORY_STATE_ERROR);
+ 596              		.loc 1 116 9 view .LVU138
+ 597 003c 1346     		mov	r3, r2
+ 598 003e 03A9     		add	r1, sp, #12
+ 599 0040 FFF7FEFF 		bl	osMessageQueuePut
+ 600              	.LVL59:
+ 117:app/tasks/memory/memory.c ****       }
+ARM GAS  /tmp/cc6wBZaU.s 			page 20
 
 
- 739 0054 8068     		ldr	r0, [r0, #8]
- 740 0056 FFF7FEFF 		bl	fprintf
- 741              	.LVL73:
- 104:app/tasks/memory/memory.c ****       }
- 742              		.loc 1 104 9 view .LVU176
- 104:app/tasks/memory/memory.c ****       }
- 743              		.loc 1 104 52 view .LVU177
- 744 005a D3E7     		b	.L37
- 745              	.L42:
- 746              		.align	2
- 747              	.L41:
- 748 005c 00000000 		.word	.LANCHOR2
- 749 0060 00000000 		.word	ACTORS_LIST_SystemRegistry
- 750 0064 00000000 		.word	_impure_ptr
- 751 0068 00000000 		.word	.LC7
- 752 006c 14000000 		.word	.LC1
- 753              	.LBE6:
- 754              	.LBE5:
- 755              		.cfi_endproc
- 756              	.LFE141:
- 758              		.section	.rodata.MEMORY_TaskInit.str1.4,"aMS",%progbits,1
- 759              		.align	2
- 760              	.LC8:
- 761 0000 6D656D6F 		.ascii	"memoryQueue\000"
- 761      72795175 
- 761      65756500 
- 762              		.section	.text.MEMORY_TaskInit,"ax",%progbits
- 763              		.align	1
- 764              		.global	MEMORY_TaskInit
- 765              		.syntax unified
- 766              		.thumb
- 767              		.thumb_func
- 768              		.fpu fpv4-sp-d16
- 770              	MEMORY_TaskInit:
- 771              	.LFB140:
+ 601              		.loc 1 117 9 is_stmt 1 view .LVU139
+ 117:app/tasks/memory/memory.c ****       }
+ 602              		.loc 1 117 9 view .LVU140
+ 603 0044 054A     		ldr	r2, .L32
+ 604 0046 0323     		movs	r3, #3
+ 605 0048 1374     		strb	r3, [r2, #16]
+ 117:app/tasks/memory/memory.c ****       }
+ 606              		.loc 1 117 9 view .LVU141
+ 607 004a 064B     		ldr	r3, .L32+8
+ 608 004c 1868     		ldr	r0, [r3]
+ 609 004e 064B     		ldr	r3, .L32+12
+ 610 0050 1268     		ldr	r2, [r2]
+ 611 0052 0649     		ldr	r1, .L32+16
+ 612 0054 8068     		ldr	r0, [r0, #8]
+ 613 0056 FFF7FEFF 		bl	fprintf
+ 614              	.LVL60:
+ 117:app/tasks/memory/memory.c ****       }
+ 615              		.loc 1 117 9 view .LVU142
+ 117:app/tasks/memory/memory.c ****       }
+ 616              		.loc 1 117 52 view .LVU143
+ 617 005a D3E7     		b	.L28
+ 618              	.L33:
+ 619              		.align	2
+ 620              	.L32:
+ 621 005c 00000000 		.word	.LANCHOR2
+ 622 0060 00000000 		.word	ACTORS_LIST_SystemRegistry
+ 623 0064 00000000 		.word	_impure_ptr
+ 624 0068 00000000 		.word	.LC4
+ 625 006c 14000000 		.word	.LC1
+ 626              	.LBE6:
+ 627              	.LBE5:
+ 628              		.cfi_endproc
+ 629              	.LFE141:
+ 631              		.section	.rodata.MEMORY_TaskInit.str1.4,"aMS",%progbits,1
+ 632              		.align	2
+ 633              	.LC5:
+ 634 0000 6D656D6F 		.ascii	"memoryQueue\000"
+ 634      72795175 
+ 634      65756500 
+ 635              		.section	.text.MEMORY_TaskInit,"ax",%progbits
+ 636              		.align	1
+ 637              		.global	MEMORY_TaskInit
+ 638              		.syntax unified
+ 639              		.thumb
+ 640              		.thumb_func
+ 641              		.fpu fpv4-sp-d16
+ 643              	MEMORY_TaskInit:
+ 644              	.LFB140:
   76:app/tasks/memory/memory.c ****   MEMORY_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MESSAGE
- 772              		.loc 1 76 32 view -0
- 773              		.cfi_startproc
- 774              		@ args = 0, pretend = 0, frame = 24
- 775              		@ frame_needed = 0, uses_anonymous_args = 0
- 776 0000 30B5     		push	{r4, r5, lr}
- 777              	.LCFI15:
- 778              		.cfi_def_cfa_offset 12
- 779              		.cfi_offset 4, -12
- 780              		.cfi_offset 5, -8
- 781              		.cfi_offset 14, -4
- 782 0002 87B0     		sub	sp, sp, #28
- 783              	.LCFI16:
- 784              		.cfi_def_cfa_offset 40
-  77:app/tasks/memory/memory.c ****           .name = "memoryQueue"
- 785              		.loc 1 77 3 view .LVU179
-  77:app/tasks/memory/memory.c ****           .name = "memoryQueue"
- 786              		.loc 1 77 130 is_stmt 0 view .LVU180
- 787 0004 0024     		movs	r4, #0
- 788 0006 0094     		str	r4, [sp]
- 789 0008 0194     		str	r4, [sp, #4]
- 790 000a 0294     		str	r4, [sp, #8]
-ARM GAS  /tmp/ccaLOqDG.s 			page 24
+ 645              		.loc 1 76 32 view -0
+ 646              		.cfi_startproc
+ 647              		@ args = 0, pretend = 0, frame = 24
+ 648              		@ frame_needed = 0, uses_anonymous_args = 0
+ 649 0000 30B5     		push	{r4, r5, lr}
+ 650              	.LCFI14:
+ 651              		.cfi_def_cfa_offset 12
+ 652              		.cfi_offset 4, -12
+ARM GAS  /tmp/cc6wBZaU.s 			page 21
 
 
- 791 000c 0394     		str	r4, [sp, #12]
- 792 000e 0494     		str	r4, [sp, #16]
- 793 0010 0594     		str	r4, [sp, #20]
- 794 0012 0B4B     		ldr	r3, .L45
- 795 0014 0093     		str	r3, [sp]
+ 653              		.cfi_offset 5, -8
+ 654              		.cfi_offset 14, -4
+ 655 0002 87B0     		sub	sp, sp, #28
+ 656              	.LCFI15:
+ 657              		.cfi_def_cfa_offset 40
   77:app/tasks/memory/memory.c ****           .name = "memoryQueue"
- 796              		.loc 1 77 41 view .LVU181
- 797 0016 6A46     		mov	r2, sp
- 798 0018 0C21     		movs	r1, #12
- 799 001a 0820     		movs	r0, #8
- 800 001c FFF7FEFF 		bl	osMessageQueueNew
- 801              	.LVL74:
+ 658              		.loc 1 77 3 view .LVU145
   77:app/tasks/memory/memory.c ****           .name = "memoryQueue"
- 802              		.loc 1 77 39 view .LVU182
- 803 0020 084D     		ldr	r5, .L45+4
- 804 0022 A860     		str	r0, [r5, #8]
+ 659              		.loc 1 77 130 is_stmt 0 view .LVU146
+ 660 0004 0024     		movs	r4, #0
+ 661 0006 0094     		str	r4, [sp]
+ 662 0008 0194     		str	r4, [sp, #4]
+ 663 000a 0294     		str	r4, [sp, #8]
+ 664 000c 0394     		str	r4, [sp, #12]
+ 665 000e 0494     		str	r4, [sp, #16]
+ 666 0010 0594     		str	r4, [sp, #20]
+ 667 0012 0B4B     		ldr	r3, .L36
+ 668 0014 0093     		str	r3, [sp]
+  77:app/tasks/memory/memory.c ****           .name = "memoryQueue"
+ 669              		.loc 1 77 41 view .LVU147
+ 670 0016 6A46     		mov	r2, sp
+ 671 0018 0C21     		movs	r1, #12
+ 672 001a 0820     		movs	r0, #8
+ 673 001c FFF7FEFF 		bl	osMessageQueueNew
+ 674              	.LVL61:
+  77:app/tasks/memory/memory.c ****           .name = "memoryQueue"
+ 675              		.loc 1 77 39 view .LVU148
+ 676 0020 084D     		ldr	r5, .L36+4
+ 677 0022 A860     		str	r0, [r5, #8]
   80:app/tasks/memory/memory.c **** 
- 805              		.loc 1 80 3 is_stmt 1 view .LVU183
+ 678              		.loc 1 80 3 is_stmt 1 view .LVU149
   80:app/tasks/memory/memory.c **** 
- 806              		.loc 1 80 35 is_stmt 0 view .LVU184
- 807 0024 084A     		ldr	r2, .L45+8
- 808 0026 2146     		mov	r1, r4
- 809 0028 0848     		ldr	r0, .L45+12
- 810 002a FFF7FEFF 		bl	osThreadNew
- 811              	.LVL75:
+ 679              		.loc 1 80 35 is_stmt 0 view .LVU150
+ 680 0024 084A     		ldr	r2, .L36+8
+ 681 0026 2146     		mov	r1, r4
+ 682 0028 0848     		ldr	r0, .L36+12
+ 683 002a FFF7FEFF 		bl	osThreadNew
+ 684              	.LVL62:
   80:app/tasks/memory/memory.c **** 
- 812              		.loc 1 80 33 view .LVU185
- 813 002e 6860     		str	r0, [r5, #4]
+ 685              		.loc 1 80 33 view .LVU151
+ 686 002e 6860     		str	r0, [r5, #4]
   82:app/tasks/memory/memory.c **** 
- 814              		.loc 1 82 3 is_stmt 1 view .LVU186
+ 687              		.loc 1 82 3 is_stmt 1 view .LVU152
   82:app/tasks/memory/memory.c **** 
- 815              		.loc 1 82 33 is_stmt 0 view .LVU187
- 816 0030 2046     		mov	r0, r4
- 817 0032 FFF7FEFF 		bl	osEventFlagsNew
- 818              	.LVL76:
+ 688              		.loc 1 82 33 is_stmt 0 view .LVU153
+ 689 0030 2046     		mov	r0, r4
+ 690 0032 FFF7FEFF 		bl	osEventFlagsNew
+ 691              	.LVL63:
   82:app/tasks/memory/memory.c **** 
- 819              		.loc 1 82 31 view .LVU188
- 820 0036 064B     		ldr	r3, .L45+16
- 821 0038 1860     		str	r0, [r3]
+ 692              		.loc 1 82 31 view .LVU154
+ 693 0036 064B     		ldr	r3, .L36+16
+ 694 0038 1860     		str	r0, [r3]
   84:app/tasks/memory/memory.c **** }
- 822              		.loc 1 84 3 is_stmt 1 view .LVU189
+ 695              		.loc 1 84 3 is_stmt 1 view .LVU155
   85:app/tasks/memory/memory.c **** 
- 823              		.loc 1 85 1 is_stmt 0 view .LVU190
- 824 003a 2846     		mov	r0, r5
- 825 003c 07B0     		add	sp, sp, #28
- 826              	.LCFI17:
- 827              		.cfi_def_cfa_offset 12
- 828              		@ sp needed
- 829 003e 30BD     		pop	{r4, r5, pc}
- 830              	.L46:
- 831              		.align	2
- 832              	.L45:
- 833 0040 00000000 		.word	.LC8
- 834 0044 00000000 		.word	.LANCHOR2
- 835 0048 00000000 		.word	.LANCHOR3
- 836 004c 00000000 		.word	MEMORY_Task
- 837 0050 00000000 		.word	.LANCHOR1
-ARM GAS  /tmp/ccaLOqDG.s 			page 25
+ 696              		.loc 1 85 1 is_stmt 0 view .LVU156
+ 697 003a 2846     		mov	r0, r5
+ARM GAS  /tmp/cc6wBZaU.s 			page 22
 
 
- 838              		.cfi_endproc
- 839              	.LFE140:
- 841              		.section	.text.MEMORY_SeekFreeSpaceAddress,"ax",%progbits
- 842              		.align	1
- 843              		.global	MEMORY_SeekFreeSpaceAddress
- 844              		.syntax unified
- 845              		.thumb
- 846              		.thumb_func
- 847              		.fpu fpv4-sp-d16
- 849              	MEMORY_SeekFreeSpaceAddress:
- 850              	.LFB143:
- 125:app/tasks/memory/memory.c ****   uint8_t readBuff[MEMORY_LOG_ENTRY_SIZE] = {0};
- 851              		.loc 1 125 44 is_stmt 1 view -0
- 852              		.cfi_startproc
- 853              		@ args = 0, pretend = 0, frame = 32
- 854              		@ frame_needed = 0, uses_anonymous_args = 0
- 855 0000 30B5     		push	{r4, r5, lr}
- 856              	.LCFI18:
- 857              		.cfi_def_cfa_offset 12
- 858              		.cfi_offset 4, -12
- 859              		.cfi_offset 5, -8
- 860              		.cfi_offset 14, -4
- 861 0002 89B0     		sub	sp, sp, #36
- 862              	.LCFI19:
- 863              		.cfi_def_cfa_offset 48
- 126:app/tasks/memory/memory.c ****   uint8_t emptyLogEntryTemplate[MEMORY_LOG_ENTRY_SIZE] = {0xFF};
- 864              		.loc 1 126 3 view .LVU192
- 126:app/tasks/memory/memory.c ****   uint8_t emptyLogEntryTemplate[MEMORY_LOG_ENTRY_SIZE] = {0xFF};
- 865              		.loc 1 126 11 is_stmt 0 view .LVU193
- 866 0004 0025     		movs	r5, #0
- 867 0006 0495     		str	r5, [sp, #16]
- 868 0008 0595     		str	r5, [sp, #20]
- 869 000a 0695     		str	r5, [sp, #24]
- 870 000c 0795     		str	r5, [sp, #28]
- 127:app/tasks/memory/memory.c ****   const uint32_t startAddress = FAT12_BOOT_SECTOR_SIZE + 1;
- 871              		.loc 1 127 3 is_stmt 1 view .LVU194
- 127:app/tasks/memory/memory.c ****   const uint32_t startAddress = FAT12_BOOT_SECTOR_SIZE + 1;
- 872              		.loc 1 127 11 is_stmt 0 view .LVU195
- 873 000e FF23     		movs	r3, #255
- 874 0010 0093     		str	r3, [sp]
- 875 0012 0195     		str	r5, [sp, #4]
- 876 0014 0295     		str	r5, [sp, #8]
- 877 0016 0395     		str	r5, [sp, #12]
- 128:app/tasks/memory/memory.c ****   const uint8_t stepSize = MEMORY_LOG_ENTRY_SIZE;
- 878              		.loc 1 128 3 is_stmt 1 view .LVU196
- 879              	.LVL77:
- 129:app/tasks/memory/memory.c **** 
- 880              		.loc 1 129 3 view .LVU197
- 131:app/tasks/memory/memory.c ****   uint32_t stepNumber = 0;
- 881              		.loc 1 131 3 view .LVU198
- 132:app/tasks/memory/memory.c ****   uint32_t addr = 0;
- 882              		.loc 1 132 3 view .LVU199
- 133:app/tasks/memory/memory.c ****   bool isFreeSpaceForLog = false; // does read log entry contains data other than 0xFF (0xFF means 
- 883              		.loc 1 133 3 view .LVU200
- 134:app/tasks/memory/memory.c **** 
- 884              		.loc 1 134 3 view .LVU201
- 137:app/tasks/memory/memory.c **** 
-ARM GAS  /tmp/ccaLOqDG.s 			page 26
+ 698 003c 07B0     		add	sp, sp, #28
+ 699              	.LCFI16:
+ 700              		.cfi_def_cfa_offset 12
+ 701              		@ sp needed
+ 702 003e 30BD     		pop	{r4, r5, pc}
+ 703              	.L37:
+ 704              		.align	2
+ 705              	.L36:
+ 706 0040 00000000 		.word	.LC5
+ 707 0044 00000000 		.word	.LANCHOR2
+ 708 0048 00000000 		.word	.LANCHOR3
+ 709 004c 00000000 		.word	MEMORY_Task
+ 710 0050 00000000 		.word	.LANCHOR1
+ 711              		.cfi_endproc
+ 712              	.LFE140:
+ 714              		.section	.text.MEMORY_SeekFreeSpaceAddress,"ax",%progbits
+ 715              		.align	1
+ 716              		.global	MEMORY_SeekFreeSpaceAddress
+ 717              		.syntax unified
+ 718              		.thumb
+ 719              		.thumb_func
+ 720              		.fpu fpv4-sp-d16
+ 722              	MEMORY_SeekFreeSpaceAddress:
+ 723              	.LFB143:
+ 138:app/tasks/memory/memory.c ****   uint8_t readBuff[MEMORY_LOG_ENTRY_SIZE] = {0};
+ 724              		.loc 1 138 44 is_stmt 1 view -0
+ 725              		.cfi_startproc
+ 726              		@ args = 0, pretend = 0, frame = 32
+ 727              		@ frame_needed = 0, uses_anonymous_args = 0
+ 728 0000 30B5     		push	{r4, r5, lr}
+ 729              	.LCFI17:
+ 730              		.cfi_def_cfa_offset 12
+ 731              		.cfi_offset 4, -12
+ 732              		.cfi_offset 5, -8
+ 733              		.cfi_offset 14, -4
+ 734 0002 89B0     		sub	sp, sp, #36
+ 735              	.LCFI18:
+ 736              		.cfi_def_cfa_offset 48
+ 139:app/tasks/memory/memory.c ****   uint8_t emptyLogEntryTemplate[MEMORY_LOG_ENTRY_SIZE] = {0xFF};
+ 737              		.loc 1 139 3 view .LVU158
+ 139:app/tasks/memory/memory.c ****   uint8_t emptyLogEntryTemplate[MEMORY_LOG_ENTRY_SIZE] = {0xFF};
+ 738              		.loc 1 139 11 is_stmt 0 view .LVU159
+ 739 0004 0025     		movs	r5, #0
+ 740 0006 0495     		str	r5, [sp, #16]
+ 741 0008 0595     		str	r5, [sp, #20]
+ 742 000a 0695     		str	r5, [sp, #24]
+ 743 000c 0795     		str	r5, [sp, #28]
+ 140:app/tasks/memory/memory.c ****   const uint32_t startAddress = FAT12_BOOT_SECTOR_SIZE + 1;
+ 744              		.loc 1 140 3 is_stmt 1 view .LVU160
+ 140:app/tasks/memory/memory.c ****   const uint32_t startAddress = FAT12_BOOT_SECTOR_SIZE + 1;
+ 745              		.loc 1 140 11 is_stmt 0 view .LVU161
+ 746 000e FF23     		movs	r3, #255
+ 747 0010 0093     		str	r3, [sp]
+ 748 0012 0195     		str	r5, [sp, #4]
+ 749 0014 0295     		str	r5, [sp, #8]
+ 750 0016 0395     		str	r5, [sp, #12]
+ 141:app/tasks/memory/memory.c ****   const uint8_t stepSize = MEMORY_LOG_ENTRY_SIZE;
+ARM GAS  /tmp/cc6wBZaU.s 			page 23
 
 
- 885              		.loc 1 137 3 view .LVU202
- 886 0018 4FF0FF33 		mov	r3, #-1
- 887 001c 0093     		str	r3, [sp]
- 888 001e 0193     		str	r3, [sp, #4]
- 889 0020 0293     		str	r3, [sp, #8]
- 890 0022 0393     		str	r3, [sp, #12]
- 891              	.LVL78:
- 892              	.L49:
- 139:app/tasks/memory/memory.c ****     // address offset from FS boot sector
- 893              		.loc 1 139 3 view .LVU203
- 141:app/tasks/memory/memory.c ****     addr = startAddress + offset;
- 894              		.loc 1 141 5 view .LVU204
+ 751              		.loc 1 141 3 is_stmt 1 view .LVU162
+ 752              	.LVL64:
  142:app/tasks/memory/memory.c **** 
- 895              		.loc 1 142 5 view .LVU205
- 142:app/tasks/memory/memory.c **** 
- 896              		.loc 1 142 10 is_stmt 0 view .LVU206
- 897 0024 41F20124 		movw	r4, #4609
- 898 0028 04EB0514 		add	r4, r4, r5, lsl #4
- 899              	.LVL79:
- 145:app/tasks/memory/memory.c **** 
- 900              		.loc 1 145 5 is_stmt 1 view .LVU207
- 901 002c 1023     		movs	r3, #16
- 902 002e 2246     		mov	r2, r4
- 903 0030 0DEB0301 		add	r1, sp, r3
- 904 0034 0848     		ldr	r0, .L51
- 905 0036 FFF7FEFF 		bl	W25Q_ReadData
- 906              	.LVL80:
- 148:app/tasks/memory/memory.c **** 
- 907              		.loc 1 148 5 view .LVU208
- 148:app/tasks/memory/memory.c **** 
- 908              		.loc 1 148 52 is_stmt 0 view .LVU209
- 909 003a 1022     		movs	r2, #16
- 910 003c 6946     		mov	r1, sp
- 911 003e 0DEB0200 		add	r0, sp, r2
- 912 0042 FFF7FEFF 		bl	memcmp
- 913              	.LVL81:
- 150:app/tasks/memory/memory.c ****       return addr;
- 914              		.loc 1 150 5 is_stmt 1 view .LVU210
- 150:app/tasks/memory/memory.c ****       return addr;
- 915              		.loc 1 150 8 is_stmt 0 view .LVU211
- 916 0046 18B1     		cbz	r0, .L47
- 154:app/tasks/memory/memory.c **** 
- 917              		.loc 1 154 5 is_stmt 1 view .LVU212
- 154:app/tasks/memory/memory.c **** 
- 918              		.loc 1 154 15 is_stmt 0 view .LVU213
- 919 0048 0135     		adds	r5, r5, #1
- 920              	.LVL82:
- 156:app/tasks/memory/memory.c **** 
- 921              		.loc 1 156 11 is_stmt 1 view .LVU214
- 156:app/tasks/memory/memory.c **** 
- 922              		.loc 1 156 3 is_stmt 0 view .LVU215
- 923 004a B4F5000F 		cmp	r4, #8388608
- 924 004e E9D3     		bcc	.L49
- 925              	.LVL83:
- 926              	.L47:
- 159:app/tasks/memory/memory.c **** 
- 927              		.loc 1 159 1 view .LVU216
-ARM GAS  /tmp/ccaLOqDG.s 			page 27
+ 753              		.loc 1 142 3 view .LVU163
+ 144:app/tasks/memory/memory.c ****   uint32_t stepNumber = 0;
+ 754              		.loc 1 144 3 view .LVU164
+ 145:app/tasks/memory/memory.c ****   uint32_t addr = 0;
+ 755              		.loc 1 145 3 view .LVU165
+ 146:app/tasks/memory/memory.c ****   bool isFreeSpaceForLog = false; // does read log entry contains data other than 0xFF (0xFF means 
+ 756              		.loc 1 146 3 view .LVU166
+ 147:app/tasks/memory/memory.c **** 
+ 757              		.loc 1 147 3 view .LVU167
+ 150:app/tasks/memory/memory.c **** 
+ 758              		.loc 1 150 3 view .LVU168
+ 759 0018 4FF0FF33 		mov	r3, #-1
+ 760 001c 0093     		str	r3, [sp]
+ 761 001e 0193     		str	r3, [sp, #4]
+ 762 0020 0293     		str	r3, [sp, #8]
+ 763 0022 0393     		str	r3, [sp, #12]
+ 764              	.LVL65:
+ 765              	.L40:
+ 152:app/tasks/memory/memory.c ****     // address offset from FS boot sector
+ 766              		.loc 1 152 3 view .LVU169
+ 154:app/tasks/memory/memory.c ****     addr = startAddress + offset;
+ 767              		.loc 1 154 5 view .LVU170
+ 155:app/tasks/memory/memory.c **** 
+ 768              		.loc 1 155 5 view .LVU171
+ 155:app/tasks/memory/memory.c **** 
+ 769              		.loc 1 155 10 is_stmt 0 view .LVU172
+ 770 0024 41F20124 		movw	r4, #4609
+ 771 0028 04EB0514 		add	r4, r4, r5, lsl #4
+ 772              	.LVL66:
+ 158:app/tasks/memory/memory.c **** 
+ 773              		.loc 1 158 5 is_stmt 1 view .LVU173
+ 774 002c 1023     		movs	r3, #16
+ 775 002e 2246     		mov	r2, r4
+ 776 0030 0DEB0301 		add	r1, sp, r3
+ 777 0034 0848     		ldr	r0, .L42
+ 778 0036 FFF7FEFF 		bl	W25Q_ReadData
+ 779              	.LVL67:
+ 161:app/tasks/memory/memory.c **** 
+ 780              		.loc 1 161 5 view .LVU174
+ 161:app/tasks/memory/memory.c **** 
+ 781              		.loc 1 161 52 is_stmt 0 view .LVU175
+ 782 003a 1022     		movs	r2, #16
+ 783 003c 6946     		mov	r1, sp
+ 784 003e 0DEB0200 		add	r0, sp, r2
+ 785 0042 FFF7FEFF 		bl	memcmp
+ 786              	.LVL68:
+ 163:app/tasks/memory/memory.c ****       return addr;
+ 787              		.loc 1 163 5 is_stmt 1 view .LVU176
+ 163:app/tasks/memory/memory.c ****       return addr;
+ 788              		.loc 1 163 8 is_stmt 0 view .LVU177
+ 789 0046 18B1     		cbz	r0, .L38
+ 167:app/tasks/memory/memory.c **** 
+ 790              		.loc 1 167 5 is_stmt 1 view .LVU178
+ 167:app/tasks/memory/memory.c **** 
+ARM GAS  /tmp/cc6wBZaU.s 			page 24
 
 
- 928 0050 2046     		mov	r0, r4
- 929              	.LVL84:
- 159:app/tasks/memory/memory.c **** 
- 930              		.loc 1 159 1 view .LVU217
- 931 0052 09B0     		add	sp, sp, #36
- 932              	.LCFI20:
- 933              		.cfi_def_cfa_offset 12
- 934              		@ sp needed
- 935 0054 30BD     		pop	{r4, r5, pc}
- 936              	.LVL85:
- 937              	.L52:
- 159:app/tasks/memory/memory.c **** 
- 938              		.loc 1 159 1 view .LVU218
- 939 0056 00BF     		.align	2
- 940              	.L51:
- 941 0058 00000000 		.word	.LANCHOR0
- 942              		.cfi_endproc
- 943              	.LFE143:
- 945              		.section	.rodata.handleInit.str1.4,"aMS",%progbits,1
- 946              		.align	2
- 947              	.LC9:
- 948 0000 57323551 		.ascii	"W25Q NOR MF ID: 0x%x, Device ID: 0x%x\012\000"
- 948      204E4F52 
- 948      204D4620 
- 948      49443A20 
- 948      30782578 
- 949 0027 00       		.align	2
- 950              	.LC10:
- 951 0028 46697273 		.ascii	"First free space address: %x\012\000"
- 951      74206672 
- 951      65652073 
- 951      70616365 
- 951      20616464 
- 952 0046 0000     		.align	2
- 953              	.LC11:
- 954 0048 4D656D6F 		.ascii	"Memory task initialized\012\000"
- 954      72792074 
- 954      61736B20 
- 954      696E6974 
- 954      69616C69 
- 955              		.section	.text.handleInit,"ax",%progbits
- 956              		.align	1
- 957              		.syntax unified
- 958              		.thumb
- 959              		.thumb_func
- 960              		.fpu fpv4-sp-d16
- 962              	handleInit:
- 963              	.LVL86:
- 964              	.LFB146:
- 218:app/tasks/memory/memory.c ****   if (GLOBAL_CMD_INITIALIZE == message->event) {
- 965              		.loc 1 218 72 is_stmt 1 view -0
- 966              		.cfi_startproc
- 967              		@ args = 0, pretend = 0, frame = 16
- 968              		@ frame_needed = 0, uses_anonymous_args = 0
- 219:app/tasks/memory/memory.c ****     uint8_t norFlashID[W25Q_ID_SIZE] = {0x00, 0x00};
- 969              		.loc 1 219 3 view .LVU220
- 219:app/tasks/memory/memory.c ****     uint8_t norFlashID[W25Q_ID_SIZE] = {0x00, 0x00};
-ARM GAS  /tmp/ccaLOqDG.s 			page 28
+ 791              		.loc 1 167 15 is_stmt 0 view .LVU179
+ 792 0048 0135     		adds	r5, r5, #1
+ 793              	.LVL69:
+ 169:app/tasks/memory/memory.c **** 
+ 794              		.loc 1 169 11 is_stmt 1 view .LVU180
+ 169:app/tasks/memory/memory.c **** 
+ 795              		.loc 1 169 3 is_stmt 0 view .LVU181
+ 796 004a B4F5000F 		cmp	r4, #8388608
+ 797 004e E9D3     		bcc	.L40
+ 798              	.LVL70:
+ 799              	.L38:
+ 172:app/tasks/memory/memory.c **** 
+ 800              		.loc 1 172 1 view .LVU182
+ 801 0050 2046     		mov	r0, r4
+ 802              	.LVL71:
+ 172:app/tasks/memory/memory.c **** 
+ 803              		.loc 1 172 1 view .LVU183
+ 804 0052 09B0     		add	sp, sp, #36
+ 805              	.LCFI19:
+ 806              		.cfi_def_cfa_offset 12
+ 807              		@ sp needed
+ 808 0054 30BD     		pop	{r4, r5, pc}
+ 809              	.LVL72:
+ 810              	.L43:
+ 172:app/tasks/memory/memory.c **** 
+ 811              		.loc 1 172 1 view .LVU184
+ 812 0056 00BF     		.align	2
+ 813              	.L42:
+ 814 0058 00000000 		.word	.LANCHOR0
+ 815              		.cfi_endproc
+ 816              	.LFE143:
+ 818              		.section	.rodata.handleInit.str1.4,"aMS",%progbits,1
+ 819              		.align	2
+ 820              	.LC6:
+ 821 0000 57323551 		.ascii	"W25Q NOR MF ID: 0x%x, Device ID: 0x%x\012\000"
+ 821      204E4F52 
+ 821      204D4620 
+ 821      49443A20 
+ 821      30782578 
+ 822 0027 00       		.align	2
+ 823              	.LC7:
+ 824 0028 46697273 		.ascii	"First free space address: %x\012\000"
+ 824      74206672 
+ 824      65652073 
+ 824      70616365 
+ 824      20616464 
+ 825 0046 0000     		.align	2
+ 826              	.LC8:
+ 827 0048 4D656D6F 		.ascii	"Memory task initialized\012\000"
+ 827      72792074 
+ 827      61736B20 
+ 827      696E6974 
+ 827      69616C69 
+ 828              		.section	.text.handleInit,"ax",%progbits
+ 829              		.align	1
+ 830              		.syntax unified
+ 831              		.thumb
+ARM GAS  /tmp/cc6wBZaU.s 			page 25
 
 
- 970              		.loc 1 219 39 is_stmt 0 view .LVU221
- 971 0000 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
- 219:app/tasks/memory/memory.c ****     uint8_t norFlashID[W25Q_ID_SIZE] = {0x00, 0x00};
- 972              		.loc 1 219 6 view .LVU222
- 973 0002 012B     		cmp	r3, #1
- 974 0004 00D0     		beq	.L63
- 975              	.LVL87:
- 258:app/tasks/memory/memory.c **** 
- 976              		.loc 1 258 1 view .LVU223
- 977 0006 7047     		bx	lr
- 978              	.LVL88:
- 979              	.L63:
- 218:app/tasks/memory/memory.c ****   if (GLOBAL_CMD_INITIALIZE == message->event) {
- 980              		.loc 1 218 72 view .LVU224
- 981 0008 F0B5     		push	{r4, r5, r6, r7, lr}
- 982              	.LCFI21:
- 983              		.cfi_def_cfa_offset 20
- 984              		.cfi_offset 4, -20
- 985              		.cfi_offset 5, -16
- 986              		.cfi_offset 6, -12
- 987              		.cfi_offset 7, -8
- 988              		.cfi_offset 14, -4
- 989 000a 85B0     		sub	sp, sp, #20
- 990              	.LCFI22:
- 991              		.cfi_def_cfa_offset 40
- 992 000c 0546     		mov	r5, r0
- 993              	.LBB7:
- 220:app/tasks/memory/memory.c **** 
- 994              		.loc 1 220 5 is_stmt 1 view .LVU225
- 220:app/tasks/memory/memory.c **** 
- 995              		.loc 1 220 13 is_stmt 0 view .LVU226
- 996 000e 0023     		movs	r3, #0
- 997 0010 ADF80030 		strh	r3, [sp]	@ movhi
- 223:app/tasks/memory/memory.c ****     if (ioStatus != osOK) return osError;
- 998              		.loc 1 223 5 is_stmt 1 view .LVU227
- 223:app/tasks/memory/memory.c ****     if (ioStatus != osOK) return osError;
- 999              		.loc 1 223 27 is_stmt 0 view .LVU228
- 1000 0014 2948     		ldr	r0, .L67
- 1001              	.LVL89:
- 223:app/tasks/memory/memory.c ****     if (ioStatus != osOK) return osError;
- 1002              		.loc 1 223 27 view .LVU229
- 1003 0016 FFF7FEFF 		bl	W25Q_WakeUp
- 1004              	.LVL90:
- 224:app/tasks/memory/memory.c **** 
- 1005              		.loc 1 224 5 is_stmt 1 view .LVU230
- 224:app/tasks/memory/memory.c **** 
- 1006              		.loc 1 224 8 is_stmt 0 view .LVU231
- 1007 001a 18B1     		cbz	r0, .L64
- 224:app/tasks/memory/memory.c **** 
- 1008              		.loc 1 224 34 view .LVU232
- 1009 001c 4FF0FF30 		mov	r0, #-1
- 1010              	.LVL91:
- 1011              	.L53:
- 224:app/tasks/memory/memory.c **** 
- 1012              		.loc 1 224 34 view .LVU233
- 1013              	.LBE7:
- 258:app/tasks/memory/memory.c **** 
-ARM GAS  /tmp/ccaLOqDG.s 			page 29
+ 832              		.thumb_func
+ 833              		.fpu fpv4-sp-d16
+ 835              	handleInit:
+ 836              	.LVL73:
+ 837              	.LFB146:
+ 231:app/tasks/memory/memory.c ****   if (GLOBAL_CMD_INITIALIZE == message->event) {
+ 838              		.loc 1 231 72 is_stmt 1 view -0
+ 839              		.cfi_startproc
+ 840              		@ args = 0, pretend = 0, frame = 16
+ 841              		@ frame_needed = 0, uses_anonymous_args = 0
+ 232:app/tasks/memory/memory.c ****     uint8_t norFlashID[W25Q_ID_SIZE] = {0x00, 0x00};
+ 842              		.loc 1 232 3 view .LVU186
+ 232:app/tasks/memory/memory.c ****     uint8_t norFlashID[W25Q_ID_SIZE] = {0x00, 0x00};
+ 843              		.loc 1 232 39 is_stmt 0 view .LVU187
+ 844 0000 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
+ 232:app/tasks/memory/memory.c ****     uint8_t norFlashID[W25Q_ID_SIZE] = {0x00, 0x00};
+ 845              		.loc 1 232 6 view .LVU188
+ 846 0002 012B     		cmp	r3, #1
+ 847 0004 00D0     		beq	.L54
+ 848              	.LVL74:
+ 271:app/tasks/memory/memory.c **** 
+ 849              		.loc 1 271 1 view .LVU189
+ 850 0006 7047     		bx	lr
+ 851              	.LVL75:
+ 852              	.L54:
+ 231:app/tasks/memory/memory.c ****   if (GLOBAL_CMD_INITIALIZE == message->event) {
+ 853              		.loc 1 231 72 view .LVU190
+ 854 0008 F0B5     		push	{r4, r5, r6, r7, lr}
+ 855              	.LCFI20:
+ 856              		.cfi_def_cfa_offset 20
+ 857              		.cfi_offset 4, -20
+ 858              		.cfi_offset 5, -16
+ 859              		.cfi_offset 6, -12
+ 860              		.cfi_offset 7, -8
+ 861              		.cfi_offset 14, -4
+ 862 000a 85B0     		sub	sp, sp, #20
+ 863              	.LCFI21:
+ 864              		.cfi_def_cfa_offset 40
+ 865 000c 0546     		mov	r5, r0
+ 866              	.LBB7:
+ 233:app/tasks/memory/memory.c **** 
+ 867              		.loc 1 233 5 is_stmt 1 view .LVU191
+ 233:app/tasks/memory/memory.c **** 
+ 868              		.loc 1 233 13 is_stmt 0 view .LVU192
+ 869 000e 0023     		movs	r3, #0
+ 870 0010 ADF80030 		strh	r3, [sp]	@ movhi
+ 236:app/tasks/memory/memory.c ****     if (ioStatus != osOK) return osError;
+ 871              		.loc 1 236 5 is_stmt 1 view .LVU193
+ 236:app/tasks/memory/memory.c ****     if (ioStatus != osOK) return osError;
+ 872              		.loc 1 236 27 is_stmt 0 view .LVU194
+ 873 0014 2748     		ldr	r0, .L58
+ 874              	.LVL76:
+ 236:app/tasks/memory/memory.c ****     if (ioStatus != osOK) return osError;
+ 875              		.loc 1 236 27 view .LVU195
+ 876 0016 FFF7FEFF 		bl	W25Q_WakeUp
+ 877              	.LVL77:
+ 237:app/tasks/memory/memory.c **** 
+ARM GAS  /tmp/cc6wBZaU.s 			page 26
 
 
- 1014              		.loc 1 258 1 view .LVU234
- 1015 0020 05B0     		add	sp, sp, #20
- 1016              	.LCFI23:
- 1017              		.cfi_remember_state
- 1018              		.cfi_def_cfa_offset 20
- 1019              		@ sp needed
- 1020 0022 F0BD     		pop	{r4, r5, r6, r7, pc}
- 1021              	.LVL92:
- 1022              	.L64:
- 1023              	.LCFI24:
- 1024              		.cfi_restore_state
- 1025              	.LBB8:
- 227:app/tasks/memory/memory.c ****     if (ioStatus != osOK) return osError;
- 1026              		.loc 1 227 5 is_stmt 1 view .LVU235
- 227:app/tasks/memory/memory.c ****     if (ioStatus != osOK) return osError;
- 1027              		.loc 1 227 16 is_stmt 0 view .LVU236
- 1028 0024 6946     		mov	r1, sp
- 1029 0026 2548     		ldr	r0, .L67
- 1030              	.LVL93:
- 227:app/tasks/memory/memory.c ****     if (ioStatus != osOK) return osError;
- 1031              		.loc 1 227 16 view .LVU237
- 1032 0028 FFF7FEFF 		bl	W25Q_ReadID
- 1033              	.LVL94:
- 228:app/tasks/memory/memory.c **** 
- 1034              		.loc 1 228 5 is_stmt 1 view .LVU238
- 228:app/tasks/memory/memory.c **** 
- 1035              		.loc 1 228 8 is_stmt 0 view .LVU239
- 1036 002c 10B1     		cbz	r0, .L65
- 228:app/tasks/memory/memory.c **** 
- 1037              		.loc 1 228 34 view .LVU240
- 1038 002e 4FF0FF30 		mov	r0, #-1
- 1039              	.LVL95:
- 228:app/tasks/memory/memory.c **** 
- 1040              		.loc 1 228 34 view .LVU241
- 1041 0032 F5E7     		b	.L53
- 1042              	.LVL96:
- 1043              	.L65:
- 231:app/tasks/memory/memory.c ****     #endif
- 1044              		.loc 1 231 9 is_stmt 1 view .LVU242
- 231:app/tasks/memory/memory.c ****     #endif
- 1045              		.loc 1 231 17 is_stmt 0 view .LVU243
- 1046 0034 224B     		ldr	r3, .L67+4
- 1047 0036 1868     		ldr	r0, [r3]
- 1048              	.LVL97:
- 231:app/tasks/memory/memory.c ****     #endif
- 1049              		.loc 1 231 9 view .LVU244
- 1050 0038 9DF80130 		ldrb	r3, [sp, #1]	@ zero_extendqisi2
- 1051 003c 9DF80020 		ldrb	r2, [sp]	@ zero_extendqisi2
- 1052 0040 2049     		ldr	r1, .L67+8
- 1053 0042 8068     		ldr	r0, [r0, #8]
- 1054 0044 FFF7FEFF 		bl	fprintf
- 1055              	.LVL98:
- 235:app/tasks/memory/memory.c ****     #endif
- 1056              		.loc 1 235 9 is_stmt 1 view .LVU245
- 1057 0048 1F4C     		ldr	r4, .L67+12
- 1058 004a 2046     		mov	r0, r4
- 1059 004c FFF7FEFF 		bl	writeFAT12BootSector
-ARM GAS  /tmp/ccaLOqDG.s 			page 30
+ 878              		.loc 1 237 5 is_stmt 1 view .LVU196
+ 237:app/tasks/memory/memory.c **** 
+ 879              		.loc 1 237 8 is_stmt 0 view .LVU197
+ 880 001a 18B1     		cbz	r0, .L55
+ 237:app/tasks/memory/memory.c **** 
+ 881              		.loc 1 237 34 view .LVU198
+ 882 001c 4FF0FF30 		mov	r0, #-1
+ 883              	.LVL78:
+ 884              	.L44:
+ 237:app/tasks/memory/memory.c **** 
+ 885              		.loc 1 237 34 view .LVU199
+ 886              	.LBE7:
+ 271:app/tasks/memory/memory.c **** 
+ 887              		.loc 1 271 1 view .LVU200
+ 888 0020 05B0     		add	sp, sp, #20
+ 889              	.LCFI22:
+ 890              		.cfi_remember_state
+ 891              		.cfi_def_cfa_offset 20
+ 892              		@ sp needed
+ 893 0022 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 894              	.LVL79:
+ 895              	.L55:
+ 896              	.LCFI23:
+ 897              		.cfi_restore_state
+ 898              	.LBB8:
+ 240:app/tasks/memory/memory.c ****     if (ioStatus != osOK) return osError;
+ 899              		.loc 1 240 5 is_stmt 1 view .LVU201
+ 240:app/tasks/memory/memory.c ****     if (ioStatus != osOK) return osError;
+ 900              		.loc 1 240 16 is_stmt 0 view .LVU202
+ 901 0024 6946     		mov	r1, sp
+ 902 0026 2348     		ldr	r0, .L58
+ 903              	.LVL80:
+ 240:app/tasks/memory/memory.c ****     if (ioStatus != osOK) return osError;
+ 904              		.loc 1 240 16 view .LVU203
+ 905 0028 FFF7FEFF 		bl	W25Q_ReadID
+ 906              	.LVL81:
+ 241:app/tasks/memory/memory.c **** 
+ 907              		.loc 1 241 5 is_stmt 1 view .LVU204
+ 241:app/tasks/memory/memory.c **** 
+ 908              		.loc 1 241 8 is_stmt 0 view .LVU205
+ 909 002c 10B1     		cbz	r0, .L56
+ 241:app/tasks/memory/memory.c **** 
+ 910              		.loc 1 241 34 view .LVU206
+ 911 002e 4FF0FF30 		mov	r0, #-1
+ 912              	.LVL82:
+ 241:app/tasks/memory/memory.c **** 
+ 913              		.loc 1 241 34 view .LVU207
+ 914 0032 F5E7     		b	.L44
+ 915              	.LVL83:
+ 916              	.L56:
+ 244:app/tasks/memory/memory.c ****     #endif
+ 917              		.loc 1 244 9 is_stmt 1 view .LVU208
+ 244:app/tasks/memory/memory.c ****     #endif
+ 918              		.loc 1 244 17 is_stmt 0 view .LVU209
+ 919 0034 204B     		ldr	r3, .L58+4
+ 920 0036 1868     		ldr	r0, [r3]
+ 921              	.LVL84:
+ARM GAS  /tmp/cc6wBZaU.s 			page 27
 
 
- 1060              	.LVL99:
- 239:app/tasks/memory/memory.c ****     MEMORY_Actor.logFileTailAddress = freeSpaceAddress;
- 1061              		.loc 1 239 5 view .LVU246
- 239:app/tasks/memory/memory.c ****     MEMORY_Actor.logFileTailAddress = freeSpaceAddress;
- 1062              		.loc 1 239 33 is_stmt 0 view .LVU247
- 1063 0050 FFF7FEFF 		bl	MEMORY_SeekFreeSpaceAddress
- 1064              	.LVL100:
- 1065 0054 0646     		mov	r6, r0
- 1066              	.LVL101:
- 240:app/tasks/memory/memory.c **** 
- 1067              		.loc 1 240 5 is_stmt 1 view .LVU248
- 240:app/tasks/memory/memory.c **** 
- 1068              		.loc 1 240 37 is_stmt 0 view .LVU249
- 1069 0056 6061     		str	r0, [r4, #20]
- 243:app/tasks/memory/memory.c ****     if (ioStatus != osOK) return osError;
- 1070              		.loc 1 243 5 is_stmt 1 view .LVU250
- 243:app/tasks/memory/memory.c ****     if (ioStatus != osOK) return osError;
- 1071              		.loc 1 243 16 is_stmt 0 view .LVU251
- 1072 0058 1848     		ldr	r0, .L67
- 1073              	.LVL102:
- 243:app/tasks/memory/memory.c ****     if (ioStatus != osOK) return osError;
- 1074              		.loc 1 243 16 view .LVU252
- 1075 005a FFF7FEFF 		bl	W25Q_Sleep
- 1076              	.LVL103:
- 244:app/tasks/memory/memory.c **** 
- 1077              		.loc 1 244 5 is_stmt 1 view .LVU253
- 244:app/tasks/memory/memory.c **** 
- 1078              		.loc 1 244 8 is_stmt 0 view .LVU254
- 1079 005e 10B1     		cbz	r0, .L66
- 244:app/tasks/memory/memory.c **** 
- 1080              		.loc 1 244 34 view .LVU255
- 1081 0060 4FF0FF30 		mov	r0, #-1
- 1082              	.LVL104:
- 244:app/tasks/memory/memory.c **** 
- 1083              		.loc 1 244 34 view .LVU256
- 1084 0064 DCE7     		b	.L53
- 1085              	.LVL105:
- 1086              	.L66:
- 247:app/tasks/memory/memory.c ****     osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_INITIALIZE_SUCCESS, .payload.value = MEMO
- 1087              		.loc 1 247 5 is_stmt 1 view .LVU257
- 247:app/tasks/memory/memory.c ****     osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_INITIALIZE_SUCCESS, .payload.value = MEMO
- 1088              		.loc 1 247 67 is_stmt 0 view .LVU258
- 1089 0066 194B     		ldr	r3, .L67+16
- 1090 0068 5B68     		ldr	r3, [r3, #4]
- 247:app/tasks/memory/memory.c ****     osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_INITIALIZE_SUCCESS, .payload.value = MEMO
- 1091              		.loc 1 247 24 view .LVU259
- 1092 006a 9868     		ldr	r0, [r3, #8]
- 1093              	.LVL106:
- 248:app/tasks/memory/memory.c **** 
- 1094              		.loc 1 248 5 is_stmt 1 view .LVU260
- 248:app/tasks/memory/memory.c **** 
- 1095              		.loc 1 248 51 is_stmt 0 view .LVU261
- 1096 006c 0024     		movs	r4, #0
- 1097 006e 0194     		str	r4, [sp, #4]
- 1098 0070 0294     		str	r4, [sp, #8]
- 1099 0072 0394     		str	r4, [sp, #12]
- 1100 0074 0223     		movs	r3, #2
-ARM GAS  /tmp/ccaLOqDG.s 			page 31
+ 244:app/tasks/memory/memory.c ****     #endif
+ 922              		.loc 1 244 9 view .LVU210
+ 923 0038 9DF80130 		ldrb	r3, [sp, #1]	@ zero_extendqisi2
+ 924 003c 9DF80020 		ldrb	r2, [sp]	@ zero_extendqisi2
+ 925 0040 1E49     		ldr	r1, .L58+8
+ 926 0042 8068     		ldr	r0, [r0, #8]
+ 927 0044 FFF7FEFF 		bl	fprintf
+ 928              	.LVL85:
+ 252:app/tasks/memory/memory.c ****     MEMORY_Actor.logFileTailAddress = freeSpaceAddress;
+ 929              		.loc 1 252 5 is_stmt 1 view .LVU211
+ 252:app/tasks/memory/memory.c ****     MEMORY_Actor.logFileTailAddress = freeSpaceAddress;
+ 930              		.loc 1 252 33 is_stmt 0 view .LVU212
+ 931 0048 FFF7FEFF 		bl	MEMORY_SeekFreeSpaceAddress
+ 932              	.LVL86:
+ 933 004c 0646     		mov	r6, r0
+ 934              	.LVL87:
+ 253:app/tasks/memory/memory.c **** 
+ 935              		.loc 1 253 5 is_stmt 1 view .LVU213
+ 253:app/tasks/memory/memory.c **** 
+ 936              		.loc 1 253 37 is_stmt 0 view .LVU214
+ 937 004e 1C4B     		ldr	r3, .L58+12
+ 938 0050 5861     		str	r0, [r3, #20]
+ 256:app/tasks/memory/memory.c ****     if (ioStatus != osOK) return osError;
+ 939              		.loc 1 256 5 is_stmt 1 view .LVU215
+ 256:app/tasks/memory/memory.c ****     if (ioStatus != osOK) return osError;
+ 940              		.loc 1 256 16 is_stmt 0 view .LVU216
+ 941 0052 1848     		ldr	r0, .L58
+ 942              	.LVL88:
+ 256:app/tasks/memory/memory.c ****     if (ioStatus != osOK) return osError;
+ 943              		.loc 1 256 16 view .LVU217
+ 944 0054 FFF7FEFF 		bl	W25Q_Sleep
+ 945              	.LVL89:
+ 257:app/tasks/memory/memory.c **** 
+ 946              		.loc 1 257 5 is_stmt 1 view .LVU218
+ 257:app/tasks/memory/memory.c **** 
+ 947              		.loc 1 257 8 is_stmt 0 view .LVU219
+ 948 0058 10B1     		cbz	r0, .L57
+ 257:app/tasks/memory/memory.c **** 
+ 949              		.loc 1 257 34 view .LVU220
+ 950 005a 4FF0FF30 		mov	r0, #-1
+ 951              	.LVL90:
+ 257:app/tasks/memory/memory.c **** 
+ 952              		.loc 1 257 34 view .LVU221
+ 953 005e DFE7     		b	.L44
+ 954              	.LVL91:
+ 955              	.L57:
+ 260:app/tasks/memory/memory.c ****     osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_INITIALIZE_SUCCESS, .payload.value = MEMO
+ 956              		.loc 1 260 5 is_stmt 1 view .LVU222
+ 260:app/tasks/memory/memory.c ****     osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_INITIALIZE_SUCCESS, .payload.value = MEMO
+ 957              		.loc 1 260 67 is_stmt 0 view .LVU223
+ 958 0060 184B     		ldr	r3, .L58+16
+ 959 0062 5B68     		ldr	r3, [r3, #4]
+ 260:app/tasks/memory/memory.c ****     osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_INITIALIZE_SUCCESS, .payload.value = MEMO
+ 960              		.loc 1 260 24 view .LVU224
+ 961 0064 9868     		ldr	r0, [r3, #8]
+ 962              	.LVL92:
+ 261:app/tasks/memory/memory.c **** 
+ARM GAS  /tmp/cc6wBZaU.s 			page 28
 
 
- 1101 0076 8DF80430 		strb	r3, [sp, #4]
- 1102 007a 0823     		movs	r3, #8
- 1103 007c 0293     		str	r3, [sp, #8]
- 248:app/tasks/memory/memory.c **** 
- 1104              		.loc 1 248 5 view .LVU262
- 1105 007e 2346     		mov	r3, r4
- 1106 0080 2246     		mov	r2, r4
- 1107 0082 01A9     		add	r1, sp, #4
- 1108 0084 FFF7FEFF 		bl	osMessageQueuePut
- 1109              	.LVL107:
- 251:app/tasks/memory/memory.c ****         fprintf(stdout, "Memory task initialized\n");
- 1110              		.loc 1 251 9 is_stmt 1 view .LVU263
- 251:app/tasks/memory/memory.c ****         fprintf(stdout, "Memory task initialized\n");
- 1111              		.loc 1 251 17 is_stmt 0 view .LVU264
- 1112 0088 0D4F     		ldr	r7, .L67+4
- 1113 008a 3B68     		ldr	r3, [r7]
- 251:app/tasks/memory/memory.c ****         fprintf(stdout, "Memory task initialized\n");
- 1114              		.loc 1 251 9 view .LVU265
- 1115 008c 3246     		mov	r2, r6
- 1116 008e 1049     		ldr	r1, .L67+20
- 1117 0090 9868     		ldr	r0, [r3, #8]
- 1118 0092 FFF7FEFF 		bl	fprintf
- 1119              	.LVL108:
- 252:app/tasks/memory/memory.c ****     #endif
- 1120              		.loc 1 252 9 is_stmt 1 view .LVU266
- 252:app/tasks/memory/memory.c ****     #endif
- 1121              		.loc 1 252 17 is_stmt 0 view .LVU267
- 1122 0096 3B68     		ldr	r3, [r7]
- 252:app/tasks/memory/memory.c ****     #endif
- 1123              		.loc 1 252 9 view .LVU268
- 1124 0098 9B68     		ldr	r3, [r3, #8]
- 1125 009a 1822     		movs	r2, #24
- 1126 009c 0121     		movs	r1, #1
- 1127 009e 0D48     		ldr	r0, .L67+24
- 1128 00a0 FFF7FEFF 		bl	fwrite
- 1129              	.LVL109:
- 255:app/tasks/memory/memory.c ****     return osOK;
- 1130              		.loc 1 255 5 is_stmt 1 view .LVU269
- 255:app/tasks/memory/memory.c ****     return osOK;
- 1131              		.loc 1 255 5 view .LVU270
- 1132 00a4 0123     		movs	r3, #1
- 1133 00a6 2B74     		strb	r3, [r5, #16]
- 255:app/tasks/memory/memory.c ****     return osOK;
- 1134              		.loc 1 255 5 view .LVU271
- 1135 00a8 3868     		ldr	r0, [r7]
- 1136 00aa 0B4B     		ldr	r3, .L67+28
- 1137 00ac 2A68     		ldr	r2, [r5]
- 1138 00ae 0B49     		ldr	r1, .L67+32
- 1139 00b0 8068     		ldr	r0, [r0, #8]
- 1140 00b2 FFF7FEFF 		bl	fprintf
- 1141              	.LVL110:
- 255:app/tasks/memory/memory.c ****     return osOK;
- 1142              		.loc 1 255 5 view .LVU272
- 255:app/tasks/memory/memory.c ****     return osOK;
- 1143              		.loc 1 255 39 view .LVU273
- 256:app/tasks/memory/memory.c ****   }
- 1144              		.loc 1 256 5 view .LVU274
-ARM GAS  /tmp/ccaLOqDG.s 			page 32
+ 963              		.loc 1 261 5 is_stmt 1 view .LVU225
+ 261:app/tasks/memory/memory.c **** 
+ 964              		.loc 1 261 51 is_stmt 0 view .LVU226
+ 965 0066 0024     		movs	r4, #0
+ 966 0068 0194     		str	r4, [sp, #4]
+ 967 006a 0294     		str	r4, [sp, #8]
+ 968 006c 0394     		str	r4, [sp, #12]
+ 969 006e 0223     		movs	r3, #2
+ 970 0070 8DF80430 		strb	r3, [sp, #4]
+ 971 0074 0823     		movs	r3, #8
+ 972 0076 0293     		str	r3, [sp, #8]
+ 261:app/tasks/memory/memory.c **** 
+ 973              		.loc 1 261 5 view .LVU227
+ 974 0078 2346     		mov	r3, r4
+ 975 007a 2246     		mov	r2, r4
+ 976 007c 01A9     		add	r1, sp, #4
+ 977 007e FFF7FEFF 		bl	osMessageQueuePut
+ 978              	.LVL93:
+ 264:app/tasks/memory/memory.c ****         fprintf(stdout, "Memory task initialized\n");
+ 979              		.loc 1 264 9 is_stmt 1 view .LVU228
+ 264:app/tasks/memory/memory.c ****         fprintf(stdout, "Memory task initialized\n");
+ 980              		.loc 1 264 17 is_stmt 0 view .LVU229
+ 981 0082 0D4F     		ldr	r7, .L58+4
+ 982 0084 3B68     		ldr	r3, [r7]
+ 264:app/tasks/memory/memory.c ****         fprintf(stdout, "Memory task initialized\n");
+ 983              		.loc 1 264 9 view .LVU230
+ 984 0086 3246     		mov	r2, r6
+ 985 0088 0F49     		ldr	r1, .L58+20
+ 986 008a 9868     		ldr	r0, [r3, #8]
+ 987 008c FFF7FEFF 		bl	fprintf
+ 988              	.LVL94:
+ 265:app/tasks/memory/memory.c ****     #endif
+ 989              		.loc 1 265 9 is_stmt 1 view .LVU231
+ 265:app/tasks/memory/memory.c ****     #endif
+ 990              		.loc 1 265 17 is_stmt 0 view .LVU232
+ 991 0090 3B68     		ldr	r3, [r7]
+ 265:app/tasks/memory/memory.c ****     #endif
+ 992              		.loc 1 265 9 view .LVU233
+ 993 0092 9B68     		ldr	r3, [r3, #8]
+ 994 0094 1822     		movs	r2, #24
+ 995 0096 0121     		movs	r1, #1
+ 996 0098 0C48     		ldr	r0, .L58+24
+ 997 009a FFF7FEFF 		bl	fwrite
+ 998              	.LVL95:
+ 268:app/tasks/memory/memory.c ****     return osOK;
+ 999              		.loc 1 268 5 is_stmt 1 view .LVU234
+ 268:app/tasks/memory/memory.c ****     return osOK;
+ 1000              		.loc 1 268 5 view .LVU235
+ 1001 009e 0123     		movs	r3, #1
+ 1002 00a0 2B74     		strb	r3, [r5, #16]
+ 268:app/tasks/memory/memory.c ****     return osOK;
+ 1003              		.loc 1 268 5 view .LVU236
+ 1004 00a2 3868     		ldr	r0, [r7]
+ 1005 00a4 0A4B     		ldr	r3, .L58+28
+ 1006 00a6 2A68     		ldr	r2, [r5]
+ 1007 00a8 0A49     		ldr	r1, .L58+32
+ 1008 00aa 8068     		ldr	r0, [r0, #8]
+ARM GAS  /tmp/cc6wBZaU.s 			page 29
 
 
- 256:app/tasks/memory/memory.c ****   }
- 1145              		.loc 1 256 12 is_stmt 0 view .LVU275
- 1146 00b6 2046     		mov	r0, r4
- 1147 00b8 B2E7     		b	.L53
- 1148              	.L68:
- 1149 00ba 00BF     		.align	2
- 1150              	.L67:
- 1151 00bc 00000000 		.word	.LANCHOR0
- 1152 00c0 00000000 		.word	_impure_ptr
- 1153 00c4 00000000 		.word	.LC9
- 1154 00c8 00000000 		.word	.LANCHOR2
- 1155 00cc 00000000 		.word	ACTORS_LIST_SystemRegistry
- 1156 00d0 28000000 		.word	.LC10
- 1157 00d4 48000000 		.word	.LC11
- 1158 00d8 00000000 		.word	.LC0
- 1159 00dc 14000000 		.word	.LC1
- 1160              	.LBE8:
- 1161              		.cfi_endproc
- 1162              	.LFE146:
- 1164              		.section	.text.handleMemoryFSM,"ax",%progbits
- 1165              		.align	1
- 1166              		.syntax unified
- 1167              		.thumb
- 1168              		.thumb_func
- 1169              		.fpu fpv4-sp-d16
- 1171              	handleMemoryFSM:
- 1172              	.LVL111:
- 1173              	.LFB142:
- 110:app/tasks/memory/memory.c ****   switch (this->state) {
- 1174              		.loc 1 110 77 is_stmt 1 view -0
- 1175              		.cfi_startproc
- 1176              		@ args = 0, pretend = 0, frame = 0
- 1177              		@ frame_needed = 0, uses_anonymous_args = 0
- 110:app/tasks/memory/memory.c ****   switch (this->state) {
- 1178              		.loc 1 110 77 is_stmt 0 view .LVU277
- 1179 0000 08B5     		push	{r3, lr}
- 1180              	.LCFI25:
- 1181              		.cfi_def_cfa_offset 8
- 1182              		.cfi_offset 3, -8
- 1183              		.cfi_offset 14, -4
- 111:app/tasks/memory/memory.c ****     case MEMORY_NO_STATE:
- 1184              		.loc 1 111 3 is_stmt 1 view .LVU278
- 111:app/tasks/memory/memory.c ****     case MEMORY_NO_STATE:
- 1185              		.loc 1 111 15 is_stmt 0 view .LVU279
- 1186 0002 037C     		ldrb	r3, [r0, #16]	@ zero_extendqisi2
- 111:app/tasks/memory/memory.c ****     case MEMORY_NO_STATE:
- 1187              		.loc 1 111 3 view .LVU280
- 1188 0004 012B     		cmp	r3, #1
- 1189 0006 07D0     		beq	.L70
- 1190 0008 022B     		cmp	r3, #2
- 1191 000a 08D0     		beq	.L71
- 1192 000c 0BB1     		cbz	r3, .L75
- 1193 000e 0020     		movs	r0, #0
- 1194              	.LVL112:
- 1195              	.L69:
- 123:app/tasks/memory/memory.c **** 
- 1196              		.loc 1 123 1 view .LVU281
-ARM GAS  /tmp/ccaLOqDG.s 			page 33
+ 1009 00ac FFF7FEFF 		bl	fprintf
+ 1010              	.LVL96:
+ 268:app/tasks/memory/memory.c ****     return osOK;
+ 1011              		.loc 1 268 5 view .LVU237
+ 268:app/tasks/memory/memory.c ****     return osOK;
+ 1012              		.loc 1 268 39 view .LVU238
+ 269:app/tasks/memory/memory.c ****   }
+ 1013              		.loc 1 269 5 view .LVU239
+ 269:app/tasks/memory/memory.c ****   }
+ 1014              		.loc 1 269 12 is_stmt 0 view .LVU240
+ 1015 00b0 2046     		mov	r0, r4
+ 1016 00b2 B5E7     		b	.L44
+ 1017              	.L59:
+ 1018              		.align	2
+ 1019              	.L58:
+ 1020 00b4 00000000 		.word	.LANCHOR0
+ 1021 00b8 00000000 		.word	_impure_ptr
+ 1022 00bc 00000000 		.word	.LC6
+ 1023 00c0 00000000 		.word	.LANCHOR2
+ 1024 00c4 00000000 		.word	ACTORS_LIST_SystemRegistry
+ 1025 00c8 28000000 		.word	.LC7
+ 1026 00cc 48000000 		.word	.LC8
+ 1027 00d0 00000000 		.word	.LC0
+ 1028 00d4 14000000 		.word	.LC1
+ 1029              	.LBE8:
+ 1030              		.cfi_endproc
+ 1031              	.LFE146:
+ 1033              		.section	.text.handleMemoryFSM,"ax",%progbits
+ 1034              		.align	1
+ 1035              		.syntax unified
+ 1036              		.thumb
+ 1037              		.thumb_func
+ 1038              		.fpu fpv4-sp-d16
+ 1040              	handleMemoryFSM:
+ 1041              	.LVL97:
+ 1042              	.LFB142:
+ 123:app/tasks/memory/memory.c ****   switch (this->state) {
+ 1043              		.loc 1 123 77 is_stmt 1 view -0
+ 1044              		.cfi_startproc
+ 1045              		@ args = 0, pretend = 0, frame = 0
+ 1046              		@ frame_needed = 0, uses_anonymous_args = 0
+ 123:app/tasks/memory/memory.c ****   switch (this->state) {
+ 1047              		.loc 1 123 77 is_stmt 0 view .LVU242
+ 1048 0000 08B5     		push	{r3, lr}
+ 1049              	.LCFI24:
+ 1050              		.cfi_def_cfa_offset 8
+ 1051              		.cfi_offset 3, -8
+ 1052              		.cfi_offset 14, -4
+ 124:app/tasks/memory/memory.c ****     case MEMORY_NO_STATE:
+ 1053              		.loc 1 124 3 is_stmt 1 view .LVU243
+ 124:app/tasks/memory/memory.c ****     case MEMORY_NO_STATE:
+ 1054              		.loc 1 124 15 is_stmt 0 view .LVU244
+ 1055 0002 037C     		ldrb	r3, [r0, #16]	@ zero_extendqisi2
+ 124:app/tasks/memory/memory.c ****     case MEMORY_NO_STATE:
+ 1056              		.loc 1 124 3 view .LVU245
+ 1057 0004 012B     		cmp	r3, #1
+ 1058 0006 07D0     		beq	.L61
+ARM GAS  /tmp/cc6wBZaU.s 			page 30
 
 
- 1197 0010 08BD     		pop	{r3, pc}
- 1198              	.LVL113:
- 1199              	.L75:
- 113:app/tasks/memory/memory.c ****     case MEMORY_SLEEP_STATE:
- 1200              		.loc 1 113 7 is_stmt 1 view .LVU282
- 113:app/tasks/memory/memory.c ****     case MEMORY_SLEEP_STATE:
- 1201              		.loc 1 113 14 is_stmt 0 view .LVU283
- 1202 0012 FFF7FEFF 		bl	handleInit
- 1203              	.LVL114:
- 113:app/tasks/memory/memory.c ****     case MEMORY_SLEEP_STATE:
- 1204              		.loc 1 113 14 view .LVU284
- 1205 0016 FBE7     		b	.L69
- 1206              	.LVL115:
- 1207              	.L70:
- 115:app/tasks/memory/memory.c ****     case MEMORY_WRITE_STATE:
- 1208              		.loc 1 115 7 is_stmt 1 view .LVU285
- 115:app/tasks/memory/memory.c ****     case MEMORY_WRITE_STATE:
- 1209              		.loc 1 115 14 is_stmt 0 view .LVU286
- 1210 0018 FFF7FEFF 		bl	handleSleep
- 1211              	.LVL116:
- 115:app/tasks/memory/memory.c ****     case MEMORY_WRITE_STATE:
- 1212              		.loc 1 115 14 view .LVU287
- 1213 001c F8E7     		b	.L69
- 1214              	.LVL117:
- 1215              	.L71:
- 117:app/tasks/memory/memory.c ****     default:
- 1216              		.loc 1 117 7 is_stmt 1 view .LVU288
- 117:app/tasks/memory/memory.c ****     default:
- 1217              		.loc 1 117 14 is_stmt 0 view .LVU289
- 1218 001e FFF7FEFF 		bl	handleWrite
- 1219              	.LVL118:
- 117:app/tasks/memory/memory.c ****     default:
- 1220              		.loc 1 117 14 view .LVU290
- 1221 0022 F5E7     		b	.L69
- 1222              		.cfi_endproc
- 1223              	.LFE142:
- 1225              		.section	.rodata.HAL_GPIO_EXTI_Callback.str1.4,"aMS",%progbits,1
- 1226              		.align	2
- 1227              	.LC12:
- 1228 0000 55534220 		.ascii	"USB connected\012\000"
- 1228      636F6E6E 
- 1228      65637465 
- 1228      640A00
- 1229 000f 00       		.align	2
- 1230              	.LC13:
- 1231 0010 55534220 		.ascii	"USB disconnected\012\000"
- 1231      64697363 
- 1231      6F6E6E65 
- 1231      63746564 
- 1231      0A00
- 1232 0022 0000     		.align	2
- 1233              	.LC14:
- 1234 0024 4E464320 		.ascii	"NFC GPO Interrupt\012\000"
- 1234      47504F20 
- 1234      496E7465 
- 1234      72727570 
- 1234      740A00
-ARM GAS  /tmp/ccaLOqDG.s 			page 34
+ 1059 0008 022B     		cmp	r3, #2
+ 1060 000a 08D0     		beq	.L62
+ 1061 000c 0BB1     		cbz	r3, .L66
+ 1062 000e 0020     		movs	r0, #0
+ 1063              	.LVL98:
+ 1064              	.L60:
+ 136:app/tasks/memory/memory.c **** 
+ 1065              		.loc 1 136 1 view .LVU246
+ 1066 0010 08BD     		pop	{r3, pc}
+ 1067              	.LVL99:
+ 1068              	.L66:
+ 126:app/tasks/memory/memory.c ****     case MEMORY_SLEEP_STATE:
+ 1069              		.loc 1 126 7 is_stmt 1 view .LVU247
+ 126:app/tasks/memory/memory.c ****     case MEMORY_SLEEP_STATE:
+ 1070              		.loc 1 126 14 is_stmt 0 view .LVU248
+ 1071 0012 FFF7FEFF 		bl	handleInit
+ 1072              	.LVL100:
+ 126:app/tasks/memory/memory.c ****     case MEMORY_SLEEP_STATE:
+ 1073              		.loc 1 126 14 view .LVU249
+ 1074 0016 FBE7     		b	.L60
+ 1075              	.LVL101:
+ 1076              	.L61:
+ 128:app/tasks/memory/memory.c ****     case MEMORY_WRITE_STATE:
+ 1077              		.loc 1 128 7 is_stmt 1 view .LVU250
+ 128:app/tasks/memory/memory.c ****     case MEMORY_WRITE_STATE:
+ 1078              		.loc 1 128 14 is_stmt 0 view .LVU251
+ 1079 0018 FFF7FEFF 		bl	handleSleep
+ 1080              	.LVL102:
+ 128:app/tasks/memory/memory.c ****     case MEMORY_WRITE_STATE:
+ 1081              		.loc 1 128 14 view .LVU252
+ 1082 001c F8E7     		b	.L60
+ 1083              	.LVL103:
+ 1084              	.L62:
+ 130:app/tasks/memory/memory.c ****     default:
+ 1085              		.loc 1 130 7 is_stmt 1 view .LVU253
+ 130:app/tasks/memory/memory.c ****     default:
+ 1086              		.loc 1 130 14 is_stmt 0 view .LVU254
+ 1087 001e FFF7FEFF 		bl	handleWrite
+ 1088              	.LVL104:
+ 130:app/tasks/memory/memory.c ****     default:
+ 1089              		.loc 1 130 14 view .LVU255
+ 1090 0022 F5E7     		b	.L60
+ 1091              		.cfi_endproc
+ 1092              	.LFE142:
+ 1094              		.section	.rodata.HAL_GPIO_EXTI_Callback.str1.4,"aMS",%progbits,1
+ 1095              		.align	2
+ 1096              	.LC9:
+ 1097 0000 55534220 		.ascii	"USB connected\012\000"
+ 1097      636F6E6E 
+ 1097      65637465 
+ 1097      640A00
+ 1098 000f 00       		.align	2
+ 1099              	.LC10:
+ 1100 0010 55534220 		.ascii	"USB disconnected\012\000"
+ 1100      64697363 
+ 1100      6F6E6E65 
+ 1100      63746564 
+ARM GAS  /tmp/cc6wBZaU.s 			page 31
 
 
- 1235              		.section	.text.HAL_GPIO_EXTI_Callback,"ax",%progbits
- 1236              		.align	1
- 1237              		.global	HAL_GPIO_EXTI_Callback
- 1238              		.syntax unified
- 1239              		.thumb
- 1240              		.thumb_func
- 1241              		.fpu fpv4-sp-d16
- 1243              	HAL_GPIO_EXTI_Callback:
- 1244              	.LVL119:
- 1245              	.LFB144:
- 162:app/tasks/memory/memory.c ****   if (GPIO_Pin == USB_VBUS_SENSE_Pin) {
- 1246              		.loc 1 162 48 is_stmt 1 view -0
- 1247              		.cfi_startproc
- 1248              		@ args = 0, pretend = 0, frame = 40
- 1249              		@ frame_needed = 0, uses_anonymous_args = 0
- 162:app/tasks/memory/memory.c ****   if (GPIO_Pin == USB_VBUS_SENSE_Pin) {
- 1250              		.loc 1 162 48 is_stmt 0 view .LVU292
- 1251 0000 30B5     		push	{r4, r5, lr}
- 1252              	.LCFI26:
- 1253              		.cfi_def_cfa_offset 12
- 1254              		.cfi_offset 4, -12
- 1255              		.cfi_offset 5, -8
- 1256              		.cfi_offset 14, -4
- 1257 0002 8BB0     		sub	sp, sp, #44
- 1258              	.LCFI27:
- 1259              		.cfi_def_cfa_offset 56
- 1260 0004 0446     		mov	r4, r0
- 163:app/tasks/memory/memory.c ****     GPIO_PinState usbVBusPin = HAL_GPIO_ReadPin(USB_VBUS_SENSE_GPIO_Port, USB_VBUS_SENSE_Pin);
- 1261              		.loc 1 163 3 is_stmt 1 view .LVU293
- 163:app/tasks/memory/memory.c ****     GPIO_PinState usbVBusPin = HAL_GPIO_ReadPin(USB_VBUS_SENSE_GPIO_Port, USB_VBUS_SENSE_Pin);
- 1262              		.loc 1 163 6 is_stmt 0 view .LVU294
- 1263 0006 B0F5807F 		cmp	r0, #256
- 1264 000a 03D0     		beq	.L81
+ 1100      0A00
+ 1101 0022 0000     		.align	2
+ 1102              	.LC11:
+ 1103 0024 4E464320 		.ascii	"NFC GPO Interrupt\012\000"
+ 1103      47504F20 
+ 1103      496E7465 
+ 1103      72727570 
+ 1103      740A00
+ 1104              		.section	.text.HAL_GPIO_EXTI_Callback,"ax",%progbits
+ 1105              		.align	1
+ 1106              		.global	HAL_GPIO_EXTI_Callback
+ 1107              		.syntax unified
+ 1108              		.thumb
+ 1109              		.thumb_func
+ 1110              		.fpu fpv4-sp-d16
+ 1112              	HAL_GPIO_EXTI_Callback:
+ 1113              	.LVL105:
+ 1114              	.LFB144:
+ 175:app/tasks/memory/memory.c ****   if (GPIO_Pin == USB_VBUS_SENSE_Pin) {
+ 1115              		.loc 1 175 48 is_stmt 1 view -0
+ 1116              		.cfi_startproc
+ 1117              		@ args = 0, pretend = 0, frame = 40
+ 1118              		@ frame_needed = 0, uses_anonymous_args = 0
+ 175:app/tasks/memory/memory.c ****   if (GPIO_Pin == USB_VBUS_SENSE_Pin) {
+ 1119              		.loc 1 175 48 is_stmt 0 view .LVU257
+ 1120 0000 30B5     		push	{r4, r5, lr}
+ 1121              	.LCFI25:
+ 1122              		.cfi_def_cfa_offset 12
+ 1123              		.cfi_offset 4, -12
+ 1124              		.cfi_offset 5, -8
+ 1125              		.cfi_offset 14, -4
+ 1126 0002 8BB0     		sub	sp, sp, #44
+ 1127              	.LCFI26:
+ 1128              		.cfi_def_cfa_offset 56
+ 1129 0004 0446     		mov	r4, r0
+ 176:app/tasks/memory/memory.c ****     GPIO_PinState usbVBusPin = HAL_GPIO_ReadPin(USB_VBUS_SENSE_GPIO_Port, USB_VBUS_SENSE_Pin);
+ 1130              		.loc 1 176 3 is_stmt 1 view .LVU258
+ 176:app/tasks/memory/memory.c ****     GPIO_PinState usbVBusPin = HAL_GPIO_ReadPin(USB_VBUS_SENSE_GPIO_Port, USB_VBUS_SENSE_Pin);
+ 1131              		.loc 1 176 6 is_stmt 0 view .LVU259
+ 1132 0006 B0F5807F 		cmp	r0, #256
+ 1133 000a 03D0     		beq	.L72
+ 1134              	.LVL106:
+ 1135              	.L68:
+ 193:app/tasks/memory/memory.c ****     #ifdef DEBUG
+ 1136              		.loc 1 193 3 is_stmt 1 view .LVU260
+ 193:app/tasks/memory/memory.c ****     #ifdef DEBUG
+ 1137              		.loc 1 193 6 is_stmt 0 view .LVU261
+ 1138 000c 012C     		cmp	r4, #1
+ 1139 000e 36D0     		beq	.L73
+ 1140              	.L67:
+ 199:app/tasks/memory/memory.c **** 
+ 1141              		.loc 1 199 1 view .LVU262
+ 1142 0010 0BB0     		add	sp, sp, #44
+ 1143              	.LCFI27:
+ 1144              		.cfi_remember_state
+ 1145              		.cfi_def_cfa_offset 12
+ 1146              		@ sp needed
+ARM GAS  /tmp/cc6wBZaU.s 			page 32
+
+
+ 1147 0012 30BD     		pop	{r4, r5, pc}
+ 1148              	.LVL107:
+ 1149              	.L72:
+ 1150              	.LCFI28:
+ 1151              		.cfi_restore_state
+ 1152              	.LBB9:
+ 177:app/tasks/memory/memory.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
+ 1153              		.loc 1 177 5 is_stmt 1 view .LVU263
+ 177:app/tasks/memory/memory.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
+ 1154              		.loc 1 177 32 is_stmt 0 view .LVU264
+ 1155 0014 4FF48071 		mov	r1, #256
+ 1156 0018 4FF09040 		mov	r0, #1207959552
+ 1157              	.LVL108:
+ 177:app/tasks/memory/memory.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
+ 1158              		.loc 1 177 32 view .LVU265
+ 1159 001c FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 1160              	.LVL109:
+ 178:app/tasks/memory/memory.c **** 
+ 1161              		.loc 1 178 5 is_stmt 1 view .LVU266
+ 178:app/tasks/memory/memory.c **** 
+ 1162              		.loc 1 178 67 is_stmt 0 view .LVU267
+ 1163 0020 224B     		ldr	r3, .L75
+ 1164 0022 5B68     		ldr	r3, [r3, #4]
+ 178:app/tasks/memory/memory.c **** 
+ 1165              		.loc 1 178 24 view .LVU268
+ 1166 0024 9D68     		ldr	r5, [r3, #8]
+ 1167              	.LVL110:
+ 180:app/tasks/memory/memory.c ****       osMessageQueuePut(evManagerQueue, &(message_t) {USB_CONNECTED}, 0, 0);
+ 1168              		.loc 1 180 5 is_stmt 1 view .LVU269
+ 180:app/tasks/memory/memory.c ****       osMessageQueuePut(evManagerQueue, &(message_t) {USB_CONNECTED}, 0, 0);
+ 1169              		.loc 1 180 8 is_stmt 0 view .LVU270
+ 1170 0026 0128     		cmp	r0, #1
+ 1171 0028 14D0     		beq	.L74
+ 1172              	.LBB10:
+ 186:app/tasks/memory/memory.c ****       #if DEBUG
+ 1173              		.loc 1 186 7 is_stmt 1 view .LVU271
+ 186:app/tasks/memory/memory.c ****       #if DEBUG
+ 1174              		.loc 1 186 54 is_stmt 0 view .LVU272
+ 1175 002a 0022     		movs	r2, #0
+ 1176 002c 0492     		str	r2, [sp, #16]
+ 1177 002e 0592     		str	r2, [sp, #20]
+ 1178 0030 0692     		str	r2, [sp, #24]
+ 1179 0032 1E23     		movs	r3, #30
+ 1180 0034 8DF81030 		strb	r3, [sp, #16]
+ 186:app/tasks/memory/memory.c ****       #if DEBUG
+ 1181              		.loc 1 186 7 view .LVU273
+ 1182 0038 1346     		mov	r3, r2
+ 1183 003a 04A9     		add	r1, sp, #16
+ 1184 003c 2846     		mov	r0, r5
+ 1185              	.LVL111:
+ 186:app/tasks/memory/memory.c ****       #if DEBUG
+ 1186              		.loc 1 186 7 view .LVU274
+ 1187 003e FFF7FEFF 		bl	osMessageQueuePut
+ 1188              	.LVL112:
+ 188:app/tasks/memory/memory.c ****       #endif
+ 1189              		.loc 1 188 13 is_stmt 1 view .LVU275
+ 188:app/tasks/memory/memory.c ****       #endif
+ARM GAS  /tmp/cc6wBZaU.s 			page 33
+
+
+ 1190              		.loc 1 188 21 is_stmt 0 view .LVU276
+ 1191 0042 1B4B     		ldr	r3, .L75+4
+ 1192 0044 1B68     		ldr	r3, [r3]
+ 188:app/tasks/memory/memory.c ****       #endif
+ 1193              		.loc 1 188 13 view .LVU277
+ 1194 0046 9B68     		ldr	r3, [r3, #8]
+ 1195 0048 1122     		movs	r2, #17
+ 1196 004a 0121     		movs	r1, #1
+ 1197 004c 1948     		ldr	r0, .L75+8
+ 1198 004e FFF7FEFF 		bl	fwrite
+ 1199              	.LVL113:
+ 1200 0052 DBE7     		b	.L68
+ 1201              	.LVL114:
+ 1202              	.L74:
+ 188:app/tasks/memory/memory.c ****       #endif
+ 1203              		.loc 1 188 13 view .LVU278
+ 1204              	.LBE10:
+ 1205              	.LBB11:
+ 181:app/tasks/memory/memory.c ****       #if DEBUG
+ 1206              		.loc 1 181 7 is_stmt 1 view .LVU279
+ 181:app/tasks/memory/memory.c ****       #if DEBUG
+ 1207              		.loc 1 181 54 is_stmt 0 view .LVU280
+ 1208 0054 0022     		movs	r2, #0
+ 1209 0056 0192     		str	r2, [sp, #4]
+ 1210 0058 0292     		str	r2, [sp, #8]
+ 1211 005a 0392     		str	r2, [sp, #12]
+ 1212 005c 1D23     		movs	r3, #29
+ 1213 005e 8DF80430 		strb	r3, [sp, #4]
+ 181:app/tasks/memory/memory.c ****       #if DEBUG
+ 1214              		.loc 1 181 7 view .LVU281
+ 1215 0062 1346     		mov	r3, r2
+ 1216 0064 01A9     		add	r1, sp, #4
+ 1217 0066 2846     		mov	r0, r5
+ 1218              	.LVL115:
+ 181:app/tasks/memory/memory.c ****       #if DEBUG
+ 1219              		.loc 1 181 7 view .LVU282
+ 1220 0068 FFF7FEFF 		bl	osMessageQueuePut
+ 1221              	.LVL116:
+ 183:app/tasks/memory/memory.c ****       #endif
+ 1222              		.loc 1 183 13 is_stmt 1 view .LVU283
+ 183:app/tasks/memory/memory.c ****       #endif
+ 1223              		.loc 1 183 21 is_stmt 0 view .LVU284
+ 1224 006c 104B     		ldr	r3, .L75+4
+ 1225 006e 1B68     		ldr	r3, [r3]
+ 183:app/tasks/memory/memory.c ****       #endif
+ 1226              		.loc 1 183 13 view .LVU285
+ 1227 0070 9B68     		ldr	r3, [r3, #8]
+ 1228 0072 0E22     		movs	r2, #14
+ 1229 0074 0121     		movs	r1, #1
+ 1230 0076 1048     		ldr	r0, .L75+12
+ 1231 0078 FFF7FEFF 		bl	fwrite
+ 1232              	.LVL117:
+ 1233              	.LBE11:
+ 1234 007c C6E7     		b	.L68
+ 1235              	.LVL118:
+ 1236              	.L73:
+ 183:app/tasks/memory/memory.c ****       #endif
+ARM GAS  /tmp/cc6wBZaU.s 			page 34
+
+
+ 1237              		.loc 1 183 13 view .LVU286
+ 1238              	.LBE9:
+ 1239              	.LBB12:
+ 195:app/tasks/memory/memory.c ****     #endif
+ 1240              		.loc 1 195 9 is_stmt 1 view .LVU287
+ 195:app/tasks/memory/memory.c ****     #endif
+ 1241              		.loc 1 195 17 is_stmt 0 view .LVU288
+ 1242 007e 0C4B     		ldr	r3, .L75+4
+ 1243 0080 1B68     		ldr	r3, [r3]
+ 195:app/tasks/memory/memory.c ****     #endif
+ 1244              		.loc 1 195 9 view .LVU289
+ 1245 0082 9B68     		ldr	r3, [r3, #8]
+ 1246 0084 1222     		movs	r2, #18
+ 1247 0086 0121     		movs	r1, #1
+ 1248 0088 0C48     		ldr	r0, .L75+16
+ 1249 008a FFF7FEFF 		bl	fwrite
+ 1250              	.LVL119:
+ 197:app/tasks/memory/memory.c ****   }
+ 1251              		.loc 1 197 5 is_stmt 1 view .LVU290
+ 197:app/tasks/memory/memory.c ****   }
+ 1252              		.loc 1 197 69 is_stmt 0 view .LVU291
+ 1253 008e 0022     		movs	r2, #0
+ 1254 0090 0792     		str	r2, [sp, #28]
+ 1255 0092 0892     		str	r2, [sp, #32]
+ 1256 0094 0992     		str	r2, [sp, #36]
+ 1257 0096 1023     		movs	r3, #16
+ 1258 0098 8DF81C30 		strb	r3, [sp, #28]
+ 197:app/tasks/memory/memory.c ****   }
+ 1259              		.loc 1 197 5 view .LVU292
+ 1260 009c 1346     		mov	r3, r2
+ 1261 009e 07A9     		add	r1, sp, #28
+ 1262 00a0 0748     		ldr	r0, .L75+20
+ 1263 00a2 8068     		ldr	r0, [r0, #8]
+ 1264 00a4 FFF7FEFF 		bl	osMessageQueuePut
  1265              	.LVL120:
- 1266              	.L77:
- 180:app/tasks/memory/memory.c ****     #ifdef DEBUG
- 1267              		.loc 1 180 3 is_stmt 1 view .LVU295
- 180:app/tasks/memory/memory.c ****     #ifdef DEBUG
- 1268              		.loc 1 180 6 is_stmt 0 view .LVU296
- 1269 000c 012C     		cmp	r4, #1
- 1270 000e 36D0     		beq	.L82
- 1271              	.L76:
- 186:app/tasks/memory/memory.c **** 
- 1272              		.loc 1 186 1 view .LVU297
- 1273 0010 0BB0     		add	sp, sp, #44
- 1274              	.LCFI28:
- 1275              		.cfi_remember_state
- 1276              		.cfi_def_cfa_offset 12
- 1277              		@ sp needed
- 1278 0012 30BD     		pop	{r4, r5, pc}
- 1279              	.LVL121:
- 1280              	.L81:
- 1281              	.LCFI29:
- 1282              		.cfi_restore_state
- 1283              	.LBB9:
- 164:app/tasks/memory/memory.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
- 1284              		.loc 1 164 5 is_stmt 1 view .LVU298
-ARM GAS  /tmp/ccaLOqDG.s 			page 35
+ 1266              	.LBE12:
+ 199:app/tasks/memory/memory.c **** 
+ 1267              		.loc 1 199 1 view .LVU293
+ 1268 00a8 B2E7     		b	.L67
+ 1269              	.L76:
+ 1270 00aa 00BF     		.align	2
+ 1271              	.L75:
+ 1272 00ac 00000000 		.word	ACTORS_LIST_SystemRegistry
+ 1273 00b0 00000000 		.word	_impure_ptr
+ 1274 00b4 10000000 		.word	.LC10
+ 1275 00b8 00000000 		.word	.LC9
+ 1276 00bc 24000000 		.word	.LC11
+ 1277 00c0 00000000 		.word	NFC_Actor
+ 1278              		.cfi_endproc
+ 1279              	.LFE144:
+ 1281              		.global	MEMORY_W25QHandle
+ 1282              		.global	memoryTaskDescription
+ 1283              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 1284              		.align	2
+ 1285              	.LC12:
+ 1286 0000 6D656D6F 		.ascii	"memoryTask\000"
+ 1286      72795461 
+ARM GAS  /tmp/cc6wBZaU.s 			page 35
 
 
- 164:app/tasks/memory/memory.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
- 1285              		.loc 1 164 32 is_stmt 0 view .LVU299
- 1286 0014 4FF48071 		mov	r1, #256
- 1287 0018 4FF09040 		mov	r0, #1207959552
- 1288              	.LVL122:
- 164:app/tasks/memory/memory.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
- 1289              		.loc 1 164 32 view .LVU300
- 1290 001c FFF7FEFF 		bl	HAL_GPIO_ReadPin
- 1291              	.LVL123:
- 165:app/tasks/memory/memory.c **** 
- 1292              		.loc 1 165 5 is_stmt 1 view .LVU301
- 165:app/tasks/memory/memory.c **** 
- 1293              		.loc 1 165 67 is_stmt 0 view .LVU302
- 1294 0020 224B     		ldr	r3, .L84
- 1295 0022 5B68     		ldr	r3, [r3, #4]
- 165:app/tasks/memory/memory.c **** 
- 1296              		.loc 1 165 24 view .LVU303
- 1297 0024 9D68     		ldr	r5, [r3, #8]
- 1298              	.LVL124:
- 167:app/tasks/memory/memory.c ****       osMessageQueuePut(evManagerQueue, &(message_t) {USB_CONNECTED}, 0, 0);
- 1299              		.loc 1 167 5 is_stmt 1 view .LVU304
- 167:app/tasks/memory/memory.c ****       osMessageQueuePut(evManagerQueue, &(message_t) {USB_CONNECTED}, 0, 0);
- 1300              		.loc 1 167 8 is_stmt 0 view .LVU305
- 1301 0026 0128     		cmp	r0, #1
- 1302 0028 14D0     		beq	.L83
- 1303              	.LBB10:
- 173:app/tasks/memory/memory.c ****       #if DEBUG
- 1304              		.loc 1 173 7 is_stmt 1 view .LVU306
- 173:app/tasks/memory/memory.c ****       #if DEBUG
- 1305              		.loc 1 173 54 is_stmt 0 view .LVU307
- 1306 002a 0022     		movs	r2, #0
- 1307 002c 0492     		str	r2, [sp, #16]
- 1308 002e 0592     		str	r2, [sp, #20]
- 1309 0030 0692     		str	r2, [sp, #24]
- 1310 0032 1E23     		movs	r3, #30
- 1311 0034 8DF81030 		strb	r3, [sp, #16]
- 173:app/tasks/memory/memory.c ****       #if DEBUG
- 1312              		.loc 1 173 7 view .LVU308
- 1313 0038 1346     		mov	r3, r2
- 1314 003a 04A9     		add	r1, sp, #16
- 1315 003c 2846     		mov	r0, r5
- 1316              	.LVL125:
- 173:app/tasks/memory/memory.c ****       #if DEBUG
- 1317              		.loc 1 173 7 view .LVU309
- 1318 003e FFF7FEFF 		bl	osMessageQueuePut
- 1319              	.LVL126:
- 175:app/tasks/memory/memory.c ****       #endif
- 1320              		.loc 1 175 13 is_stmt 1 view .LVU310
- 175:app/tasks/memory/memory.c ****       #endif
- 1321              		.loc 1 175 21 is_stmt 0 view .LVU311
- 1322 0042 1B4B     		ldr	r3, .L84+4
- 1323 0044 1B68     		ldr	r3, [r3]
- 175:app/tasks/memory/memory.c ****       #endif
- 1324              		.loc 1 175 13 view .LVU312
- 1325 0046 9B68     		ldr	r3, [r3, #8]
- 1326 0048 1122     		movs	r2, #17
- 1327 004a 0121     		movs	r1, #1
-ARM GAS  /tmp/ccaLOqDG.s 			page 36
+ 1286      736B00
+ 1287              		.global	memoryTaskControlBlock
+ 1288              		.global	memoryTaskBuffer
+ 1289              		.global	MEMORY_Actor
+ 1290              		.global	measurementsReadyEventFlags
+ 1291              		.global	dummyToRead
+ 1292              		.section	.bss.dummyToRead,"aw",%nobits
+ 1293              		.align	2
+ 1296              	dummyToRead:
+ 1297 0000 00000000 		.space	512
+ 1297      00000000 
+ 1297      00000000 
+ 1297      00000000 
+ 1297      00000000 
+ 1298              		.section	.bss.measurementsReadyEventFlags,"aw",%nobits
+ 1299              		.align	2
+ 1300              		.set	.LANCHOR1,. + 0
+ 1303              	measurementsReadyEventFlags:
+ 1304 0000 00000000 		.space	4
+ 1305              		.section	.bss.memoryTaskBuffer,"aw",%nobits
+ 1306              		.align	2
+ 1309              	memoryTaskBuffer:
+ 1310 0000 00000000 		.space	512
+ 1310      00000000 
+ 1310      00000000 
+ 1310      00000000 
+ 1310      00000000 
+ 1311              		.section	.bss.memoryTaskControlBlock,"aw",%nobits
+ 1312              		.align	2
+ 1315              	memoryTaskControlBlock:
+ 1316 0000 00000000 		.space	92
+ 1316      00000000 
+ 1316      00000000 
+ 1316      00000000 
+ 1316      00000000 
+ 1317              		.section	.data.MEMORY_Actor,"aw"
+ 1318              		.align	2
+ 1319              		.set	.LANCHOR2,. + 0
+ 1322              	MEMORY_Actor:
+ 1323 0000 08000000 		.word	8
+ 1324 0004 00000000 		.word	0
+ 1325 0008 00000000 		.word	0
+ 1326 000c 00000000 		.word	handleMemoryFSM
+ 1327 0010 00       		.byte	0
+ 1328 0011 000000   		.space	3
+ 1329 0014 01120000 		.word	4609
+ 1330              		.section	.data.MEMORY_W25QHandle,"aw"
+ 1331              		.align	2
+ 1332              		.set	.LANCHOR0,. + 0
+ 1335              	MEMORY_W25QHandle:
+ 1336 0000 00000000 		.word	hqspi
+ 1337 0004 00000000 		.space	8
+ 1337      00000000 
+ 1338 000c 00008000 		.word	8388608
+ 1339 0010 00100000 		.word	4096
+ 1340 0014 00010000 		.word	256
+ 1341 0018 00010000 		.word	256
+ARM GAS  /tmp/cc6wBZaU.s 			page 36
 
 
- 1328 004c 1948     		ldr	r0, .L84+8
- 1329 004e FFF7FEFF 		bl	fwrite
- 1330              	.LVL127:
- 1331 0052 DBE7     		b	.L77
- 1332              	.LVL128:
- 1333              	.L83:
- 175:app/tasks/memory/memory.c ****       #endif
- 1334              		.loc 1 175 13 view .LVU313
- 1335              	.LBE10:
- 1336              	.LBB11:
- 168:app/tasks/memory/memory.c ****       #if DEBUG
- 1337              		.loc 1 168 7 is_stmt 1 view .LVU314
- 168:app/tasks/memory/memory.c ****       #if DEBUG
- 1338              		.loc 1 168 54 is_stmt 0 view .LVU315
- 1339 0054 0022     		movs	r2, #0
- 1340 0056 0192     		str	r2, [sp, #4]
- 1341 0058 0292     		str	r2, [sp, #8]
- 1342 005a 0392     		str	r2, [sp, #12]
- 1343 005c 1D23     		movs	r3, #29
- 1344 005e 8DF80430 		strb	r3, [sp, #4]
- 168:app/tasks/memory/memory.c ****       #if DEBUG
- 1345              		.loc 1 168 7 view .LVU316
- 1346 0062 1346     		mov	r3, r2
- 1347 0064 01A9     		add	r1, sp, #4
- 1348 0066 2846     		mov	r0, r5
- 1349              	.LVL129:
- 168:app/tasks/memory/memory.c ****       #if DEBUG
- 1350              		.loc 1 168 7 view .LVU317
- 1351 0068 FFF7FEFF 		bl	osMessageQueuePut
- 1352              	.LVL130:
- 170:app/tasks/memory/memory.c ****       #endif
- 1353              		.loc 1 170 13 is_stmt 1 view .LVU318
- 170:app/tasks/memory/memory.c ****       #endif
- 1354              		.loc 1 170 21 is_stmt 0 view .LVU319
- 1355 006c 104B     		ldr	r3, .L84+4
- 1356 006e 1B68     		ldr	r3, [r3]
- 170:app/tasks/memory/memory.c ****       #endif
- 1357              		.loc 1 170 13 view .LVU320
- 1358 0070 9B68     		ldr	r3, [r3, #8]
- 1359 0072 0E22     		movs	r2, #14
- 1360 0074 0121     		movs	r1, #1
- 1361 0076 1048     		ldr	r0, .L84+12
- 1362 0078 FFF7FEFF 		bl	fwrite
- 1363              	.LVL131:
- 1364              	.LBE11:
- 1365 007c C6E7     		b	.L77
- 1366              	.LVL132:
- 1367              	.L82:
- 170:app/tasks/memory/memory.c ****       #endif
- 1368              		.loc 1 170 13 view .LVU321
- 1369              	.LBE9:
- 1370              	.LBB12:
- 182:app/tasks/memory/memory.c ****     #endif
- 1371              		.loc 1 182 9 is_stmt 1 view .LVU322
- 182:app/tasks/memory/memory.c ****     #endif
- 1372              		.loc 1 182 17 is_stmt 0 view .LVU323
- 1373 007e 0C4B     		ldr	r3, .L84+4
-ARM GAS  /tmp/ccaLOqDG.s 			page 37
-
-
- 1374 0080 1B68     		ldr	r3, [r3]
- 182:app/tasks/memory/memory.c ****     #endif
- 1375              		.loc 1 182 9 view .LVU324
- 1376 0082 9B68     		ldr	r3, [r3, #8]
- 1377 0084 1222     		movs	r2, #18
- 1378 0086 0121     		movs	r1, #1
- 1379 0088 0C48     		ldr	r0, .L84+16
- 1380 008a FFF7FEFF 		bl	fwrite
- 1381              	.LVL133:
- 184:app/tasks/memory/memory.c ****   }
- 1382              		.loc 1 184 5 is_stmt 1 view .LVU325
- 184:app/tasks/memory/memory.c ****   }
- 1383              		.loc 1 184 69 is_stmt 0 view .LVU326
- 1384 008e 0022     		movs	r2, #0
- 1385 0090 0792     		str	r2, [sp, #28]
- 1386 0092 0892     		str	r2, [sp, #32]
- 1387 0094 0992     		str	r2, [sp, #36]
- 1388 0096 1023     		movs	r3, #16
- 1389 0098 8DF81C30 		strb	r3, [sp, #28]
- 184:app/tasks/memory/memory.c ****   }
- 1390              		.loc 1 184 5 view .LVU327
- 1391 009c 1346     		mov	r3, r2
- 1392 009e 07A9     		add	r1, sp, #28
- 1393 00a0 0748     		ldr	r0, .L84+20
- 1394 00a2 8068     		ldr	r0, [r0, #8]
- 1395 00a4 FFF7FEFF 		bl	osMessageQueuePut
- 1396              	.LVL134:
- 1397              	.LBE12:
- 186:app/tasks/memory/memory.c **** 
- 1398              		.loc 1 186 1 view .LVU328
- 1399 00a8 B2E7     		b	.L76
- 1400              	.L85:
- 1401 00aa 00BF     		.align	2
- 1402              	.L84:
- 1403 00ac 00000000 		.word	ACTORS_LIST_SystemRegistry
- 1404 00b0 00000000 		.word	_impure_ptr
- 1405 00b4 10000000 		.word	.LC13
- 1406 00b8 00000000 		.word	.LC12
- 1407 00bc 24000000 		.word	.LC14
- 1408 00c0 00000000 		.word	NFC_Actor
- 1409              		.cfi_endproc
- 1410              	.LFE144:
- 1412              		.global	MEMORY_W25QHandle
- 1413              		.global	memoryTaskDescription
- 1414              		.section	.rodata.str1.4,"aMS",%progbits,1
- 1415              		.align	2
- 1416              	.LC15:
- 1417 0000 6D656D6F 		.ascii	"memoryTask\000"
- 1417      72795461 
- 1417      736B00
- 1418              		.global	memoryTaskControlBlock
- 1419              		.global	memoryTaskBuffer
- 1420              		.global	MEMORY_Actor
- 1421              		.global	measurementsReadyEventFlags
- 1422              		.global	dummyToRead
- 1423              		.section	.bss.dummyToRead,"aw",%nobits
- 1424              		.align	2
-ARM GAS  /tmp/ccaLOqDG.s 			page 38
-
-
- 1427              	dummyToRead:
- 1428 0000 00000000 		.space	32
- 1428      00000000 
- 1428      00000000 
- 1428      00000000 
- 1428      00000000 
- 1429              		.section	.bss.measurementsReadyEventFlags,"aw",%nobits
- 1430              		.align	2
- 1431              		.set	.LANCHOR1,. + 0
- 1434              	measurementsReadyEventFlags:
- 1435 0000 00000000 		.space	4
- 1436              		.section	.bss.memoryTaskBuffer,"aw",%nobits
- 1437              		.align	2
- 1440              	memoryTaskBuffer:
- 1441 0000 00000000 		.space	512
- 1441      00000000 
- 1441      00000000 
- 1441      00000000 
- 1441      00000000 
- 1442              		.section	.bss.memoryTaskControlBlock,"aw",%nobits
- 1443              		.align	2
- 1446              	memoryTaskControlBlock:
- 1447 0000 00000000 		.space	92
- 1447      00000000 
- 1447      00000000 
- 1447      00000000 
- 1447      00000000 
- 1448              		.section	.data.MEMORY_Actor,"aw"
- 1449              		.align	2
- 1450              		.set	.LANCHOR2,. + 0
- 1453              	MEMORY_Actor:
- 1454 0000 08000000 		.word	8
- 1455 0004 00000000 		.word	0
- 1456 0008 00000000 		.word	0
- 1457 000c 00000000 		.word	handleMemoryFSM
- 1458 0010 00       		.byte	0
- 1459 0011 000000   		.space	3
- 1460 0014 01120000 		.word	4609
- 1461              		.section	.data.MEMORY_W25QHandle,"aw"
- 1462              		.align	2
- 1463              		.set	.LANCHOR0,. + 0
- 1466              	MEMORY_W25QHandle:
- 1467 0000 00000000 		.word	hqspi
- 1468 0004 00000000 		.space	8
- 1468      00000000 
- 1469 000c 00008000 		.word	8388608
- 1470 0010 00100000 		.word	4096
- 1471 0014 00010000 		.word	256
- 1472 0018 00010000 		.word	256
- 1473 001c 00800000 		.word	32768
- 1474 0020 00000100 		.word	65536
- 1475 0024 00       		.byte	0
- 1476 0025 000000   		.space	3
- 1477 0028 FFFFFF00 		.word	16777215
- 1478              		.section	.rodata.memoryTaskDescription,"a"
- 1479              		.align	2
- 1480              		.set	.LANCHOR3,. + 0
-ARM GAS  /tmp/ccaLOqDG.s 			page 39
-
-
- 1483              	memoryTaskDescription:
- 1484 0000 00000000 		.word	.LC15
- 1485 0004 00000000 		.space	4
- 1486 0008 00000000 		.word	memoryTaskControlBlock
- 1487 000c 5C000000 		.word	92
- 1488 0010 00000000 		.word	memoryTaskBuffer
- 1489 0014 00020000 		.word	512
- 1490 0018 18000000 		.word	24
- 1491 001c 00000000 		.space	8
- 1491      00000000 
- 1492              		.text
- 1493              	.Letext0:
- 1494              		.file 2 "/usr/include/newlib/machine/_default_types.h"
- 1495              		.file 3 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stddef.h"
- 1496              		.file 4 "/usr/include/newlib/sys/_types.h"
- 1497              		.file 5 "/usr/include/newlib/sys/reent.h"
- 1498              		.file 6 "/usr/include/newlib/sys/lock.h"
- 1499              		.file 7 "/usr/include/newlib/sys/_stdint.h"
- 1500              		.file 8 "/usr/include/newlib/sys/types.h"
- 1501              		.file 9 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l412xx.h"
- 1502              		.file 10 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h"
- 1503              		.file 11 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_gpio.h"
- 1504              		.file 12 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_dma.h"
- 1505              		.file 13 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_qspi.h"
- 1506              		.file 14 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
- 1507              		.file 15 "app/core/actor/../../config/events_list/events_list.h"
- 1508              		.file 16 "app/core/actor/../../config/actors_list/actors_list.h"
- 1509              		.file 17 "app/core/actor/actor.h"
- 1510              		.file 18 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h"
- 1511              		.file 19 "Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h"
- 1512              		.file 20 "Drivers/BSP/Components/ST25DV/st25dv_reg.h"
- 1513              		.file 21 "Drivers/BSP/Components/ST25DV/st25dv.h"
- 1514              		.file 22 "app/tasks/nfc/nfc.h"
- 1515              		.file 23 "app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.h"
- 1516              		.file 24 "app/tasks/light_sensor/light_sensor.h"
- 1517              		.file 25 "Core/Inc/quadspi.h"
- 1518              		.file 26 "app/drivers/w25q/w25q.h"
- 1519              		.file 27 "app/tasks/memory/memory.h"
- 1520              		.file 28 "app/core/cron/cron.h"
- 1521              		.file 29 "/usr/include/newlib/stdio.h"
- 1522              		.file 30 "/usr/include/newlib/string.h"
- 1523              		.file 31 "<built-in>"
-ARM GAS  /tmp/ccaLOqDG.s 			page 40
+ 1342 001c 00800000 		.word	32768
+ 1343 0020 00000100 		.word	65536
+ 1344 0024 00       		.byte	0
+ 1345 0025 000000   		.space	3
+ 1346 0028 FFFFFF00 		.word	16777215
+ 1347              		.section	.rodata.memoryTaskDescription,"a"
+ 1348              		.align	2
+ 1349              		.set	.LANCHOR3,. + 0
+ 1352              	memoryTaskDescription:
+ 1353 0000 00000000 		.word	.LC12
+ 1354 0004 00000000 		.space	4
+ 1355 0008 00000000 		.word	memoryTaskControlBlock
+ 1356 000c 5C000000 		.word	92
+ 1357 0010 00000000 		.word	memoryTaskBuffer
+ 1358 0014 00020000 		.word	512
+ 1359 0018 18000000 		.word	24
+ 1360 001c 00000000 		.space	8
+ 1360      00000000 
+ 1361              		.text
+ 1362              	.Letext0:
+ 1363              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 1364              		.file 3 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stddef.h"
+ 1365              		.file 4 "/usr/include/newlib/sys/_types.h"
+ 1366              		.file 5 "/usr/include/newlib/sys/reent.h"
+ 1367              		.file 6 "/usr/include/newlib/sys/lock.h"
+ 1368              		.file 7 "/usr/include/newlib/sys/_stdint.h"
+ 1369              		.file 8 "/usr/include/newlib/sys/types.h"
+ 1370              		.file 9 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l412xx.h"
+ 1371              		.file 10 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h"
+ 1372              		.file 11 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_gpio.h"
+ 1373              		.file 12 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_dma.h"
+ 1374              		.file 13 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_qspi.h"
+ 1375              		.file 14 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
+ 1376              		.file 15 "app/core/actor/../../config/events_list/events_list.h"
+ 1377              		.file 16 "app/core/actor/../../config/actors_list/actors_list.h"
+ 1378              		.file 17 "app/core/actor/actor.h"
+ 1379              		.file 18 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h"
+ 1380              		.file 19 "Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h"
+ 1381              		.file 20 "Drivers/BSP/Components/ST25DV/st25dv_reg.h"
+ 1382              		.file 21 "Drivers/BSP/Components/ST25DV/st25dv.h"
+ 1383              		.file 22 "app/tasks/nfc/nfc.h"
+ 1384              		.file 23 "app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.h"
+ 1385              		.file 24 "app/tasks/light_sensor/light_sensor.h"
+ 1386              		.file 25 "Core/Inc/quadspi.h"
+ 1387              		.file 26 "app/drivers/w25q/w25q.h"
+ 1388              		.file 27 "app/tasks/memory/memory.h"
+ 1389              		.file 28 "app/core/cron/cron.h"
+ 1390              		.file 29 "/usr/include/newlib/stdio.h"
+ 1391              		.file 30 "/usr/include/newlib/string.h"
+ 1392              		.file 31 "<built-in>"
+ARM GAS  /tmp/cc6wBZaU.s 			page 37
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 memory.c
-     /tmp/ccaLOqDG.s:18     .rodata.handleWrite.str1.4:0000000000000000 $d
-     /tmp/ccaLOqDG.s:28     .text.handleWrite:0000000000000000 $t
-     /tmp/ccaLOqDG.s:35     .text.handleWrite:0000000000000000 handleWrite
-     /tmp/ccaLOqDG.s:122    .text.handleWrite:0000000000000044 $d
-     /tmp/ccaLOqDG.s:131    .rodata.writeFAT12BootSector.str1.4:0000000000000000 $d
-     /tmp/ccaLOqDG.s:141    .text.writeFAT12BootSector:0000000000000000 $t
-     /tmp/ccaLOqDG.s:147    .text.writeFAT12BootSector:0000000000000000 writeFAT12BootSector
-     /tmp/ccaLOqDG.s:246    .text.writeFAT12BootSector:000000000000005c $d
-     /tmp/ccaLOqDG.s:256    .text.publishMemoryWriteOnMeasurementsReady:0000000000000000 $t
-     /tmp/ccaLOqDG.s:262    .text.publishMemoryWriteOnMeasurementsReady:0000000000000000 publishMemoryWriteOnMeasurementsReady
-     /tmp/ccaLOqDG.s:329    .text.publishMemoryWriteOnMeasurementsReady:000000000000003c $d
-     /tmp/ccaLOqDG.s:334    .rodata.appendMeasurementsToNORFlashLogTail.str1.4:0000000000000000 $d
-     /tmp/ccaLOqDG.s:340    .text.appendMeasurementsToNORFlashLogTail:0000000000000000 $t
-     /tmp/ccaLOqDG.s:346    .text.appendMeasurementsToNORFlashLogTail:0000000000000000 appendMeasurementsToNORFlashLogTail
-     /tmp/ccaLOqDG.s:435    .text.appendMeasurementsToNORFlashLogTail:0000000000000050 $d
-     /tmp/ccaLOqDG.s:442    .text.handleSleep:0000000000000000 $t
-     /tmp/ccaLOqDG.s:448    .text.handleSleep:0000000000000000 handleSleep
-     /tmp/ccaLOqDG.s:638    .text.handleSleep:00000000000000bc $d
-     /tmp/ccaLOqDG.s:649    .rodata.MEMORY_Task.str1.4:0000000000000000 $d
-     /tmp/ccaLOqDG.s:653    .text.MEMORY_Task:0000000000000000 $t
-     /tmp/ccaLOqDG.s:660    .text.MEMORY_Task:0000000000000000 MEMORY_Task
-     /tmp/ccaLOqDG.s:748    .text.MEMORY_Task:000000000000005c $d
-     /tmp/ccaLOqDG.s:759    .rodata.MEMORY_TaskInit.str1.4:0000000000000000 $d
-     /tmp/ccaLOqDG.s:763    .text.MEMORY_TaskInit:0000000000000000 $t
-     /tmp/ccaLOqDG.s:770    .text.MEMORY_TaskInit:0000000000000000 MEMORY_TaskInit
-     /tmp/ccaLOqDG.s:833    .text.MEMORY_TaskInit:0000000000000040 $d
-     /tmp/ccaLOqDG.s:842    .text.MEMORY_SeekFreeSpaceAddress:0000000000000000 $t
-     /tmp/ccaLOqDG.s:849    .text.MEMORY_SeekFreeSpaceAddress:0000000000000000 MEMORY_SeekFreeSpaceAddress
-     /tmp/ccaLOqDG.s:941    .text.MEMORY_SeekFreeSpaceAddress:0000000000000058 $d
-     /tmp/ccaLOqDG.s:946    .rodata.handleInit.str1.4:0000000000000000 $d
-     /tmp/ccaLOqDG.s:956    .text.handleInit:0000000000000000 $t
-     /tmp/ccaLOqDG.s:962    .text.handleInit:0000000000000000 handleInit
-     /tmp/ccaLOqDG.s:1151   .text.handleInit:00000000000000bc $d
-     /tmp/ccaLOqDG.s:1165   .text.handleMemoryFSM:0000000000000000 $t
-     /tmp/ccaLOqDG.s:1171   .text.handleMemoryFSM:0000000000000000 handleMemoryFSM
-     /tmp/ccaLOqDG.s:1226   .rodata.HAL_GPIO_EXTI_Callback.str1.4:0000000000000000 $d
-     /tmp/ccaLOqDG.s:1236   .text.HAL_GPIO_EXTI_Callback:0000000000000000 $t
-     /tmp/ccaLOqDG.s:1243   .text.HAL_GPIO_EXTI_Callback:0000000000000000 HAL_GPIO_EXTI_Callback
-     /tmp/ccaLOqDG.s:1403   .text.HAL_GPIO_EXTI_Callback:00000000000000ac $d
-     /tmp/ccaLOqDG.s:1466   .data.MEMORY_W25QHandle:0000000000000000 MEMORY_W25QHandle
-     /tmp/ccaLOqDG.s:1483   .rodata.memoryTaskDescription:0000000000000000 memoryTaskDescription
-     /tmp/ccaLOqDG.s:1415   .rodata.str1.4:0000000000000000 $d
-     /tmp/ccaLOqDG.s:1446   .bss.memoryTaskControlBlock:0000000000000000 memoryTaskControlBlock
-     /tmp/ccaLOqDG.s:1440   .bss.memoryTaskBuffer:0000000000000000 memoryTaskBuffer
-     /tmp/ccaLOqDG.s:1453   .data.MEMORY_Actor:0000000000000000 MEMORY_Actor
-     /tmp/ccaLOqDG.s:1434   .bss.measurementsReadyEventFlags:0000000000000000 measurementsReadyEventFlags
-     /tmp/ccaLOqDG.s:1427   .bss.dummyToRead:0000000000000000 dummyToRead
-     /tmp/ccaLOqDG.s:1424   .bss.dummyToRead:0000000000000000 $d
-     /tmp/ccaLOqDG.s:1430   .bss.measurementsReadyEventFlags:0000000000000000 $d
-     /tmp/ccaLOqDG.s:1437   .bss.memoryTaskBuffer:0000000000000000 $d
-     /tmp/ccaLOqDG.s:1443   .bss.memoryTaskControlBlock:0000000000000000 $d
-     /tmp/ccaLOqDG.s:1449   .data.MEMORY_Actor:0000000000000000 $d
-     /tmp/ccaLOqDG.s:1462   .data.MEMORY_W25QHandle:0000000000000000 $d
-     /tmp/ccaLOqDG.s:1479   .rodata.memoryTaskDescription:0000000000000000 $d
-
-ARM GAS  /tmp/ccaLOqDG.s 			page 41
-
+     /tmp/cc6wBZaU.s:18     .rodata.handleWrite.str1.4:0000000000000000 $d
+     /tmp/cc6wBZaU.s:28     .text.handleWrite:0000000000000000 $t
+     /tmp/cc6wBZaU.s:35     .text.handleWrite:0000000000000000 handleWrite
+     /tmp/cc6wBZaU.s:122    .text.handleWrite:0000000000000044 $d
+     /tmp/cc6wBZaU.s:131    .text.publishMemoryWriteOnMeasurementsReady:0000000000000000 $t
+     /tmp/cc6wBZaU.s:137    .text.publishMemoryWriteOnMeasurementsReady:0000000000000000 publishMemoryWriteOnMeasurementsReady
+     /tmp/cc6wBZaU.s:204    .text.publishMemoryWriteOnMeasurementsReady:000000000000003c $d
+     /tmp/cc6wBZaU.s:209    .rodata.appendMeasurementsToNORFlashLogTail.str1.4:0000000000000000 $d
+     /tmp/cc6wBZaU.s:215    .text.appendMeasurementsToNORFlashLogTail:0000000000000000 $t
+     /tmp/cc6wBZaU.s:221    .text.appendMeasurementsToNORFlashLogTail:0000000000000000 appendMeasurementsToNORFlashLogTail
+     /tmp/cc6wBZaU.s:310    .text.appendMeasurementsToNORFlashLogTail:0000000000000050 $d
+     /tmp/cc6wBZaU.s:317    .text.handleSleep:0000000000000000 $t
+     /tmp/cc6wBZaU.s:323    .text.handleSleep:0000000000000000 handleSleep
+     /tmp/cc6wBZaU.s:513    .text.handleSleep:00000000000000bc $d
+     /tmp/cc6wBZaU.s:524    .rodata.MEMORY_Task.str1.4:0000000000000000 $d
+     /tmp/cc6wBZaU.s:528    .text.MEMORY_Task:0000000000000000 $t
+     /tmp/cc6wBZaU.s:535    .text.MEMORY_Task:0000000000000000 MEMORY_Task
+     /tmp/cc6wBZaU.s:621    .text.MEMORY_Task:000000000000005c $d
+     /tmp/cc6wBZaU.s:632    .rodata.MEMORY_TaskInit.str1.4:0000000000000000 $d
+     /tmp/cc6wBZaU.s:636    .text.MEMORY_TaskInit:0000000000000000 $t
+     /tmp/cc6wBZaU.s:643    .text.MEMORY_TaskInit:0000000000000000 MEMORY_TaskInit
+     /tmp/cc6wBZaU.s:706    .text.MEMORY_TaskInit:0000000000000040 $d
+     /tmp/cc6wBZaU.s:715    .text.MEMORY_SeekFreeSpaceAddress:0000000000000000 $t
+     /tmp/cc6wBZaU.s:722    .text.MEMORY_SeekFreeSpaceAddress:0000000000000000 MEMORY_SeekFreeSpaceAddress
+     /tmp/cc6wBZaU.s:814    .text.MEMORY_SeekFreeSpaceAddress:0000000000000058 $d
+     /tmp/cc6wBZaU.s:819    .rodata.handleInit.str1.4:0000000000000000 $d
+     /tmp/cc6wBZaU.s:829    .text.handleInit:0000000000000000 $t
+     /tmp/cc6wBZaU.s:835    .text.handleInit:0000000000000000 handleInit
+     /tmp/cc6wBZaU.s:1020   .text.handleInit:00000000000000b4 $d
+     /tmp/cc6wBZaU.s:1034   .text.handleMemoryFSM:0000000000000000 $t
+     /tmp/cc6wBZaU.s:1040   .text.handleMemoryFSM:0000000000000000 handleMemoryFSM
+     /tmp/cc6wBZaU.s:1095   .rodata.HAL_GPIO_EXTI_Callback.str1.4:0000000000000000 $d
+     /tmp/cc6wBZaU.s:1105   .text.HAL_GPIO_EXTI_Callback:0000000000000000 $t
+     /tmp/cc6wBZaU.s:1112   .text.HAL_GPIO_EXTI_Callback:0000000000000000 HAL_GPIO_EXTI_Callback
+     /tmp/cc6wBZaU.s:1272   .text.HAL_GPIO_EXTI_Callback:00000000000000ac $d
+     /tmp/cc6wBZaU.s:1335   .data.MEMORY_W25QHandle:0000000000000000 MEMORY_W25QHandle
+     /tmp/cc6wBZaU.s:1352   .rodata.memoryTaskDescription:0000000000000000 memoryTaskDescription
+     /tmp/cc6wBZaU.s:1284   .rodata.str1.4:0000000000000000 $d
+     /tmp/cc6wBZaU.s:1315   .bss.memoryTaskControlBlock:0000000000000000 memoryTaskControlBlock
+     /tmp/cc6wBZaU.s:1309   .bss.memoryTaskBuffer:0000000000000000 memoryTaskBuffer
+     /tmp/cc6wBZaU.s:1322   .data.MEMORY_Actor:0000000000000000 MEMORY_Actor
+     /tmp/cc6wBZaU.s:1303   .bss.measurementsReadyEventFlags:0000000000000000 measurementsReadyEventFlags
+     /tmp/cc6wBZaU.s:1296   .bss.dummyToRead:0000000000000000 dummyToRead
+     /tmp/cc6wBZaU.s:1293   .bss.dummyToRead:0000000000000000 $d
+     /tmp/cc6wBZaU.s:1299   .bss.measurementsReadyEventFlags:0000000000000000 $d
+     /tmp/cc6wBZaU.s:1306   .bss.memoryTaskBuffer:0000000000000000 $d
+     /tmp/cc6wBZaU.s:1312   .bss.memoryTaskControlBlock:0000000000000000 $d
+     /tmp/cc6wBZaU.s:1318   .data.MEMORY_Actor:0000000000000000 $d
+     /tmp/cc6wBZaU.s:1331   .data.MEMORY_W25QHandle:0000000000000000 $d
+     /tmp/cc6wBZaU.s:1348   .rodata.memoryTaskDescription:0000000000000000 $d
 
 UNDEFINED SYMBOLS
 fprintf
 W25Q_Sleep
 _impure_ptr
-W25Q_EraseChip
-W25Q_WriteData
-fwrite
-FAT12_BootSector
+ARM GAS  /tmp/cc6wBZaU.s 			page 38
+
+
 osEventFlagsGet
 osEventFlagsClear
 osMessageQueuePut
@@ -2408,6 +2228,7 @@ osEventFlagsNew
 W25Q_ReadData
 memcmp
 W25Q_ReadID
+fwrite
 HAL_GPIO_ReadPin
 NFC_Actor
 hqspi
