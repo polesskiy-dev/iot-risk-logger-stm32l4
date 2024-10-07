@@ -1,0 +1,337 @@
+ARM GAS  /tmp/cc986XwL.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"gpio_ext_interrupts.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.rodata.HAL_GPIO_EXTI_Callback.str1.4,"aMS",%progbits,1
+  18              		.align	2
+  19              	.LC0:
+  20 0000 55534220 		.ascii	"USB connected\012\000"
+  20      636F6E6E 
+  20      65637465 
+  20      640A00
+  21 000f 00       		.align	2
+  22              	.LC1:
+  23 0010 55534220 		.ascii	"USB disconnected\012\000"
+  23      64697363 
+  23      6F6E6E65 
+  23      63746564 
+  23      0A00
+  24 0022 0000     		.align	2
+  25              	.LC2:
+  26 0024 4E464320 		.ascii	"NFC GPO Interrupt\012\000"
+  26      47504F20 
+  26      496E7465 
+  26      72727570 
+  26      740A00
+  27              		.section	.text.HAL_GPIO_EXTI_Callback,"ax",%progbits
+  28              		.align	1
+  29              		.global	HAL_GPIO_EXTI_Callback
+  30              		.arch armv7e-m
+  31              		.syntax unified
+  32              		.thumb
+  33              		.thumb_func
+  34              		.fpu fpv4-sp-d16
+  36              	HAL_GPIO_EXTI_Callback:
+  37              	.LVL0:
+  38              	.LFB139:
+  39              		.file 1 "app/core/gpio_ext_interrupts/gpio_ext_interrupts.c"
+   1:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c **** /*!
+   2:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****  * @file gpio_ext_interrupts.c
+   3:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****  * @brief implementation of gpio_ext_interrupts
+   4:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****  *
+   5:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****  * Detailed description of the implementation file.
+   6:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****  *
+   7:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****  * @date 07/10/2024
+   8:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****  * @author artempolisskyi
+ARM GAS  /tmp/cc986XwL.s 			page 2
+
+
+   9:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****  */
+  10:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c **** 
+  11:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c **** #include "gpio_ext_interrupts.h"
+  12:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c **** 
+  13:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c **** extern actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS];
+  14:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c **** 
+  15:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c **** void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+  40              		.loc 1 15 48 view -0
+  41              		.cfi_startproc
+  42              		@ args = 0, pretend = 0, frame = 40
+  43              		@ frame_needed = 0, uses_anonymous_args = 0
+  44              		.loc 1 15 48 is_stmt 0 view .LVU1
+  45 0000 30B5     		push	{r4, r5, lr}
+  46              	.LCFI0:
+  47              		.cfi_def_cfa_offset 12
+  48              		.cfi_offset 4, -12
+  49              		.cfi_offset 5, -8
+  50              		.cfi_offset 14, -4
+  51 0002 8BB0     		sub	sp, sp, #44
+  52              	.LCFI1:
+  53              		.cfi_def_cfa_offset 56
+  54 0004 0446     		mov	r4, r0
+  16:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****   if (GPIO_Pin == USB_VBUS_SENSE_Pin) {
+  55              		.loc 1 16 3 is_stmt 1 view .LVU2
+  56              		.loc 1 16 6 is_stmt 0 view .LVU3
+  57 0006 B0F5807F 		cmp	r0, #256
+  58 000a 03D0     		beq	.L6
+  59              	.LVL1:
+  60              	.L2:
+  17:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     GPIO_PinState usbVBusPin = HAL_GPIO_ReadPin(USB_VBUS_SENSE_GPIO_Port, USB_VBUS_SENSE_Pin);
+  18:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
+  19:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c **** 
+  20:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     if (usbVBusPin == GPIO_PIN_SET) {
+  21:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****       osMessageQueuePut(evManagerQueue, &(message_t) {USB_CONNECTED}, 0, 0);
+  22:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c **** #if DEBUG
+  23:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****       fprintf(stdout, "USB connected\n");
+  24:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c **** #endif
+  25:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     } else {
+  26:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****       osMessageQueuePut(evManagerQueue, &(message_t) {USB_DISCONNECTED}, 0, 0);
+  27:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c **** #if DEBUG
+  28:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****       fprintf(stdout, "USB disconnected\n");
+  29:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c **** #endif
+  30:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     }
+  31:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****   }
+  32:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c **** 
+  33:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****   if (GPIO_Pin == _NFC_INT_Pin) {
+  61              		.loc 1 33 3 is_stmt 1 view .LVU4
+  62              		.loc 1 33 6 is_stmt 0 view .LVU5
+  63 000c 012C     		cmp	r4, #1
+  64 000e 36D0     		beq	.L7
+  65              	.L1:
+  34:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c **** #ifdef DEBUG
+  35:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     fprintf(stdout, "NFC GPO Interrupt\n");
+  36:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c **** #endif
+  37:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NFC_GPO_INTERRUPT}, 0, 0);
+  38:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****   }
+  39:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c **** }...
+ARM GAS  /tmp/cc986XwL.s 			page 3
+
+
+  66              		.loc 1 39 1 view .LVU6
+  67 0010 0BB0     		add	sp, sp, #44
+  68              	.LCFI2:
+  69              		.cfi_remember_state
+  70              		.cfi_def_cfa_offset 12
+  71              		@ sp needed
+  72 0012 30BD     		pop	{r4, r5, pc}
+  73              	.LVL2:
+  74              	.L6:
+  75              	.LCFI3:
+  76              		.cfi_restore_state
+  77              	.LBB2:
+  17:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     GPIO_PinState usbVBusPin = HAL_GPIO_ReadPin(USB_VBUS_SENSE_GPIO_Port, USB_VBUS_SENSE_Pin);
+  78              		.loc 1 17 5 is_stmt 1 view .LVU7
+  17:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     GPIO_PinState usbVBusPin = HAL_GPIO_ReadPin(USB_VBUS_SENSE_GPIO_Port, USB_VBUS_SENSE_Pin);
+  79              		.loc 1 17 32 is_stmt 0 view .LVU8
+  80 0014 4FF48071 		mov	r1, #256
+  81 0018 4FF09040 		mov	r0, #1207959552
+  82              	.LVL3:
+  17:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     GPIO_PinState usbVBusPin = HAL_GPIO_ReadPin(USB_VBUS_SENSE_GPIO_Port, USB_VBUS_SENSE_Pin);
+  83              		.loc 1 17 32 view .LVU9
+  84 001c FFF7FEFF 		bl	HAL_GPIO_ReadPin
+  85              	.LVL4:
+  18:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
+  86              		.loc 1 18 5 is_stmt 1 view .LVU10
+  18:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
+  87              		.loc 1 18 67 is_stmt 0 view .LVU11
+  88 0020 224B     		ldr	r3, .L9
+  89 0022 5B68     		ldr	r3, [r3, #4]
+  18:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
+  90              		.loc 1 18 24 view .LVU12
+  91 0024 9D68     		ldr	r5, [r3, #8]
+  92              	.LVL5:
+  20:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     if (usbVBusPin == GPIO_PIN_SET) {
+  93              		.loc 1 20 5 is_stmt 1 view .LVU13
+  20:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     if (usbVBusPin == GPIO_PIN_SET) {
+  94              		.loc 1 20 8 is_stmt 0 view .LVU14
+  95 0026 0128     		cmp	r0, #1
+  96 0028 14D0     		beq	.L8
+  97              	.LBB3:
+  26:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****       osMessageQueuePut(evManagerQueue, &(message_t) {USB_DISCONNECTED}, 0, 0);
+  98              		.loc 1 26 7 is_stmt 1 view .LVU15
+  26:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****       osMessageQueuePut(evManagerQueue, &(message_t) {USB_DISCONNECTED}, 0, 0);
+  99              		.loc 1 26 54 is_stmt 0 view .LVU16
+ 100 002a 0022     		movs	r2, #0
+ 101 002c 0492     		str	r2, [sp, #16]
+ 102 002e 0592     		str	r2, [sp, #20]
+ 103 0030 0692     		str	r2, [sp, #24]
+ 104 0032 1E23     		movs	r3, #30
+ 105 0034 8DF81030 		strb	r3, [sp, #16]
+  26:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****       osMessageQueuePut(evManagerQueue, &(message_t) {USB_DISCONNECTED}, 0, 0);
+ 106              		.loc 1 26 7 view .LVU17
+ 107 0038 1346     		mov	r3, r2
+ 108 003a 04A9     		add	r1, sp, #16
+ 109 003c 2846     		mov	r0, r5
+ 110              	.LVL6:
+  26:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****       osMessageQueuePut(evManagerQueue, &(message_t) {USB_DISCONNECTED}, 0, 0);
+ARM GAS  /tmp/cc986XwL.s 			page 4
+
+
+ 111              		.loc 1 26 7 view .LVU18
+ 112 003e FFF7FEFF 		bl	osMessageQueuePut
+ 113              	.LVL7:
+  28:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****       fprintf(stdout, "USB disconnected\n");
+ 114              		.loc 1 28 7 is_stmt 1 view .LVU19
+  28:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****       fprintf(stdout, "USB disconnected\n");
+ 115              		.loc 1 28 15 is_stmt 0 view .LVU20
+ 116 0042 1B4B     		ldr	r3, .L9+4
+ 117 0044 1B68     		ldr	r3, [r3]
+  28:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****       fprintf(stdout, "USB disconnected\n");
+ 118              		.loc 1 28 7 view .LVU21
+ 119 0046 9B68     		ldr	r3, [r3, #8]
+ 120 0048 1122     		movs	r2, #17
+ 121 004a 0121     		movs	r1, #1
+ 122 004c 1948     		ldr	r0, .L9+8
+ 123 004e FFF7FEFF 		bl	fwrite
+ 124              	.LVL8:
+ 125 0052 DBE7     		b	.L2
+ 126              	.LVL9:
+ 127              	.L8:
+  28:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****       fprintf(stdout, "USB disconnected\n");
+ 128              		.loc 1 28 7 view .LVU22
+ 129              	.LBE3:
+ 130              	.LBB4:
+  21:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****       osMessageQueuePut(evManagerQueue, &(message_t) {USB_CONNECTED}, 0, 0);
+ 131              		.loc 1 21 7 is_stmt 1 view .LVU23
+  21:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****       osMessageQueuePut(evManagerQueue, &(message_t) {USB_CONNECTED}, 0, 0);
+ 132              		.loc 1 21 54 is_stmt 0 view .LVU24
+ 133 0054 0022     		movs	r2, #0
+ 134 0056 0192     		str	r2, [sp, #4]
+ 135 0058 0292     		str	r2, [sp, #8]
+ 136 005a 0392     		str	r2, [sp, #12]
+ 137 005c 1D23     		movs	r3, #29
+ 138 005e 8DF80430 		strb	r3, [sp, #4]
+  21:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****       osMessageQueuePut(evManagerQueue, &(message_t) {USB_CONNECTED}, 0, 0);
+ 139              		.loc 1 21 7 view .LVU25
+ 140 0062 1346     		mov	r3, r2
+ 141 0064 01A9     		add	r1, sp, #4
+ 142 0066 2846     		mov	r0, r5
+ 143              	.LVL10:
+  21:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****       osMessageQueuePut(evManagerQueue, &(message_t) {USB_CONNECTED}, 0, 0);
+ 144              		.loc 1 21 7 view .LVU26
+ 145 0068 FFF7FEFF 		bl	osMessageQueuePut
+ 146              	.LVL11:
+  23:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****       fprintf(stdout, "USB connected\n");
+ 147              		.loc 1 23 7 is_stmt 1 view .LVU27
+  23:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****       fprintf(stdout, "USB connected\n");
+ 148              		.loc 1 23 15 is_stmt 0 view .LVU28
+ 149 006c 104B     		ldr	r3, .L9+4
+ 150 006e 1B68     		ldr	r3, [r3]
+  23:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****       fprintf(stdout, "USB connected\n");
+ 151              		.loc 1 23 7 view .LVU29
+ 152 0070 9B68     		ldr	r3, [r3, #8]
+ 153 0072 0E22     		movs	r2, #14
+ 154 0074 0121     		movs	r1, #1
+ 155 0076 1048     		ldr	r0, .L9+12
+ 156 0078 FFF7FEFF 		bl	fwrite
+ARM GAS  /tmp/cc986XwL.s 			page 5
+
+
+ 157              	.LVL12:
+ 158              	.LBE4:
+ 159 007c C6E7     		b	.L2
+ 160              	.LVL13:
+ 161              	.L7:
+  23:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****       fprintf(stdout, "USB connected\n");
+ 162              		.loc 1 23 7 view .LVU30
+ 163              	.LBE2:
+ 164              	.LBB5:
+  35:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     fprintf(stdout, "NFC GPO Interrupt\n");
+ 165              		.loc 1 35 5 is_stmt 1 view .LVU31
+  35:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     fprintf(stdout, "NFC GPO Interrupt\n");
+ 166              		.loc 1 35 13 is_stmt 0 view .LVU32
+ 167 007e 0C4B     		ldr	r3, .L9+4
+ 168 0080 1B68     		ldr	r3, [r3]
+  35:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     fprintf(stdout, "NFC GPO Interrupt\n");
+ 169              		.loc 1 35 5 view .LVU33
+ 170 0082 9B68     		ldr	r3, [r3, #8]
+ 171 0084 1222     		movs	r2, #18
+ 172 0086 0121     		movs	r1, #1
+ 173 0088 0C48     		ldr	r0, .L9+16
+ 174 008a FFF7FEFF 		bl	fwrite
+ 175              	.LVL14:
+  37:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NFC_GPO_INTERRUPT}, 0, 0);
+ 176              		.loc 1 37 5 is_stmt 1 view .LVU34
+  37:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NFC_GPO_INTERRUPT}, 0, 0);
+ 177              		.loc 1 37 69 is_stmt 0 view .LVU35
+ 178 008e 0022     		movs	r2, #0
+ 179 0090 0792     		str	r2, [sp, #28]
+ 180 0092 0892     		str	r2, [sp, #32]
+ 181 0094 0992     		str	r2, [sp, #36]
+ 182 0096 1023     		movs	r3, #16
+ 183 0098 8DF81C30 		strb	r3, [sp, #28]
+  37:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NFC_GPO_INTERRUPT}, 0, 0);
+ 184              		.loc 1 37 5 view .LVU36
+ 185 009c 1346     		mov	r3, r2
+ 186 009e 07A9     		add	r1, sp, #28
+ 187 00a0 0748     		ldr	r0, .L9+20
+ 188 00a2 8068     		ldr	r0, [r0, #8]
+ 189 00a4 FFF7FEFF 		bl	osMessageQueuePut
+ 190              	.LVL15:
+ 191              	.LBE5:
+ 192              		.loc 1 39 1 view .LVU37
+ 193 00a8 B2E7     		b	.L1
+ 194              	.L10:
+ 195 00aa 00BF     		.align	2
+ 196              	.L9:
+ 197 00ac 00000000 		.word	ACTORS_LIST_SystemRegistry
+ 198 00b0 00000000 		.word	_impure_ptr
+ 199 00b4 10000000 		.word	.LC1
+ 200 00b8 00000000 		.word	.LC0
+ 201 00bc 24000000 		.word	.LC2
+ 202 00c0 00000000 		.word	NFC_Actor
+ 203              		.cfi_endproc
+ 204              	.LFE139:
+ 206              		.text
+ 207              	.Letext0:
+ARM GAS  /tmp/cc986XwL.s 			page 6
+
+
+ 208              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 209              		.file 3 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stddef.h"
+ 210              		.file 4 "/usr/include/newlib/sys/_types.h"
+ 211              		.file 5 "/usr/include/newlib/sys/reent.h"
+ 212              		.file 6 "/usr/include/newlib/sys/lock.h"
+ 213              		.file 7 "/usr/include/newlib/sys/_stdint.h"
+ 214              		.file 8 "/usr/include/newlib/sys/types.h"
+ 215              		.file 9 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l412xx.h"
+ 216              		.file 10 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_gpio.h"
+ 217              		.file 11 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
+ 218              		.file 12 "app/core/actor/../../config/events_list/events_list.h"
+ 219              		.file 13 "app/core/actor/../../config/actors_list/actors_list.h"
+ 220              		.file 14 "app/core/actor/actor.h"
+ 221              		.file 15 "Drivers/BSP/Components/ST25DV/st25dv_reg.h"
+ 222              		.file 16 "Drivers/BSP/Components/ST25DV/st25dv.h"
+ 223              		.file 17 "app/tasks/nfc/nfc.h"
+ 224              		.file 18 "<built-in>"
+ARM GAS  /tmp/cc986XwL.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 gpio_ext_interrupts.c
+     /tmp/cc986XwL.s:18     .rodata.HAL_GPIO_EXTI_Callback.str1.4:0000000000000000 $d
+     /tmp/cc986XwL.s:28     .text.HAL_GPIO_EXTI_Callback:0000000000000000 $t
+     /tmp/cc986XwL.s:36     .text.HAL_GPIO_EXTI_Callback:0000000000000000 HAL_GPIO_EXTI_Callback
+     /tmp/cc986XwL.s:197    .text.HAL_GPIO_EXTI_Callback:00000000000000ac $d
+
+UNDEFINED SYMBOLS
+HAL_GPIO_ReadPin
+osMessageQueuePut
+fwrite
+ACTORS_LIST_SystemRegistry
+_impure_ptr
+NFC_Actor
