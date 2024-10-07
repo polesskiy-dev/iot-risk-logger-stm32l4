@@ -25,8 +25,9 @@ DEBUG = 1
 OPT = -Og
 
 # NOR Flash: erase & write FAT12 filesystem boot header
-ERASE_CHIP_AND_FLASH_FAT12_BOOT_SECTOR = 0
-
+FLASH_ERASE_CHIP_AND_WRITE_FAT12_BOOT_SECTOR = 0
+# NOR Flash: actual writing is enabled
+FLASH_WRITE_ENABLED = 0
 
 
 #######################################
@@ -114,14 +115,15 @@ libraries/SystemView/SYSVIEW/SEGGER_SYSVIEW.c \
 libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c \
 app/core/trace/SEGGER_SYSVIEW_Config_FreeRTOS.c \
 app/core/actor/actor.c \
+app/core/gpio_ext_interrupts/gpio_ext_interrupts.c \
+app/core/power_mode_manager/power_mode_manager.c \
+app/core/cron/cron.c \
+app/core/fs_static/fs_static.c \
+app/core/info_led/info_led.c \
 app/config/actors_list/actors_list.c \
 app/config/events_list/events_list.c \
 app/config/bsp_bus/bsp_bus.c \
-app/core/power_mode_manager/power_mode_manager.c \
 app/tasks/event_manager/event_manager.c \
-app/core/cron/cron.c \
-app/core/info_led/info_led.c \
-app/core/fs_static/fs_static.c \
 app/drivers/opt3001/opt3001.c \
 app/drivers/sht3x/sht3x.c \
 app/drivers/w25q/w25q.c \
@@ -215,19 +217,20 @@ C_INCLUDES =  \
 -Ilibraries/SystemView/SYSVIEW \
 -Ilibraries/SystemView/Sample/FreeRTOSV10 \
 -Iapp/core/actor \
+-Iapp/core/trace \
+-Iapp/config/bsp_bus \
+-Iapp/core/fs_static \
+-Iapp/core/power_mode_manager \
+-Iapp/core/cron \
+-Iapp/core/info_led \
+-Iapp/core/gpio_ext_interrupts \
 -Iapp/config/actors_list/actors_list \
 -Iapp/config/events_list/events_list \
--Iapp/config/bsp_bus \
--Iapp/core/trace \
--Iapp/core/power_mode_manager \
--Iapp/core/fs_static \
 -Iapp/tasks/event_manager \
 -Iapp/drivers/opt3001 \
 -Iapp/drivers/sht3x \
 -Iapp/drivers/w25q \
 -Iapp/middlewares/usb_msc_storage \
--Iapp/core/cron \
--Iapp/core/info_led \
 -Iapp/tasks/memory \
 -Iapp/tasks/temperature_humidity_sensor \
 -Iapp/tasks/light_sensor \
@@ -242,8 +245,12 @@ ifeq ($(DEBUG), 1)
 CFLAGS += -g -gdwarf-2 -DDEBUG
 endif
 
-ifeq ($(ERASE_CHIP_AND_FLASH_FAT12_BOOT_SECTOR), 1)
+ifeq ($(FLASH_ERASE_CHIP_AND_WRITE_FAT12_BOOT_SECTOR), 1)
 CFLAGS += -DERASE_CHIP_AND_FLASH_FAT12_BOOT_SECTOR
+endif
+
+ifeq ($(FLASH_WRITE_ENABLED), 1)
+CFLAGS += -FLASH_WRITE_ENABLED
 endif
 
 

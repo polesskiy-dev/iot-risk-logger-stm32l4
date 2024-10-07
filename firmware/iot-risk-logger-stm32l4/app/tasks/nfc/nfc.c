@@ -12,6 +12,8 @@
 static osStatus_t handleNFCFSM(NFC_Actor_t *this, message_t *message);
 static osStatus_t handleInit(NFC_Actor_t *this, message_t *message);
 
+extern actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS];
+
 NFC_Actor_t NFC_Actor = {
         .super = {
                 .actorId = NFC_ACTOR_ID,
@@ -53,23 +55,15 @@ void NFC_Task(void *argument) {
     // Wait for messages from the queue
     if (osMessageQueueGet(NFC_Actor.super.osMessageQueueId, &msg, NULL, osWaitForever) == osOK) {
       osStatus_t status = NFC_Actor.super.messageHandler((actor_t *) &NFC_Actor, &msg);
+
       if (status != osOK) {
-        // TODO Handle error, emit common error event and reinitialize module
-        NFC_Actor.state = NFC_STATE_ERROR;
+        osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
+        osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = NFC_ACTOR_ID}, 0, 0);
+        TO_STATE(&NFC_Actor, NFC_STATE_ERROR);
       }
     }
   }
 }
-
-/** Handle GPO interrupt */
-//void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-//  if (GPIO_Pin == _NFC_INT_Pin) {
-//    #ifdef DEBUG
-//      fprintf(stdout, "NFC GPO Interrupt\n");
-//    #endif
-//    osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NFC_GPO_INTERRUPT}, 0, 0);
-//  }
-//}
 
 static osStatus_t handleNFCFSM(NFC_Actor_t *this, message_t *message) {
   switch (this->state) {

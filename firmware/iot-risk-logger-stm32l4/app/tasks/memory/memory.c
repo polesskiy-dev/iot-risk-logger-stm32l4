@@ -156,32 +156,6 @@ uint32_t MEMORY_SeekFreeSpaceAddress(void) {
   return addr;
 }
 
-// TODO move to more suitable place
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-  if (GPIO_Pin == USB_VBUS_SENSE_Pin) {
-    GPIO_PinState usbVBusPin = HAL_GPIO_ReadPin(USB_VBUS_SENSE_GPIO_Port, USB_VBUS_SENSE_Pin);
-    osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
-
-    if (usbVBusPin == GPIO_PIN_SET) {
-      osMessageQueuePut(evManagerQueue, &(message_t) {USB_CONNECTED}, 0, 0);
-      #if DEBUG
-            fprintf(stdout, "USB connected\n");
-      #endif
-    } else {
-      osMessageQueuePut(evManagerQueue, &(message_t) {USB_DISCONNECTED}, 0, 0);
-      #if DEBUG
-            fprintf(stdout, "USB disconnected\n");
-      #endif
-    }
-  }
-
-  if (GPIO_Pin == _NFC_INT_Pin) {
-    #ifdef DEBUG
-        fprintf(stdout, "NFC GPO Interrupt\n");
-    #endif
-    osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NFC_GPO_INTERRUPT}, 0, 0);
-  }
-}
 
 /**
  * @brief Writes FAT12 boot sector to the NOR Flash
@@ -229,7 +203,7 @@ static osStatus_t handleInit(MEMORY_Actor_t *this, message_t *message) {
         fprintf(stdout, "W25Q NOR MF ID: 0x%x, Device ID: 0x%x\n", norFlashID[0], norFlashID[1]);
     #endif
 
-    #ifdef ERASE_CHIP_AND_FLASH_FAT12_BOOT_SECTOR
+    #ifdef FLASH_ERASE_CHIP_AND_WRITE_FAT12_BOOT_SECTOR
         writeFAT12BootSector(&MEMORY_Actor);
     #endif
 
@@ -324,6 +298,8 @@ static void publishMemoryWriteOnMeasurementsReady(MEMORY_Actor_t *this) {
 }
 
 static osStatus_t appendMeasurementsToNORFlashLogTail(MEMORY_Actor_t *this) {
+  osStatus_t ioStatus = osOK;
+
   // sensors actors pointers from the system registry
   TH_SENS_Actor_t *thSensActor = (TH_SENS_Actor_t *)ACTORS_LIST_SystemRegistry[TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID];
   LIGHT_SENS_Actor_t *lightSensorActor = (LIGHT_SENS_Actor_t *)ACTORS_LIST_SystemRegistry[LIGHT_SENSOR_ACTOR_ID];
@@ -350,7 +326,9 @@ static osStatus_t appendMeasurementsToNORFlashLogTail(MEMORY_Actor_t *this) {
   #endif
 
   // write measurements to the memory
-  osStatus_t ioStatus = osOK; //W25Q_WriteData(&MEMORY_W25QHandle, (uint8_t *) &sensorsMeasurementEntry, this->logFileTailAddress, MEMORY_LOG_ENTRY_SIZE);
+  #ifdef FLASH_WRITE_ENABLED
+  ioStatus = W25Q_WriteData(&MEMORY_W25QHandle, (uint8_t *) &sensorsMeasurementEntry, this->logFileTailAddress, MEMORY_LOG_ENTRY_SIZE);
+  #endif
 
   // increment tail free space address for the next entry
   this->logFileTailAddress += MEMORY_LOG_ENTRY_SIZE;
