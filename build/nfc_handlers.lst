@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccYpHI0d.s 			page 1
+ARM GAS  /tmp/ccYltymr.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccYpHI0d.s 			page 1
   45              		.cfi_offset 4, -8
   46              		.cfi_offset 14, -4
   47 0002 86B0     		sub	sp, sp, #24
-ARM GAS  /tmp/ccYpHI0d.s 			page 2
+ARM GAS  /tmp/ccYltymr.s 			page 2
 
 
   48              	.LCFI1:
@@ -118,7 +118,7 @@ ARM GAS  /tmp/ccYpHI0d.s 			page 1
   22:app/tasks/nfc/nfc_handlers.c ****   status = St25Dv_Drv.Init(pObj);
   84              		.loc 1 22 3 is_stmt 1 view .LVU19
   85              		.loc 1 22 22 is_stmt 0 view .LVU20
-ARM GAS  /tmp/ccYpHI0d.s 			page 3
+ARM GAS  /tmp/ccYltymr.s 			page 3
 
 
   86 0026 134B     		ldr	r3, .L7+24
@@ -178,7 +178,7 @@ ARM GAS  /tmp/ccYpHI0d.s 			page 1
  124              		.loc 1 19 12 is_stmt 0 view .LVU32
  125 0042 4FF0FF30 		mov	r0, #-1
  126 0046 F3E7     		b	.L1
-ARM GAS  /tmp/ccYpHI0d.s 			page 4
+ARM GAS  /tmp/ccYltymr.s 			page 4
 
 
  127              	.LVL8:
@@ -220,376 +220,346 @@ ARM GAS  /tmp/ccYpHI0d.s 			page 1
  157 0080 24000000 		.word	.LC1
  158              		.cfi_endproc
  159              	.LFE139:
- 161              		.section	.text.NFC_LowPowerMode,"ax",%progbits
- 162              		.align	1
- 163              		.global	NFC_LowPowerMode
- 164              		.syntax unified
- 165              		.thumb
- 166              		.thumb_func
- 167              		.fpu fpv4-sp-d16
- 169              	NFC_LowPowerMode:
- 170              	.LVL11:
- 171              	.LFB140:
+ 161              		.section	.rodata.NFC_HandleGPOInterrupt.str1.4,"aMS",%progbits,1
+ 162              		.align	2
+ 163              	.LC2:
+ 164 0000 4E464320 		.ascii	"NFC ITStatus: 0x%x\012\000"
+ 164      49545374 
+ 164      61747573 
+ 164      3A203078 
+ 164      25780A00 
+ 165              		.section	.text.NFC_HandleGPOInterrupt,"ax",%progbits
+ 166              		.align	1
+ 167              		.global	NFC_HandleGPOInterrupt
+ 168              		.syntax unified
+ 169              		.thumb
+ 170              		.thumb_func
+ 171              		.fpu fpv4-sp-d16
+ 173              	NFC_HandleGPOInterrupt:
+ 174              	.LVL11:
+ 175              	.LFB140:
+ARM GAS  /tmp/ccYltymr.s 			page 5
+
+
   33:app/tasks/nfc/nfc_handlers.c **** 
-  34:app/tasks/nfc/nfc_handlers.c **** int32_t NFC_LowPowerMode(ST25DV_Object_t *pObj) {
- 172              		.loc 1 34 49 is_stmt 1 view -0
- 173              		.cfi_startproc
- 174              		@ args = 0, pretend = 0, frame = 0
- 175              		@ frame_needed = 0, uses_anonymous_args = 0
- 176              		@ link register save eliminated.
-  35:app/tasks/nfc/nfc_handlers.c **** 
-ARM GAS  /tmp/ccYpHI0d.s 			page 5
+  34:app/tasks/nfc/nfc_handlers.c **** void NFC_HandleGPOInterrupt(ST25DV_Object_t *pObj) {
+ 176              		.loc 1 34 52 is_stmt 1 view -0
+ 177              		.cfi_startproc
+ 178              		@ args = 0, pretend = 0, frame = 16
+ 179              		@ frame_needed = 0, uses_anonymous_args = 0
+ 180              		.loc 1 34 52 is_stmt 0 view .LVU40
+ 181 0000 00B5     		push	{lr}
+ 182              	.LCFI4:
+ 183              		.cfi_def_cfa_offset 4
+ 184              		.cfi_offset 14, -4
+ 185 0002 85B0     		sub	sp, sp, #20
+ 186              	.LCFI5:
+ 187              		.cfi_def_cfa_offset 24
+  35:app/tasks/nfc/nfc_handlers.c ****   uint8_t ITStatus;
+ 188              		.loc 1 35 3 is_stmt 1 view .LVU41
+  36:app/tasks/nfc/nfc_handlers.c ****   ST25DV_ReadITSTStatus_Dyn(pObj, &ITStatus);
+ 189              		.loc 1 36 3 view .LVU42
+ 190 0004 0DF10301 		add	r1, sp, #3
+ 191 0008 FFF7FEFF 		bl	ST25DV_ReadITSTStatus_Dyn
+ 192              	.LVL12:
+  37:app/tasks/nfc/nfc_handlers.c ****   if (ITStatus & ST25DV_ITSTS_DYN_RFPUTMSG_MASK) {
+ 193              		.loc 1 37 3 view .LVU43
+ 194              		.loc 1 37 16 is_stmt 0 view .LVU44
+ 195 000c 9DF80330 		ldrb	r3, [sp, #3]	@ zero_extendqisi2
+ 196              		.loc 1 37 6 view .LVU45
+ 197 0010 13F0200F 		tst	r3, #32
+ 198 0014 02D1     		bne	.L12
+ 199              	.L9:
+  38:app/tasks/nfc/nfc_handlers.c ****     osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NFC_MAILBOX_HAS_NEW_MESSAGE}, 
+  39:app/tasks/nfc/nfc_handlers.c **** 
+  40:app/tasks/nfc/nfc_handlers.c ****     #ifdef DEBUG
+  41:app/tasks/nfc/nfc_handlers.c ****       fprintf(stdout, "NFC ITStatus: 0x%x\n", ITStatus);
+  42:app/tasks/nfc/nfc_handlers.c ****     #endif
+  43:app/tasks/nfc/nfc_handlers.c ****   }
+  44:app/tasks/nfc/nfc_handlers.c **** }
+ 200              		.loc 1 44 1 view .LVU46
+ 201 0016 05B0     		add	sp, sp, #20
+ 202              	.LCFI6:
+ 203              		.cfi_remember_state
+ 204              		.cfi_def_cfa_offset 4
+ 205              		@ sp needed
+ 206 0018 5DF804FB 		ldr	pc, [sp], #4
+ 207              	.L12:
+ 208              	.LCFI7:
+ 209              		.cfi_restore_state
+ 210              	.LBB2:
+  38:app/tasks/nfc/nfc_handlers.c ****     osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NFC_MAILBOX_HAS_NEW_MESSAGE}, 
+ 211              		.loc 1 38 5 is_stmt 1 view .LVU47
+  38:app/tasks/nfc/nfc_handlers.c ****     osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NFC_MAILBOX_HAS_NEW_MESSAGE}, 
+ 212              		.loc 1 38 69 is_stmt 0 view .LVU48
+ 213 001c 0022     		movs	r2, #0
+ 214 001e 0192     		str	r2, [sp, #4]
+ 215 0020 0292     		str	r2, [sp, #8]
+ 216 0022 0392     		str	r2, [sp, #12]
+ 217 0024 1123     		movs	r3, #17
+ 218 0026 8DF80430 		strb	r3, [sp, #4]
+ARM GAS  /tmp/ccYltymr.s 			page 6
 
 
-  36:app/tasks/nfc/nfc_handlers.c ****   return NFCTAG_OK;
- 177              		.loc 1 36 3 view .LVU40
-  37:app/tasks/nfc/nfc_handlers.c **** }
- 178              		.loc 1 37 1 is_stmt 0 view .LVU41
- 179 0000 0020     		movs	r0, #0
- 180              	.LVL12:
- 181              		.loc 1 37 1 view .LVU42
- 182 0002 7047     		bx	lr
- 183              		.cfi_endproc
- 184              	.LFE140:
- 186              		.section	.rodata.NFC_HandleGPOInterrupt.str1.4,"aMS",%progbits,1
- 187              		.align	2
- 188              	.LC2:
- 189 0000 4E464320 		.ascii	"NFC ITStatus: 0x%x\012\000"
- 189      49545374 
- 189      61747573 
- 189      3A203078 
- 189      25780A00 
- 190              		.section	.text.NFC_HandleGPOInterrupt,"ax",%progbits
- 191              		.align	1
- 192              		.global	NFC_HandleGPOInterrupt
- 193              		.syntax unified
- 194              		.thumb
- 195              		.thumb_func
- 196              		.fpu fpv4-sp-d16
- 198              	NFC_HandleGPOInterrupt:
- 199              	.LVL13:
- 200              	.LFB141:
-  38:app/tasks/nfc/nfc_handlers.c **** 
-  39:app/tasks/nfc/nfc_handlers.c **** void NFC_HandleGPOInterrupt(ST25DV_Object_t *pObj) {
- 201              		.loc 1 39 52 is_stmt 1 view -0
- 202              		.cfi_startproc
- 203              		@ args = 0, pretend = 0, frame = 16
- 204              		@ frame_needed = 0, uses_anonymous_args = 0
- 205              		.loc 1 39 52 is_stmt 0 view .LVU44
- 206 0000 00B5     		push	{lr}
- 207              	.LCFI4:
- 208              		.cfi_def_cfa_offset 4
- 209              		.cfi_offset 14, -4
- 210 0002 85B0     		sub	sp, sp, #20
- 211              	.LCFI5:
- 212              		.cfi_def_cfa_offset 24
-  40:app/tasks/nfc/nfc_handlers.c ****   uint8_t ITStatus;
- 213              		.loc 1 40 3 is_stmt 1 view .LVU45
-  41:app/tasks/nfc/nfc_handlers.c ****   ST25DV_ReadITSTStatus_Dyn(pObj, &ITStatus);
- 214              		.loc 1 41 3 view .LVU46
- 215 0004 0DF10301 		add	r1, sp, #3
- 216 0008 FFF7FEFF 		bl	ST25DV_ReadITSTStatus_Dyn
- 217              	.LVL14:
-  42:app/tasks/nfc/nfc_handlers.c ****   if (ITStatus & ST25DV_ITSTS_DYN_RFPUTMSG_MASK) {
- 218              		.loc 1 42 3 view .LVU47
- 219              		.loc 1 42 16 is_stmt 0 view .LVU48
- 220 000c 9DF80330 		ldrb	r3, [sp, #3]	@ zero_extendqisi2
- 221              		.loc 1 42 6 view .LVU49
- 222 0010 13F0200F 		tst	r3, #32
- 223 0014 02D1     		bne	.L13
- 224              	.L10:
-ARM GAS  /tmp/ccYpHI0d.s 			page 6
+  38:app/tasks/nfc/nfc_handlers.c ****     osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NFC_MAILBOX_HAS_NEW_MESSAGE}, 
+ 219              		.loc 1 38 5 view .LVU49
+ 220 002a 1346     		mov	r3, r2
+ 221 002c 01A9     		add	r1, sp, #4
+ 222 002e 0648     		ldr	r0, .L13
+ 223 0030 8068     		ldr	r0, [r0, #8]
+ 224 0032 FFF7FEFF 		bl	osMessageQueuePut
+ 225              	.LVL13:
+  41:app/tasks/nfc/nfc_handlers.c ****     #endif
+ 226              		.loc 1 41 7 is_stmt 1 view .LVU50
+  41:app/tasks/nfc/nfc_handlers.c ****     #endif
+ 227              		.loc 1 41 15 is_stmt 0 view .LVU51
+ 228 0036 054B     		ldr	r3, .L13+4
+ 229 0038 1B68     		ldr	r3, [r3]
+  41:app/tasks/nfc/nfc_handlers.c ****     #endif
+ 230              		.loc 1 41 7 view .LVU52
+ 231 003a 9DF80320 		ldrb	r2, [sp, #3]	@ zero_extendqisi2
+ 232 003e 0449     		ldr	r1, .L13+8
+ 233 0040 9868     		ldr	r0, [r3, #8]
+ 234 0042 FFF7FEFF 		bl	fprintf
+ 235              	.LVL14:
+ 236              	.LBE2:
+ 237              		.loc 1 44 1 view .LVU53
+ 238 0046 E6E7     		b	.L9
+ 239              	.L14:
+ 240              		.align	2
+ 241              	.L13:
+ 242 0048 00000000 		.word	NFC_Actor
+ 243 004c 00000000 		.word	_impure_ptr
+ 244 0050 00000000 		.word	.LC2
+ 245              		.cfi_endproc
+ 246              	.LFE140:
+ 248              		.section	.rodata.NFC_ReadMailboxTo.str1.4,"aMS",%progbits,1
+ 249              		.align	2
+ 250              	.LC3:
+ 251 0000 53543235 		.ascii	"ST25DV ST25DV_ReadMBLength_Dyn Error\012\000"
+ 251      44562053 
+ 251      54323544 
+ 251      565F5265 
+ 251      61644D42 
+ 252 0026 0000     		.align	2
+ 253              	.LC4:
+ 254 0028 4D61696C 		.ascii	"Mailbox length: %d\012\000"
+ 254      626F7820 
+ 254      6C656E67 
+ 254      74683A20 
+ 254      25640A00 
+ 255              		.align	2
+ 256              	.LC5:
+ 257 003c 53543235 		.ascii	"ST25DV ST25DV_ReadMailboxData Error\012\000"
+ 257      44562053 
+ 257      54323544 
+ 257      565F5265 
+ 257      61644D61 
+ 258              		.section	.text.NFC_ReadMailboxTo,"ax",%progbits
+ 259              		.align	1
+ 260              		.global	NFC_ReadMailboxTo
+ARM GAS  /tmp/ccYltymr.s 			page 7
 
 
-  43:app/tasks/nfc/nfc_handlers.c ****     osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NFC_MAILBOX_HAS_NEW_MESSAGE}, 
-  44:app/tasks/nfc/nfc_handlers.c **** 
-  45:app/tasks/nfc/nfc_handlers.c ****     #ifdef DEBUG
-  46:app/tasks/nfc/nfc_handlers.c ****       fprintf(stdout, "NFC ITStatus: 0x%x\n", ITStatus);
-  47:app/tasks/nfc/nfc_handlers.c ****     #endif
-  48:app/tasks/nfc/nfc_handlers.c ****   }
-  49:app/tasks/nfc/nfc_handlers.c **** }
- 225              		.loc 1 49 1 view .LVU50
- 226 0016 05B0     		add	sp, sp, #20
- 227              	.LCFI6:
- 228              		.cfi_remember_state
- 229              		.cfi_def_cfa_offset 4
- 230              		@ sp needed
- 231 0018 5DF804FB 		ldr	pc, [sp], #4
- 232              	.L13:
- 233              	.LCFI7:
- 234              		.cfi_restore_state
- 235              	.LBB2:
-  43:app/tasks/nfc/nfc_handlers.c ****     osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NFC_MAILBOX_HAS_NEW_MESSAGE}, 
- 236              		.loc 1 43 5 is_stmt 1 view .LVU51
-  43:app/tasks/nfc/nfc_handlers.c ****     osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NFC_MAILBOX_HAS_NEW_MESSAGE}, 
- 237              		.loc 1 43 69 is_stmt 0 view .LVU52
- 238 001c 0022     		movs	r2, #0
- 239 001e 0192     		str	r2, [sp, #4]
- 240 0020 0292     		str	r2, [sp, #8]
- 241 0022 0392     		str	r2, [sp, #12]
- 242 0024 1123     		movs	r3, #17
- 243 0026 8DF80430 		strb	r3, [sp, #4]
-  43:app/tasks/nfc/nfc_handlers.c ****     osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NFC_MAILBOX_HAS_NEW_MESSAGE}, 
- 244              		.loc 1 43 5 view .LVU53
- 245 002a 1346     		mov	r3, r2
- 246 002c 01A9     		add	r1, sp, #4
- 247 002e 0648     		ldr	r0, .L14
- 248 0030 8068     		ldr	r0, [r0, #8]
- 249 0032 FFF7FEFF 		bl	osMessageQueuePut
- 250              	.LVL15:
-  46:app/tasks/nfc/nfc_handlers.c ****     #endif
- 251              		.loc 1 46 7 is_stmt 1 view .LVU54
-  46:app/tasks/nfc/nfc_handlers.c ****     #endif
- 252              		.loc 1 46 15 is_stmt 0 view .LVU55
- 253 0036 054B     		ldr	r3, .L14+4
- 254 0038 1B68     		ldr	r3, [r3]
-  46:app/tasks/nfc/nfc_handlers.c ****     #endif
- 255              		.loc 1 46 7 view .LVU56
- 256 003a 9DF80320 		ldrb	r2, [sp, #3]	@ zero_extendqisi2
- 257 003e 0449     		ldr	r1, .L14+8
- 258 0040 9868     		ldr	r0, [r3, #8]
- 259 0042 FFF7FEFF 		bl	fprintf
- 260              	.LVL16:
- 261              	.LBE2:
- 262              		.loc 1 49 1 view .LVU57
- 263 0046 E6E7     		b	.L10
- 264              	.L15:
- 265              		.align	2
- 266              	.L14:
- 267 0048 00000000 		.word	NFC_Actor
- 268 004c 00000000 		.word	_impure_ptr
-ARM GAS  /tmp/ccYpHI0d.s 			page 7
-
-
- 269 0050 00000000 		.word	.LC2
- 270              		.cfi_endproc
- 271              	.LFE141:
- 273              		.section	.rodata.NFC_ReadMailboxTo.str1.4,"aMS",%progbits,1
- 274              		.align	2
- 275              	.LC3:
- 276 0000 53543235 		.ascii	"ST25DV ST25DV_ReadMBLength_Dyn Error\012\000"
- 276      44562053 
- 276      54323544 
- 276      565F5265 
- 276      61644D42 
- 277 0026 0000     		.align	2
- 278              	.LC4:
- 279 0028 4D61696C 		.ascii	"Mailbox length: %d\012\000"
- 279      626F7820 
- 279      6C656E67 
- 279      74683A20 
- 279      25640A00 
- 280              		.align	2
- 281              	.LC5:
- 282 003c 53543235 		.ascii	"ST25DV ST25DV_ReadMailboxData Error\012\000"
- 282      44562053 
- 282      54323544 
- 282      565F5265 
- 282      61644D61 
- 283              		.section	.text.NFC_ReadMailboxTo,"ax",%progbits
- 284              		.align	1
- 285              		.global	NFC_ReadMailboxTo
- 286              		.syntax unified
- 287              		.thumb
- 288              		.thumb_func
- 289              		.fpu fpv4-sp-d16
- 291              	NFC_ReadMailboxTo:
+ 261              		.syntax unified
+ 262              		.thumb
+ 263              		.thumb_func
+ 264              		.fpu fpv4-sp-d16
+ 266              	NFC_ReadMailboxTo:
+ 267              	.LVL15:
+ 268              	.LFB141:
+  45:app/tasks/nfc/nfc_handlers.c **** 
+  46:app/tasks/nfc/nfc_handlers.c **** int32_t NFC_ReadMailboxTo(ST25DV_Object_t *pObj, uint8_t pMailboxBuffer[ST25DV_MAX_MAILBOX_LENGTH])
+ 269              		.loc 1 46 101 is_stmt 1 view -0
+ 270              		.cfi_startproc
+ 271              		@ args = 0, pretend = 0, frame = 8
+ 272              		@ frame_needed = 0, uses_anonymous_args = 0
+ 273              		.loc 1 46 101 is_stmt 0 view .LVU55
+ 274 0000 30B5     		push	{r4, r5, lr}
+ 275              	.LCFI8:
+ 276              		.cfi_def_cfa_offset 12
+ 277              		.cfi_offset 4, -12
+ 278              		.cfi_offset 5, -8
+ 279              		.cfi_offset 14, -4
+ 280 0002 83B0     		sub	sp, sp, #12
+ 281              	.LCFI9:
+ 282              		.cfi_def_cfa_offset 24
+ 283 0004 0446     		mov	r4, r0
+ 284 0006 0D46     		mov	r5, r1
+  47:app/tasks/nfc/nfc_handlers.c ****   uint8_t mailboxLength;
+ 285              		.loc 1 47 3 is_stmt 1 view .LVU56
+  48:app/tasks/nfc/nfc_handlers.c ****   int32_t status = ST25DV_ReadMBLength_Dyn(pObj, &mailboxLength);
+ 286              		.loc 1 48 3 view .LVU57
+ 287              		.loc 1 48 20 is_stmt 0 view .LVU58
+ 288 0008 0DF10701 		add	r1, sp, #7
+ 289              	.LVL16:
+ 290              		.loc 1 48 20 view .LVU59
+ 291 000c FFF7FEFF 		bl	ST25DV_ReadMBLength_Dyn
  292              	.LVL17:
- 293              	.LFB142:
-  50:app/tasks/nfc/nfc_handlers.c **** 
-  51:app/tasks/nfc/nfc_handlers.c **** int32_t NFC_ReadMailboxTo(ST25DV_Object_t *pObj, uint8_t pMailboxBuffer[ST25DV_MAX_MAILBOX_LENGTH])
- 294              		.loc 1 51 101 is_stmt 1 view -0
- 295              		.cfi_startproc
- 296              		@ args = 0, pretend = 0, frame = 8
- 297              		@ frame_needed = 0, uses_anonymous_args = 0
- 298              		.loc 1 51 101 is_stmt 0 view .LVU59
- 299 0000 30B5     		push	{r4, r5, lr}
- 300              	.LCFI8:
- 301              		.cfi_def_cfa_offset 12
- 302              		.cfi_offset 4, -12
- 303              		.cfi_offset 5, -8
- 304              		.cfi_offset 14, -4
- 305 0002 83B0     		sub	sp, sp, #12
- 306              	.LCFI9:
- 307              		.cfi_def_cfa_offset 24
- 308 0004 0446     		mov	r4, r0
- 309 0006 0D46     		mov	r5, r1
-  52:app/tasks/nfc/nfc_handlers.c ****   uint8_t mailboxLength;
- 310              		.loc 1 52 3 is_stmt 1 view .LVU60
-  53:app/tasks/nfc/nfc_handlers.c ****   int32_t status = ST25DV_ReadMBLength_Dyn(pObj, &mailboxLength);
- 311              		.loc 1 53 3 view .LVU61
-ARM GAS  /tmp/ccYpHI0d.s 			page 8
-
-
- 312              		.loc 1 53 20 is_stmt 0 view .LVU62
- 313 0008 0DF10701 		add	r1, sp, #7
- 314              	.LVL18:
- 315              		.loc 1 53 20 view .LVU63
- 316 000c FFF7FEFF 		bl	ST25DV_ReadMBLength_Dyn
- 317              	.LVL19:
+  49:app/tasks/nfc/nfc_handlers.c **** 
+  50:app/tasks/nfc/nfc_handlers.c ****   if (status != NFCTAG_OK) {
+ 293              		.loc 1 50 3 is_stmt 1 view .LVU60
+ 294              		.loc 1 50 6 is_stmt 0 view .LVU61
+ 295 0010 88B9     		cbnz	r0, .L19
+  51:app/tasks/nfc/nfc_handlers.c ****     #ifdef DEBUG
+  52:app/tasks/nfc/nfc_handlers.c ****         fprintf(stdout, "ST25DV ST25DV_ReadMBLength_Dyn Error\n");
+  53:app/tasks/nfc/nfc_handlers.c ****     #endif
   54:app/tasks/nfc/nfc_handlers.c **** 
-  55:app/tasks/nfc/nfc_handlers.c ****   if (status != NFCTAG_OK) {
- 318              		.loc 1 55 3 is_stmt 1 view .LVU64
- 319              		.loc 1 55 6 is_stmt 0 view .LVU65
- 320 0010 88B9     		cbnz	r0, .L20
-  56:app/tasks/nfc/nfc_handlers.c ****     #ifdef DEBUG
-  57:app/tasks/nfc/nfc_handlers.c ****         fprintf(stdout, "ST25DV ST25DV_ReadMBLength_Dyn Error\n");
-  58:app/tasks/nfc/nfc_handlers.c ****     #endif
-  59:app/tasks/nfc/nfc_handlers.c **** 
-  60:app/tasks/nfc/nfc_handlers.c ****     return NFCTAG_ERROR;
-  61:app/tasks/nfc/nfc_handlers.c ****   }
-  62:app/tasks/nfc/nfc_handlers.c **** 
-  63:app/tasks/nfc/nfc_handlers.c ****   #ifdef DEBUG
-  64:app/tasks/nfc/nfc_handlers.c ****     fprintf(stdout, "Mailbox length: %d\n", mailboxLength);
- 321              		.loc 1 64 5 is_stmt 1 view .LVU66
- 322              		.loc 1 64 13 is_stmt 0 view .LVU67
- 323 0012 144B     		ldr	r3, .L22
- 324 0014 1B68     		ldr	r3, [r3]
- 325              		.loc 1 64 5 view .LVU68
- 326 0016 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
- 327 001a 1349     		ldr	r1, .L22+4
- 328 001c 9868     		ldr	r0, [r3, #8]
- 329              	.LVL20:
- 330              		.loc 1 64 5 view .LVU69
- 331 001e FFF7FEFF 		bl	fprintf
- 332              	.LVL21:
-  65:app/tasks/nfc/nfc_handlers.c ****   #endif
-  66:app/tasks/nfc/nfc_handlers.c **** 
-  67:app/tasks/nfc/nfc_handlers.c ****   status = ST25DV_ReadMailboxData(pObj, pMailboxBuffer, MAILBOX_START_OFFSET, ST25DV_MAX_MAILBOX_LE
- 333              		.loc 1 67 3 is_stmt 1 view .LVU70
- 334              		.loc 1 67 12 is_stmt 0 view .LVU71
- 335 0022 4FF48073 		mov	r3, #256
- 336 0026 0022     		movs	r2, #0
- 337 0028 2946     		mov	r1, r5
- 338 002a 2046     		mov	r0, r4
- 339 002c FFF7FEFF 		bl	ST25DV_ReadMailboxData
- 340              	.LVL22:
+  55:app/tasks/nfc/nfc_handlers.c ****     return NFCTAG_ERROR;
+  56:app/tasks/nfc/nfc_handlers.c ****   }
+  57:app/tasks/nfc/nfc_handlers.c **** 
+  58:app/tasks/nfc/nfc_handlers.c ****   #ifdef DEBUG
+  59:app/tasks/nfc/nfc_handlers.c ****     fprintf(stdout, "Mailbox length: %d\n", mailboxLength);
+ 296              		.loc 1 59 5 is_stmt 1 view .LVU62
+ 297              		.loc 1 59 13 is_stmt 0 view .LVU63
+ 298 0012 144B     		ldr	r3, .L21
+ 299 0014 1B68     		ldr	r3, [r3]
+ 300              		.loc 1 59 5 view .LVU64
+ 301 0016 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 302 001a 1349     		ldr	r1, .L21+4
+ 303 001c 9868     		ldr	r0, [r3, #8]
+ARM GAS  /tmp/ccYltymr.s 			page 8
+
+
+ 304              	.LVL18:
+ 305              		.loc 1 59 5 view .LVU65
+ 306 001e FFF7FEFF 		bl	fprintf
+ 307              	.LVL19:
+  60:app/tasks/nfc/nfc_handlers.c ****   #endif
+  61:app/tasks/nfc/nfc_handlers.c **** 
+  62:app/tasks/nfc/nfc_handlers.c ****   status = ST25DV_ReadMailboxData(pObj, pMailboxBuffer, MAILBOX_START_OFFSET, ST25DV_MAX_MAILBOX_LE
+ 308              		.loc 1 62 3 is_stmt 1 view .LVU66
+ 309              		.loc 1 62 12 is_stmt 0 view .LVU67
+ 310 0022 4FF48073 		mov	r3, #256
+ 311 0026 0022     		movs	r2, #0
+ 312 0028 2946     		mov	r1, r5
+ 313 002a 2046     		mov	r0, r4
+ 314 002c FFF7FEFF 		bl	ST25DV_ReadMailboxData
+ 315              	.LVL20:
+  63:app/tasks/nfc/nfc_handlers.c **** 
+  64:app/tasks/nfc/nfc_handlers.c ****   if (status != NFCTAG_OK) {
+ 316              		.loc 1 64 3 is_stmt 1 view .LVU68
+ 317              		.loc 1 64 6 is_stmt 0 view .LVU69
+ 318 0030 60B9     		cbnz	r0, .L20
+ 319              	.LVL21:
+ 320              	.L15:
+  65:app/tasks/nfc/nfc_handlers.c ****     #ifdef DEBUG
+  66:app/tasks/nfc/nfc_handlers.c ****       fprintf(stdout, "ST25DV ST25DV_ReadMailboxData Error\n");
+  67:app/tasks/nfc/nfc_handlers.c ****     #endif
   68:app/tasks/nfc/nfc_handlers.c **** 
-  69:app/tasks/nfc/nfc_handlers.c ****   if (status != NFCTAG_OK) {
- 341              		.loc 1 69 3 is_stmt 1 view .LVU72
- 342              		.loc 1 69 6 is_stmt 0 view .LVU73
- 343 0030 60B9     		cbnz	r0, .L21
- 344              	.LVL23:
- 345              	.L16:
-  70:app/tasks/nfc/nfc_handlers.c ****     #ifdef DEBUG
-  71:app/tasks/nfc/nfc_handlers.c ****       fprintf(stdout, "ST25DV ST25DV_ReadMailboxData Error\n");
-  72:app/tasks/nfc/nfc_handlers.c ****     #endif
-  73:app/tasks/nfc/nfc_handlers.c **** 
-  74:app/tasks/nfc/nfc_handlers.c ****     return NFCTAG_ERROR;
-  75:app/tasks/nfc/nfc_handlers.c ****   }
-  76:app/tasks/nfc/nfc_handlers.c **** 
-ARM GAS  /tmp/ccYpHI0d.s 			page 9
+  69:app/tasks/nfc/nfc_handlers.c ****     return NFCTAG_ERROR;
+  70:app/tasks/nfc/nfc_handlers.c ****   }
+  71:app/tasks/nfc/nfc_handlers.c **** 
+  72:app/tasks/nfc/nfc_handlers.c ****   return NFCTAG_OK;
+  73:app/tasks/nfc/nfc_handlers.c **** }...
+ 321              		.loc 1 73 1 view .LVU70
+ 322 0032 03B0     		add	sp, sp, #12
+ 323              	.LCFI10:
+ 324              		.cfi_remember_state
+ 325              		.cfi_def_cfa_offset 12
+ 326              		@ sp needed
+ 327 0034 30BD     		pop	{r4, r5, pc}
+ 328              	.LVL22:
+ 329              	.L19:
+ 330              	.LCFI11:
+ 331              		.cfi_restore_state
+  52:app/tasks/nfc/nfc_handlers.c ****         fprintf(stdout, "ST25DV ST25DV_ReadMBLength_Dyn Error\n");
+ 332              		.loc 1 52 9 is_stmt 1 view .LVU71
+  52:app/tasks/nfc/nfc_handlers.c ****         fprintf(stdout, "ST25DV ST25DV_ReadMBLength_Dyn Error\n");
+ 333              		.loc 1 52 17 is_stmt 0 view .LVU72
+ 334 0036 0B4B     		ldr	r3, .L21
+ 335 0038 1B68     		ldr	r3, [r3]
+  52:app/tasks/nfc/nfc_handlers.c ****         fprintf(stdout, "ST25DV ST25DV_ReadMBLength_Dyn Error\n");
+ 336              		.loc 1 52 9 view .LVU73
+ 337 003a 9B68     		ldr	r3, [r3, #8]
+ 338 003c 2522     		movs	r2, #37
+ 339 003e 0121     		movs	r1, #1
+ 340 0040 0A48     		ldr	r0, .L21+8
+ 341              	.LVL23:
+  52:app/tasks/nfc/nfc_handlers.c ****         fprintf(stdout, "ST25DV ST25DV_ReadMBLength_Dyn Error\n");
+ 342              		.loc 1 52 9 view .LVU74
+ARM GAS  /tmp/ccYltymr.s 			page 9
 
 
-  77:app/tasks/nfc/nfc_handlers.c ****   return NFCTAG_OK;
-  78:app/tasks/nfc/nfc_handlers.c **** }...
- 346              		.loc 1 78 1 view .LVU74
- 347 0032 03B0     		add	sp, sp, #12
- 348              	.LCFI10:
- 349              		.cfi_remember_state
- 350              		.cfi_def_cfa_offset 12
- 351              		@ sp needed
- 352 0034 30BD     		pop	{r4, r5, pc}
- 353              	.LVL24:
- 354              	.L20:
- 355              	.LCFI11:
- 356              		.cfi_restore_state
-  57:app/tasks/nfc/nfc_handlers.c ****         fprintf(stdout, "ST25DV ST25DV_ReadMBLength_Dyn Error\n");
- 357              		.loc 1 57 9 is_stmt 1 view .LVU75
-  57:app/tasks/nfc/nfc_handlers.c ****         fprintf(stdout, "ST25DV ST25DV_ReadMBLength_Dyn Error\n");
- 358              		.loc 1 57 17 is_stmt 0 view .LVU76
- 359 0036 0B4B     		ldr	r3, .L22
- 360 0038 1B68     		ldr	r3, [r3]
-  57:app/tasks/nfc/nfc_handlers.c ****         fprintf(stdout, "ST25DV ST25DV_ReadMBLength_Dyn Error\n");
- 361              		.loc 1 57 9 view .LVU77
- 362 003a 9B68     		ldr	r3, [r3, #8]
- 363 003c 2522     		movs	r2, #37
- 364 003e 0121     		movs	r1, #1
- 365 0040 0A48     		ldr	r0, .L22+8
- 366              	.LVL25:
-  57:app/tasks/nfc/nfc_handlers.c ****         fprintf(stdout, "ST25DV ST25DV_ReadMBLength_Dyn Error\n");
- 367              		.loc 1 57 9 view .LVU78
- 368 0042 FFF7FEFF 		bl	fwrite
- 369              	.LVL26:
-  60:app/tasks/nfc/nfc_handlers.c ****     return NFCTAG_ERROR;
- 370              		.loc 1 60 5 is_stmt 1 view .LVU79
-  60:app/tasks/nfc/nfc_handlers.c ****     return NFCTAG_ERROR;
- 371              		.loc 1 60 12 is_stmt 0 view .LVU80
- 372 0046 4FF0FF30 		mov	r0, #-1
- 373 004a F2E7     		b	.L16
- 374              	.LVL27:
- 375              	.L21:
-  71:app/tasks/nfc/nfc_handlers.c ****       fprintf(stdout, "ST25DV ST25DV_ReadMailboxData Error\n");
- 376              		.loc 1 71 7 is_stmt 1 view .LVU81
-  71:app/tasks/nfc/nfc_handlers.c ****       fprintf(stdout, "ST25DV ST25DV_ReadMailboxData Error\n");
- 377              		.loc 1 71 15 is_stmt 0 view .LVU82
- 378 004c 054B     		ldr	r3, .L22
- 379 004e 1B68     		ldr	r3, [r3]
-  71:app/tasks/nfc/nfc_handlers.c ****       fprintf(stdout, "ST25DV ST25DV_ReadMailboxData Error\n");
- 380              		.loc 1 71 7 view .LVU83
- 381 0050 9B68     		ldr	r3, [r3, #8]
- 382 0052 2422     		movs	r2, #36
- 383 0054 0121     		movs	r1, #1
- 384 0056 0648     		ldr	r0, .L22+12
- 385              	.LVL28:
-  71:app/tasks/nfc/nfc_handlers.c ****       fprintf(stdout, "ST25DV ST25DV_ReadMailboxData Error\n");
- 386              		.loc 1 71 7 view .LVU84
- 387 0058 FFF7FEFF 		bl	fwrite
- 388              	.LVL29:
-  74:app/tasks/nfc/nfc_handlers.c ****     return NFCTAG_ERROR;
- 389              		.loc 1 74 5 is_stmt 1 view .LVU85
-ARM GAS  /tmp/ccYpHI0d.s 			page 10
+ 343 0042 FFF7FEFF 		bl	fwrite
+ 344              	.LVL24:
+  55:app/tasks/nfc/nfc_handlers.c ****     return NFCTAG_ERROR;
+ 345              		.loc 1 55 5 is_stmt 1 view .LVU75
+  55:app/tasks/nfc/nfc_handlers.c ****     return NFCTAG_ERROR;
+ 346              		.loc 1 55 12 is_stmt 0 view .LVU76
+ 347 0046 4FF0FF30 		mov	r0, #-1
+ 348 004a F2E7     		b	.L15
+ 349              	.LVL25:
+ 350              	.L20:
+  66:app/tasks/nfc/nfc_handlers.c ****       fprintf(stdout, "ST25DV ST25DV_ReadMailboxData Error\n");
+ 351              		.loc 1 66 7 is_stmt 1 view .LVU77
+  66:app/tasks/nfc/nfc_handlers.c ****       fprintf(stdout, "ST25DV ST25DV_ReadMailboxData Error\n");
+ 352              		.loc 1 66 15 is_stmt 0 view .LVU78
+ 353 004c 054B     		ldr	r3, .L21
+ 354 004e 1B68     		ldr	r3, [r3]
+  66:app/tasks/nfc/nfc_handlers.c ****       fprintf(stdout, "ST25DV ST25DV_ReadMailboxData Error\n");
+ 355              		.loc 1 66 7 view .LVU79
+ 356 0050 9B68     		ldr	r3, [r3, #8]
+ 357 0052 2422     		movs	r2, #36
+ 358 0054 0121     		movs	r1, #1
+ 359 0056 0648     		ldr	r0, .L21+12
+ 360              	.LVL26:
+  66:app/tasks/nfc/nfc_handlers.c ****       fprintf(stdout, "ST25DV ST25DV_ReadMailboxData Error\n");
+ 361              		.loc 1 66 7 view .LVU80
+ 362 0058 FFF7FEFF 		bl	fwrite
+ 363              	.LVL27:
+  69:app/tasks/nfc/nfc_handlers.c ****     return NFCTAG_ERROR;
+ 364              		.loc 1 69 5 is_stmt 1 view .LVU81
+  69:app/tasks/nfc/nfc_handlers.c ****     return NFCTAG_ERROR;
+ 365              		.loc 1 69 12 is_stmt 0 view .LVU82
+ 366 005c 4FF0FF30 		mov	r0, #-1
+ 367 0060 E7E7     		b	.L15
+ 368              	.L22:
+ 369 0062 00BF     		.align	2
+ 370              	.L21:
+ 371 0064 00000000 		.word	_impure_ptr
+ 372 0068 28000000 		.word	.LC4
+ 373 006c 00000000 		.word	.LC3
+ 374 0070 3C000000 		.word	.LC5
+ 375              		.cfi_endproc
+ 376              	.LFE141:
+ 378              		.text
+ 379              	.Letext0:
+ 380              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 381              		.file 3 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stddef.h"
+ 382              		.file 4 "/usr/include/newlib/sys/_types.h"
+ 383              		.file 5 "/usr/include/newlib/sys/reent.h"
+ 384              		.file 6 "/usr/include/newlib/sys/lock.h"
+ 385              		.file 7 "/usr/include/newlib/sys/_stdint.h"
+ 386              		.file 8 "/usr/include/newlib/sys/types.h"
+ 387              		.file 9 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
+ 388              		.file 10 "app/core/actor/../../config/events_list/events_list.h"
+ 389              		.file 11 "app/core/actor/actor.h"
+ 390              		.file 12 "Drivers/BSP/Components/ST25DV/st25dv_reg.h"
+ 391              		.file 13 "Drivers/BSP/Components/ST25DV/st25dv.h"
+ 392              		.file 14 "app/tasks/nfc/nfc.h"
+ARM GAS  /tmp/ccYltymr.s 			page 10
 
 
-  74:app/tasks/nfc/nfc_handlers.c ****     return NFCTAG_ERROR;
- 390              		.loc 1 74 12 is_stmt 0 view .LVU86
- 391 005c 4FF0FF30 		mov	r0, #-1
- 392 0060 E7E7     		b	.L16
- 393              	.L23:
- 394 0062 00BF     		.align	2
- 395              	.L22:
- 396 0064 00000000 		.word	_impure_ptr
- 397 0068 28000000 		.word	.LC4
- 398 006c 00000000 		.word	.LC3
- 399 0070 3C000000 		.word	.LC5
- 400              		.cfi_endproc
- 401              	.LFE142:
- 403              		.text
- 404              	.Letext0:
- 405              		.file 2 "/usr/include/newlib/machine/_default_types.h"
- 406              		.file 3 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stddef.h"
- 407              		.file 4 "/usr/include/newlib/sys/_types.h"
- 408              		.file 5 "/usr/include/newlib/sys/reent.h"
- 409              		.file 6 "/usr/include/newlib/sys/lock.h"
- 410              		.file 7 "/usr/include/newlib/sys/_stdint.h"
- 411              		.file 8 "/usr/include/newlib/sys/types.h"
- 412              		.file 9 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
- 413              		.file 10 "app/core/actor/../../config/events_list/events_list.h"
- 414              		.file 11 "app/core/actor/actor.h"
- 415              		.file 12 "Drivers/BSP/Components/ST25DV/st25dv_reg.h"
- 416              		.file 13 "Drivers/BSP/Components/ST25DV/st25dv.h"
- 417              		.file 14 "app/tasks/nfc/nfc.h"
- 418              		.file 15 "/usr/include/newlib/stdio.h"
- 419              		.file 16 "<built-in>"
-ARM GAS  /tmp/ccYpHI0d.s 			page 11
+ 393              		.file 15 "/usr/include/newlib/stdio.h"
+ 394              		.file 16 "<built-in>"
+ARM GAS  /tmp/ccYltymr.s 			page 11
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 nfc_handlers.c
-     /tmp/ccYpHI0d.s:18     .rodata.NFC_ST25DVInit.str1.4:0000000000000000 $d
-     /tmp/ccYpHI0d.s:25     .text.NFC_ST25DVInit:0000000000000000 $t
-     /tmp/ccYpHI0d.s:33     .text.NFC_ST25DVInit:0000000000000000 NFC_ST25DVInit
-     /tmp/ccYpHI0d.s:148    .text.NFC_ST25DVInit:000000000000005c $d
-     /tmp/ccYpHI0d.s:162    .text.NFC_LowPowerMode:0000000000000000 $t
-     /tmp/ccYpHI0d.s:169    .text.NFC_LowPowerMode:0000000000000000 NFC_LowPowerMode
-     /tmp/ccYpHI0d.s:187    .rodata.NFC_HandleGPOInterrupt.str1.4:0000000000000000 $d
-     /tmp/ccYpHI0d.s:191    .text.NFC_HandleGPOInterrupt:0000000000000000 $t
-     /tmp/ccYpHI0d.s:198    .text.NFC_HandleGPOInterrupt:0000000000000000 NFC_HandleGPOInterrupt
-     /tmp/ccYpHI0d.s:267    .text.NFC_HandleGPOInterrupt:0000000000000048 $d
-     /tmp/ccYpHI0d.s:274    .rodata.NFC_ReadMailboxTo.str1.4:0000000000000000 $d
-     /tmp/ccYpHI0d.s:284    .text.NFC_ReadMailboxTo:0000000000000000 $t
-     /tmp/ccYpHI0d.s:291    .text.NFC_ReadMailboxTo:0000000000000000 NFC_ReadMailboxTo
-     /tmp/ccYpHI0d.s:396    .text.NFC_ReadMailboxTo:0000000000000064 $d
+     /tmp/ccYltymr.s:18     .rodata.NFC_ST25DVInit.str1.4:0000000000000000 $d
+     /tmp/ccYltymr.s:25     .text.NFC_ST25DVInit:0000000000000000 $t
+     /tmp/ccYltymr.s:33     .text.NFC_ST25DVInit:0000000000000000 NFC_ST25DVInit
+     /tmp/ccYltymr.s:148    .text.NFC_ST25DVInit:000000000000005c $d
+     /tmp/ccYltymr.s:162    .rodata.NFC_HandleGPOInterrupt.str1.4:0000000000000000 $d
+     /tmp/ccYltymr.s:166    .text.NFC_HandleGPOInterrupt:0000000000000000 $t
+     /tmp/ccYltymr.s:173    .text.NFC_HandleGPOInterrupt:0000000000000000 NFC_HandleGPOInterrupt
+     /tmp/ccYltymr.s:242    .text.NFC_HandleGPOInterrupt:0000000000000048 $d
+     /tmp/ccYltymr.s:249    .rodata.NFC_ReadMailboxTo.str1.4:0000000000000000 $d
+     /tmp/ccYltymr.s:259    .text.NFC_ReadMailboxTo:0000000000000000 $t
+     /tmp/ccYltymr.s:266    .text.NFC_ReadMailboxTo:0000000000000000 NFC_ReadMailboxTo
+     /tmp/ccYltymr.s:371    .text.NFC_ReadMailboxTo:0000000000000064 $d
 
 UNDEFINED SYMBOLS
 ST25DV_RegisterBusIO

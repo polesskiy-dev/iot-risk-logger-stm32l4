@@ -54,7 +54,8 @@ build/nfc.o: app/tasks/nfc/nfc.c app/tasks/nfc/nfc.h \
  app/core/actor/../../config/events_list/events_list.h \
  app/core/actor/../../config/actors_list/actors_list.h \
  app/tasks/event_manager/event_manager.h \
- app/core/power_mode_manager/power_mode_manager.h app/tasks/nfc/nfc.h \
+ app/core/power_mode_manager/power_mode_manager.h \
+ app/core/gpio_ext_interrupts/gpio_ext_interrupts.h app/tasks/nfc/nfc.h \
  app/tasks/memory/memory.h Core/Inc/quadspi.h Core/Inc/main.h \
  app/drivers/w25q/w25q.h app/core/fs_static/fs_static.h \
  app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.h \
@@ -125,6 +126,7 @@ app/core/actor/../../config/events_list/events_list.h:
 app/core/actor/../../config/actors_list/actors_list.h:
 app/tasks/event_manager/event_manager.h:
 app/core/power_mode_manager/power_mode_manager.h:
+app/core/gpio_ext_interrupts/gpio_ext_interrupts.h:
 app/tasks/nfc/nfc.h:
 app/tasks/memory/memory.h:
 Core/Inc/quadspi.h:

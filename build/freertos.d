@@ -56,7 +56,8 @@ build/freertos.o: Core/Src/freertos.c \
  app/core/actor/../../config/events_list/events_list.h \
  app/core/actor/../../config/actors_list/actors_list.h \
  app/tasks/event_manager/event_manager.h \
- app/core/power_mode_manager/power_mode_manager.h app/tasks/nfc/nfc.h \
+ app/core/power_mode_manager/power_mode_manager.h \
+ app/core/gpio_ext_interrupts/gpio_ext_interrupts.h app/tasks/nfc/nfc.h \
  Drivers/BSP/Components/ST25DV/st25dv_reg.h \
  Drivers/BSP/Components/ST25DV/st25dv.h \
  Drivers/BSP/Components/ST25DV/st25dv_reg.h Core/Inc/custom_bus.h \
@@ -131,6 +132,7 @@ app/core/actor/../../config/events_list/events_list.h:
 app/core/actor/../../config/actors_list/actors_list.h:
 app/tasks/event_manager/event_manager.h:
 app/core/power_mode_manager/power_mode_manager.h:
+app/core/gpio_ext_interrupts/gpio_ext_interrupts.h:
 app/tasks/nfc/nfc.h:
 Drivers/BSP/Components/ST25DV/st25dv_reg.h:
 Drivers/BSP/Components/ST25DV/st25dv.h:

@@ -46,7 +46,8 @@ build/opt3001.o: app/drivers/opt3001/opt3001.c \
  app/core/actor/../../config/events_list/events_list.h \
  app/core/actor/../../config/actors_list/actors_list.h \
  app/tasks/event_manager/event_manager.h \
- app/core/power_mode_manager/power_mode_manager.h app/tasks/nfc/nfc.h \
+ app/core/power_mode_manager/power_mode_manager.h \
+ app/core/gpio_ext_interrupts/gpio_ext_interrupts.h app/tasks/nfc/nfc.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
  Core/Inc/FreeRTOSConfig.h \
  libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.h \
@@ -118,6 +119,7 @@ app/core/actor/../../config/events_list/events_list.h:
 app/core/actor/../../config/actors_list/actors_list.h:
 app/tasks/event_manager/event_manager.h:
 app/core/power_mode_manager/power_mode_manager.h:
+app/core/gpio_ext_interrupts/gpio_ext_interrupts.h:
 app/tasks/nfc/nfc.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 Core/Inc/FreeRTOSConfig.h:

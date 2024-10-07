@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccyeCF8D.s 			page 1
+ARM GAS  /tmp/ccAHlaRc.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccyeCF8D.s 			page 1
   28:app/tasks/nfc/nfc.c **** StaticTask_t nfcTaskControlBlock;
   29:app/tasks/nfc/nfc.c **** const osThreadAttr_t nfcTaskDescription = {
   30:app/tasks/nfc/nfc.c ****         .name = "nfcTask",
-ARM GAS  /tmp/ccyeCF8D.s 			page 2
+ARM GAS  /tmp/ccAHlaRc.s 			page 2
 
 
   31:app/tasks/nfc/nfc.c ****         .cb_mem = &nfcTaskControlBlock,
@@ -98,127 +98,117 @@ ARM GAS  /tmp/ccyeCF8D.s 			page 1
   65:app/tasks/nfc/nfc.c ****   }
   66:app/tasks/nfc/nfc.c **** }
   67:app/tasks/nfc/nfc.c **** 
-  68:app/tasks/nfc/nfc.c **** /** Handle GPO interrupt */
-  69:app/tasks/nfc/nfc.c **** //void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-  70:app/tasks/nfc/nfc.c **** //  if (GPIO_Pin == _NFC_INT_Pin) {
-  71:app/tasks/nfc/nfc.c **** //    #ifdef DEBUG
-  72:app/tasks/nfc/nfc.c **** //      fprintf(stdout, "NFC GPO Interrupt\n");
-  73:app/tasks/nfc/nfc.c **** //    #endif
-  74:app/tasks/nfc/nfc.c **** //    osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NFC_GPO_INTERRUPT}, 0, 0);
-  75:app/tasks/nfc/nfc.c **** //  }
-  76:app/tasks/nfc/nfc.c **** //}
-  77:app/tasks/nfc/nfc.c **** 
-  78:app/tasks/nfc/nfc.c **** static osStatus_t handleNFCFSM(NFC_Actor_t *this, message_t *message) {
-  79:app/tasks/nfc/nfc.c ****   switch (this->state) {
-  80:app/tasks/nfc/nfc.c ****     case NFC_NO_STATE:
-  81:app/tasks/nfc/nfc.c ****       handleInit(this, message);
-  82:app/tasks/nfc/nfc.c ****       return osOK;
-  83:app/tasks/nfc/nfc.c ****     case NFC_STANDBY_STATE:
-  84:app/tasks/nfc/nfc.c ****       // TODO handle low power state
-  85:app/tasks/nfc/nfc.c ****       return osOK;
-  86:app/tasks/nfc/nfc.c ****     default:
-  87:app/tasks/nfc/nfc.c ****       return osOK;
-ARM GAS  /tmp/ccyeCF8D.s 			page 3
+  68:app/tasks/nfc/nfc.c **** static osStatus_t handleNFCFSM(NFC_Actor_t *this, message_t *message) {
+  69:app/tasks/nfc/nfc.c ****   switch (this->state) {
+  70:app/tasks/nfc/nfc.c ****     case NFC_NO_STATE:
+  71:app/tasks/nfc/nfc.c ****       handleInit(this, message);
+  72:app/tasks/nfc/nfc.c ****       return osOK;
+  73:app/tasks/nfc/nfc.c ****     case NFC_STANDBY_STATE:
+  74:app/tasks/nfc/nfc.c ****       // TODO handle low power state
+  75:app/tasks/nfc/nfc.c ****       return osOK;
+  76:app/tasks/nfc/nfc.c ****     default:
+  77:app/tasks/nfc/nfc.c ****       return osOK;
+  78:app/tasks/nfc/nfc.c ****   }
+  79:app/tasks/nfc/nfc.c **** 
+  80:app/tasks/nfc/nfc.c **** //  switch (message->event) {
+  81:app/tasks/nfc/nfc.c **** //    case NFC_GPO_INTERRUPT:
+  82:app/tasks/nfc/nfc.c **** //      NFC_HandleGPOInterrupt(&st25dv);
+  83:app/tasks/nfc/nfc.c **** //      return osOK;
+  84:app/tasks/nfc/nfc.c **** //    case NFC_MAILBOX_HAS_NEW_MESSAGE:
+  85:app/tasks/nfc/nfc.c **** //      fprintf(stdout, "Mailbox has new message\n");
+  86:app/tasks/nfc/nfc.c **** //      NFC_ReadMailboxTo(&st25dv, mailboxBuffer);
+  87:app/tasks/nfc/nfc.c **** //      // Print for debug purposes
+ARM GAS  /tmp/ccAHlaRc.s 			page 3
 
 
-  88:app/tasks/nfc/nfc.c ****   }
-  89:app/tasks/nfc/nfc.c **** 
-  90:app/tasks/nfc/nfc.c **** //  switch (message->event) {
-  91:app/tasks/nfc/nfc.c **** //    case NFC_GPO_INTERRUPT:
-  92:app/tasks/nfc/nfc.c **** //      NFC_HandleGPOInterrupt(&st25dv);
-  93:app/tasks/nfc/nfc.c **** //      return osOK;
-  94:app/tasks/nfc/nfc.c **** //    case NFC_MAILBOX_HAS_NEW_MESSAGE:
-  95:app/tasks/nfc/nfc.c **** //      fprintf(stdout, "Mailbox has new message\n");
-  96:app/tasks/nfc/nfc.c **** //      NFC_ReadMailboxTo(&st25dv, mailboxBuffer);
-  97:app/tasks/nfc/nfc.c **** //      // Print for debug purposes
-  98:app/tasks/nfc/nfc.c **** //      for (int i = 0; i < ST25DV_MAX_MAILBOX_LENGTH; i++) {
-  99:app/tasks/nfc/nfc.c **** //        fprintf(stdout, "0x%x ", mailboxBuffer[i]);
- 100:app/tasks/nfc/nfc.c **** //      }
- 101:app/tasks/nfc/nfc.c **** //      return osOK;
- 102:app/tasks/nfc/nfc.c **** //    default:
- 103:app/tasks/nfc/nfc.c **** //      return osError;
- 104:app/tasks/nfc/nfc.c **** //  }
- 105:app/tasks/nfc/nfc.c **** }
- 106:app/tasks/nfc/nfc.c **** 
- 107:app/tasks/nfc/nfc.c **** static osStatus_t handleInit(NFC_Actor_t *this, message_t *message) {
-  29              		.loc 1 107 69 view -0
+  88:app/tasks/nfc/nfc.c **** //      for (int i = 0; i < ST25DV_MAX_MAILBOX_LENGTH; i++) {
+  89:app/tasks/nfc/nfc.c **** //        fprintf(stdout, "0x%x ", mailboxBuffer[i]);
+  90:app/tasks/nfc/nfc.c **** //      }
+  91:app/tasks/nfc/nfc.c **** //      return osOK;
+  92:app/tasks/nfc/nfc.c **** //    default:
+  93:app/tasks/nfc/nfc.c **** //      return osError;
+  94:app/tasks/nfc/nfc.c **** //  }
+  95:app/tasks/nfc/nfc.c **** }
+  96:app/tasks/nfc/nfc.c **** 
+  97:app/tasks/nfc/nfc.c **** static osStatus_t handleInit(NFC_Actor_t *this, message_t *message) {
+  29              		.loc 1 97 69 view -0
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
   32              		@ frame_needed = 0, uses_anonymous_args = 0
- 108:app/tasks/nfc/nfc.c ****   osStatus_t status;
-  33              		.loc 1 108 3 view .LVU1
- 109:app/tasks/nfc/nfc.c **** 
- 110:app/tasks/nfc/nfc.c ****   switch (message->event) {
-  34              		.loc 1 110 3 view .LVU2
-  35              		.loc 1 110 18 is_stmt 0 view .LVU3
+  98:app/tasks/nfc/nfc.c ****   osStatus_t status;
+  33              		.loc 1 98 3 view .LVU1
+  99:app/tasks/nfc/nfc.c **** 
+ 100:app/tasks/nfc/nfc.c ****   switch (message->event) {
+  34              		.loc 1 100 3 view .LVU2
+  35              		.loc 1 100 18 is_stmt 0 view .LVU3
   36 0000 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
-  37              		.loc 1 110 3 view .LVU4
+  37              		.loc 1 100 3 view .LVU4
   38 0002 012B     		cmp	r3, #1
   39 0004 01D0     		beq	.L9
- 111:app/tasks/nfc/nfc.c ****     case GLOBAL_CMD_INITIALIZE:
- 112:app/tasks/nfc/nfc.c ****       status = NFC_ST25DVInit(&this->st25dv);
- 113:app/tasks/nfc/nfc.c ****       if (status != NFCTAG_OK)
- 114:app/tasks/nfc/nfc.c ****         return osError;
- 115:app/tasks/nfc/nfc.c ****       this->state = NFC_STANDBY_STATE;
- 116:app/tasks/nfc/nfc.c **** 
- 117:app/tasks/nfc/nfc.c ****       return osOK;
- 118:app/tasks/nfc/nfc.c ****     default:
- 119:app/tasks/nfc/nfc.c ****       return osOK;
-  40              		.loc 1 119 14 view .LVU5
+ 101:app/tasks/nfc/nfc.c ****     case GLOBAL_CMD_INITIALIZE:
+ 102:app/tasks/nfc/nfc.c ****       status = NFC_ST25DVInit(&this->st25dv);
+ 103:app/tasks/nfc/nfc.c ****       if (status != NFCTAG_OK)
+ 104:app/tasks/nfc/nfc.c ****         return osError;
+ 105:app/tasks/nfc/nfc.c ****       this->state = NFC_STANDBY_STATE;
+ 106:app/tasks/nfc/nfc.c **** 
+ 107:app/tasks/nfc/nfc.c ****       return osOK;
+ 108:app/tasks/nfc/nfc.c ****     default:
+ 109:app/tasks/nfc/nfc.c ****       return osOK;
+  40              		.loc 1 109 14 view .LVU5
   41 0006 0020     		movs	r0, #0
   42              	.LVL1:
- 120:app/tasks/nfc/nfc.c ****   }
- 121:app/tasks/nfc/nfc.c **** }...
-  43              		.loc 1 121 1 view .LVU6
+ 110:app/tasks/nfc/nfc.c ****   }
+ 111:app/tasks/nfc/nfc.c **** }...
+  43              		.loc 1 111 1 view .LVU6
   44 0008 7047     		bx	lr
   45              	.LVL2:
   46              	.L9:
- 107:app/tasks/nfc/nfc.c **** static osStatus_t handleInit(NFC_Actor_t *this, message_t *message) {
-  47              		.loc 1 107 69 view .LVU7
+  97:app/tasks/nfc/nfc.c **** static osStatus_t handleInit(NFC_Actor_t *this, message_t *message) {
+  47              		.loc 1 97 69 view .LVU7
   48 000a 10B5     		push	{r4, lr}
   49              	.LCFI0:
   50              		.cfi_def_cfa_offset 8
-ARM GAS  /tmp/ccyeCF8D.s 			page 4
-
-
   51              		.cfi_offset 4, -8
   52              		.cfi_offset 14, -4
   53 000c 0446     		mov	r4, r0
- 112:app/tasks/nfc/nfc.c ****       status = NFC_ST25DVInit(&this->st25dv);
-  54              		.loc 1 112 7 is_stmt 1 view .LVU8
- 112:app/tasks/nfc/nfc.c ****       status = NFC_ST25DVInit(&this->st25dv);
-  55              		.loc 1 112 16 is_stmt 0 view .LVU9
+ 102:app/tasks/nfc/nfc.c ****       status = NFC_ST25DVInit(&this->st25dv);
+  54              		.loc 1 102 7 is_stmt 1 view .LVU8
+ 102:app/tasks/nfc/nfc.c ****       status = NFC_ST25DVInit(&this->st25dv);
+  55              		.loc 1 102 16 is_stmt 0 view .LVU9
   56 000e 1430     		adds	r0, r0, #20
   57              	.LVL3:
- 112:app/tasks/nfc/nfc.c ****       status = NFC_ST25DVInit(&this->st25dv);
-  58              		.loc 1 112 16 view .LVU10
+ 102:app/tasks/nfc/nfc.c ****       status = NFC_ST25DVInit(&this->st25dv);
+ARM GAS  /tmp/ccAHlaRc.s 			page 4
+
+
+  58              		.loc 1 102 16 view .LVU10
   59 0010 FFF7FEFF 		bl	NFC_ST25DVInit
   60              	.LVL4:
- 113:app/tasks/nfc/nfc.c ****       if (status != NFCTAG_OK)
-  61              		.loc 1 113 7 is_stmt 1 view .LVU11
- 113:app/tasks/nfc/nfc.c ****       if (status != NFCTAG_OK)
-  62              		.loc 1 113 10 is_stmt 0 view .LVU12
+ 103:app/tasks/nfc/nfc.c ****       if (status != NFCTAG_OK)
+  61              		.loc 1 103 7 is_stmt 1 view .LVU11
+ 103:app/tasks/nfc/nfc.c ****       if (status != NFCTAG_OK)
+  62              		.loc 1 103 10 is_stmt 0 view .LVU12
   63 0014 10B9     		cbnz	r0, .L4
- 115:app/tasks/nfc/nfc.c ****       this->state = NFC_STANDBY_STATE;
-  64              		.loc 1 115 7 is_stmt 1 view .LVU13
- 115:app/tasks/nfc/nfc.c ****       this->state = NFC_STANDBY_STATE;
-  65              		.loc 1 115 19 is_stmt 0 view .LVU14
+ 105:app/tasks/nfc/nfc.c ****       this->state = NFC_STANDBY_STATE;
+  64              		.loc 1 105 7 is_stmt 1 view .LVU13
+ 105:app/tasks/nfc/nfc.c ****       this->state = NFC_STANDBY_STATE;
+  65              		.loc 1 105 19 is_stmt 0 view .LVU14
   66 0016 0123     		movs	r3, #1
   67 0018 2374     		strb	r3, [r4, #16]
- 117:app/tasks/nfc/nfc.c ****       return osOK;
-  68              		.loc 1 117 7 is_stmt 1 view .LVU15
+ 107:app/tasks/nfc/nfc.c ****       return osOK;
+  68              		.loc 1 107 7 is_stmt 1 view .LVU15
   69              	.LVL5:
   70              	.L1:
-  71              		.loc 1 121 1 is_stmt 0 view .LVU16
+  71              		.loc 1 111 1 is_stmt 0 view .LVU16
   72 001a 10BD     		pop	{r4, pc}
   73              	.LVL6:
   74              	.L4:
- 114:app/tasks/nfc/nfc.c ****         return osError;
-  75              		.loc 1 114 16 view .LVU17
+ 104:app/tasks/nfc/nfc.c ****         return osError;
+  75              		.loc 1 104 16 view .LVU17
   76 001c 4FF0FF30 		mov	r0, #-1
   77              	.LVL7:
- 114:app/tasks/nfc/nfc.c ****         return osError;
-  78              		.loc 1 114 16 view .LVU18
+ 104:app/tasks/nfc/nfc.c ****         return osError;
+  78              		.loc 1 104 16 view .LVU18
   79 0020 FBE7     		b	.L1
   80              		.cfi_endproc
   81              	.LFE142:
@@ -231,45 +221,45 @@ ARM GAS  /tmp/ccyeCF8D.s 			page 1
   90              	handleNFCFSM:
   91              	.LVL8:
   92              	.LFB141:
-  78:app/tasks/nfc/nfc.c **** static osStatus_t handleNFCFSM(NFC_Actor_t *this, message_t *message) {
-  93              		.loc 1 78 71 is_stmt 1 view -0
+  68:app/tasks/nfc/nfc.c **** static osStatus_t handleNFCFSM(NFC_Actor_t *this, message_t *message) {
+  93              		.loc 1 68 71 is_stmt 1 view -0
   94              		.cfi_startproc
   95              		@ args = 0, pretend = 0, frame = 0
   96              		@ frame_needed = 0, uses_anonymous_args = 0
-  78:app/tasks/nfc/nfc.c **** static osStatus_t handleNFCFSM(NFC_Actor_t *this, message_t *message) {
-  97              		.loc 1 78 71 is_stmt 0 view .LVU20
-ARM GAS  /tmp/ccyeCF8D.s 			page 5
-
-
+  68:app/tasks/nfc/nfc.c **** static osStatus_t handleNFCFSM(NFC_Actor_t *this, message_t *message) {
+  97              		.loc 1 68 71 is_stmt 0 view .LVU20
   98 0000 08B5     		push	{r3, lr}
   99              	.LCFI1:
  100              		.cfi_def_cfa_offset 8
  101              		.cfi_offset 3, -8
  102              		.cfi_offset 14, -4
-  79:app/tasks/nfc/nfc.c ****   switch (this->state) {
- 103              		.loc 1 79 3 is_stmt 1 view .LVU21
-  79:app/tasks/nfc/nfc.c ****   switch (this->state) {
- 104              		.loc 1 79 15 is_stmt 0 view .LVU22
+  69:app/tasks/nfc/nfc.c ****   switch (this->state) {
+ 103              		.loc 1 69 3 is_stmt 1 view .LVU21
+  69:app/tasks/nfc/nfc.c ****   switch (this->state) {
+ 104              		.loc 1 69 15 is_stmt 0 view .LVU22
  105 0002 037C     		ldrb	r3, [r0, #16]	@ zero_extendqisi2
-  79:app/tasks/nfc/nfc.c ****   switch (this->state) {
- 106              		.loc 1 79 3 view .LVU23
+ARM GAS  /tmp/ccAHlaRc.s 			page 5
+
+
+  69:app/tasks/nfc/nfc.c ****   switch (this->state) {
+ 106              		.loc 1 69 3 view .LVU23
  107 0004 0BB1     		cbz	r3, .L13
  108              	.LVL9:
  109              	.L11:
- 105:app/tasks/nfc/nfc.c **** }
- 110              		.loc 1 105 1 view .LVU24
+  95:app/tasks/nfc/nfc.c **** }
+ 110              		.loc 1 95 1 view .LVU24
  111 0006 0020     		movs	r0, #0
  112 0008 08BD     		pop	{r3, pc}
  113              	.LVL10:
  114              	.L13:
-  81:app/tasks/nfc/nfc.c ****       handleInit(this, message);
- 115              		.loc 1 81 7 is_stmt 1 view .LVU25
+  71:app/tasks/nfc/nfc.c ****       handleInit(this, message);
+ 115              		.loc 1 71 7 is_stmt 1 view .LVU25
  116 000a FFF7FEFF 		bl	handleInit
  117              	.LVL11:
-  82:app/tasks/nfc/nfc.c ****       return osOK;
- 118              		.loc 1 82 7 view .LVU26
-  82:app/tasks/nfc/nfc.c ****       return osOK;
- 119              		.loc 1 82 14 is_stmt 0 view .LVU27
+  72:app/tasks/nfc/nfc.c ****       return osOK;
+ 118              		.loc 1 72 7 view .LVU26
+  72:app/tasks/nfc/nfc.c ****       return osOK;
+ 119              		.loc 1 72 14 is_stmt 0 view .LVU27
  120 000e FAE7     		b	.L11
  121              		.cfi_endproc
  122              	.LFE141:
@@ -298,9 +288,6 @@ ARM GAS  /tmp/ccyeCF8D.s 			page 1
  141              		.loc 1 47 31 is_stmt 1 view -0
  142              		.cfi_startproc
  143              		@ args = 0, pretend = 0, frame = 24
-ARM GAS  /tmp/ccyeCF8D.s 			page 6
-
-
  144              		@ frame_needed = 0, uses_anonymous_args = 0
  145              	.LVL12:
   47:app/tasks/nfc/nfc.c **** void NFC_Task(void *argument) {
@@ -311,6 +298,9 @@ ARM GAS  /tmp/ccyeCF8D.s 			page 1
  150              		.cfi_offset 14, -4
  151 0002 87B0     		sub	sp, sp, #28
  152              	.LCFI3:
+ARM GAS  /tmp/ccAHlaRc.s 			page 6
+
+
  153              		.cfi_def_cfa_offset 32
  154              	.LVL13:
  155              	.L15:
@@ -358,9 +348,6 @@ ARM GAS  /tmp/ccyeCF8D.s 			page 1
  185              		.loc 1 60 9 is_stmt 1 view .LVU41
   60:app/tasks/nfc/nfc.c ****         osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMess
  186              		.loc 1 60 71 is_stmt 0 view .LVU42
-ARM GAS  /tmp/ccyeCF8D.s 			page 7
-
-
  187 0024 0E4B     		ldr	r3, .L19+4
  188 0026 5B68     		ldr	r3, [r3, #4]
   60:app/tasks/nfc/nfc.c ****         osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMess
@@ -371,6 +358,9 @@ ARM GAS  /tmp/ccyeCF8D.s 			page 1
  192              		.loc 1 61 9 is_stmt 1 view .LVU44
   61:app/tasks/nfc/nfc.c ****         osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = NFC_ACTOR_ID}
  193              		.loc 1 61 55 is_stmt 0 view .LVU45
+ARM GAS  /tmp/ccAHlaRc.s 			page 7
+
+
  194 002a 0022     		movs	r2, #0
  195 002c 0392     		str	r2, [sp, #12]
  196 002e 0492     		str	r2, [sp, #16]
@@ -418,9 +408,6 @@ ARM GAS  /tmp/ccyeCF8D.s 			page 1
  232              	.LBE3:
  233              	.LBE2:
  234              		.cfi_endproc
-ARM GAS  /tmp/ccyeCF8D.s 			page 8
-
-
  235              	.LFE140:
  237              		.section	.rodata.NFC_TaskInit.str1.4,"aMS",%progbits,1
  238              		.align	2
@@ -431,6 +418,9 @@ ARM GAS  /tmp/ccyeCF8D.s 			page 1
  241              		.section	.text.NFC_TaskInit,"ax",%progbits
  242              		.align	1
  243              		.global	NFC_TaskInit
+ARM GAS  /tmp/ccAHlaRc.s 			page 8
+
+
  244              		.syntax unified
  245              		.thumb
  246              		.thumb_func
@@ -478,9 +468,6 @@ ARM GAS  /tmp/ccyeCF8D.s 			page 1
   42:app/tasks/nfc/nfc.c ****   NFC_Actor.super.osThreadId = osThreadNew(NFC_Task, NULL, &nfcTaskDescription);
  284              		.loc 1 42 3 is_stmt 1 view .LVU57
   42:app/tasks/nfc/nfc.c ****   NFC_Actor.super.osThreadId = osThreadNew(NFC_Task, NULL, &nfcTaskDescription);
-ARM GAS  /tmp/ccyeCF8D.s 			page 9
-
-
  285              		.loc 1 42 32 is_stmt 0 view .LVU58
  286 0024 064A     		ldr	r2, .L23+8
  287 0026 2146     		mov	r1, r4
@@ -491,6 +478,9 @@ ARM GAS  /tmp/ccyeCF8D.s 			page 1
  291              		.loc 1 42 30 view .LVU59
  292 002e 6860     		str	r0, [r5, #4]
   44:app/tasks/nfc/nfc.c ****   return (actor_t*) &NFC_Actor;
+ARM GAS  /tmp/ccAHlaRc.s 			page 9
+
+
  293              		.loc 1 44 3 is_stmt 1 view .LVU60
   45:app/tasks/nfc/nfc.c **** }
  294              		.loc 1 45 1 is_stmt 0 view .LVU61
@@ -538,9 +528,6 @@ ARM GAS  /tmp/ccyeCF8D.s 			page 1
  332              		.align	2
  333              		.set	.LANCHOR0,. + 0
  336              	NFC_Actor:
-ARM GAS  /tmp/ccyeCF8D.s 			page 10
-
-
  337 0000 04000000 		.word	4
  338 0004 00000000 		.word	0
  339 0008 00000000 		.word	0
@@ -551,6 +538,9 @@ ARM GAS  /tmp/ccyeCF8D.s 			page 1
  342      00000000 
  342      00000000 
  342      00000000 
+ARM GAS  /tmp/ccAHlaRc.s 			page 10
+
+
  343              		.section	.rodata.nfcTaskDescription,"a"
  344              		.align	2
  345              		.set	.LANCHOR1,. + 0
@@ -584,32 +574,32 @@ ARM GAS  /tmp/ccyeCF8D.s 			page 1
  374              		.file 17 "app/tasks/nfc/nfc.h"
  375              		.file 18 "app/tasks/nfc/nfc_handlers.h"
  376              		.file 19 "/usr/include/newlib/stdio.h"
-ARM GAS  /tmp/ccyeCF8D.s 			page 11
+ARM GAS  /tmp/ccAHlaRc.s 			page 11
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 nfc.c
-     /tmp/ccyeCF8D.s:18     .text.handleInit:0000000000000000 $t
-     /tmp/ccyeCF8D.s:25     .text.handleInit:0000000000000000 handleInit
-     /tmp/ccyeCF8D.s:84     .text.handleNFCFSM:0000000000000000 $t
-     /tmp/ccyeCF8D.s:90     .text.handleNFCFSM:0000000000000000 handleNFCFSM
-     /tmp/ccyeCF8D.s:125    .rodata.NFC_Task.str1.4:0000000000000000 $d
-     /tmp/ccyeCF8D.s:132    .text.NFC_Task:0000000000000000 $t
-     /tmp/ccyeCF8D.s:139    .text.NFC_Task:0000000000000000 NFC_Task
-     /tmp/ccyeCF8D.s:227    .text.NFC_Task:000000000000005c $d
-     /tmp/ccyeCF8D.s:238    .rodata.NFC_TaskInit.str1.4:0000000000000000 $d
-     /tmp/ccyeCF8D.s:242    .text.NFC_TaskInit:0000000000000000 $t
-     /tmp/ccyeCF8D.s:249    .text.NFC_TaskInit:0000000000000000 NFC_TaskInit
-     /tmp/ccyeCF8D.s:304    .text.NFC_TaskInit:0000000000000038 $d
-     /tmp/ccyeCF8D.s:348    .rodata.nfcTaskDescription:0000000000000000 nfcTaskDescription
-     /tmp/ccyeCF8D.s:313    .rodata.str1.4:0000000000000000 $d
-     /tmp/ccyeCF8D.s:329    .bss.nfcTaskControlBlock:0000000000000000 nfcTaskControlBlock
-     /tmp/ccyeCF8D.s:323    .bss.nfcTaskBuffer:0000000000000000 nfcTaskBuffer
-     /tmp/ccyeCF8D.s:336    .data.NFC_Actor:0000000000000000 NFC_Actor
-     /tmp/ccyeCF8D.s:320    .bss.nfcTaskBuffer:0000000000000000 $d
-     /tmp/ccyeCF8D.s:326    .bss.nfcTaskControlBlock:0000000000000000 $d
-     /tmp/ccyeCF8D.s:332    .data.NFC_Actor:0000000000000000 $d
-     /tmp/ccyeCF8D.s:344    .rodata.nfcTaskDescription:0000000000000000 $d
+     /tmp/ccAHlaRc.s:18     .text.handleInit:0000000000000000 $t
+     /tmp/ccAHlaRc.s:25     .text.handleInit:0000000000000000 handleInit
+     /tmp/ccAHlaRc.s:84     .text.handleNFCFSM:0000000000000000 $t
+     /tmp/ccAHlaRc.s:90     .text.handleNFCFSM:0000000000000000 handleNFCFSM
+     /tmp/ccAHlaRc.s:125    .rodata.NFC_Task.str1.4:0000000000000000 $d
+     /tmp/ccAHlaRc.s:132    .text.NFC_Task:0000000000000000 $t
+     /tmp/ccAHlaRc.s:139    .text.NFC_Task:0000000000000000 NFC_Task
+     /tmp/ccAHlaRc.s:227    .text.NFC_Task:000000000000005c $d
+     /tmp/ccAHlaRc.s:238    .rodata.NFC_TaskInit.str1.4:0000000000000000 $d
+     /tmp/ccAHlaRc.s:242    .text.NFC_TaskInit:0000000000000000 $t
+     /tmp/ccAHlaRc.s:249    .text.NFC_TaskInit:0000000000000000 NFC_TaskInit
+     /tmp/ccAHlaRc.s:304    .text.NFC_TaskInit:0000000000000038 $d
+     /tmp/ccAHlaRc.s:348    .rodata.nfcTaskDescription:0000000000000000 nfcTaskDescription
+     /tmp/ccAHlaRc.s:313    .rodata.str1.4:0000000000000000 $d
+     /tmp/ccAHlaRc.s:329    .bss.nfcTaskControlBlock:0000000000000000 nfcTaskControlBlock
+     /tmp/ccAHlaRc.s:323    .bss.nfcTaskBuffer:0000000000000000 nfcTaskBuffer
+     /tmp/ccAHlaRc.s:336    .data.NFC_Actor:0000000000000000 NFC_Actor
+     /tmp/ccAHlaRc.s:320    .bss.nfcTaskBuffer:0000000000000000 $d
+     /tmp/ccAHlaRc.s:326    .bss.nfcTaskControlBlock:0000000000000000 $d
+     /tmp/ccAHlaRc.s:332    .data.NFC_Actor:0000000000000000 $d
+     /tmp/ccAHlaRc.s:344    .rodata.nfcTaskDescription:0000000000000000 $d
 
 UNDEFINED SYMBOLS
 NFC_ST25DVInit
