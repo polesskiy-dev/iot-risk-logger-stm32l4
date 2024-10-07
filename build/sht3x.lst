@@ -1,4 +1,4 @@
-ARM GAS  /tmp/cchYq6ML.s 			page 1
+ARM GAS  /tmp/cc7yPuDE.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /tmp/cchYq6ML.s 			page 1
   27:app/drivers/sht3x/sht3x.c ****         0xfa, 0xcb, 0x98, 0xa9, 0x3e, 0x0f, 0x5c, 0x6d,
   28:app/drivers/sht3x/sht3x.c ****         0x86, 0xb7, 0xe4, 0xd5, 0x42, 0x73, 0x20, 0x11,
   29:app/drivers/sht3x/sht3x.c ****         0x3f, 0x0e, 0x5d, 0x6c, 0xfb, 0xca, 0x99, 0xa8,
-ARM GAS  /tmp/cchYq6ML.s 			page 2
+ARM GAS  /tmp/cc7yPuDE.s 			page 2
 
 
   30:app/drivers/sht3x/sht3x.c ****         0xc5, 0xf4, 0xa7, 0x96, 0x01, 0x30, 0x63, 0x52,
@@ -118,7 +118,7 @@ ARM GAS  /tmp/cchYq6ML.s 			page 1
   84:app/drivers/sht3x/sht3x.c ****  * @return
   85:app/drivers/sht3x/sht3x.c ****  */
   86:app/drivers/sht3x/sht3x.c **** SHT3x_RESULT SHT3x_ReadDeviceID(uint32_t *id) {
-ARM GAS  /tmp/cchYq6ML.s 			page 3
+ARM GAS  /tmp/cc7yPuDE.s 			page 3
 
 
   87:app/drivers/sht3x/sht3x.c ****     uint8_t serialNumberData[SHT3x_SERIAL_NUMBER_SIZE] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
@@ -178,7 +178,7 @@ ARM GAS  /tmp/cchYq6ML.s 			page 1
  141:app/drivers/sht3x/sht3x.c ****   bool temperatureCRCValid = SHT3x_IO.crc8(data, 2) == temperatureCRC;
  142:app/drivers/sht3x/sht3x.c ****   bool humidityCRCValid = SHT3x_IO.crc8(data + 3, 2) == humidityCRC;
  143:app/drivers/sht3x/sht3x.c **** 
-ARM GAS  /tmp/cchYq6ML.s 			page 4
+ARM GAS  /tmp/cc7yPuDE.s 			page 4
 
 
  144:app/drivers/sht3x/sht3x.c ****   if (temperatureCRCValid == false || humidityCRCValid == false) {
@@ -238,7 +238,7 @@ ARM GAS  /tmp/cchYq6ML.s 			page 1
   53              	.LBE3:
  170:app/drivers/sht3x/sht3x.c ****   uint8_t crc = 0xFF;  // Initial value
   54              		.loc 1 170 48 view .LVU9
-ARM GAS  /tmp/cchYq6ML.s 			page 5
+ARM GAS  /tmp/cc7yPuDE.s 			page 5
 
 
   55 000a 10B4     		push	{r4}
@@ -298,7 +298,7 @@ ARM GAS  /tmp/cchYq6ML.s 			page 1
  100              		.align	1
  101              		.global	SHT3x_InitIO
  102              		.syntax unified
-ARM GAS  /tmp/cchYq6ML.s 			page 6
+ARM GAS  /tmp/cc7yPuDE.s 			page 6
 
 
  103              		.thumb
@@ -358,7 +358,7 @@ ARM GAS  /tmp/cchYq6ML.s 			page 1
   68:app/drivers/sht3x/sht3x.c ****   return SHT3x_OK;
  144              		.loc 1 68 3 is_stmt 1 view .LVU36
   69:app/drivers/sht3x/sht3x.c **** }
-ARM GAS  /tmp/cchYq6ML.s 			page 7
+ARM GAS  /tmp/cc7yPuDE.s 			page 7
 
 
  145              		.loc 1 69 1 is_stmt 0 view .LVU37
@@ -418,7 +418,7 @@ ARM GAS  /tmp/cchYq6ML.s 			page 1
  196              		.cfi_offset 8, -12
  197              		.cfi_offset 9, -8
  198              		.cfi_offset 14, -4
-ARM GAS  /tmp/cchYq6ML.s 			page 8
+ARM GAS  /tmp/cc7yPuDE.s 			page 8
 
 
  199 0004 85B0     		sub	sp, sp, #20
@@ -478,7 +478,7 @@ ARM GAS  /tmp/cchYq6ML.s 			page 1
   97:app/drivers/sht3x/sht3x.c ****     result = SHT3x_IO.read(SHT3x_IO.i2cAddress, serialNumberData, SHT3x_SERIAL_NUMBER_SIZE);
  239              		.loc 1 97 5 is_stmt 1 view .LVU57
   97:app/drivers/sht3x/sht3x.c ****     result = SHT3x_IO.read(SHT3x_IO.i2cAddress, serialNumberData, SHT3x_SERIAL_NUMBER_SIZE);
-ARM GAS  /tmp/cchYq6ML.s 			page 9
+ARM GAS  /tmp/cc7yPuDE.s 			page 9
 
 
  240              		.loc 1 97 22 is_stmt 0 view .LVU58
@@ -538,7 +538,7 @@ ARM GAS  /tmp/cchYq6ML.s 			page 1
  280              	.LVL22:
  108:app/drivers/sht3x/sht3x.c ****     if (word1CRCValid == false || word2CRCValid == false) {
  281              		.loc 1 108 5 is_stmt 1 view .LVU73
-ARM GAS  /tmp/cchYq6ML.s 			page 10
+ARM GAS  /tmp/cc7yPuDE.s 			page 10
 
 
  108:app/drivers/sht3x/sht3x.c ****     if (word1CRCValid == false || word2CRCValid == false) {
@@ -598,7 +598,7 @@ ARM GAS  /tmp/cchYq6ML.s 			page 1
  109:app/drivers/sht3x/sht3x.c ****       return SHT3x_CRC_ERROR;
  322              		.loc 1 109 14 view .LVU88
  323 008e 6FF00305 		mvn	r5, #3
-ARM GAS  /tmp/cchYq6ML.s 			page 11
+ARM GAS  /tmp/cc7yPuDE.s 			page 11
 
 
  324              	.LVL25:
@@ -658,7 +658,7 @@ ARM GAS  /tmp/cchYq6ML.s 			page 1
  120:app/drivers/sht3x/sht3x.c ****   return SHT3x_IO.write(SHT3x_IO.i2cAddress, cmd, SHT3x_CMD_SIZE);
  372              		.loc 1 120 18 is_stmt 0 view .LVU97
  373 000e 044B     		ldr	r3, .L27
-ARM GAS  /tmp/cchYq6ML.s 			page 12
+ARM GAS  /tmp/cc7yPuDE.s 			page 12
 
 
  374 0010 5C68     		ldr	r4, [r3, #4]
@@ -718,7 +718,7 @@ ARM GAS  /tmp/cchYq6ML.s 			page 1
  425              		.cfi_def_cfa_offset 48
  426 0006 0546     		mov	r5, r0
  427 0008 0E46     		mov	r6, r1
-ARM GAS  /tmp/cchYq6ML.s 			page 13
+ARM GAS  /tmp/cc7yPuDE.s 			page 13
 
 
  124:app/drivers/sht3x/sht3x.c ****   uint8_t data[6] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
@@ -778,7 +778,7 @@ ARM GAS  /tmp/cchYq6ML.s 			page 1
  135:app/drivers/sht3x/sht3x.c ****   if (result != SHT3x_OK)
  467              		.loc 1 135 6 is_stmt 0 view .LVU118
  468 0038 0446     		mov	r4, r0
-ARM GAS  /tmp/cchYq6ML.s 			page 14
+ARM GAS  /tmp/cc7yPuDE.s 			page 14
 
 
  469 003a 18BB     		cbnz	r0, .L29
@@ -838,7 +838,7 @@ ARM GAS  /tmp/cchYq6ML.s 			page 1
  507              		.loc 1 148 25 is_stmt 0 view .LVU134
  508 0068 9DF80820 		ldrb	r2, [sp, #8]	@ zero_extendqisi2
  148:app/drivers/sht3x/sht3x.c ****   *rawTemperature = data[0] << 8 | data[1];
-ARM GAS  /tmp/cchYq6ML.s 			page 15
+ARM GAS  /tmp/cc7yPuDE.s 			page 15
 
 
  509              		.loc 1 148 40 view .LVU135
@@ -898,7 +898,7 @@ ARM GAS  /tmp/cchYq6ML.s 			page 1
  550 0096 F5E7     		b	.L29
  551              	.L35:
  552              		.align	2
-ARM GAS  /tmp/cchYq6ML.s 			page 16
+ARM GAS  /tmp/cc7yPuDE.s 			page 16
 
 
  553              	.L34:
@@ -958,7 +958,7 @@ ARM GAS  /tmp/cchYq6ML.s 			page 1
  602              		.align	1
  603              		.global	SHT3x_RawToHumidityRH
  604              		.syntax unified
-ARM GAS  /tmp/cchYq6ML.s 			page 17
+ARM GAS  /tmp/cc7yPuDE.s 			page 17
 
 
  605              		.thumb
@@ -1018,7 +1018,7 @@ ARM GAS  /tmp/cchYq6ML.s 			page 1
  652      00000000 
  652      00000000 
  653              		.section	.rodata.crc8LookupTable,"a"
-ARM GAS  /tmp/cchYq6ML.s 			page 18
+ARM GAS  /tmp/cc7yPuDE.s 			page 18
 
 
  654              		.align	2
@@ -1078,7 +1078,7 @@ ARM GAS  /tmp/cchYq6ML.s 			page 1
  669      C2F3A091 
  669      47762514 
  669      83B2E1D0 
-ARM GAS  /tmp/cchYq6ML.s 			page 19
+ARM GAS  /tmp/cc7yPuDE.s 			page 19
 
 
  670 00c8 FECF9CAD 		.ascii	"\376\317\234\255:\013Xi\0045fW\300\361\242\223\275\214"
@@ -1101,36 +1101,36 @@ ARM GAS  /tmp/cchYq6ML.s 			page 1
  675              		.file 2 "/usr/include/newlib/machine/_default_types.h"
  676              		.file 3 "/usr/include/newlib/sys/_stdint.h"
  677              		.file 4 "app/drivers/sht3x/sht3x.h"
-ARM GAS  /tmp/cchYq6ML.s 			page 20
+ARM GAS  /tmp/cc7yPuDE.s 			page 20
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 sht3x.c
-     /tmp/cchYq6ML.s:18     .text.SHT3x_CRC8:0000000000000000 $t
-     /tmp/cchYq6ML.s:26     .text.SHT3x_CRC8:0000000000000000 SHT3x_CRC8
-     /tmp/cchYq6ML.s:95     .text.SHT3x_CRC8:0000000000000028 $d
-     /tmp/cchYq6ML.s:100    .text.SHT3x_InitIO:0000000000000000 $t
-     /tmp/cchYq6ML.s:107    .text.SHT3x_InitIO:0000000000000000 SHT3x_InitIO
-     /tmp/cchYq6ML.s:168    .text.SHT3x_InitIO:0000000000000020 $d
-     /tmp/cchYq6ML.s:174    .text.SHT3x_ReadDeviceID:0000000000000000 $t
-     /tmp/cchYq6ML.s:181    .text.SHT3x_ReadDeviceID:0000000000000000 SHT3x_ReadDeviceID
-     /tmp/cchYq6ML.s:337    .text.SHT3x_ReadDeviceID:000000000000009c $d
-     /tmp/cchYq6ML.s:343    .text.SHT3x_PeriodicAcquisitionMode:0000000000000000 $t
-     /tmp/cchYq6ML.s:350    .text.SHT3x_PeriodicAcquisitionMode:0000000000000000 SHT3x_PeriodicAcquisitionMode
-     /tmp/cchYq6ML.s:392    .text.SHT3x_PeriodicAcquisitionMode:0000000000000020 $d
-     /tmp/cchYq6ML.s:397    .text.SHT3x_ReadMeasurements:0000000000000000 $t
-     /tmp/cchYq6ML.s:404    .text.SHT3x_ReadMeasurements:0000000000000000 SHT3x_ReadMeasurements
-     /tmp/cchYq6ML.s:554    .text.SHT3x_ReadMeasurements:0000000000000098 $d
-     /tmp/cchYq6ML.s:560    .text.SHT3x_RawToTemperatureC:0000000000000000 $t
-     /tmp/cchYq6ML.s:567    .text.SHT3x_RawToTemperatureC:0000000000000000 SHT3x_RawToTemperatureC
-     /tmp/cchYq6ML.s:597    .text.SHT3x_RawToTemperatureC:0000000000000024 $d
-     /tmp/cchYq6ML.s:602    .text.SHT3x_RawToHumidityRH:0000000000000000 $t
-     /tmp/cchYq6ML.s:609    .text.SHT3x_RawToHumidityRH:0000000000000000 SHT3x_RawToHumidityRH
-     /tmp/cchYq6ML.s:636    .text.SHT3x_RawToHumidityRH:000000000000001c $d
-     /tmp/cchYq6ML.s:651    .bss.SHT3x_IO:0000000000000000 SHT3x_IO
-     /tmp/cchYq6ML.s:642    .rodata:0000000000000000 $d
-     /tmp/cchYq6ML.s:647    .bss.SHT3x_IO:0000000000000000 $d
-     /tmp/cchYq6ML.s:654    .rodata.crc8LookupTable:0000000000000000 $d
-     /tmp/cchYq6ML.s:658    .rodata.crc8LookupTable:0000000000000000 crc8LookupTable
+     /tmp/cc7yPuDE.s:18     .text.SHT3x_CRC8:0000000000000000 $t
+     /tmp/cc7yPuDE.s:26     .text.SHT3x_CRC8:0000000000000000 SHT3x_CRC8
+     /tmp/cc7yPuDE.s:95     .text.SHT3x_CRC8:0000000000000028 $d
+     /tmp/cc7yPuDE.s:100    .text.SHT3x_InitIO:0000000000000000 $t
+     /tmp/cc7yPuDE.s:107    .text.SHT3x_InitIO:0000000000000000 SHT3x_InitIO
+     /tmp/cc7yPuDE.s:168    .text.SHT3x_InitIO:0000000000000020 $d
+     /tmp/cc7yPuDE.s:174    .text.SHT3x_ReadDeviceID:0000000000000000 $t
+     /tmp/cc7yPuDE.s:181    .text.SHT3x_ReadDeviceID:0000000000000000 SHT3x_ReadDeviceID
+     /tmp/cc7yPuDE.s:337    .text.SHT3x_ReadDeviceID:000000000000009c $d
+     /tmp/cc7yPuDE.s:343    .text.SHT3x_PeriodicAcquisitionMode:0000000000000000 $t
+     /tmp/cc7yPuDE.s:350    .text.SHT3x_PeriodicAcquisitionMode:0000000000000000 SHT3x_PeriodicAcquisitionMode
+     /tmp/cc7yPuDE.s:392    .text.SHT3x_PeriodicAcquisitionMode:0000000000000020 $d
+     /tmp/cc7yPuDE.s:397    .text.SHT3x_ReadMeasurements:0000000000000000 $t
+     /tmp/cc7yPuDE.s:404    .text.SHT3x_ReadMeasurements:0000000000000000 SHT3x_ReadMeasurements
+     /tmp/cc7yPuDE.s:554    .text.SHT3x_ReadMeasurements:0000000000000098 $d
+     /tmp/cc7yPuDE.s:560    .text.SHT3x_RawToTemperatureC:0000000000000000 $t
+     /tmp/cc7yPuDE.s:567    .text.SHT3x_RawToTemperatureC:0000000000000000 SHT3x_RawToTemperatureC
+     /tmp/cc7yPuDE.s:597    .text.SHT3x_RawToTemperatureC:0000000000000024 $d
+     /tmp/cc7yPuDE.s:602    .text.SHT3x_RawToHumidityRH:0000000000000000 $t
+     /tmp/cc7yPuDE.s:609    .text.SHT3x_RawToHumidityRH:0000000000000000 SHT3x_RawToHumidityRH
+     /tmp/cc7yPuDE.s:636    .text.SHT3x_RawToHumidityRH:000000000000001c $d
+     /tmp/cc7yPuDE.s:651    .bss.SHT3x_IO:0000000000000000 SHT3x_IO
+     /tmp/cc7yPuDE.s:642    .rodata:0000000000000000 $d
+     /tmp/cc7yPuDE.s:647    .bss.SHT3x_IO:0000000000000000 $d
+     /tmp/cc7yPuDE.s:654    .rodata.crc8LookupTable:0000000000000000 $d
+     /tmp/cc7yPuDE.s:658    .rodata.crc8LookupTable:0000000000000000 crc8LookupTable
 
 NO UNDEFINED SYMBOLS

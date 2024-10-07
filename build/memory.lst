@@ -1,4 +1,4 @@
-ARM GAS  /tmp/cc7P7gW3.s 			page 1
+ARM GAS  /tmp/ccHuRUw4.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
    8:app/tasks/memory/memory.c ****  * @author artempolisskyi
    9:app/tasks/memory/memory.c ****  */
   10:app/tasks/memory/memory.c **** 
-ARM GAS  /tmp/cc7P7gW3.s 			page 2
+ARM GAS  /tmp/ccHuRUw4.s 			page 2
 
 
   11:app/tasks/memory/memory.c **** #include "memory.h"
@@ -118,7 +118,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
   65:app/tasks/memory/memory.c ****         },
   66:app/tasks/memory/memory.c ****         .status.status1Reg      = 0x00,
   67:app/tasks/memory/memory.c ****         .busyWaitCycles         = FLASH_BUSY_WAIT_CYCLES
-ARM GAS  /tmp/cc7P7gW3.s 			page 3
+ARM GAS  /tmp/ccHuRUw4.s 			page 3
 
 
   68:app/tasks/memory/memory.c **** };
@@ -178,7 +178,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
  122:app/tasks/memory/memory.c **** 
  123:app/tasks/memory/memory.c **** uint32_t MEMORY_SeekFreeSpaceAddress(void) {
  124:app/tasks/memory/memory.c ****   uint8_t readBuff[MEMORY_LOG_ENTRY_SIZE] = {0};
-ARM GAS  /tmp/cc7P7gW3.s 			page 4
+ARM GAS  /tmp/ccHuRUw4.s 			page 4
 
 
  125:app/tasks/memory/memory.c ****   uint8_t emptyLogEntryTemplate[MEMORY_LOG_ENTRY_SIZE] = {0xFF};
@@ -238,7 +238,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
  179:app/tasks/memory/memory.c ****     #endif
  180:app/tasks/memory/memory.c ****     return status;
  181:app/tasks/memory/memory.c ****   }
-ARM GAS  /tmp/cc7P7gW3.s 			page 5
+ARM GAS  /tmp/ccHuRUw4.s 			page 5
 
 
  182:app/tasks/memory/memory.c **** 
@@ -298,7 +298,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
  236:app/tasks/memory/memory.c ****     case GLOBAL_TEMPERATURE_HUMIDITY_MEASUREMENTS_READY:
  237:app/tasks/memory/memory.c ****       // set appropriate event flag
  238:app/tasks/memory/memory.c ****       osEventFlagsSet(measurementsReadyEventFlags, TEMPERATURE_HUMIDITY_MEASUREMENTS_READY_EVENT_FL
-ARM GAS  /tmp/cc7P7gW3.s 			page 6
+ARM GAS  /tmp/ccHuRUw4.s 			page 6
 
 
  239:app/tasks/memory/memory.c **** 
@@ -358,7 +358,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
   54              		.loc 1 277 3 view .LVU3
   55              		.loc 1 277 18 is_stmt 0 view .LVU4
   56 0004 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
-ARM GAS  /tmp/cc7P7gW3.s 			page 7
+ARM GAS  /tmp/ccHuRUw4.s 			page 7
 
 
   57              		.loc 1 277 3 view .LVU5
@@ -418,7 +418,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
   96              		.loc 1 279 16 view .LVU19
   97 002a 0546     		mov	r5, r0
   98              	.LVL9:
-ARM GAS  /tmp/cc7P7gW3.s 			page 8
+ARM GAS  /tmp/ccHuRUw4.s 			page 8
 
 
  281:app/tasks/memory/memory.c ****       return ioStatus;
@@ -478,7 +478,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
  142              		@ args = 0, pretend = 0, frame = 16
  143              		@ frame_needed = 0, uses_anonymous_args = 0
  144              		.loc 1 293 73 is_stmt 0 view .LVU29
-ARM GAS  /tmp/cc7P7gW3.s 			page 9
+ARM GAS  /tmp/ccHuRUw4.s 			page 9
 
 
  145 0000 10B5     		push	{r4, lr}
@@ -538,7 +538,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
  191 002a 8DF80430 		strb	r3, [sp, #4]
  296:app/tasks/memory/memory.c ****   }
  192              		.loc 1 296 5 view .LVU38
-ARM GAS  /tmp/cc7P7gW3.s 			page 10
+ARM GAS  /tmp/ccHuRUw4.s 			page 10
 
 
  193 002e 1346     		mov	r3, r2
@@ -598,7 +598,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
  235              		.cfi_offset 14, -4
  236 0002 88B0     		sub	sp, sp, #32
  237              	.LCFI6:
-ARM GAS  /tmp/cc7P7gW3.s 			page 11
+ARM GAS  /tmp/ccHuRUw4.s 			page 11
 
 
  238              		.cfi_def_cfa_offset 48
@@ -658,7 +658,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
  274 0026 0024     		movs	r4, #0
  275              	.LVL25:
  311:app/tasks/memory/memory.c ****           .timestamp = timestamp,
-ARM GAS  /tmp/cc7P7gW3.s 			page 12
+ARM GAS  /tmp/ccHuRUw4.s 			page 12
 
 
  276              		.loc 1 311 36 view .LVU58
@@ -718,7 +718,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
  308              		.loc 1 337 1 view .LVU67
  309 004e 00BF     		.align	2
  310              	.L16:
-ARM GAS  /tmp/cc7P7gW3.s 			page 13
+ARM GAS  /tmp/ccHuRUw4.s 			page 13
 
 
  311 0050 00000000 		.word	ACTORS_LIST_SystemRegistry
@@ -778,7 +778,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
  269:app/tasks/memory/memory.c ****       return osOK;
  359              		.loc 1 269 7 view .LVU76
  360 0018 284B     		ldr	r3, .L25
-ARM GAS  /tmp/cc7P7gW3.s 			page 14
+ARM GAS  /tmp/ccHuRUw4.s 			page 14
 
 
  361 001a 1868     		ldr	r0, [r3]
@@ -838,7 +838,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
  402 0046 2268     		ldr	r2, [r4]
  403 0048 1E49     		ldr	r1, .L25+8
  404 004a 8068     		ldr	r0, [r0, #8]
-ARM GAS  /tmp/cc7P7gW3.s 			page 15
+ARM GAS  /tmp/ccHuRUw4.s 			page 15
 
 
  405 004c FFF7FEFF 		bl	fprintf
@@ -898,7 +898,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
  253:app/tasks/memory/memory.c ****       return osOK;
  447              		.loc 1 253 7 view .LVU102
  448 006c 134B     		ldr	r3, .L25
-ARM GAS  /tmp/cc7P7gW3.s 			page 16
+ARM GAS  /tmp/ccHuRUw4.s 			page 16
 
 
  449 006e 1868     		ldr	r0, [r3]
@@ -958,7 +958,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
  491 00a2 FFF7FEFF 		bl	osMessageQueuePut
  492              	.LVL53:
  265:app/tasks/memory/memory.c ****       return ioStatus;
-ARM GAS  /tmp/cc7P7gW3.s 			page 17
+ARM GAS  /tmp/ccHuRUw4.s 			page 17
 
 
  493              		.loc 1 265 7 is_stmt 1 view .LVU115
@@ -1018,7 +1018,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
  538              		.loc 1 90 34 is_stmt 1 view -0
  539              		.cfi_startproc
  540              		@ args = 0, pretend = 0, frame = 24
-ARM GAS  /tmp/cc7P7gW3.s 			page 18
+ARM GAS  /tmp/ccHuRUw4.s 			page 18
 
 
  541              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -1078,7 +1078,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
  582              		.loc 1 100 9 is_stmt 1 view .LVU135
  100:app/tasks/memory/memory.c ****         osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = MEMORY_ACTOR_
  583              		.loc 1 100 71 is_stmt 0 view .LVU136
-ARM GAS  /tmp/cc7P7gW3.s 			page 19
+ARM GAS  /tmp/ccHuRUw4.s 			page 19
 
 
  584 0024 0E4B     		ldr	r3, .L32+4
@@ -1138,7 +1138,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
  629              	.LBE6:
  630              	.LBE5:
  631              		.cfi_endproc
-ARM GAS  /tmp/cc7P7gW3.s 			page 20
+ARM GAS  /tmp/ccHuRUw4.s 			page 20
 
 
  632              	.LFE141:
@@ -1198,7 +1198,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
   78:app/tasks/memory/memory.c **** 
  681              		.loc 1 78 3 is_stmt 1 view .LVU151
   78:app/tasks/memory/memory.c **** 
-ARM GAS  /tmp/cc7P7gW3.s 			page 21
+ARM GAS  /tmp/ccHuRUw4.s 			page 21
 
 
  682              		.loc 1 78 35 is_stmt 0 view .LVU152
@@ -1258,7 +1258,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
  731 0000 30B5     		push	{r4, r5, lr}
  732              	.LCFI17:
  733              		.cfi_def_cfa_offset 12
-ARM GAS  /tmp/cc7P7gW3.s 			page 22
+ARM GAS  /tmp/ccHuRUw4.s 			page 22
 
 
  734              		.cfi_offset 4, -12
@@ -1318,7 +1318,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
  773 0024 41F20124 		movw	r4, #4609
  774 0028 04EB0514 		add	r4, r4, r5, lsl #4
  775              	.LVL67:
-ARM GAS  /tmp/cc7P7gW3.s 			page 23
+ARM GAS  /tmp/ccHuRUw4.s 			page 23
 
 
  143:app/tasks/memory/memory.c **** 
@@ -1378,7 +1378,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
  818              		.cfi_endproc
  819              	.LFE143:
  821              		.section	.rodata.handleInit.str1.4,"aMS",%progbits,1
-ARM GAS  /tmp/cc7P7gW3.s 			page 24
+ARM GAS  /tmp/ccHuRUw4.s 			page 24
 
 
  822              		.align	2
@@ -1438,7 +1438,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
  859              		.cfi_def_cfa_offset 20
  860              		.cfi_offset 4, -20
  861              		.cfi_offset 5, -16
-ARM GAS  /tmp/cc7P7gW3.s 			page 25
+ARM GAS  /tmp/ccHuRUw4.s 			page 25
 
 
  862              		.cfi_offset 6, -12
@@ -1498,7 +1498,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
  904 0024 6946     		mov	r1, sp
  905 0026 2348     		ldr	r0, .L58
  906              	.LVL81:
-ARM GAS  /tmp/cc7P7gW3.s 			page 26
+ARM GAS  /tmp/ccHuRUw4.s 			page 26
 
 
  199:app/tasks/memory/memory.c ****     if (ioStatus != osOK) return osError;
@@ -1558,7 +1558,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
  946              		.loc 1 215 16 view .LVU219
  947 0054 FFF7FEFF 		bl	W25Q_Sleep
  948              	.LVL90:
-ARM GAS  /tmp/cc7P7gW3.s 			page 27
+ARM GAS  /tmp/ccHuRUw4.s 			page 27
 
 
  216:app/tasks/memory/memory.c **** 
@@ -1618,7 +1618,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
  990 008c FFF7FEFF 		bl	fprintf
  991              	.LVL95:
  224:app/tasks/memory/memory.c ****     #endif
-ARM GAS  /tmp/cc7P7gW3.s 			page 28
+ARM GAS  /tmp/ccHuRUw4.s 			page 28
 
 
  992              		.loc 1 224 9 is_stmt 1 view .LVU233
@@ -1678,7 +1678,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
  1038              		.syntax unified
  1039              		.thumb
  1040              		.thumb_func
-ARM GAS  /tmp/cc7P7gW3.s 			page 29
+ARM GAS  /tmp/ccHuRUw4.s 			page 29
 
 
  1041              		.fpu fpv4-sp-d16
@@ -1738,7 +1738,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
  1084              		.loc 1 113 14 view .LVU254
  1085 001c F8E7     		b	.L60
  1086              	.LVL104:
-ARM GAS  /tmp/cc7P7gW3.s 			page 30
+ARM GAS  /tmp/ccHuRUw4.s 			page 30
 
 
  1087              	.L62:
@@ -1798,7 +1798,7 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
  1137 0011 000000   		.space	3
  1138 0014 01120000 		.word	4609
  1139              		.section	.data.MEMORY_W25QHandle,"aw"
-ARM GAS  /tmp/cc7P7gW3.s 			page 31
+ARM GAS  /tmp/ccHuRUw4.s 			page 31
 
 
  1140              		.align	2
@@ -1857,55 +1857,55 @@ ARM GAS  /tmp/cc7P7gW3.s 			page 1
  1195              		.file 25 "/usr/include/newlib/stdio.h"
  1196              		.file 26 "/usr/include/newlib/string.h"
  1197              		.file 27 "<built-in>"
-ARM GAS  /tmp/cc7P7gW3.s 			page 32
+ARM GAS  /tmp/ccHuRUw4.s 			page 32
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 memory.c
-     /tmp/cc7P7gW3.s:18     .rodata.handleWrite.str1.4:0000000000000000 $d
-     /tmp/cc7P7gW3.s:28     .text.handleWrite:0000000000000000 $t
-     /tmp/cc7P7gW3.s:35     .text.handleWrite:0000000000000000 handleWrite
-     /tmp/cc7P7gW3.s:122    .text.handleWrite:0000000000000044 $d
-     /tmp/cc7P7gW3.s:131    .text.publishMemoryWriteOnMeasurementsReady:0000000000000000 $t
-     /tmp/cc7P7gW3.s:137    .text.publishMemoryWriteOnMeasurementsReady:0000000000000000 publishMemoryWriteOnMeasurementsReady
-     /tmp/cc7P7gW3.s:204    .text.publishMemoryWriteOnMeasurementsReady:000000000000003c $d
-     /tmp/cc7P7gW3.s:209    .rodata.appendMeasurementsToNORFlashLogTail.str1.4:0000000000000000 $d
-     /tmp/cc7P7gW3.s:215    .text.appendMeasurementsToNORFlashLogTail:0000000000000000 $t
-     /tmp/cc7P7gW3.s:221    .text.appendMeasurementsToNORFlashLogTail:0000000000000000 appendMeasurementsToNORFlashLogTail
-     /tmp/cc7P7gW3.s:311    .text.appendMeasurementsToNORFlashLogTail:0000000000000050 $d
-     /tmp/cc7P7gW3.s:318    .text.handleSleep:0000000000000000 $t
-     /tmp/cc7P7gW3.s:324    .text.handleSleep:0000000000000000 handleSleep
-     /tmp/cc7P7gW3.s:514    .text.handleSleep:00000000000000bc $d
-     /tmp/cc7P7gW3.s:525    .rodata.MEMORY_Task.str1.4:0000000000000000 $d
-     /tmp/cc7P7gW3.s:529    .text.MEMORY_Task:0000000000000000 $t
-     /tmp/cc7P7gW3.s:536    .text.MEMORY_Task:0000000000000000 MEMORY_Task
-     /tmp/cc7P7gW3.s:624    .text.MEMORY_Task:000000000000005c $d
-     /tmp/cc7P7gW3.s:635    .rodata.MEMORY_TaskInit.str1.4:0000000000000000 $d
-     /tmp/cc7P7gW3.s:639    .text.MEMORY_TaskInit:0000000000000000 $t
-     /tmp/cc7P7gW3.s:646    .text.MEMORY_TaskInit:0000000000000000 MEMORY_TaskInit
-     /tmp/cc7P7gW3.s:709    .text.MEMORY_TaskInit:0000000000000040 $d
-     /tmp/cc7P7gW3.s:718    .text.MEMORY_SeekFreeSpaceAddress:0000000000000000 $t
-     /tmp/cc7P7gW3.s:725    .text.MEMORY_SeekFreeSpaceAddress:0000000000000000 MEMORY_SeekFreeSpaceAddress
-     /tmp/cc7P7gW3.s:817    .text.MEMORY_SeekFreeSpaceAddress:0000000000000058 $d
-     /tmp/cc7P7gW3.s:822    .rodata.handleInit.str1.4:0000000000000000 $d
-     /tmp/cc7P7gW3.s:832    .text.handleInit:0000000000000000 $t
-     /tmp/cc7P7gW3.s:838    .text.handleInit:0000000000000000 handleInit
-     /tmp/cc7P7gW3.s:1023   .text.handleInit:00000000000000b4 $d
-     /tmp/cc7P7gW3.s:1037   .text.handleMemoryFSM:0000000000000000 $t
-     /tmp/cc7P7gW3.s:1043   .text.handleMemoryFSM:0000000000000000 handleMemoryFSM
-     /tmp/cc7P7gW3.s:1144   .data.MEMORY_W25QHandle:0000000000000000 MEMORY_W25QHandle
-     /tmp/cc7P7gW3.s:1161   .rodata.memoryTaskDescription:0000000000000000 memoryTaskDescription
-     /tmp/cc7P7gW3.s:1100   .rodata.str1.4:0000000000000000 $d
-     /tmp/cc7P7gW3.s:1124   .bss.memoryTaskControlBlock:0000000000000000 memoryTaskControlBlock
-     /tmp/cc7P7gW3.s:1118   .bss.memoryTaskBuffer:0000000000000000 memoryTaskBuffer
-     /tmp/cc7P7gW3.s:1131   .data.MEMORY_Actor:0000000000000000 MEMORY_Actor
-     /tmp/cc7P7gW3.s:1112   .bss.measurementsReadyEventFlags:0000000000000000 measurementsReadyEventFlags
-     /tmp/cc7P7gW3.s:1108   .bss.measurementsReadyEventFlags:0000000000000000 $d
-     /tmp/cc7P7gW3.s:1115   .bss.memoryTaskBuffer:0000000000000000 $d
-     /tmp/cc7P7gW3.s:1121   .bss.memoryTaskControlBlock:0000000000000000 $d
-     /tmp/cc7P7gW3.s:1127   .data.MEMORY_Actor:0000000000000000 $d
-     /tmp/cc7P7gW3.s:1140   .data.MEMORY_W25QHandle:0000000000000000 $d
-     /tmp/cc7P7gW3.s:1157   .rodata.memoryTaskDescription:0000000000000000 $d
+     /tmp/ccHuRUw4.s:18     .rodata.handleWrite.str1.4:0000000000000000 $d
+     /tmp/ccHuRUw4.s:28     .text.handleWrite:0000000000000000 $t
+     /tmp/ccHuRUw4.s:35     .text.handleWrite:0000000000000000 handleWrite
+     /tmp/ccHuRUw4.s:122    .text.handleWrite:0000000000000044 $d
+     /tmp/ccHuRUw4.s:131    .text.publishMemoryWriteOnMeasurementsReady:0000000000000000 $t
+     /tmp/ccHuRUw4.s:137    .text.publishMemoryWriteOnMeasurementsReady:0000000000000000 publishMemoryWriteOnMeasurementsReady
+     /tmp/ccHuRUw4.s:204    .text.publishMemoryWriteOnMeasurementsReady:000000000000003c $d
+     /tmp/ccHuRUw4.s:209    .rodata.appendMeasurementsToNORFlashLogTail.str1.4:0000000000000000 $d
+     /tmp/ccHuRUw4.s:215    .text.appendMeasurementsToNORFlashLogTail:0000000000000000 $t
+     /tmp/ccHuRUw4.s:221    .text.appendMeasurementsToNORFlashLogTail:0000000000000000 appendMeasurementsToNORFlashLogTail
+     /tmp/ccHuRUw4.s:311    .text.appendMeasurementsToNORFlashLogTail:0000000000000050 $d
+     /tmp/ccHuRUw4.s:318    .text.handleSleep:0000000000000000 $t
+     /tmp/ccHuRUw4.s:324    .text.handleSleep:0000000000000000 handleSleep
+     /tmp/ccHuRUw4.s:514    .text.handleSleep:00000000000000bc $d
+     /tmp/ccHuRUw4.s:525    .rodata.MEMORY_Task.str1.4:0000000000000000 $d
+     /tmp/ccHuRUw4.s:529    .text.MEMORY_Task:0000000000000000 $t
+     /tmp/ccHuRUw4.s:536    .text.MEMORY_Task:0000000000000000 MEMORY_Task
+     /tmp/ccHuRUw4.s:624    .text.MEMORY_Task:000000000000005c $d
+     /tmp/ccHuRUw4.s:635    .rodata.MEMORY_TaskInit.str1.4:0000000000000000 $d
+     /tmp/ccHuRUw4.s:639    .text.MEMORY_TaskInit:0000000000000000 $t
+     /tmp/ccHuRUw4.s:646    .text.MEMORY_TaskInit:0000000000000000 MEMORY_TaskInit
+     /tmp/ccHuRUw4.s:709    .text.MEMORY_TaskInit:0000000000000040 $d
+     /tmp/ccHuRUw4.s:718    .text.MEMORY_SeekFreeSpaceAddress:0000000000000000 $t
+     /tmp/ccHuRUw4.s:725    .text.MEMORY_SeekFreeSpaceAddress:0000000000000000 MEMORY_SeekFreeSpaceAddress
+     /tmp/ccHuRUw4.s:817    .text.MEMORY_SeekFreeSpaceAddress:0000000000000058 $d
+     /tmp/ccHuRUw4.s:822    .rodata.handleInit.str1.4:0000000000000000 $d
+     /tmp/ccHuRUw4.s:832    .text.handleInit:0000000000000000 $t
+     /tmp/ccHuRUw4.s:838    .text.handleInit:0000000000000000 handleInit
+     /tmp/ccHuRUw4.s:1023   .text.handleInit:00000000000000b4 $d
+     /tmp/ccHuRUw4.s:1037   .text.handleMemoryFSM:0000000000000000 $t
+     /tmp/ccHuRUw4.s:1043   .text.handleMemoryFSM:0000000000000000 handleMemoryFSM
+     /tmp/ccHuRUw4.s:1144   .data.MEMORY_W25QHandle:0000000000000000 MEMORY_W25QHandle
+     /tmp/ccHuRUw4.s:1161   .rodata.memoryTaskDescription:0000000000000000 memoryTaskDescription
+     /tmp/ccHuRUw4.s:1100   .rodata.str1.4:0000000000000000 $d
+     /tmp/ccHuRUw4.s:1124   .bss.memoryTaskControlBlock:0000000000000000 memoryTaskControlBlock
+     /tmp/ccHuRUw4.s:1118   .bss.memoryTaskBuffer:0000000000000000 memoryTaskBuffer
+     /tmp/ccHuRUw4.s:1131   .data.MEMORY_Actor:0000000000000000 MEMORY_Actor
+     /tmp/ccHuRUw4.s:1112   .bss.measurementsReadyEventFlags:0000000000000000 measurementsReadyEventFlags
+     /tmp/ccHuRUw4.s:1108   .bss.measurementsReadyEventFlags:0000000000000000 $d
+     /tmp/ccHuRUw4.s:1115   .bss.memoryTaskBuffer:0000000000000000 $d
+     /tmp/ccHuRUw4.s:1121   .bss.memoryTaskControlBlock:0000000000000000 $d
+     /tmp/ccHuRUw4.s:1127   .data.MEMORY_Actor:0000000000000000 $d
+     /tmp/ccHuRUw4.s:1140   .data.MEMORY_W25QHandle:0000000000000000 $d
+     /tmp/ccHuRUw4.s:1157   .rodata.memoryTaskDescription:0000000000000000 $d
 
 UNDEFINED SYMBOLS
 fprintf
@@ -1917,7 +1917,7 @@ osMessageQueuePut
 CRON_GetCurrentUnixTimestamp
 ACTORS_LIST_SystemRegistry
 osEventFlagsSet
-ARM GAS  /tmp/cc7P7gW3.s 			page 33
+ARM GAS  /tmp/ccHuRUw4.s 			page 33
 
 
 W25Q_WakeUp

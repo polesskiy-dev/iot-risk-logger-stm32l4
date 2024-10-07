@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccAHlaRc.s 			page 1
+ARM GAS  /tmp/ccs42LD4.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccAHlaRc.s 			page 1
   28:app/tasks/nfc/nfc.c **** StaticTask_t nfcTaskControlBlock;
   29:app/tasks/nfc/nfc.c **** const osThreadAttr_t nfcTaskDescription = {
   30:app/tasks/nfc/nfc.c ****         .name = "nfcTask",
-ARM GAS  /tmp/ccAHlaRc.s 			page 2
+ARM GAS  /tmp/ccs42LD4.s 			page 2
 
 
   31:app/tasks/nfc/nfc.c ****         .cb_mem = &nfcTaskControlBlock,
@@ -118,7 +118,7 @@ ARM GAS  /tmp/ccAHlaRc.s 			page 1
   85:app/tasks/nfc/nfc.c **** //      fprintf(stdout, "Mailbox has new message\n");
   86:app/tasks/nfc/nfc.c **** //      NFC_ReadMailboxTo(&st25dv, mailboxBuffer);
   87:app/tasks/nfc/nfc.c **** //      // Print for debug purposes
-ARM GAS  /tmp/ccAHlaRc.s 			page 3
+ARM GAS  /tmp/ccs42LD4.s 			page 3
 
 
   88:app/tasks/nfc/nfc.c **** //      for (int i = 0; i < ST25DV_MAX_MAILBOX_LENGTH; i++) {
@@ -178,7 +178,7 @@ ARM GAS  /tmp/ccAHlaRc.s 			page 1
   56 000e 1430     		adds	r0, r0, #20
   57              	.LVL3:
  102:app/tasks/nfc/nfc.c ****       status = NFC_ST25DVInit(&this->st25dv);
-ARM GAS  /tmp/ccAHlaRc.s 			page 4
+ARM GAS  /tmp/ccs42LD4.s 			page 4
 
 
   58              		.loc 1 102 16 view .LVU10
@@ -238,7 +238,7 @@ ARM GAS  /tmp/ccAHlaRc.s 			page 1
   69:app/tasks/nfc/nfc.c ****   switch (this->state) {
  104              		.loc 1 69 15 is_stmt 0 view .LVU22
  105 0002 037C     		ldrb	r3, [r0, #16]	@ zero_extendqisi2
-ARM GAS  /tmp/ccAHlaRc.s 			page 5
+ARM GAS  /tmp/ccs42LD4.s 			page 5
 
 
   69:app/tasks/nfc/nfc.c ****   switch (this->state) {
@@ -298,7 +298,7 @@ ARM GAS  /tmp/ccAHlaRc.s 			page 1
  150              		.cfi_offset 14, -4
  151 0002 87B0     		sub	sp, sp, #28
  152              	.LCFI3:
-ARM GAS  /tmp/ccAHlaRc.s 			page 6
+ARM GAS  /tmp/ccs42LD4.s 			page 6
 
 
  153              		.cfi_def_cfa_offset 32
@@ -358,7 +358,7 @@ ARM GAS  /tmp/ccAHlaRc.s 			page 1
  192              		.loc 1 61 9 is_stmt 1 view .LVU44
   61:app/tasks/nfc/nfc.c ****         osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = NFC_ACTOR_ID}
  193              		.loc 1 61 55 is_stmt 0 view .LVU45
-ARM GAS  /tmp/ccAHlaRc.s 			page 7
+ARM GAS  /tmp/ccs42LD4.s 			page 7
 
 
  194 002a 0022     		movs	r2, #0
@@ -418,7 +418,7 @@ ARM GAS  /tmp/ccAHlaRc.s 			page 1
  241              		.section	.text.NFC_TaskInit,"ax",%progbits
  242              		.align	1
  243              		.global	NFC_TaskInit
-ARM GAS  /tmp/ccAHlaRc.s 			page 8
+ARM GAS  /tmp/ccs42LD4.s 			page 8
 
 
  244              		.syntax unified
@@ -478,7 +478,7 @@ ARM GAS  /tmp/ccAHlaRc.s 			page 1
  291              		.loc 1 42 30 view .LVU59
  292 002e 6860     		str	r0, [r5, #4]
   44:app/tasks/nfc/nfc.c ****   return (actor_t*) &NFC_Actor;
-ARM GAS  /tmp/ccAHlaRc.s 			page 9
+ARM GAS  /tmp/ccs42LD4.s 			page 9
 
 
  293              		.loc 1 44 3 is_stmt 1 view .LVU60
@@ -538,7 +538,7 @@ ARM GAS  /tmp/ccAHlaRc.s 			page 1
  342      00000000 
  342      00000000 
  342      00000000 
-ARM GAS  /tmp/ccAHlaRc.s 			page 10
+ARM GAS  /tmp/ccs42LD4.s 			page 10
 
 
  343              		.section	.rodata.nfcTaskDescription,"a"
@@ -574,32 +574,32 @@ ARM GAS  /tmp/ccAHlaRc.s 			page 1
  374              		.file 17 "app/tasks/nfc/nfc.h"
  375              		.file 18 "app/tasks/nfc/nfc_handlers.h"
  376              		.file 19 "/usr/include/newlib/stdio.h"
-ARM GAS  /tmp/ccAHlaRc.s 			page 11
+ARM GAS  /tmp/ccs42LD4.s 			page 11
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 nfc.c
-     /tmp/ccAHlaRc.s:18     .text.handleInit:0000000000000000 $t
-     /tmp/ccAHlaRc.s:25     .text.handleInit:0000000000000000 handleInit
-     /tmp/ccAHlaRc.s:84     .text.handleNFCFSM:0000000000000000 $t
-     /tmp/ccAHlaRc.s:90     .text.handleNFCFSM:0000000000000000 handleNFCFSM
-     /tmp/ccAHlaRc.s:125    .rodata.NFC_Task.str1.4:0000000000000000 $d
-     /tmp/ccAHlaRc.s:132    .text.NFC_Task:0000000000000000 $t
-     /tmp/ccAHlaRc.s:139    .text.NFC_Task:0000000000000000 NFC_Task
-     /tmp/ccAHlaRc.s:227    .text.NFC_Task:000000000000005c $d
-     /tmp/ccAHlaRc.s:238    .rodata.NFC_TaskInit.str1.4:0000000000000000 $d
-     /tmp/ccAHlaRc.s:242    .text.NFC_TaskInit:0000000000000000 $t
-     /tmp/ccAHlaRc.s:249    .text.NFC_TaskInit:0000000000000000 NFC_TaskInit
-     /tmp/ccAHlaRc.s:304    .text.NFC_TaskInit:0000000000000038 $d
-     /tmp/ccAHlaRc.s:348    .rodata.nfcTaskDescription:0000000000000000 nfcTaskDescription
-     /tmp/ccAHlaRc.s:313    .rodata.str1.4:0000000000000000 $d
-     /tmp/ccAHlaRc.s:329    .bss.nfcTaskControlBlock:0000000000000000 nfcTaskControlBlock
-     /tmp/ccAHlaRc.s:323    .bss.nfcTaskBuffer:0000000000000000 nfcTaskBuffer
-     /tmp/ccAHlaRc.s:336    .data.NFC_Actor:0000000000000000 NFC_Actor
-     /tmp/ccAHlaRc.s:320    .bss.nfcTaskBuffer:0000000000000000 $d
-     /tmp/ccAHlaRc.s:326    .bss.nfcTaskControlBlock:0000000000000000 $d
-     /tmp/ccAHlaRc.s:332    .data.NFC_Actor:0000000000000000 $d
-     /tmp/ccAHlaRc.s:344    .rodata.nfcTaskDescription:0000000000000000 $d
+     /tmp/ccs42LD4.s:18     .text.handleInit:0000000000000000 $t
+     /tmp/ccs42LD4.s:25     .text.handleInit:0000000000000000 handleInit
+     /tmp/ccs42LD4.s:84     .text.handleNFCFSM:0000000000000000 $t
+     /tmp/ccs42LD4.s:90     .text.handleNFCFSM:0000000000000000 handleNFCFSM
+     /tmp/ccs42LD4.s:125    .rodata.NFC_Task.str1.4:0000000000000000 $d
+     /tmp/ccs42LD4.s:132    .text.NFC_Task:0000000000000000 $t
+     /tmp/ccs42LD4.s:139    .text.NFC_Task:0000000000000000 NFC_Task
+     /tmp/ccs42LD4.s:227    .text.NFC_Task:000000000000005c $d
+     /tmp/ccs42LD4.s:238    .rodata.NFC_TaskInit.str1.4:0000000000000000 $d
+     /tmp/ccs42LD4.s:242    .text.NFC_TaskInit:0000000000000000 $t
+     /tmp/ccs42LD4.s:249    .text.NFC_TaskInit:0000000000000000 NFC_TaskInit
+     /tmp/ccs42LD4.s:304    .text.NFC_TaskInit:0000000000000038 $d
+     /tmp/ccs42LD4.s:348    .rodata.nfcTaskDescription:0000000000000000 nfcTaskDescription
+     /tmp/ccs42LD4.s:313    .rodata.str1.4:0000000000000000 $d
+     /tmp/ccs42LD4.s:329    .bss.nfcTaskControlBlock:0000000000000000 nfcTaskControlBlock
+     /tmp/ccs42LD4.s:323    .bss.nfcTaskBuffer:0000000000000000 nfcTaskBuffer
+     /tmp/ccs42LD4.s:336    .data.NFC_Actor:0000000000000000 NFC_Actor
+     /tmp/ccs42LD4.s:320    .bss.nfcTaskBuffer:0000000000000000 $d
+     /tmp/ccs42LD4.s:326    .bss.nfcTaskControlBlock:0000000000000000 $d
+     /tmp/ccs42LD4.s:332    .data.NFC_Actor:0000000000000000 $d
+     /tmp/ccs42LD4.s:344    .rodata.nfcTaskDescription:0000000000000000 $d
 
 UNDEFINED SYMBOLS
 NFC_ST25DVInit
