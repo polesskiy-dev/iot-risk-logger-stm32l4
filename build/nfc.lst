@@ -1,4 +1,4 @@
-ARM GAS  /tmp/cc5eGk6V.s 			page 1
+ARM GAS  /tmp/ccLgjucQ.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /tmp/cc5eGk6V.s 			page 1
    8:app/tasks/nfc/nfc.c **** 
    9:app/tasks/nfc/nfc.c **** #include "nfc.h"
   10:app/tasks/nfc/nfc.c **** #include "nfc_handlers.h"
-ARM GAS  /tmp/cc5eGk6V.s 			page 2
+ARM GAS  /tmp/ccLgjucQ.s 			page 2
 
 
   11:app/tasks/nfc/nfc.c **** 
@@ -118,7 +118,7 @@ ARM GAS  /tmp/cc5eGk6V.s 			page 1
   65:app/tasks/nfc/nfc.c ****       }
   66:app/tasks/nfc/nfc.c ****     }
   67:app/tasks/nfc/nfc.c ****   }
-ARM GAS  /tmp/cc5eGk6V.s 			page 3
+ARM GAS  /tmp/ccLgjucQ.s 			page 3
 
 
   68:app/tasks/nfc/nfc.c **** }
@@ -178,7 +178,7 @@ ARM GAS  /tmp/cc5eGk6V.s 			page 1
   59 0008 0393     		str	r3, [sp, #12]
  102:app/tasks/nfc/nfc.c ****   const ST25DV_PASSWD i2cPwd = {0x00000000, 0x00000000};
   60              		.loc 1 102 3 is_stmt 1 view .LVU5
-ARM GAS  /tmp/cc5eGk6V.s 			page 4
+ARM GAS  /tmp/ccLgjucQ.s 			page 4
 
 
   61              		.loc 1 102 23 is_stmt 0 view .LVU6
@@ -238,7 +238,7 @@ ARM GAS  /tmp/cc5eGk6V.s 			page 1
  106:app/tasks/nfc/nfc.c ****       if (ioStatus != NFCTAG_OK)
   89              		.loc 1 106 18 is_stmt 0 view .LVU14
   90 001e 00F11404 		add	r4, r0, #20
-ARM GAS  /tmp/cc5eGk6V.s 			page 5
+ARM GAS  /tmp/ccLgjucQ.s 			page 5
 
 
   91 0022 2046     		mov	r0, r4
@@ -298,7 +298,7 @@ ARM GAS  /tmp/cc5eGk6V.s 			page 1
  129 0048 039B     		ldr	r3, [sp, #12]
  130 004a 029A     		ldr	r2, [sp, #8]
  131 004c 0C49     		ldr	r1, .L9+4
-ARM GAS  /tmp/cc5eGk6V.s 			page 6
+ARM GAS  /tmp/ccLgjucQ.s 			page 6
 
 
  132 004e 8068     		ldr	r0, [r0, #8]
@@ -358,7 +358,7 @@ ARM GAS  /tmp/cc5eGk6V.s 			page 1
  177              	.LC3:
  178 0000 4E46435F 		.ascii	"NFC_MAILBOX_TRANSMIT_STATE\000"
  178      4D41494C 
-ARM GAS  /tmp/cc5eGk6V.s 			page 7
+ARM GAS  /tmp/ccLgjucQ.s 			page 7
 
 
  178      424F585F 
@@ -384,7 +384,7 @@ ARM GAS  /tmp/cc5eGk6V.s 			page 1
  194              		.loc 1 130 18 is_stmt 0 view .LVU43
  195 0000 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
  196              		.loc 1 130 3 view .LVU44
- 197 0002 D42B     		cmp	r3, #212
+ 197 0002 D52B     		cmp	r3, #213
  198 0004 01D0     		beq	.L17
  131:app/tasks/nfc/nfc.c ****     case NFC_GPO_INTERRUPT:
  132:app/tasks/nfc/nfc.c ****       NFC_HandleGPOInterrupt(&this->st25dv);
@@ -418,7 +418,7 @@ ARM GAS  /tmp/cc5eGk6V.s 			page 1
  216              		.loc 1 132 7 is_stmt 0 view .LVU49
  217 0010 FFF7FEFF 		bl	NFC_HandleGPOInterrupt
  218              	.LVL17:
-ARM GAS  /tmp/cc5eGk6V.s 			page 8
+ARM GAS  /tmp/ccLgjucQ.s 			page 8
 
 
  134:app/tasks/nfc/nfc.c ****       return osOK;
@@ -478,7 +478,7 @@ ARM GAS  /tmp/cc5eGk6V.s 			page 1
  266              		@ frame_needed = 0, uses_anonymous_args = 0
  267              		.loc 1 141 80 is_stmt 0 view .LVU59
  268 0000 38B5     		push	{r3, r4, r5, lr}
-ARM GAS  /tmp/cc5eGk6V.s 			page 9
+ARM GAS  /tmp/ccLgjucQ.s 			page 9
 
 
  269              	.LCFI5:
@@ -492,7 +492,7 @@ ARM GAS  /tmp/cc5eGk6V.s 			page 1
  276              		.loc 1 142 18 is_stmt 0 view .LVU61
  277 0002 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
  278              		.loc 1 142 3 view .LVU62
- 279 0004 D52B     		cmp	r3, #213
+ 279 0004 D62B     		cmp	r3, #214
  280 0006 01D0     		beq	.L25
  281              	.LVL21:
  282              	.L21:
@@ -538,7 +538,7 @@ ARM GAS  /tmp/cc5eGk6V.s 			page 1
  303 0018 0024     		movs	r4, #0
  147:app/tasks/nfc/nfc.c ****       for (int i = 0; i < ST25DV_MAX_MAILBOX_LENGTH; i++) {
  304              		.loc 1 147 7 view .LVU71
-ARM GAS  /tmp/cc5eGk6V.s 			page 10
+ARM GAS  /tmp/ccLgjucQ.s 			page 10
 
 
  305 001a 09E0     		b	.L22
@@ -598,7 +598,7 @@ ARM GAS  /tmp/cc5eGk6V.s 			page 1
  352              		@ frame_needed = 0, uses_anonymous_args = 0
   70:app/tasks/nfc/nfc.c **** static osStatus_t handleNFCFSM(NFC_Actor_t *this, message_t *message) {
  353              		.loc 1 70 71 is_stmt 0 view .LVU81
-ARM GAS  /tmp/cc5eGk6V.s 			page 11
+ARM GAS  /tmp/ccLgjucQ.s 			page 11
 
 
  354 0000 08B5     		push	{r3, lr}
@@ -658,7 +658,7 @@ ARM GAS  /tmp/cc5eGk6V.s 			page 1
  395              		.loc 1 77 14 view .LVU94
  396 0022 F5E7     		b	.L28
  397              		.cfi_endproc
-ARM GAS  /tmp/cc5eGk6V.s 			page 12
+ARM GAS  /tmp/ccLgjucQ.s 			page 12
 
 
  398              	.LFE141:
@@ -718,7 +718,7 @@ ARM GAS  /tmp/cc5eGk6V.s 			page 1
  443 0016 F5D1     		bne	.L36
  444              	.LBB3:
   59:app/tasks/nfc/nfc.c ****       osStatus_t status = NFC_Actor.super.messageHandler((actor_t *) &NFC_Actor, &msg);
-ARM GAS  /tmp/cc5eGk6V.s 			page 13
+ARM GAS  /tmp/ccLgjucQ.s 			page 13
 
 
  445              		.loc 1 59 7 is_stmt 1 view .LVU103
@@ -756,7 +756,7 @@ ARM GAS  /tmp/cc5eGk6V.s 			page 1
  468 002c 0392     		str	r2, [sp, #12]
  469 002e 0492     		str	r2, [sp, #16]
  470 0030 0592     		str	r2, [sp, #20]
- 471 0032 D123     		movs	r3, #209
+ 471 0032 D223     		movs	r3, #210
  472 0034 8DF80C30 		strb	r3, [sp, #12]
  473 0038 0423     		movs	r3, #4
  474 003a 0493     		str	r3, [sp, #16]
@@ -778,7 +778,7 @@ ARM GAS  /tmp/cc5eGk6V.s 			page 1
  486 004a 064B     		ldr	r3, .L40+8
  487 004c 1868     		ldr	r0, [r3]
  488 004e 064B     		ldr	r3, .L40+12
-ARM GAS  /tmp/cc5eGk6V.s 			page 14
+ARM GAS  /tmp/ccLgjucQ.s 			page 14
 
 
  489 0050 1268     		ldr	r2, [r2]
@@ -838,7 +838,7 @@ ARM GAS  /tmp/cc5eGk6V.s 			page 1
  538              		.loc 1 41 127 is_stmt 0 view .LVU121
  539 0004 0024     		movs	r4, #0
  540 0006 0094     		str	r4, [sp]
-ARM GAS  /tmp/cc5eGk6V.s 			page 15
+ARM GAS  /tmp/ccLgjucQ.s 			page 15
 
 
  541 0008 0194     		str	r4, [sp, #4]
@@ -898,7 +898,7 @@ ARM GAS  /tmp/cc5eGk6V.s 			page 1
  588      61736B00 
  589              		.global	nfcTaskControlBlock
  590              		.global	nfcTaskBuffer
-ARM GAS  /tmp/cc5eGk6V.s 			page 16
+ARM GAS  /tmp/ccLgjucQ.s 			page 16
 
 
  591              		.global	NFC_Actor
@@ -958,7 +958,7 @@ ARM GAS  /tmp/cc5eGk6V.s 			page 1
  640              		.file 10 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h"
  641              		.file 11 "Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h"
  642              		.file 12 "app/core/actor/../../config/events_list/events_list.h"
-ARM GAS  /tmp/cc5eGk6V.s 			page 17
+ARM GAS  /tmp/ccLgjucQ.s 			page 17
 
 
  643              		.file 13 "app/core/actor/../../config/actors_list/actors_list.h"
@@ -968,42 +968,42 @@ ARM GAS  /tmp/cc5eGk6V.s 			page 1
  647              		.file 17 "app/tasks/nfc/nfc.h"
  648              		.file 18 "/usr/include/newlib/stdio.h"
  649              		.file 19 "app/tasks/nfc/nfc_handlers.h"
-ARM GAS  /tmp/cc5eGk6V.s 			page 18
+ARM GAS  /tmp/ccLgjucQ.s 			page 18
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 nfc.c
-     /tmp/cc5eGk6V.s:18     .rodata.handleInit.str1.4:0000000000000000 $d
-     /tmp/cc5eGk6V.s:28     .text.handleInit:0000000000000000 $t
-     /tmp/cc5eGk6V.s:35     .text.handleInit:0000000000000000 handleInit
-     /tmp/cc5eGk6V.s:168    .text.handleInit:000000000000007c $d
-     /tmp/cc5eGk6V.s:176    .rodata.handleStandby.str1.4:0000000000000000 $d
-     /tmp/cc5eGk6V.s:180    .text.handleStandby:0000000000000000 $t
-     /tmp/cc5eGk6V.s:186    .text.handleStandby:0000000000000000 handleStandby
-     /tmp/cc5eGk6V.s:243    .text.handleStandby:000000000000002c $d
-     /tmp/cc5eGk6V.s:250    .rodata.handleMailboxTransmit.str1.4:0000000000000000 $d
-     /tmp/cc5eGk6V.s:254    .text.handleMailboxTransmit:0000000000000000 $t
-     /tmp/cc5eGk6V.s:260    .text.handleMailboxTransmit:0000000000000000 handleMailboxTransmit
-     /tmp/cc5eGk6V.s:333    .text.handleMailboxTransmit:0000000000000038 $d
-     /tmp/cc5eGk6V.s:340    .text.handleNFCFSM:0000000000000000 $t
-     /tmp/cc5eGk6V.s:346    .text.handleNFCFSM:0000000000000000 handleNFCFSM
-     /tmp/cc5eGk6V.s:401    .rodata.NFC_Task.str1.4:0000000000000000 $d
-     /tmp/cc5eGk6V.s:405    .text.NFC_Task:0000000000000000 $t
-     /tmp/cc5eGk6V.s:412    .text.NFC_Task:0000000000000000 NFC_Task
-     /tmp/cc5eGk6V.s:500    .text.NFC_Task:000000000000005c $d
-     /tmp/cc5eGk6V.s:511    .rodata.NFC_TaskInit.str1.4:0000000000000000 $d
-     /tmp/cc5eGk6V.s:515    .text.NFC_TaskInit:0000000000000000 $t
-     /tmp/cc5eGk6V.s:522    .text.NFC_TaskInit:0000000000000000 NFC_TaskInit
-     /tmp/cc5eGk6V.s:577    .text.NFC_TaskInit:0000000000000038 $d
-     /tmp/cc5eGk6V.s:621    .rodata.nfcTaskDescription:0000000000000000 nfcTaskDescription
-     /tmp/cc5eGk6V.s:586    .rodata.str1.4:0000000000000000 $d
-     /tmp/cc5eGk6V.s:602    .bss.nfcTaskControlBlock:0000000000000000 nfcTaskControlBlock
-     /tmp/cc5eGk6V.s:596    .bss.nfcTaskBuffer:0000000000000000 nfcTaskBuffer
-     /tmp/cc5eGk6V.s:609    .data.NFC_Actor:0000000000000000 NFC_Actor
-     /tmp/cc5eGk6V.s:593    .bss.nfcTaskBuffer:0000000000000000 $d
-     /tmp/cc5eGk6V.s:599    .bss.nfcTaskControlBlock:0000000000000000 $d
-     /tmp/cc5eGk6V.s:605    .data.NFC_Actor:0000000000000000 $d
-     /tmp/cc5eGk6V.s:617    .rodata.nfcTaskDescription:0000000000000000 $d
+     /tmp/ccLgjucQ.s:18     .rodata.handleInit.str1.4:0000000000000000 $d
+     /tmp/ccLgjucQ.s:28     .text.handleInit:0000000000000000 $t
+     /tmp/ccLgjucQ.s:35     .text.handleInit:0000000000000000 handleInit
+     /tmp/ccLgjucQ.s:168    .text.handleInit:000000000000007c $d
+     /tmp/ccLgjucQ.s:176    .rodata.handleStandby.str1.4:0000000000000000 $d
+     /tmp/ccLgjucQ.s:180    .text.handleStandby:0000000000000000 $t
+     /tmp/ccLgjucQ.s:186    .text.handleStandby:0000000000000000 handleStandby
+     /tmp/ccLgjucQ.s:243    .text.handleStandby:000000000000002c $d
+     /tmp/ccLgjucQ.s:250    .rodata.handleMailboxTransmit.str1.4:0000000000000000 $d
+     /tmp/ccLgjucQ.s:254    .text.handleMailboxTransmit:0000000000000000 $t
+     /tmp/ccLgjucQ.s:260    .text.handleMailboxTransmit:0000000000000000 handleMailboxTransmit
+     /tmp/ccLgjucQ.s:333    .text.handleMailboxTransmit:0000000000000038 $d
+     /tmp/ccLgjucQ.s:340    .text.handleNFCFSM:0000000000000000 $t
+     /tmp/ccLgjucQ.s:346    .text.handleNFCFSM:0000000000000000 handleNFCFSM
+     /tmp/ccLgjucQ.s:401    .rodata.NFC_Task.str1.4:0000000000000000 $d
+     /tmp/ccLgjucQ.s:405    .text.NFC_Task:0000000000000000 $t
+     /tmp/ccLgjucQ.s:412    .text.NFC_Task:0000000000000000 NFC_Task
+     /tmp/ccLgjucQ.s:500    .text.NFC_Task:000000000000005c $d
+     /tmp/ccLgjucQ.s:511    .rodata.NFC_TaskInit.str1.4:0000000000000000 $d
+     /tmp/ccLgjucQ.s:515    .text.NFC_TaskInit:0000000000000000 $t
+     /tmp/ccLgjucQ.s:522    .text.NFC_TaskInit:0000000000000000 NFC_TaskInit
+     /tmp/ccLgjucQ.s:577    .text.NFC_TaskInit:0000000000000038 $d
+     /tmp/ccLgjucQ.s:621    .rodata.nfcTaskDescription:0000000000000000 nfcTaskDescription
+     /tmp/ccLgjucQ.s:586    .rodata.str1.4:0000000000000000 $d
+     /tmp/ccLgjucQ.s:602    .bss.nfcTaskControlBlock:0000000000000000 nfcTaskControlBlock
+     /tmp/ccLgjucQ.s:596    .bss.nfcTaskBuffer:0000000000000000 nfcTaskBuffer
+     /tmp/ccLgjucQ.s:609    .data.NFC_Actor:0000000000000000 NFC_Actor
+     /tmp/ccLgjucQ.s:593    .bss.nfcTaskBuffer:0000000000000000 $d
+     /tmp/ccLgjucQ.s:599    .bss.nfcTaskControlBlock:0000000000000000 $d
+     /tmp/ccLgjucQ.s:605    .data.NFC_Actor:0000000000000000 $d
+     /tmp/ccLgjucQ.s:617    .rodata.nfcTaskDescription:0000000000000000 $d
 
 UNDEFINED SYMBOLS
 NFC_ST25DVInit

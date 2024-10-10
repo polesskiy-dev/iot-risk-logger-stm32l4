@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccJ1z3EY.s 			page 1
+ARM GAS  /tmp/cc2iAwiG.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccJ1z3EY.s 			page 1
   15:app/tasks/event_manager/event_manager.c **** 
   16:app/tasks/event_manager/event_manager.c **** extern actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS];
   17:app/tasks/event_manager/event_manager.c **** 
-ARM GAS  /tmp/ccJ1z3EY.s 			page 2
+ARM GAS  /tmp/cc2iAwiG.s 			page 2
 
 
   18:app/tasks/event_manager/event_manager.c **** /**
@@ -118,7 +118,7 @@ ARM GAS  /tmp/ccJ1z3EY.s 			page 1
   72:app/tasks/event_manager/event_manager.c **** static osStatus_t handleEvManagerMessage(EV_MANAGER_Actor_t *this, message_t *message) {
   73:app/tasks/event_manager/event_manager.c ****   switch (message->event) {
   74:app/tasks/event_manager/event_manager.c ****     case GLOBAL_CMD_INITIALIZE:
-ARM GAS  /tmp/ccJ1z3EY.s 			page 3
+ARM GAS  /tmp/cc2iAwiG.s 			page 3
 
 
   75:app/tasks/event_manager/event_manager.c ****       publishEventToSubscribers(message);
@@ -178,7 +178,7 @@ ARM GAS  /tmp/ccJ1z3EY.s 			page 1
   43              		.cfi_offset 5, -12
   44              		.cfi_offset 6, -8
   45              		.cfi_offset 14, -4
-ARM GAS  /tmp/ccJ1z3EY.s 			page 4
+ARM GAS  /tmp/cc2iAwiG.s 			page 4
 
 
   46 0002 0646     		mov	r6, r0
@@ -238,7 +238,7 @@ ARM GAS  /tmp/ccJ1z3EY.s 			page 1
   80              		.loc 1 139 7 view .LVU13
   81              		.loc 1 139 22 is_stmt 0 view .LVU14
   82 0024 C368     		ldr	r3, [r0, #12]
-ARM GAS  /tmp/ccJ1z3EY.s 			page 5
+ARM GAS  /tmp/cc2iAwiG.s 			page 5
 
 
   83              	.LVL6:
@@ -298,7 +298,7 @@ ARM GAS  /tmp/ccJ1z3EY.s 			page 1
  122              	.LVL11:
  138:app/tasks/event_manager/event_manager.c ****       subscribedActor->messageHandler(subscribedActor, message);
  123              		.loc 1 138 5 is_stmt 1 view .LVU32
-ARM GAS  /tmp/ccJ1z3EY.s 			page 6
+ARM GAS  /tmp/cc2iAwiG.s 			page 6
 
 
  138:app/tasks/event_manager/event_manager.c ****       subscribedActor->messageHandler(subscribedActor, message);
@@ -358,7 +358,7 @@ ARM GAS  /tmp/ccJ1z3EY.s 			page 1
  169              		.fpu fpv4-sp-d16
  171              	handleEvManagerMessage:
  172              	.LVL18:
-ARM GAS  /tmp/ccJ1z3EY.s 			page 7
+ARM GAS  /tmp/cc2iAwiG.s 			page 7
 
 
  173              	.LFB140:
@@ -418,7 +418,7 @@ ARM GAS  /tmp/ccJ1z3EY.s 			page 1
  219 0026 0192     		str	r2, [sp, #4]
  220 0028 0292     		str	r2, [sp, #8]
  221 002a C623     		movs	r3, #198
-ARM GAS  /tmp/ccJ1z3EY.s 			page 8
+ARM GAS  /tmp/cc2iAwiG.s 			page 8
 
 
  222 002c 8DF80030 		strb	r3, [sp]
@@ -478,7 +478,7 @@ ARM GAS  /tmp/ccJ1z3EY.s 			page 1
  267              	.LVL25:
  268              	.L15:
   93:app/tasks/event_manager/event_manager.c ****       publishEventToSubscribers(message);
-ARM GAS  /tmp/ccJ1z3EY.s 			page 9
+ARM GAS  /tmp/cc2iAwiG.s 			page 9
 
 
  269              		.loc 1 93 7 is_stmt 1 view .LVU61
@@ -538,7 +538,7 @@ ARM GAS  /tmp/ccJ1z3EY.s 			page 1
  313 0002 8AB0     		sub	sp, sp, #40
  314              	.LCFI6:
  315              		.cfi_def_cfa_offset 56
-ARM GAS  /tmp/ccJ1z3EY.s 			page 10
+ARM GAS  /tmp/cc2iAwiG.s 			page 10
 
 
  316 0004 0646     		mov	r6, r0
@@ -598,7 +598,7 @@ ARM GAS  /tmp/ccJ1z3EY.s 			page 1
  358 003e C523     		movs	r3, #197
  359 0040 8DF81C30 		strb	r3, [sp, #28]
   67:app/tasks/event_manager/event_manager.c ****   osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_CMD_INITIALIZE}, 0
-ARM GAS  /tmp/ccJ1z3EY.s 			page 11
+ARM GAS  /tmp/cc2iAwiG.s 			page 11
 
 
  360              		.loc 1 67 3 view .LVU78
@@ -658,7 +658,7 @@ ARM GAS  /tmp/ccJ1z3EY.s 			page 1
  411 07bc 00000000 		.space	10
  411      00000000 
  411      0000
-ARM GAS  /tmp/ccJ1z3EY.s 			page 12
+ARM GAS  /tmp/cc2iAwiG.s 			page 12
 
 
  412 07c6 06       		.byte	6
@@ -699,9 +699,11 @@ ARM GAS  /tmp/ccJ1z3EY.s 			page 1
  431 0822 03       		.byte	3
  432 0823 00000000 		.space	7
  432      000000
- 433 082a 00000000 		.space	10
+ 433 082a 00000000 		.space	20
  433      00000000 
- 433      0000
+ 433      00000000 
+ 433      00000000 
+ 433      00000000 
  434              		.text
  435              	.Letext0:
  436              		.file 2 "/usr/include/newlib/machine/_default_types.h"
@@ -716,33 +718,33 @@ ARM GAS  /tmp/ccJ1z3EY.s 			page 1
  445              		.file 11 "app/core/actor/../../config/actors_list/actors_list.h"
  446              		.file 12 "app/core/actor/actor.h"
  447              		.file 13 "app/tasks/event_manager/event_manager.h"
+ARM GAS  /tmp/cc2iAwiG.s 			page 13
+
+
  448              		.file 14 "/usr/include/newlib/stdio.h"
  449              		.file 15 "<built-in>"
-ARM GAS  /tmp/ccJ1z3EY.s 			page 13
-
-
-ARM GAS  /tmp/ccJ1z3EY.s 			page 14
+ARM GAS  /tmp/cc2iAwiG.s 			page 14
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 event_manager.c
-     /tmp/ccJ1z3EY.s:18     .rodata.publishEventToSubscribers.str1.4:0000000000000000 $d
-     /tmp/ccJ1z3EY.s:23     .text.publishEventToSubscribers:0000000000000000 $t
-     /tmp/ccJ1z3EY.s:30     .text.publishEventToSubscribers:0000000000000000 publishEventToSubscribers
-     /tmp/ccJ1z3EY.s:157    .text.publishEventToSubscribers:0000000000000058 $d
-     /tmp/ccJ1z3EY.s:165    .text.handleEvManagerMessage:0000000000000000 $t
-     /tmp/ccJ1z3EY.s:171    .text.handleEvManagerMessage:0000000000000000 handleEvManagerMessage
-     /tmp/ccJ1z3EY.s:197    .text.handleEvManagerMessage:0000000000000012 $d
-     /tmp/ccJ1z3EY.s:209    .text.handleEvManagerMessage:000000000000001e $t
-     /tmp/ccJ1z3EY.s:278    .text.handleEvManagerMessage:000000000000006c $d
-     /tmp/ccJ1z3EY.s:284    .rodata.EV_MANAGER_ActorInit.str1.4:0000000000000000 $d
-     /tmp/ccJ1z3EY.s:291    .text.EV_MANAGER_ActorInit:0000000000000000 $t
-     /tmp/ccJ1z3EY.s:298    .text.EV_MANAGER_ActorInit:0000000000000000 EV_MANAGER_ActorInit
-     /tmp/ccJ1z3EY.s:380    .text.EV_MANAGER_ActorInit:0000000000000058 $d
-     /tmp/ccJ1z3EY.s:394    .data.EV_MANAGER_Actor:0000000000000000 EV_MANAGER_Actor
-     /tmp/ccJ1z3EY.s:404    .rodata.EV_MANAGER_SubscribersIdsMatrix:0000000000000000 EV_MANAGER_SubscribersIdsMatrix
-     /tmp/ccJ1z3EY.s:390    .data.EV_MANAGER_Actor:0000000000000000 $d
-     /tmp/ccJ1z3EY.s:400    .rodata.EV_MANAGER_SubscribersIdsMatrix:0000000000000000 $d
+     /tmp/cc2iAwiG.s:18     .rodata.publishEventToSubscribers.str1.4:0000000000000000 $d
+     /tmp/cc2iAwiG.s:23     .text.publishEventToSubscribers:0000000000000000 $t
+     /tmp/cc2iAwiG.s:30     .text.publishEventToSubscribers:0000000000000000 publishEventToSubscribers
+     /tmp/cc2iAwiG.s:157    .text.publishEventToSubscribers:0000000000000058 $d
+     /tmp/cc2iAwiG.s:165    .text.handleEvManagerMessage:0000000000000000 $t
+     /tmp/cc2iAwiG.s:171    .text.handleEvManagerMessage:0000000000000000 handleEvManagerMessage
+     /tmp/cc2iAwiG.s:197    .text.handleEvManagerMessage:0000000000000012 $d
+     /tmp/cc2iAwiG.s:209    .text.handleEvManagerMessage:000000000000001e $t
+     /tmp/cc2iAwiG.s:278    .text.handleEvManagerMessage:000000000000006c $d
+     /tmp/cc2iAwiG.s:284    .rodata.EV_MANAGER_ActorInit.str1.4:0000000000000000 $d
+     /tmp/cc2iAwiG.s:291    .text.EV_MANAGER_ActorInit:0000000000000000 $t
+     /tmp/cc2iAwiG.s:298    .text.EV_MANAGER_ActorInit:0000000000000000 EV_MANAGER_ActorInit
+     /tmp/cc2iAwiG.s:380    .text.EV_MANAGER_ActorInit:0000000000000058 $d
+     /tmp/cc2iAwiG.s:394    .data.EV_MANAGER_Actor:0000000000000000 EV_MANAGER_Actor
+     /tmp/cc2iAwiG.s:404    .rodata.EV_MANAGER_SubscribersIdsMatrix:0000000000000000 EV_MANAGER_SubscribersIdsMatrix
+     /tmp/cc2iAwiG.s:390    .data.EV_MANAGER_Actor:0000000000000000 $d
+     /tmp/cc2iAwiG.s:400    .rodata.EV_MANAGER_SubscribersIdsMatrix:0000000000000000 $d
 
 UNDEFINED SYMBOLS
 fprintf
