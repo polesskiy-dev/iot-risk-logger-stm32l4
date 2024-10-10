@@ -49,7 +49,6 @@ build/main.o: Core/Src/main.c Core/Inc/main.h \
  app/core/gpio_ext_interrupts/gpio_ext_interrupts.h app/tasks/nfc/nfc.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
  Core/Inc/FreeRTOSConfig.h \
- libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/portable.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h \
@@ -73,9 +72,7 @@ build/main.o: Core/Src/main.c Core/Inc/main.h \
  Core/Inc/crc.h Core/Inc/lptim.h Core/Inc/rng.h \
  USB_DEVICE/App/usb_device.h \
  Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
- USB_DEVICE/Target/usbd_conf.h Core/Inc/gpio.h \
- libraries/RTT/RTT/SEGGER_RTT.h \
- libraries/RTT/RTT/../Config/SEGGER_RTT_Conf.h
+ USB_DEVICE/Target/usbd_conf.h Core/Inc/gpio.h
 Core/Inc/main.h:
 Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
 Core/Inc/stm32l4xx_hal_conf.h:
@@ -131,7 +128,6 @@ app/core/gpio_ext_interrupts/gpio_ext_interrupts.h:
 app/tasks/nfc/nfc.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 Core/Inc/FreeRTOSConfig.h:
-libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/portable.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h:
@@ -169,5 +165,3 @@ USB_DEVICE/App/usb_device.h:
 Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h:
 USB_DEVICE/Target/usbd_conf.h:
 Core/Inc/gpio.h:
-libraries/RTT/RTT/SEGGER_RTT.h:
-libraries/RTT/RTT/../Config/SEGGER_RTT_Conf.h:

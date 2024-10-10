@@ -1,0 +1,2358 @@
+ARM GAS  /tmp/cc1Z0LnX.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"st25ftm_tx.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.ST25FTM_StateTxCommand,"ax",%progbits
+  18              		.align	1
+  19              		.arch armv7e-m
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv4-sp-d16
+  25              	ST25FTM_StateTxCommand:
+  26              	.LFB139:
+  27              		.file 1 "Middlewares/ST/ST25FTM/Src/st25ftm_tx.c"
+   1:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** /**
+   2:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ******************************************************************************
+   3:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   * @file    st25ftm_tx.c
+   4:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   * @author  MMY Application Team
+   5:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   * @version 1.0.0
+   6:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   * @date    29-July-2022
+   7:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   * @brief   Fast Transfer Memory manage function for data transmit
+   8:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ******************************************************************************
+   9:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   * @attention
+  10:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   *
+  11:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   * Copyright (c) 2022 STMicroelectronics.
+  12:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   * All rights reserved.
+  13:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   *
+  14:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   * This software is licensed under terms that can be found in the LICENSE file
+  15:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   * in the root directory of this software component.
+  16:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
+  17:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   *
+  18:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ******************************************************************************
+  19:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   */
+  20:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+  21:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** #include "st25ftm_protocol.h"
+  22:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** #include "st25ftm_common.h"
+  23:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** #include "st25ftm_config.h"
+  24:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** #include <string.h>
+  25:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+  26:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** static void ST25FTM_GetData(uint8_t* buf, uint8_t* src, uint32_t length)
+  27:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** {
+  28:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   if(gFtmState.tx.getdata_cb == NULL)
+  29:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   {
+  30:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 	/* Default case: simply copy source data into packed buffer */
+  31:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     (void)memcpy(buf,src, length);
+ARM GAS  /tmp/cc1Z0LnX.s 			page 2
+
+
+  32:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   } else {
+  33:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 	/* Let's the application manage the input data */
+  34:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     gFtmState.tx.getdata_cb(buf, src, length);
+  35:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   }
+  36:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** }
+  37:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+  38:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** static uint32_t  ST25FTM_Pack(ST25FTM_Packet_t *pkt, uint8_t *msg)
+  39:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** {
+  40:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   uint32_t index = 0;
+  41:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   uint32_t data_index = 0;
+  42:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   uint32_t data_payload = 0;
+  43:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+  44:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   msg[index] = pkt->ctrl.byte;
+  45:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   index++;
+  46:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   if(pkt->ctrl.b.pktLen != 0U)
+  47:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   {
+  48:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     msg[index] = (uint8_t)pkt->length;
+  49:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     index++;
+  50:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   }
+  51:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+  52:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   if(ST25FTM_CTRL_HAS_TOTAL_LEN(pkt->ctrl))
+  53:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   {
+  54:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     uint32_t txTotalLen = pkt->totalLength;
+  55:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     ST25FTM_CHANGE_ENDIANESS(txTotalLen);
+  56:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     (void)memcpy(&msg[index],&txTotalLen,sizeof(txTotalLen));
+  57:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     index += sizeof(pkt->totalLength);
+  58:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   }
+  59:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+  60:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   /* Save data index for Crc computation */
+  61:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   data_index = index;
+  62:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   data_payload = pkt->length - ( pkt->has_crc ? 4 : 0);
+  63:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_GetData(&msg[index],pkt->data, data_payload);
+  64:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   index += data_payload;
+  65:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+  66:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   /* compute CRC */
+  67:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   if(gFtmState.tx.sendAck == ST25FTM_SEND_WITH_ACK)
+  68:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   {
+  69:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     pkt->crc = 0;
+  70:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     if(pkt->ctrl.b.ackCtrl == ST25FTM_SEGMENT_START)
+  71:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+  72:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       ST25FTM_GetCrc(&msg[data_index],data_payload,ST25FTM_CRC_START);
+  73:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else if (pkt->ctrl.b.ackCtrl == ST25FTM_SEGMENT_END)
+  74:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+  75:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       /* pkt.length contains the CRC length, remove it */
+  76:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       pkt->crc = ST25FTM_GetCrc(&msg[data_index],data_payload,ST25FTM_CRC_END);
+  77:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else if (pkt->ctrl.b.ackCtrl == ST25FTM_ACK_SINGLE_PKT) {
+  78:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       /* Single frame segment */
+  79:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       pkt->crc = ST25FTM_GetCrc(&msg[data_index],data_payload,ST25FTM_CRC_ONESHOT);
+  80:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else {
+  81:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       /* middle of a segment */
+  82:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       ST25FTM_GetCrc(&msg[data_index],data_payload,ST25FTM_CRC_ACCUMULATE);
+  83:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     }
+  84:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     if(pkt->has_crc)
+  85:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+  86:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       ST25FTM_CHANGE_ENDIANESS(pkt->crc);
+  87:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****      (void)memcpy(&msg[index],&pkt->crc, 4);
+  88:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       index += 4;
+ARM GAS  /tmp/cc1Z0LnX.s 			page 3
+
+
+  89:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     }
+  90:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   }
+  91:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+  92:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   return index;
+  93:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** }
+  94:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+  95:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** void ST25FTM_TxStateInit(void)
+  96:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** {
+  97:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.state = ST25FTM_WRITE_IDLE;
+  98:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.lastState = ST25FTM_WRITE_IDLE;
+  99:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.frameMaxLength = 0xFF;
+ 100:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.cmdPtr = NULL;
+ 101:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.cmdLen = 0;
+ 102:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.remainingData = 0;
+ 103:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.nbError = 0;
+ 104:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.sendAck = ST25FTM_SEND_WITH_ACK;
+ 105:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.dataPtr = NULL;
+ 106:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentPtr = NULL;
+ 107:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentStart = NULL;
+ 108:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentLength = 0;
+ 109:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentRemainingData = 0;
+ 110:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentMaxLength = ST25FTM_SEGMENT_LEN;
+ 111:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.retransmit = 0;
+ 112:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.pktIndex = 0;
+ 113:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentIndex = 0;
+ 114:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.packetLength = 0;
+ 115:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentNumber = 0;
+ 116:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.getdata_cb = NULL;
+ 117:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   (void)memset(gFtmState.tx.packetBuf, 0, sizeof(gFtmState.tx.packetBuf));
+ 118:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** }
+ 119:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+ 120:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+ 121:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** /************** Ftm Tx States ***************/
+ 122:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** static ST25FTM_StateMachineCtrl_t ST25FTM_StateTxIdle(void)
+ 123:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** {
+ 124:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_LOG("Tx Length %d\r\n",  gFtmState.tx.cmdLen);
+ 125:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.remainingData =   gFtmState.tx.cmdLen;
+ 126:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.state = ST25FTM_WRITE_CMD;
+ 127:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.dataPtr = gFtmState.tx.cmdPtr;
+ 128:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentLength = 0;
+ 129:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentRemainingData = 0;
+ 130:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.retransmit = 0;
+ 131:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.pktIndex = 0;
+ 132:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentIndex = 0;
+ 133:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.totalDataLength = 0;
+ 134:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.retryLength = 0;
+ 135:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentNumber = 0;
+ 136:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_CRC_Initialize();
+ 137:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   return ST25FTM_STATE_MACHINE_CONTINUE;
+ 138:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** }
+ 139:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+ 140:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** static ST25FTM_StateMachineCtrl_t ST25FTM_StateTxCommand(void)
+ 141:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** {
+  28              		.loc 1 141 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /tmp/cc1Z0LnX.s 			page 4
+
+
+  32              		@ link register save eliminated.
+ 142:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   if (gFtmState.tx.remainingData > 0U)
+  33              		.loc 1 142 3 view .LVU1
+  34              		.loc 1 142 19 is_stmt 0 view .LVU2
+  35 0000 144B     		ldr	r3, .L7
+  36 0002 9A69     		ldr	r2, [r3, #24]
+  37              		.loc 1 142 6 view .LVU3
+  38 0004 0AB3     		cbz	r2, .L2
+  39              	.LBB2:
+ 143:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   {
+ 144:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     uint32_t data_processed;
+  40              		.loc 1 144 5 is_stmt 1 view .LVU4
+ 145:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+ 146:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     ST25FTM_LOG("Starting Segment %d\r\n", gFtmState.tx.segmentNumber);
+  41              		.loc 1 146 71 view .LVU5
+ 147:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+ 148:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     /* prepare next segment */
+ 149:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     if (gFtmState.tx.sendAck == ST25FTM_SEND_WITH_ACK) {
+  42              		.loc 1 149 5 view .LVU6
+  43              		.loc 1 149 21 is_stmt 0 view .LVU7
+  44 0006 93F82530 		ldrb	r3, [r3, #37]	@ zero_extendqisi2
+  45              		.loc 1 149 8 view .LVU8
+  46 000a 012B     		cmp	r3, #1
+  47 000c 12D0     		beq	.L6
+ 150:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       data_processed = (gFtmState.tx.remainingData > (gFtmState.tx.segmentMaxLength - 4U)) ?
+ 151:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****                          (gFtmState.tx.segmentMaxLength - 4U) :
+ 152:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****                           gFtmState.tx.remainingData;
+ 153:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       gFtmState.tx.segmentLength = data_processed + 4;
+ 154:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       gFtmState.tx.segmentPtr = gFtmState.tx.dataPtr;
+ 155:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else {
+ 156:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       data_processed = gFtmState.tx.remainingData;
+  48              		.loc 1 156 7 is_stmt 1 view .LVU9
+  49              	.LVL0:
+ 157:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       gFtmState.tx.segmentLength = data_processed;
+  50              		.loc 1 157 7 view .LVU10
+  51              		.loc 1 157 34 is_stmt 0 view .LVU11
+  52 000e 114B     		ldr	r3, .L7
+  53 0010 5A63     		str	r2, [r3, #52]
+ 158:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       gFtmState.tx.segmentPtr = gFtmState.tx.dataPtr;
+  54              		.loc 1 158 7 is_stmt 1 view .LVU12
+  55              		.loc 1 158 45 is_stmt 0 view .LVU13
+  56 0012 996A     		ldr	r1, [r3, #40]
+  57              		.loc 1 158 31 view .LVU14
+  58 0014 D962     		str	r1, [r3, #44]
+ 156:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       gFtmState.tx.segmentLength = data_processed;
+  59              		.loc 1 156 22 view .LVU15
+  60 0016 1146     		mov	r1, r2
+  61              	.LVL1:
+  62              	.L4:
+ 159:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     }
+ 160:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     gFtmState.tx.segmentStart = gFtmState.tx.segmentPtr;
+  63              		.loc 1 160 5 is_stmt 1 view .LVU16
+  64              		.loc 1 160 45 is_stmt 0 view .LVU17
+  65 0018 0E4B     		ldr	r3, .L7
+  66 001a D86A     		ldr	r0, [r3, #44]
+  67              		.loc 1 160 31 view .LVU18
+  68 001c 1863     		str	r0, [r3, #48]
+ARM GAS  /tmp/cc1Z0LnX.s 			page 5
+
+
+ 161:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     gFtmState.tx.remainingData -= data_processed;
+  69              		.loc 1 161 5 is_stmt 1 view .LVU19
+  70              		.loc 1 161 32 is_stmt 0 view .LVU20
+  71 001e 521A     		subs	r2, r2, r1
+  72 0020 9A61     		str	r2, [r3, #24]
+ 162:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     gFtmState.tx.dataPtr += data_processed;
+  73              		.loc 1 162 5 is_stmt 1 view .LVU21
+  74              		.loc 1 162 26 is_stmt 0 view .LVU22
+  75 0022 9A6A     		ldr	r2, [r3, #40]
+  76 0024 0A44     		add	r2, r2, r1
+  77 0026 9A62     		str	r2, [r3, #40]
+ 163:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     gFtmState.tx.segmentRemainingData = gFtmState.tx.segmentLength;
+  78              		.loc 1 163 5 is_stmt 1 view .LVU23
+  79              		.loc 1 163 53 is_stmt 0 view .LVU24
+  80 0028 5A6B     		ldr	r2, [r3, #52]
+  81              		.loc 1 163 39 view .LVU25
+  82 002a 9A63     		str	r2, [r3, #56]
+ 164:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     gFtmState.tx.state = ST25FTM_WRITE_SEGMENT;
+  83              		.loc 1 164 5 is_stmt 1 view .LVU26
+  84              		.loc 1 164 24 is_stmt 0 view .LVU27
+  85 002c 0222     		movs	r2, #2
+  86 002e 1A73     		strb	r2, [r3, #12]
+  87              	.LBE2:
+ 165:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   } else {
+ 166:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     gFtmState.tx.state = ST25FTM_WRITE_DONE;
+ 167:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     return ST25FTM_STATE_MACHINE_RELEASE;
+ 168:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   }
+ 169:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   return ST25FTM_STATE_MACHINE_CONTINUE;
+  88              		.loc 1 169 3 is_stmt 1 view .LVU28
+  89              		.loc 1 169 10 is_stmt 0 view .LVU29
+  90 0030 0020     		movs	r0, #0
+  91 0032 7047     		bx	lr
+  92              	.LVL2:
+  93              	.L6:
+  94              	.LBB3:
+ 150:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****                          (gFtmState.tx.segmentMaxLength - 4U) :
+  95              		.loc 1 150 7 is_stmt 1 view .LVU30
+ 150:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****                          (gFtmState.tx.segmentMaxLength - 4U) :
+  96              		.loc 1 150 67 is_stmt 0 view .LVU31
+  97 0034 074B     		ldr	r3, .L7
+  98 0036 D96B     		ldr	r1, [r3, #60]
+ 150:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****                          (gFtmState.tx.segmentMaxLength - 4U) :
+  99              		.loc 1 150 85 view .LVU32
+ 100 0038 0439     		subs	r1, r1, #4
+ 150:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****                          (gFtmState.tx.segmentMaxLength - 4U) :
+ 101              		.loc 1 150 22 view .LVU33
+ 102 003a 9142     		cmp	r1, r2
+ 103 003c 28BF     		it	cs
+ 104 003e 1146     		movcs	r1, r2
+ 105              	.LVL3:
+ 153:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       gFtmState.tx.segmentPtr = gFtmState.tx.dataPtr;
+ 106              		.loc 1 153 7 is_stmt 1 view .LVU34
+ 153:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       gFtmState.tx.segmentPtr = gFtmState.tx.dataPtr;
+ 107              		.loc 1 153 51 is_stmt 0 view .LVU35
+ 108 0040 081D     		adds	r0, r1, #4
+ 153:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       gFtmState.tx.segmentPtr = gFtmState.tx.dataPtr;
+ 109              		.loc 1 153 34 view .LVU36
+ARM GAS  /tmp/cc1Z0LnX.s 			page 6
+
+
+ 110 0042 5863     		str	r0, [r3, #52]
+ 154:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else {
+ 111              		.loc 1 154 7 is_stmt 1 view .LVU37
+ 154:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else {
+ 112              		.loc 1 154 45 is_stmt 0 view .LVU38
+ 113 0044 986A     		ldr	r0, [r3, #40]
+ 154:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else {
+ 114              		.loc 1 154 31 view .LVU39
+ 115 0046 D862     		str	r0, [r3, #44]
+ 116 0048 E6E7     		b	.L4
+ 117              	.LVL4:
+ 118              	.L2:
+ 154:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else {
+ 119              		.loc 1 154 31 view .LVU40
+ 120              	.LBE3:
+ 166:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     return ST25FTM_STATE_MACHINE_RELEASE;
+ 121              		.loc 1 166 5 is_stmt 1 view .LVU41
+ 166:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     return ST25FTM_STATE_MACHINE_RELEASE;
+ 122              		.loc 1 166 24 is_stmt 0 view .LVU42
+ 123 004a 024B     		ldr	r3, .L7
+ 124 004c 0622     		movs	r2, #6
+ 125 004e 1A73     		strb	r2, [r3, #12]
+ 167:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   }
+ 126              		.loc 1 167 5 is_stmt 1 view .LVU43
+ 167:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   }
+ 127              		.loc 1 167 12 is_stmt 0 view .LVU44
+ 128 0050 0120     		movs	r0, #1
+ 170:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** }
+ 129              		.loc 1 170 1 view .LVU45
+ 130 0052 7047     		bx	lr
+ 131              	.L8:
+ 132              		.align	2
+ 133              	.L7:
+ 134 0054 00000000 		.word	gFtmState
+ 135              		.cfi_endproc
+ 136              	.LFE139:
+ 138              		.section	.text.ST25FTM_StateTxIdle,"ax",%progbits
+ 139              		.align	1
+ 140              		.syntax unified
+ 141              		.thumb
+ 142              		.thumb_func
+ 143              		.fpu fpv4-sp-d16
+ 145              	ST25FTM_StateTxIdle:
+ 146              	.LFB138:
+ 123:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_LOG("Tx Length %d\r\n",  gFtmState.tx.cmdLen);
+ 147              		.loc 1 123 1 is_stmt 1 view -0
+ 148              		.cfi_startproc
+ 149              		@ args = 0, pretend = 0, frame = 0
+ 150              		@ frame_needed = 0, uses_anonymous_args = 0
+ 151 0000 10B5     		push	{r4, lr}
+ 152              	.LCFI0:
+ 153              		.cfi_def_cfa_offset 8
+ 154              		.cfi_offset 4, -8
+ 155              		.cfi_offset 14, -4
+ 124:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.remainingData =   gFtmState.tx.cmdLen;
+ 156              		.loc 1 124 56 view .LVU47
+ 125:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.state = ST25FTM_WRITE_CMD;
+ARM GAS  /tmp/cc1Z0LnX.s 			page 7
+
+
+ 157              		.loc 1 125 3 view .LVU48
+ 125:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.state = ST25FTM_WRITE_CMD;
+ 158              		.loc 1 125 46 is_stmt 0 view .LVU49
+ 159 0002 0B4B     		ldr	r3, .L11
+ 160 0004 5A69     		ldr	r2, [r3, #20]
+ 125:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.state = ST25FTM_WRITE_CMD;
+ 161              		.loc 1 125 30 view .LVU50
+ 162 0006 9A61     		str	r2, [r3, #24]
+ 126:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.dataPtr = gFtmState.tx.cmdPtr;
+ 163              		.loc 1 126 3 is_stmt 1 view .LVU51
+ 126:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.dataPtr = gFtmState.tx.cmdPtr;
+ 164              		.loc 1 126 22 is_stmt 0 view .LVU52
+ 165 0008 0122     		movs	r2, #1
+ 166 000a 1A73     		strb	r2, [r3, #12]
+ 127:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentLength = 0;
+ 167              		.loc 1 127 3 is_stmt 1 view .LVU53
+ 127:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentLength = 0;
+ 168              		.loc 1 127 38 is_stmt 0 view .LVU54
+ 169 000c 1A69     		ldr	r2, [r3, #16]
+ 127:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentLength = 0;
+ 170              		.loc 1 127 24 view .LVU55
+ 171 000e 9A62     		str	r2, [r3, #40]
+ 128:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentRemainingData = 0;
+ 172              		.loc 1 128 3 is_stmt 1 view .LVU56
+ 128:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentRemainingData = 0;
+ 173              		.loc 1 128 30 is_stmt 0 view .LVU57
+ 174 0010 0024     		movs	r4, #0
+ 175 0012 5C63     		str	r4, [r3, #52]
+ 129:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.retransmit = 0;
+ 176              		.loc 1 129 3 is_stmt 1 view .LVU58
+ 129:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.retransmit = 0;
+ 177              		.loc 1 129 37 is_stmt 0 view .LVU59
+ 178 0014 9C63     		str	r4, [r3, #56]
+ 130:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.pktIndex = 0;
+ 179              		.loc 1 130 3 is_stmt 1 view .LVU60
+ 130:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.pktIndex = 0;
+ 180              		.loc 1 130 27 is_stmt 0 view .LVU61
+ 181 0016 83F84040 		strb	r4, [r3, #64]
+ 131:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentIndex = 0;
+ 182              		.loc 1 131 3 is_stmt 1 view .LVU62
+ 131:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentIndex = 0;
+ 183              		.loc 1 131 25 is_stmt 0 view .LVU63
+ 184 001a 5C64     		str	r4, [r3, #68]
+ 132:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.totalDataLength = 0;
+ 185              		.loc 1 132 3 is_stmt 1 view .LVU64
+ 132:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.totalDataLength = 0;
+ 186              		.loc 1 132 29 is_stmt 0 view .LVU65
+ 187 001c 9C64     		str	r4, [r3, #72]
+ 133:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.retryLength = 0;
+ 188              		.loc 1 133 3 is_stmt 1 view .LVU66
+ 133:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.retryLength = 0;
+ 189              		.loc 1 133 29 is_stmt 0 view .LVU67
+ 190 001e 5C60     		str	r4, [r3, #4]
+ 134:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentNumber = 0;
+ 191              		.loc 1 134 3 is_stmt 1 view .LVU68
+ 134:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentNumber = 0;
+ 192              		.loc 1 134 25 is_stmt 0 view .LVU69
+ARM GAS  /tmp/cc1Z0LnX.s 			page 8
+
+
+ 193 0020 9C60     		str	r4, [r3, #8]
+ 135:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_CRC_Initialize();
+ 194              		.loc 1 135 3 is_stmt 1 view .LVU70
+ 135:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_CRC_Initialize();
+ 195              		.loc 1 135 30 is_stmt 0 view .LVU71
+ 196 0022 C3F85041 		str	r4, [r3, #336]
+ 136:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   return ST25FTM_STATE_MACHINE_CONTINUE;
+ 197              		.loc 1 136 3 is_stmt 1 view .LVU72
+ 198 0026 FFF7FEFF 		bl	ST25FTM_CRC_Initialize
+ 199              	.LVL5:
+ 137:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** }
+ 200              		.loc 1 137 3 view .LVU73
+ 138:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+ 201              		.loc 1 138 1 is_stmt 0 view .LVU74
+ 202 002a 2046     		mov	r0, r4
+ 203 002c 10BD     		pop	{r4, pc}
+ 204              	.L12:
+ 205 002e 00BF     		.align	2
+ 206              	.L11:
+ 207 0030 00000000 		.word	gFtmState
+ 208              		.cfi_endproc
+ 209              	.LFE138:
+ 211              		.section	.text.ST25FTM_GetData,"ax",%progbits
+ 212              		.align	1
+ 213              		.syntax unified
+ 214              		.thumb
+ 215              		.thumb_func
+ 216              		.fpu fpv4-sp-d16
+ 218              	ST25FTM_GetData:
+ 219              	.LVL6:
+ 220              	.LFB135:
+  27:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   if(gFtmState.tx.getdata_cb == NULL)
+ 221              		.loc 1 27 1 is_stmt 1 view -0
+ 222              		.cfi_startproc
+ 223              		@ args = 0, pretend = 0, frame = 0
+ 224              		@ frame_needed = 0, uses_anonymous_args = 0
+  27:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   if(gFtmState.tx.getdata_cb == NULL)
+ 225              		.loc 1 27 1 is_stmt 0 view .LVU76
+ 226 0000 08B5     		push	{r3, lr}
+ 227              	.LCFI1:
+ 228              		.cfi_def_cfa_offset 8
+ 229              		.cfi_offset 3, -8
+ 230              		.cfi_offset 14, -4
+  28:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   {
+ 231              		.loc 1 28 3 is_stmt 1 view .LVU77
+  28:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   {
+ 232              		.loc 1 28 18 is_stmt 0 view .LVU78
+ 233 0002 044B     		ldr	r3, .L18
+ 234 0004 D3F85431 		ldr	r3, [r3, #340]
+  28:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   {
+ 235              		.loc 1 28 5 view .LVU79
+ 236 0008 0BB1     		cbz	r3, .L17
+  34:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   }
+ 237              		.loc 1 34 5 is_stmt 1 view .LVU80
+ 238 000a 9847     		blx	r3
+ 239              	.LVL7:
+ 240              	.L13:
+ARM GAS  /tmp/cc1Z0LnX.s 			page 9
+
+
+  36:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+ 241              		.loc 1 36 1 is_stmt 0 view .LVU81
+ 242 000c 08BD     		pop	{r3, pc}
+ 243              	.LVL8:
+ 244              	.L17:
+  31:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   } else {
+ 245              		.loc 1 31 5 is_stmt 1 view .LVU82
+  31:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   } else {
+ 246              		.loc 1 31 11 is_stmt 0 view .LVU83
+ 247 000e FFF7FEFF 		bl	memcpy
+ 248              	.LVL9:
+  31:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   } else {
+ 249              		.loc 1 31 11 view .LVU84
+ 250 0012 FBE7     		b	.L13
+ 251              	.L19:
+ 252              		.align	2
+ 253              	.L18:
+ 254 0014 00000000 		.word	gFtmState
+ 255              		.cfi_endproc
+ 256              	.LFE135:
+ 258              		.section	.text.ST25FTM_Pack,"ax",%progbits
+ 259              		.align	1
+ 260              		.syntax unified
+ 261              		.thumb
+ 262              		.thumb_func
+ 263              		.fpu fpv4-sp-d16
+ 265              	ST25FTM_Pack:
+ 266              	.LVL10:
+ 267              	.LFB136:
+  39:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   uint32_t index = 0;
+ 268              		.loc 1 39 1 is_stmt 1 view -0
+ 269              		.cfi_startproc
+ 270              		@ args = 0, pretend = 0, frame = 0
+ 271              		@ frame_needed = 0, uses_anonymous_args = 0
+  39:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   uint32_t index = 0;
+ 272              		.loc 1 39 1 is_stmt 0 view .LVU86
+ 273 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 274              	.LCFI2:
+ 275              		.cfi_def_cfa_offset 24
+ 276              		.cfi_offset 4, -24
+ 277              		.cfi_offset 5, -20
+ 278              		.cfi_offset 6, -16
+ 279              		.cfi_offset 7, -12
+ 280              		.cfi_offset 8, -8
+ 281              		.cfi_offset 14, -4
+ 282 0004 0446     		mov	r4, r0
+ 283 0006 0E46     		mov	r6, r1
+  40:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   uint32_t data_index = 0;
+ 284              		.loc 1 40 3 is_stmt 1 view .LVU87
+ 285              	.LVL11:
+  41:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   uint32_t data_payload = 0;
+ 286              		.loc 1 41 3 view .LVU88
+  42:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+ 287              		.loc 1 42 3 view .LVU89
+  44:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   index++;
+ 288              		.loc 1 44 3 view .LVU90
+  44:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   index++;
+ARM GAS  /tmp/cc1Z0LnX.s 			page 10
+
+
+ 289              		.loc 1 44 25 is_stmt 0 view .LVU91
+ 290 0008 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+  44:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   index++;
+ 291              		.loc 1 44 14 view .LVU92
+ 292 000a 0B70     		strb	r3, [r1]
+  45:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   if(pkt->ctrl.b.pktLen != 0U)
+ 293              		.loc 1 45 3 is_stmt 1 view .LVU93
+ 294              	.LVL12:
+  46:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   {
+ 295              		.loc 1 46 3 view .LVU94
+  46:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   {
+ 296              		.loc 1 46 5 is_stmt 0 view .LVU95
+ 297 000c 13F0400F 		tst	r3, #64
+ 298 0010 1CD0     		beq	.L29
+  48:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     index++;
+ 299              		.loc 1 48 5 is_stmt 1 view .LVU96
+  48:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     index++;
+ 300              		.loc 1 48 18 is_stmt 0 view .LVU97
+ 301 0012 0379     		ldrb	r3, [r0, #4]	@ zero_extendqisi2
+  48:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     index++;
+ 302              		.loc 1 48 16 view .LVU98
+ 303 0014 4B70     		strb	r3, [r1, #1]
+  49:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   }
+ 304              		.loc 1 49 5 is_stmt 1 view .LVU99
+ 305              	.LVL13:
+  49:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   }
+ 306              		.loc 1 49 10 is_stmt 0 view .LVU100
+ 307 0016 0225     		movs	r5, #2
+ 308              	.LVL14:
+ 309              	.L21:
+  52:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   {
+ 310              		.loc 1 52 3 is_stmt 1 view .LVU101
+  52:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   {
+ 311              		.loc 1 52 6 is_stmt 0 view .LVU102
+ 312 0018 2378     		ldrb	r3, [r4]	@ zero_extendqisi2
+ 313 001a 03F00C03 		and	r3, r3, #12
+  52:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   {
+ 314              		.loc 1 52 5 view .LVU103
+ 315 001e 042B     		cmp	r3, #4
+ 316 0020 16D0     		beq	.L32
+ 317              	.LVL15:
+ 318              	.L22:
+  61:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   data_payload = pkt->length - ( pkt->has_crc ? 4 : 0);
+ 319              		.loc 1 61 3 is_stmt 1 view .LVU104
+  62:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_GetData(&msg[index],pkt->data, data_payload);
+ 320              		.loc 1 62 3 view .LVU105
+  62:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_GetData(&msg[index],pkt->data, data_payload);
+ 321              		.loc 1 62 21 is_stmt 0 view .LVU106
+ 322 0022 6768     		ldr	r7, [r4, #4]
+  62:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_GetData(&msg[index],pkt->data, data_payload);
+ 323              		.loc 1 62 37 view .LVU107
+ 324 0024 237D     		ldrb	r3, [r4, #20]	@ zero_extendqisi2
+  62:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_GetData(&msg[index],pkt->data, data_payload);
+ 325              		.loc 1 62 51 view .LVU108
+ 326 0026 13B3     		cbz	r3, .L30
+  62:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_GetData(&msg[index],pkt->data, data_payload);
+ 327              		.loc 1 62 51 view .LVU109
+ARM GAS  /tmp/cc1Z0LnX.s 			page 11
+
+
+ 328 0028 0423     		movs	r3, #4
+ 329              	.L23:
+  62:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_GetData(&msg[index],pkt->data, data_payload);
+ 330              		.loc 1 62 16 discriminator 4 view .LVU110
+ 331 002a FF1A     		subs	r7, r7, r3
+ 332              	.LVL16:
+  63:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   index += data_payload;
+ 333              		.loc 1 63 3 is_stmt 1 discriminator 4 view .LVU111
+ 334 002c 06EB0508 		add	r8, r6, r5
+ 335 0030 3A46     		mov	r2, r7
+ 336 0032 2169     		ldr	r1, [r4, #16]
+ 337 0034 4046     		mov	r0, r8
+ 338              	.LVL17:
+  63:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   index += data_payload;
+ 339              		.loc 1 63 3 is_stmt 0 discriminator 4 view .LVU112
+ 340 0036 FFF7FEFF 		bl	ST25FTM_GetData
+ 341              	.LVL18:
+  64:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+ 342              		.loc 1 64 3 is_stmt 1 discriminator 4 view .LVU113
+  64:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+ 343              		.loc 1 64 9 is_stmt 0 discriminator 4 view .LVU114
+ 344 003a 3D44     		add	r5, r5, r7
+ 345              	.LVL19:
+  67:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   {
+ 346              		.loc 1 67 3 is_stmt 1 discriminator 4 view .LVU115
+  67:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   {
+ 347              		.loc 1 67 18 is_stmt 0 discriminator 4 view .LVU116
+ 348 003c 284B     		ldr	r3, .L37
+ 349 003e 93F82530 		ldrb	r3, [r3, #37]	@ zero_extendqisi2
+  67:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   {
+ 350              		.loc 1 67 5 discriminator 4 view .LVU117
+ 351 0042 012B     		cmp	r3, #1
+ 352 0044 15D0     		beq	.L33
+ 353              	.L20:
+  93:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+ 354              		.loc 1 93 1 view .LVU118
+ 355 0046 2846     		mov	r0, r5
+ 356 0048 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 357              	.LVL20:
+ 358              	.L29:
+  45:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   if(pkt->ctrl.b.pktLen != 0U)
+ 359              		.loc 1 45 8 view .LVU119
+ 360 004c 0125     		movs	r5, #1
+ 361 004e E3E7     		b	.L21
+ 362              	.LVL21:
+ 363              	.L32:
+ 364              	.LBB4:
+  54:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     ST25FTM_CHANGE_ENDIANESS(txTotalLen);
+ 365              		.loc 1 54 5 is_stmt 1 view .LVU120
+  54:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     ST25FTM_CHANGE_ENDIANESS(txTotalLen);
+ 366              		.loc 1 54 30 is_stmt 0 view .LVU121
+ 367 0050 A268     		ldr	r2, [r4, #8]
+ 368              	.LVL22:
+  55:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     (void)memcpy(&msg[index],&txTotalLen,sizeof(txTotalLen));
+ 369              		.loc 1 55 5 is_stmt 1 view .LVU122
+ 370 0052 130A     		lsrs	r3, r2, #8
+ 371 0054 03F47F43 		and	r3, r3, #65280
+ARM GAS  /tmp/cc1Z0LnX.s 			page 12
+
+
+ 372 0058 43EA1263 		orr	r3, r3, r2, lsr #24
+ 373 005c 1102     		lsls	r1, r2, #8
+ 374              	.LVL23:
+  55:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     (void)memcpy(&msg[index],&txTotalLen,sizeof(txTotalLen));
+ 375              		.loc 1 55 5 is_stmt 0 view .LVU123
+ 376 005e 01F47F01 		and	r1, r1, #16711680
+ 377 0062 0B43     		orrs	r3, r3, r1
+ 378 0064 43EA0263 		orr	r3, r3, r2, lsl #24
+ 379              	.LVL24:
+  56:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     index += sizeof(pkt->totalLength);
+ 380              		.loc 1 56 5 is_stmt 1 view .LVU124
+  56:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     index += sizeof(pkt->totalLength);
+ 381              		.loc 1 56 11 is_stmt 0 view .LVU125
+ 382 0068 7351     		str	r3, [r6, r5]	@ unaligned
+  57:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   }
+ 383              		.loc 1 57 5 is_stmt 1 view .LVU126
+  57:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   }
+ 384              		.loc 1 57 11 is_stmt 0 view .LVU127
+ 385 006a 0435     		adds	r5, r5, #4
+ 386              	.LVL25:
+  57:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   }
+ 387              		.loc 1 57 11 view .LVU128
+ 388 006c D9E7     		b	.L22
+ 389              	.LVL26:
+ 390              	.L30:
+  57:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   }
+ 391              		.loc 1 57 11 view .LVU129
+ 392              	.LBE4:
+  62:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_GetData(&msg[index],pkt->data, data_payload);
+ 393              		.loc 1 62 51 view .LVU130
+ 394 006e 0023     		movs	r3, #0
+ 395 0070 DBE7     		b	.L23
+ 396              	.LVL27:
+ 397              	.L33:
+  69:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     if(pkt->ctrl.b.ackCtrl == ST25FTM_SEGMENT_START)
+ 398              		.loc 1 69 5 is_stmt 1 view .LVU131
+  69:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     if(pkt->ctrl.b.ackCtrl == ST25FTM_SEGMENT_START)
+ 399              		.loc 1 69 14 is_stmt 0 view .LVU132
+ 400 0072 0023     		movs	r3, #0
+ 401 0074 E360     		str	r3, [r4, #12]
+  70:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 402              		.loc 1 70 5 is_stmt 1 view .LVU133
+  70:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 403              		.loc 1 70 28 is_stmt 0 view .LVU134
+ 404 0076 2378     		ldrb	r3, [r4]	@ zero_extendqisi2
+ 405 0078 03F03003 		and	r3, r3, #48
+  70:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 406              		.loc 1 70 7 view .LVU135
+ 407 007c 102B     		cmp	r3, #16
+ 408 007e 1BD0     		beq	.L34
+  73:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 409              		.loc 1 73 12 is_stmt 1 view .LVU136
+  73:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 410              		.loc 1 73 15 is_stmt 0 view .LVU137
+ 411 0080 202B     		cmp	r3, #32
+ 412 0082 1FD0     		beq	.L35
+  77:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       /* Single frame segment */
+ARM GAS  /tmp/cc1Z0LnX.s 			page 13
+
+
+ 413              		.loc 1 77 12 is_stmt 1 view .LVU138
+  77:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       /* Single frame segment */
+ 414              		.loc 1 77 15 is_stmt 0 view .LVU139
+ 415 0084 302B     		cmp	r3, #48
+ 416 0086 24D0     		beq	.L36
+  82:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     }
+ 417              		.loc 1 82 7 is_stmt 1 view .LVU140
+ 418 0088 0222     		movs	r2, #2
+ 419 008a 3946     		mov	r1, r7
+ 420 008c 4046     		mov	r0, r8
+ 421 008e FFF7FEFF 		bl	ST25FTM_GetCrc
+ 422              	.LVL28:
+ 423              	.L26:
+  84:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 424              		.loc 1 84 5 view .LVU141
+  84:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 425              		.loc 1 84 11 is_stmt 0 view .LVU142
+ 426 0092 237D     		ldrb	r3, [r4, #20]	@ zero_extendqisi2
+  84:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 427              		.loc 1 84 7 view .LVU143
+ 428 0094 002B     		cmp	r3, #0
+ 429 0096 D6D0     		beq	.L20
+  86:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****      (void)memcpy(&msg[index],&pkt->crc, 4);
+ 430              		.loc 1 86 7 is_stmt 1 view .LVU144
+ 431 0098 E268     		ldr	r2, [r4, #12]
+ 432 009a 130A     		lsrs	r3, r2, #8
+ 433 009c 03F47F43 		and	r3, r3, #65280
+ 434 00a0 43EA1263 		orr	r3, r3, r2, lsr #24
+ 435 00a4 1102     		lsls	r1, r2, #8
+ 436 00a6 01F47F01 		and	r1, r1, #16711680
+ 437 00aa 0B43     		orrs	r3, r3, r1
+ 438 00ac 43EA0263 		orr	r3, r3, r2, lsl #24
+ 439 00b0 E360     		str	r3, [r4, #12]
+  87:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       index += 4;
+ 440              		.loc 1 87 6 view .LVU145
+  87:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       index += 4;
+ 441              		.loc 1 87 12 is_stmt 0 view .LVU146
+ 442 00b2 7351     		str	r3, [r6, r5]	@ unaligned
+  88:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     }
+ 443              		.loc 1 88 7 is_stmt 1 view .LVU147
+  88:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     }
+ 444              		.loc 1 88 13 is_stmt 0 view .LVU148
+ 445 00b4 0435     		adds	r5, r5, #4
+ 446              	.LVL29:
+  92:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** }
+ 447              		.loc 1 92 3 is_stmt 1 view .LVU149
+  92:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** }
+ 448              		.loc 1 92 10 is_stmt 0 view .LVU150
+ 449 00b6 C6E7     		b	.L20
+ 450              	.L34:
+  72:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else if (pkt->ctrl.b.ackCtrl == ST25FTM_SEGMENT_END)
+ 451              		.loc 1 72 7 is_stmt 1 view .LVU151
+ 452 00b8 0022     		movs	r2, #0
+ 453 00ba 3946     		mov	r1, r7
+ 454 00bc 4046     		mov	r0, r8
+ 455 00be FFF7FEFF 		bl	ST25FTM_GetCrc
+ 456              	.LVL30:
+ARM GAS  /tmp/cc1Z0LnX.s 			page 14
+
+
+ 457 00c2 E6E7     		b	.L26
+ 458              	.L35:
+  76:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else if (pkt->ctrl.b.ackCtrl == ST25FTM_ACK_SINGLE_PKT) {
+ 459              		.loc 1 76 7 view .LVU152
+  76:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else if (pkt->ctrl.b.ackCtrl == ST25FTM_ACK_SINGLE_PKT) {
+ 460              		.loc 1 76 18 is_stmt 0 view .LVU153
+ 461 00c4 0122     		movs	r2, #1
+ 462 00c6 3946     		mov	r1, r7
+ 463 00c8 4046     		mov	r0, r8
+ 464 00ca FFF7FEFF 		bl	ST25FTM_GetCrc
+ 465              	.LVL31:
+  76:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else if (pkt->ctrl.b.ackCtrl == ST25FTM_ACK_SINGLE_PKT) {
+ 466              		.loc 1 76 16 view .LVU154
+ 467 00ce E060     		str	r0, [r4, #12]
+ 468 00d0 DFE7     		b	.L26
+ 469              	.L36:
+  79:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else {
+ 470              		.loc 1 79 7 is_stmt 1 view .LVU155
+  79:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else {
+ 471              		.loc 1 79 18 is_stmt 0 view .LVU156
+ 472 00d2 0322     		movs	r2, #3
+ 473 00d4 3946     		mov	r1, r7
+ 474 00d6 4046     		mov	r0, r8
+ 475 00d8 FFF7FEFF 		bl	ST25FTM_GetCrc
+ 476              	.LVL32:
+  79:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else {
+ 477              		.loc 1 79 16 view .LVU157
+ 478 00dc E060     		str	r0, [r4, #12]
+ 479 00de D8E7     		b	.L26
+ 480              	.L38:
+ 481              		.align	2
+ 482              	.L37:
+ 483 00e0 00000000 		.word	gFtmState
+ 484              		.cfi_endproc
+ 485              	.LFE136:
+ 487              		.section	.text.ST25FTM_StateTxSegment,"ax",%progbits
+ 488              		.align	1
+ 489              		.syntax unified
+ 490              		.thumb
+ 491              		.thumb_func
+ 492              		.fpu fpv4-sp-d16
+ 494              	ST25FTM_StateTxSegment:
+ 495              	.LFB140:
+ 171:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+ 172:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** static ST25FTM_StateMachineCtrl_t ST25FTM_StateTxSegment(void)
+ 173:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** {
+ 496              		.loc 1 173 1 is_stmt 1 view -0
+ 497              		.cfi_startproc
+ 498              		@ args = 0, pretend = 0, frame = 24
+ 499              		@ frame_needed = 0, uses_anonymous_args = 0
+ 500 0000 70B5     		push	{r4, r5, r6, lr}
+ 501              	.LCFI3:
+ 502              		.cfi_def_cfa_offset 16
+ 503              		.cfi_offset 4, -16
+ 504              		.cfi_offset 5, -12
+ 505              		.cfi_offset 6, -8
+ 506              		.cfi_offset 14, -4
+ARM GAS  /tmp/cc1Z0LnX.s 			page 15
+
+
+ 507 0002 86B0     		sub	sp, sp, #24
+ 508              	.LCFI4:
+ 509              		.cfi_def_cfa_offset 40
+ 174:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_Packet_t pkt = {0};
+ 510              		.loc 1 174 3 view .LVU159
+ 511              		.loc 1 174 20 is_stmt 0 view .LVU160
+ 512 0004 0023     		movs	r3, #0
+ 513 0006 0093     		str	r3, [sp]
+ 514 0008 0193     		str	r3, [sp, #4]
+ 515 000a 0293     		str	r3, [sp, #8]
+ 516 000c 0393     		str	r3, [sp, #12]
+ 517 000e 0493     		str	r3, [sp, #16]
+ 518 0010 0593     		str	r3, [sp, #20]
+ 175:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   pkt.length = gFtmState.tx.frameMaxLength - sizeof(ST25FTM_Ctrl_Byte_t);
+ 519              		.loc 1 175 3 is_stmt 1 view .LVU161
+ 520              		.loc 1 175 28 is_stmt 0 view .LVU162
+ 521 0012 574A     		ldr	r2, .L53
+ 522 0014 D369     		ldr	r3, [r2, #28]
+ 523              		.loc 1 175 44 view .LVU163
+ 524 0016 013B     		subs	r3, r3, #1
+ 525              		.loc 1 175 14 view .LVU164
+ 526 0018 0193     		str	r3, [sp, #4]
+ 176:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   pkt.has_crc = 0;
+ 527              		.loc 1 176 3 is_stmt 1 view .LVU165
+ 177:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+ 178:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   pkt.data = gFtmState.tx.segmentPtr;
+ 528              		.loc 1 178 3 view .LVU166
+ 529              		.loc 1 178 26 is_stmt 0 view .LVU167
+ 530 001a D56A     		ldr	r5, [r2, #44]
+ 531              		.loc 1 178 12 view .LVU168
+ 532 001c 0495     		str	r5, [sp, #16]
+ 179:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   pkt.ctrl.b.segId = (uint8_t)(gFtmState.tx.segmentNumber % 2U);
+ 533              		.loc 1 179 3 is_stmt 1 view .LVU169
+ 534              		.loc 1 179 44 is_stmt 0 view .LVU170
+ 535 001e D2F85001 		ldr	r0, [r2, #336]
+ 536              		.loc 1 179 20 view .LVU171
+ 537 0022 9DF80010 		ldrb	r1, [sp]	@ zero_extendqisi2
+ 538 0026 60F34101 		bfi	r1, r0, #1, #1
+ 539 002a 8DF80010 		strb	r1, [sp]
+ 180:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   pkt.ctrl.b.ackCtrl = 0;
+ 540              		.loc 1 180 3 is_stmt 1 view .LVU172
+ 181:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   pkt.ctrl.b.inSegment = gFtmState.tx.sendAck == ST25FTM_SEND_WITH_ACK;
+ 541              		.loc 1 181 3 view .LVU173
+ 542              		.loc 1 181 38 is_stmt 0 view .LVU174
+ 543 002e 92F82510 		ldrb	r1, [r2, #37]	@ zero_extendqisi2
+ 544              		.loc 1 181 47 view .LVU175
+ 545 0032 0129     		cmp	r1, #1
+ 546 0034 14BF     		ite	ne
+ 547 0036 0024     		movne	r4, #0
+ 548 0038 0124     		moveq	r4, #1
+ 549              		.loc 1 181 24 view .LVU176
+ 550 003a 9DF80000 		ldrb	r0, [sp]	@ zero_extendqisi2
+ 551 003e 64F30000 		bfi	r0, r4, #0, #1
+ 552 0042 8DF80000 		strb	r0, [sp]
+ 182:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+ 183:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_LOG("SegmentLen %d\r\n",gFtmState.tx.segmentLength);
+ 553              		.loc 1 183 62 is_stmt 1 view .LVU177
+ARM GAS  /tmp/cc1Z0LnX.s 			page 16
+
+
+ 184:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   /* Segment has to be sent over several packets */
+ 185:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   if(gFtmState.tx.segmentRemainingData > ST25FTM_MAX_DATA_IN_SINGLE_PACKET())
+ 554              		.loc 1 185 3 view .LVU178
+ 555              		.loc 1 185 18 is_stmt 0 view .LVU179
+ 556 0046 926B     		ldr	r2, [r2, #56]
+ 557              		.loc 1 185 5 view .LVU180
+ 558 0048 9342     		cmp	r3, r2
+ 559 004a 55D2     		bcs	.L40
+ 186:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   {
+ 187:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+ 188:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     if(gFtmState.tx.pktIndex == 0U)
+ 560              		.loc 1 188 5 is_stmt 1 view .LVU181
+ 561              		.loc 1 188 20 is_stmt 0 view .LVU182
+ 562 004c 4848     		ldr	r0, .L53
+ 563 004e 406C     		ldr	r0, [r0, #68]
+ 564              		.loc 1 188 7 view .LVU183
+ 565 0050 0028     		cmp	r0, #0
+ 566 0052 33D1     		bne	.L41
+ 189:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 190:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       /* First Packet
+ 191:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****          don't mention packet length if the whole buffer is used */
+ 192:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       pkt.ctrl.b.pktLen = 0;
+ 567              		.loc 1 192 7 is_stmt 1 view .LVU184
+ 193:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       pkt.totalLength = gFtmState.tx.cmdLen;
+ 568              		.loc 1 193 7 view .LVU185
+ 569              		.loc 1 193 37 is_stmt 0 view .LVU186
+ 570 0054 4648     		ldr	r0, .L53
+ 571 0056 4069     		ldr	r0, [r0, #20]
+ 572              		.loc 1 193 23 view .LVU187
+ 573 0058 0290     		str	r0, [sp, #8]
+ 194:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       pkt.ctrl.b.position = (uint8_t)(ST25FTM_FIRST_PACKET);
+ 574              		.loc 1 194 7 is_stmt 1 view .LVU188
+ 575              		.loc 1 194 27 is_stmt 0 view .LVU189
+ 576 005a 9DF80000 		ldrb	r0, [sp]	@ zero_extendqisi2
+ 577 005e 0124     		movs	r4, #1
+ 578 0060 64F38300 		bfi	r0, r4, #2, #2
+ 579 0064 8DF80000 		strb	r0, [sp]
+ 195:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       pkt.length -= sizeof(pkt.totalLength);
+ 580              		.loc 1 195 7 is_stmt 1 view .LVU190
+ 581              		.loc 1 195 18 is_stmt 0 view .LVU191
+ 582 0068 043B     		subs	r3, r3, #4
+ 583 006a 0193     		str	r3, [sp, #4]
+ 584              	.L42:
+ 196:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else {
+ 197:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       /* Middle Packet
+ 198:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****          don't mention packet length if the whole buffer is used */
+ 199:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       pkt.ctrl.b.pktLen = 0U;
+ 200:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       pkt.ctrl.b.position = (uint8_t)(ST25FTM_MIDDLE_PACKET);
+ 201:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     }
+ 202:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     if(gFtmState.tx.sendAck == ST25FTM_SEND_WITH_ACK)
+ 585              		.loc 1 202 5 is_stmt 1 view .LVU192
+ 586              		.loc 1 202 7 is_stmt 0 view .LVU193
+ 587 006c 0129     		cmp	r1, #1
+ 588 006e 2DD0     		beq	.L51
+ 589              	.L43:
+ 203:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 204:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       if(gFtmState.tx.segmentIndex == 0U)
+ARM GAS  /tmp/cc1Z0LnX.s 			page 17
+
+
+ 205:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       {
+ 206:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****         pkt.ctrl.b.ackCtrl |= (uint8_t)(ST25FTM_SEGMENT_START);
+ 207:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       }
+ 208:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       if((gFtmState.tx.segmentRemainingData - pkt.length) < sizeof(pkt.crc))
+ 209:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       {
+ 210:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****         /* This is to make sure that CRC is not split between 2 packets */
+ 211:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****         pkt.ctrl.b.pktLen = 1U;
+ 212:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****         pkt.length = gFtmState.tx.segmentRemainingData - sizeof(pkt.crc);
+ 213:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       }
+ 214:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     }
+ 215:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   } else {
+ 216:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     /* Single or last Packet command */
+ 217:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     pkt.length = gFtmState.tx.segmentRemainingData;
+ 218:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     if(gFtmState.tx.segmentRemainingData == ST25FTM_MAX_DATA_IN_SINGLE_PACKET())
+ 219:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 220:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       /* exact fit */
+ 221:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       pkt.ctrl.b.pktLen = 0U;
+ 222:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else {
+ 223:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       /* smaller than data buffer */
+ 224:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       pkt.ctrl.b.pktLen = 1U;
+ 225:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     }
+ 226:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     if(gFtmState.tx.remainingData == 0U)
+ 227:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 228:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       if(gFtmState.tx.pktIndex == 0U)
+ 229:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       {
+ 230:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****         pkt.ctrl.b.position = (uint8_t)(ST25FTM_SINGLE_PACKET);
+ 231:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       } else {
+ 232:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****         pkt.ctrl.b.position = (uint8_t)(ST25FTM_LAST_PACKET);
+ 233:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       }
+ 234:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else if (gFtmState.tx.pktIndex != 0U) {
+ 235:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       pkt.ctrl.b.position = (uint8_t)(ST25FTM_MIDDLE_PACKET);
+ 236:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else {
+ 237:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       /* do nothing */
+ 238:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     }
+ 239:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     if(gFtmState.tx.sendAck == ST25FTM_SEND_WITHOUT_ACK)
+ 240:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 241:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       pkt.ctrl.b.ackCtrl = (uint8_t)(ST25FTM_NO_ACK_PACKET);
+ 242:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else {
+ 243:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       if(gFtmState.tx.sendAck == ST25FTM_SEND_WITH_ACK)
+ 244:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       {
+ 245:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****         pkt.has_crc = 1;
+ 246:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       }
+ 247:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       if(gFtmState.tx.segmentLength <= ST25FTM_MAX_DATA_IN_SINGLE_PACKET())
+ 248:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       {
+ 249:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****         pkt.ctrl.b.ackCtrl = (uint8_t)(ST25FTM_ACK_SINGLE_PKT);
+ 250:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       } else {
+ 251:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****         pkt.ctrl.b.ackCtrl = (uint8_t)(ST25FTM_SEGMENT_END);
+ 252:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       }
+ 253:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     }
+ 254:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   }
+ 255:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   
+ 256:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+ 257:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_LOG("segmentPtr = %x\r\n",gFtmState.tx.segmentPtr);
+ 590              		.loc 1 257 61 is_stmt 1 view .LVU194
+ 258:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   /* Note: segmentPtr will overflow when CRC is added for last segment packet
+ 259:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****            not an issue since it will be reset for next segment */
+ 260:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentPtr += pkt.length;
+ARM GAS  /tmp/cc1Z0LnX.s 			page 18
+
+
+ 591              		.loc 1 260 3 view .LVU195
+ 592              		.loc 1 260 33 is_stmt 0 view .LVU196
+ 593 0070 0199     		ldr	r1, [sp, #4]
+ 594              		.loc 1 260 27 view .LVU197
+ 595 0072 3F4C     		ldr	r4, .L53
+ 596 0074 0D44     		add	r5, r5, r1
+ 597 0076 E562     		str	r5, [r4, #44]
+ 261:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentRemainingData -= pkt.length;
+ 598              		.loc 1 261 3 is_stmt 1 view .LVU198
+ 599              		.loc 1 261 37 is_stmt 0 view .LVU199
+ 600 0078 521A     		subs	r2, r2, r1
+ 601 007a A263     		str	r2, [r4, #56]
+ 262:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.pktIndex++;
+ 602              		.loc 1 262 3 is_stmt 1 view .LVU200
+ 603              		.loc 1 262 15 is_stmt 0 view .LVU201
+ 604 007c 636C     		ldr	r3, [r4, #68]
+ 605              		.loc 1 262 24 view .LVU202
+ 606 007e 0133     		adds	r3, r3, #1
+ 607 0080 6364     		str	r3, [r4, #68]
+ 263:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentIndex++;
+ 608              		.loc 1 263 3 is_stmt 1 view .LVU203
+ 609              		.loc 1 263 15 is_stmt 0 view .LVU204
+ 610 0082 A36C     		ldr	r3, [r4, #72]
+ 611              		.loc 1 263 28 view .LVU205
+ 612 0084 0133     		adds	r3, r3, #1
+ 613 0086 A364     		str	r3, [r4, #72]
+ 264:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+ 265:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.packetLength = 0;
+ 614              		.loc 1 265 3 is_stmt 1 view .LVU206
+ 615              		.loc 1 265 29 is_stmt 0 view .LVU207
+ 616 0088 0025     		movs	r5, #0
+ 617 008a C4F84C51 		str	r5, [r4, #332]
+ 266:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   (void)memset(gFtmState.tx.packetBuf,0,sizeof(gFtmState.tx.packetBuf));
+ 618              		.loc 1 266 3 is_stmt 1 view .LVU208
+ 619              		.loc 1 266 9 is_stmt 0 view .LVU209
+ 620 008e 04F14C06 		add	r6, r4, #76
+ 621 0092 4FF48072 		mov	r2, #256
+ 622 0096 2946     		mov	r1, r5
+ 623 0098 3046     		mov	r0, r6
+ 624 009a FFF7FEFF 		bl	memset
+ 625              	.LVL33:
+ 267:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.packetLength = ST25FTM_Pack(&pkt,gFtmState.tx.packetBuf);
+ 626              		.loc 1 267 3 is_stmt 1 view .LVU210
+ 627              		.loc 1 267 31 is_stmt 0 view .LVU211
+ 628 009e 3146     		mov	r1, r6
+ 629 00a0 6846     		mov	r0, sp
+ 630 00a2 FFF7FEFF 		bl	ST25FTM_Pack
+ 631              	.LVL34:
+ 632 00a6 0146     		mov	r1, r0
+ 633              		.loc 1 267 29 view .LVU212
+ 634 00a8 C4F84C01 		str	r0, [r4, #332]
+ 268:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+ 269:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_LOG("PktId %d\r\n",gFtmState.tx.pktIndex);
+ 635              		.loc 1 269 52 is_stmt 1 view .LVU213
+ 270:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_LOG("PktLen total=%d payload=%d\r\n",gFtmState.tx.packetLength,pkt.length);
+ 636              		.loc 1 270 85 view .LVU214
+ 271:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_LOG("Wr ");
+ARM GAS  /tmp/cc1Z0LnX.s 			page 19
+
+
+ 637              		.loc 1 271 21 view .LVU215
+ 272:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   logHexBuf(gFtmState.tx.packetBuf,gFtmState.tx.packetLength);
+ 638              		.loc 1 272 3 view .LVU216
+ 639 00ac 3046     		mov	r0, r6
+ 640 00ae FFF7FEFF 		bl	logHexBuf
+ 641              	.LVL35:
+ 273:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+ 274:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.state = ST25FTM_WRITE_PKT;
+ 642              		.loc 1 274 3 view .LVU217
+ 643              		.loc 1 274 22 is_stmt 0 view .LVU218
+ 644 00b2 0323     		movs	r3, #3
+ 645 00b4 2373     		strb	r3, [r4, #12]
+ 275:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   return ST25FTM_STATE_MACHINE_CONTINUE;
+ 646              		.loc 1 275 3 is_stmt 1 view .LVU219
+ 276:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** }
+ 647              		.loc 1 276 1 is_stmt 0 view .LVU220
+ 648 00b6 2846     		mov	r0, r5
+ 649 00b8 06B0     		add	sp, sp, #24
+ 650              	.LCFI5:
+ 651              		.cfi_remember_state
+ 652              		.cfi_def_cfa_offset 16
+ 653              		@ sp needed
+ 654 00ba 70BD     		pop	{r4, r5, r6, pc}
+ 655              	.L41:
+ 656              	.LCFI6:
+ 657              		.cfi_restore_state
+ 199:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       pkt.ctrl.b.position = (uint8_t)(ST25FTM_MIDDLE_PACKET);
+ 658              		.loc 1 199 7 is_stmt 1 view .LVU221
+ 200:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     }
+ 659              		.loc 1 200 7 view .LVU222
+ 200:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     }
+ 660              		.loc 1 200 27 is_stmt 0 view .LVU223
+ 661 00bc 9DF80030 		ldrb	r3, [sp]	@ zero_extendqisi2
+ 662 00c0 0220     		movs	r0, #2
+ 663 00c2 60F38303 		bfi	r3, r0, #2, #2
+ 664 00c6 8DF80030 		strb	r3, [sp]
+ 665 00ca CFE7     		b	.L42
+ 666              	.L51:
+ 204:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       {
+ 667              		.loc 1 204 7 is_stmt 1 view .LVU224
+ 204:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       {
+ 668              		.loc 1 204 22 is_stmt 0 view .LVU225
+ 669 00cc 284B     		ldr	r3, .L53
+ 670 00ce 9B6C     		ldr	r3, [r3, #72]
+ 204:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       {
+ 671              		.loc 1 204 9 view .LVU226
+ 672 00d0 2BB9     		cbnz	r3, .L44
+ 206:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       }
+ 673              		.loc 1 206 9 is_stmt 1 view .LVU227
+ 206:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       }
+ 674              		.loc 1 206 28 is_stmt 0 view .LVU228
+ 675 00d2 9DF80030 		ldrb	r3, [sp]	@ zero_extendqisi2
+ 676 00d6 61F30513 		bfi	r3, r1, #4, #2
+ 677 00da 8DF80030 		strb	r3, [sp]
+ 678              	.L44:
+ 208:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       {
+ 679              		.loc 1 208 7 is_stmt 1 view .LVU229
+ARM GAS  /tmp/cc1Z0LnX.s 			page 20
+
+
+ 208:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       {
+ 680              		.loc 1 208 50 is_stmt 0 view .LVU230
+ 681 00de 019B     		ldr	r3, [sp, #4]
+ 208:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       {
+ 682              		.loc 1 208 45 view .LVU231
+ 683 00e0 D31A     		subs	r3, r2, r3
+ 208:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       {
+ 684              		.loc 1 208 9 view .LVU232
+ 685 00e2 032B     		cmp	r3, #3
+ 686 00e4 C4D8     		bhi	.L43
+ 211:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****         pkt.length = gFtmState.tx.segmentRemainingData - sizeof(pkt.crc);
+ 687              		.loc 1 211 9 is_stmt 1 view .LVU233
+ 211:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****         pkt.length = gFtmState.tx.segmentRemainingData - sizeof(pkt.crc);
+ 688              		.loc 1 211 27 is_stmt 0 view .LVU234
+ 689 00e6 9DF80030 		ldrb	r3, [sp]	@ zero_extendqisi2
+ 690 00ea 43F04003 		orr	r3, r3, #64
+ 691 00ee 8DF80030 		strb	r3, [sp]
+ 212:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       }
+ 692              		.loc 1 212 9 is_stmt 1 view .LVU235
+ 212:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       }
+ 693              		.loc 1 212 56 is_stmt 0 view .LVU236
+ 694 00f2 131F     		subs	r3, r2, #4
+ 212:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       }
+ 695              		.loc 1 212 20 view .LVU237
+ 696 00f4 0193     		str	r3, [sp, #4]
+ 697 00f6 BBE7     		b	.L43
+ 698              	.L40:
+ 217:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     if(gFtmState.tx.segmentRemainingData == ST25FTM_MAX_DATA_IN_SINGLE_PACKET())
+ 699              		.loc 1 217 5 is_stmt 1 view .LVU238
+ 217:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     if(gFtmState.tx.segmentRemainingData == ST25FTM_MAX_DATA_IN_SINGLE_PACKET())
+ 700              		.loc 1 217 16 is_stmt 0 view .LVU239
+ 701 00f8 0192     		str	r2, [sp, #4]
+ 218:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 702              		.loc 1 218 5 is_stmt 1 view .LVU240
+ 218:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 703              		.loc 1 218 7 is_stmt 0 view .LVU241
+ 704 00fa 9342     		cmp	r3, r2
+ 705 00fc 05D0     		beq	.L45
+ 224:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     }
+ 706              		.loc 1 224 7 is_stmt 1 view .LVU242
+ 224:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     }
+ 707              		.loc 1 224 25 is_stmt 0 view .LVU243
+ 708 00fe 9DF80000 		ldrb	r0, [sp]	@ zero_extendqisi2
+ 709 0102 40F04000 		orr	r0, r0, #64
+ 710 0106 8DF80000 		strb	r0, [sp]
+ 711              	.L45:
+ 226:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 712              		.loc 1 226 5 is_stmt 1 view .LVU244
+ 226:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 713              		.loc 1 226 20 is_stmt 0 view .LVU245
+ 714 010a 1948     		ldr	r0, .L53
+ 715 010c 8069     		ldr	r0, [r0, #24]
+ 226:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 716              		.loc 1 226 7 view .LVU246
+ 717 010e B8B9     		cbnz	r0, .L46
+ 228:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       {
+ 718              		.loc 1 228 7 is_stmt 1 view .LVU247
+ARM GAS  /tmp/cc1Z0LnX.s 			page 21
+
+
+ 228:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       {
+ 719              		.loc 1 228 22 is_stmt 0 view .LVU248
+ 720 0110 1748     		ldr	r0, .L53
+ 721 0112 406C     		ldr	r0, [r0, #68]
+ 228:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       {
+ 722              		.loc 1 228 9 view .LVU249
+ 723 0114 28B1     		cbz	r0, .L47
+ 232:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       }
+ 724              		.loc 1 232 9 is_stmt 1 view .LVU250
+ 232:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       }
+ 725              		.loc 1 232 29 is_stmt 0 view .LVU251
+ 726 0116 9DF80000 		ldrb	r0, [sp]	@ zero_extendqisi2
+ 727 011a 40F00C00 		orr	r0, r0, #12
+ 728 011e 8DF80000 		strb	r0, [sp]
+ 729              	.L47:
+ 238:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     if(gFtmState.tx.sendAck == ST25FTM_SEND_WITHOUT_ACK)
+ 730              		.loc 1 238 5 is_stmt 1 view .LVU252
+ 239:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 731              		.loc 1 239 5 view .LVU253
+ 239:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 732              		.loc 1 239 7 is_stmt 0 view .LVU254
+ 733 0122 0029     		cmp	r1, #0
+ 734 0124 A4D0     		beq	.L43
+ 243:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       {
+ 735              		.loc 1 243 7 is_stmt 1 view .LVU255
+ 243:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       {
+ 736              		.loc 1 243 9 is_stmt 0 view .LVU256
+ 737 0126 0129     		cmp	r1, #1
+ 738 0128 16D0     		beq	.L52
+ 739              	.L48:
+ 247:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       {
+ 740              		.loc 1 247 7 is_stmt 1 view .LVU257
+ 247:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       {
+ 741              		.loc 1 247 22 is_stmt 0 view .LVU258
+ 742 012a 1149     		ldr	r1, .L53
+ 743 012c 496B     		ldr	r1, [r1, #52]
+ 247:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       {
+ 744              		.loc 1 247 9 view .LVU259
+ 745 012e 8B42     		cmp	r3, r1
+ 746 0130 15D3     		bcc	.L49
+ 249:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       } else {
+ 747              		.loc 1 249 9 is_stmt 1 view .LVU260
+ 249:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       } else {
+ 748              		.loc 1 249 28 is_stmt 0 view .LVU261
+ 749 0132 9DF80030 		ldrb	r3, [sp]	@ zero_extendqisi2
+ 750 0136 43F03003 		orr	r3, r3, #48
+ 751 013a 8DF80030 		strb	r3, [sp]
+ 752 013e 97E7     		b	.L43
+ 753              	.L46:
+ 234:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       pkt.ctrl.b.position = (uint8_t)(ST25FTM_MIDDLE_PACKET);
+ 754              		.loc 1 234 12 is_stmt 1 view .LVU262
+ 234:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       pkt.ctrl.b.position = (uint8_t)(ST25FTM_MIDDLE_PACKET);
+ 755              		.loc 1 234 28 is_stmt 0 view .LVU263
+ 756 0140 0B48     		ldr	r0, .L53
+ 757 0142 406C     		ldr	r0, [r0, #68]
+ 234:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       pkt.ctrl.b.position = (uint8_t)(ST25FTM_MIDDLE_PACKET);
+ 758              		.loc 1 234 15 view .LVU264
+ARM GAS  /tmp/cc1Z0LnX.s 			page 22
+
+
+ 759 0144 0028     		cmp	r0, #0
+ 760 0146 ECD0     		beq	.L47
+ 235:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else {
+ 761              		.loc 1 235 7 is_stmt 1 view .LVU265
+ 235:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else {
+ 762              		.loc 1 235 27 is_stmt 0 view .LVU266
+ 763 0148 9DF80000 		ldrb	r0, [sp]	@ zero_extendqisi2
+ 764 014c 0224     		movs	r4, #2
+ 765 014e 64F38300 		bfi	r0, r4, #2, #2
+ 766 0152 8DF80000 		strb	r0, [sp]
+ 767 0156 E4E7     		b	.L47
+ 768              	.L52:
+ 245:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       }
+ 769              		.loc 1 245 9 is_stmt 1 view .LVU267
+ 245:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       }
+ 770              		.loc 1 245 21 is_stmt 0 view .LVU268
+ 771 0158 8DF81410 		strb	r1, [sp, #20]
+ 772 015c E5E7     		b	.L48
+ 773              	.L49:
+ 251:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       }
+ 774              		.loc 1 251 9 is_stmt 1 view .LVU269
+ 251:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       }
+ 775              		.loc 1 251 28 is_stmt 0 view .LVU270
+ 776 015e 9DF80030 		ldrb	r3, [sp]	@ zero_extendqisi2
+ 777 0162 0221     		movs	r1, #2
+ 778 0164 61F30513 		bfi	r3, r1, #4, #2
+ 779 0168 8DF80030 		strb	r3, [sp]
+ 780 016c 80E7     		b	.L43
+ 781              	.L54:
+ 782 016e 00BF     		.align	2
+ 783              	.L53:
+ 784 0170 00000000 		.word	gFtmState
+ 785              		.cfi_endproc
+ 786              	.LFE140:
+ 788              		.section	.text.ST25FTM_StateTxPacket,"ax",%progbits
+ 789              		.align	1
+ 790              		.syntax unified
+ 791              		.thumb
+ 792              		.thumb_func
+ 793              		.fpu fpv4-sp-d16
+ 795              	ST25FTM_StateTxPacket:
+ 796              	.LFB141:
+ 277:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+ 278:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** static ST25FTM_StateMachineCtrl_t ST25FTM_StateTxPacket(void)
+ 279:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** {
+ 797              		.loc 1 279 1 is_stmt 1 view -0
+ 798              		.cfi_startproc
+ 799              		@ args = 0, pretend = 0, frame = 0
+ 800              		@ frame_needed = 0, uses_anonymous_args = 0
+ 801 0000 08B5     		push	{r3, lr}
+ 802              	.LCFI7:
+ 803              		.cfi_def_cfa_offset 8
+ 804              		.cfi_offset 3, -8
+ 805              		.cfi_offset 14, -4
+ 280:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_StateMachineCtrl_t control = ST25FTM_STATE_MACHINE_RELEASE;
+ 806              		.loc 1 280 3 view .LVU272
+ 807              	.LVL36:
+ARM GAS  /tmp/cc1Z0LnX.s 			page 23
+
+
+ 281:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_MessageStatus_t status = ST25FTM_WriteMessage(gFtmState.tx.packetBuf,gFtmState.tx.packetL
+ 808              		.loc 1 281 3 view .LVU273
+ 809              		.loc 1 281 36 is_stmt 0 view .LVU274
+ 810 0002 1048     		ldr	r0, .L61
+ 811 0004 D0F84C11 		ldr	r1, [r0, #332]
+ 812 0008 4C30     		adds	r0, r0, #76
+ 813 000a FFF7FEFF 		bl	ST25FTM_WriteMessage
+ 814              	.LVL37:
+ 282:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   if(status == ST25FTM_MSG_OK) {
+ 815              		.loc 1 282 3 is_stmt 1 view .LVU275
+ 816              		.loc 1 282 5 is_stmt 0 view .LVU276
+ 817 000e 48B9     		cbnz	r0, .L56
+ 283:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     gFtmState.totalDataLength += gFtmState.tx.packetLength;
+ 818              		.loc 1 283 5 is_stmt 1 view .LVU277
+ 819              		.loc 1 283 46 is_stmt 0 view .LVU278
+ 820 0010 0C4B     		ldr	r3, .L61
+ 821 0012 D3F84C11 		ldr	r1, [r3, #332]
+ 822              		.loc 1 283 31 view .LVU279
+ 823 0016 5A68     		ldr	r2, [r3, #4]
+ 824 0018 0A44     		add	r2, r2, r1
+ 825 001a 5A60     		str	r2, [r3, #4]
+ 284:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     gFtmState.tx.state = ST25FTM_WRITE_WAIT_READ;
+ 826              		.loc 1 284 5 is_stmt 1 view .LVU280
+ 827              		.loc 1 284 24 is_stmt 0 view .LVU281
+ 828 001c 0422     		movs	r2, #4
+ 829 001e 1A73     		strb	r2, [r3, #12]
+ 280:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_MessageStatus_t status = ST25FTM_WriteMessage(gFtmState.tx.packetBuf,gFtmState.tx.packetL
+ 830              		.loc 1 280 30 view .LVU282
+ 831 0020 0120     		movs	r0, #1
+ 832              	.LVL38:
+ 833              	.L57:
+ 285:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   } else if (status == ST25FTM_MSG_BUSY) {
+ 286:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     /* If there is a message in the mailbox, the status is MAILBOX_BUSY
+ 287:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****        this is not expected, a timeout may have occured
+ 288:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****        it may be a new command or a NACK to request retransmit
+ 289:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****        continue with reading the MB to know what to do */
+ 290:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     ST25FTM_LOG("Write error, mailbox busy\r\n");
+ 291:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     gFtmState.tx.nbError++;
+ 292:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     gFtmState.tx.state = ST25FTM_WRITE_WAIT_READ;
+ 293:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     control = ST25FTM_STATE_MACHINE_CONTINUE;
+ 294:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   } else {
+ 295:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     /* If a RF operation is on-going, the I2C is NACKED
+ 296:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****        retry later! */
+ 297:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     gFtmState.tx.state = ST25FTM_WRITE_PKT;
+ 298:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   }
+ 299:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   return control;
+ 834              		.loc 1 299 3 is_stmt 1 view .LVU283
+ 300:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** }
+ 835              		.loc 1 300 1 is_stmt 0 view .LVU284
+ 836 0022 08BD     		pop	{r3, pc}
+ 837              	.LVL39:
+ 838              	.L56:
+ 285:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   } else if (status == ST25FTM_MSG_BUSY) {
+ 839              		.loc 1 285 10 is_stmt 1 view .LVU285
+ 285:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   } else if (status == ST25FTM_MSG_BUSY) {
+ 840              		.loc 1 285 13 is_stmt 0 view .LVU286
+ 841 0024 0228     		cmp	r0, #2
+ARM GAS  /tmp/cc1Z0LnX.s 			page 24
+
+
+ 842 0026 04D0     		beq	.L60
+ 297:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   }
+ 843              		.loc 1 297 5 is_stmt 1 view .LVU287
+ 297:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   }
+ 844              		.loc 1 297 24 is_stmt 0 view .LVU288
+ 845 0028 064B     		ldr	r3, .L61
+ 846 002a 0322     		movs	r2, #3
+ 847 002c 1A73     		strb	r2, [r3, #12]
+ 280:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_MessageStatus_t status = ST25FTM_WriteMessage(gFtmState.tx.packetBuf,gFtmState.tx.packetL
+ 848              		.loc 1 280 30 view .LVU289
+ 849 002e 0120     		movs	r0, #1
+ 850              	.LVL40:
+ 280:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_MessageStatus_t status = ST25FTM_WriteMessage(gFtmState.tx.packetBuf,gFtmState.tx.packetL
+ 851              		.loc 1 280 30 view .LVU290
+ 852 0030 F7E7     		b	.L57
+ 853              	.LVL41:
+ 854              	.L60:
+ 290:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     gFtmState.tx.nbError++;
+ 855              		.loc 1 290 49 is_stmt 1 view .LVU291
+ 291:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     gFtmState.tx.state = ST25FTM_WRITE_WAIT_READ;
+ 856              		.loc 1 291 5 view .LVU292
+ 291:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     gFtmState.tx.state = ST25FTM_WRITE_WAIT_READ;
+ 857              		.loc 1 291 17 is_stmt 0 view .LVU293
+ 858 0032 044B     		ldr	r3, .L61
+ 859 0034 1A6A     		ldr	r2, [r3, #32]
+ 291:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     gFtmState.tx.state = ST25FTM_WRITE_WAIT_READ;
+ 860              		.loc 1 291 25 view .LVU294
+ 861 0036 0132     		adds	r2, r2, #1
+ 862 0038 1A62     		str	r2, [r3, #32]
+ 292:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     control = ST25FTM_STATE_MACHINE_CONTINUE;
+ 863              		.loc 1 292 5 is_stmt 1 view .LVU295
+ 292:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     control = ST25FTM_STATE_MACHINE_CONTINUE;
+ 864              		.loc 1 292 24 is_stmt 0 view .LVU296
+ 865 003a 0422     		movs	r2, #4
+ 866 003c 1A73     		strb	r2, [r3, #12]
+ 293:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   } else {
+ 867              		.loc 1 293 5 is_stmt 1 view .LVU297
+ 868              	.LVL42:
+ 293:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   } else {
+ 869              		.loc 1 293 13 is_stmt 0 view .LVU298
+ 870 003e 0020     		movs	r0, #0
+ 871              	.LVL43:
+ 293:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   } else {
+ 872              		.loc 1 293 13 view .LVU299
+ 873 0040 EFE7     		b	.L57
+ 874              	.L62:
+ 875 0042 00BF     		.align	2
+ 876              	.L61:
+ 877 0044 00000000 		.word	gFtmState
+ 878              		.cfi_endproc
+ 879              	.LFE141:
+ 881              		.section	.text.ST25FTM_StateTxWaitRead,"ax",%progbits
+ 882              		.align	1
+ 883              		.syntax unified
+ 884              		.thumb
+ 885              		.thumb_func
+ 886              		.fpu fpv4-sp-d16
+ARM GAS  /tmp/cc1Z0LnX.s 			page 25
+
+
+ 888              	ST25FTM_StateTxWaitRead:
+ 889              	.LFB142:
+ 301:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+ 302:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** static ST25FTM_StateMachineCtrl_t ST25FTM_StateTxWaitRead(void)
+ 303:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** {
+ 890              		.loc 1 303 1 is_stmt 1 view -0
+ 891              		.cfi_startproc
+ 892              		@ args = 0, pretend = 0, frame = 0
+ 893              		@ frame_needed = 0, uses_anonymous_args = 0
+ 894 0000 08B5     		push	{r3, lr}
+ 895              	.LCFI8:
+ 896              		.cfi_def_cfa_offset 8
+ 897              		.cfi_offset 3, -8
+ 898              		.cfi_offset 14, -4
+ 304:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_StateMachineCtrl_t control = ST25FTM_STATE_MACHINE_RELEASE;
+ 899              		.loc 1 304 3 view .LVU301
+ 900              	.LVL44:
+ 305:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_MessageOwner_t msgOwner = ST25FTM_GetMessageOwner();
+ 901              		.loc 1 305 3 view .LVU302
+ 902              		.loc 1 305 37 is_stmt 0 view .LVU303
+ 903 0002 FFF7FEFF 		bl	ST25FTM_GetMessageOwner
+ 904              	.LVL45:
+ 306:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_Ctrl_Byte_t ctrl_byte;
+ 905              		.loc 1 306 3 is_stmt 1 view .LVU304
+ 307:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ctrl_byte.byte = gFtmState.tx.packetBuf[0];
+ 906              		.loc 1 307 3 view .LVU305
+ 907              		.loc 1 307 42 is_stmt 0 view .LVU306
+ 908 0006 194B     		ldr	r3, .L75
+ 909 0008 93F84C30 		ldrb	r3, [r3, #76]	@ zero_extendqisi2
+ 308:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   if(ST25FTM_CTRL_HAS_CRC(ctrl_byte))
+ 910              		.loc 1 308 3 is_stmt 1 view .LVU307
+ 911              		.loc 1 308 6 is_stmt 0 view .LVU308
+ 912 000c 03F03003 		and	r3, r3, #48
+ 913              		.loc 1 308 5 view .LVU309
+ 914 0010 302B     		cmp	r3, #48
+ 915 0012 09D0     		beq	.L64
+ 916              		.loc 1 308 6 discriminator 1 view .LVU310
+ 917 0014 202B     		cmp	r3, #32
+ 918 0016 07D0     		beq	.L64
+ 309:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   {
+ 310:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     if((msgOwner == ST25FTM_MESSAGE_EMPTY) || (msgOwner == ST25FTM_MESSAGE_PEER))
+ 311:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 312:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       gFtmState.tx.state = ST25FTM_WRITE_READ_ACK;
+ 313:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     }
+ 314:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   } else {
+ 315:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     if(msgOwner == ST25FTM_MESSAGE_EMPTY)
+ 919              		.loc 1 315 5 is_stmt 1 view .LVU311
+ 920              		.loc 1 315 7 is_stmt 0 view .LVU312
+ 921 0018 E0B9     		cbnz	r0, .L68
+ 316:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 317:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       if(gFtmState.tx.segmentRemainingData > 0U)
+ 922              		.loc 1 317 7 is_stmt 1 view .LVU313
+ 923              		.loc 1 317 22 is_stmt 0 view .LVU314
+ 924 001a 144B     		ldr	r3, .L75
+ 925 001c 9B6B     		ldr	r3, [r3, #56]
+ 926              		.loc 1 317 9 view .LVU315
+ 927 001e 6BB1     		cbz	r3, .L69
+ARM GAS  /tmp/cc1Z0LnX.s 			page 26
+
+
+ 318:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       {
+ 319:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****         gFtmState.tx.state = ST25FTM_WRITE_SEGMENT;
+ 928              		.loc 1 319 9 is_stmt 1 view .LVU316
+ 929              		.loc 1 319 28 is_stmt 0 view .LVU317
+ 930 0020 124B     		ldr	r3, .L75
+ 931 0022 0222     		movs	r2, #2
+ 932 0024 1A73     		strb	r2, [r3, #12]
+ 320:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****         control = ST25FTM_STATE_MACHINE_CONTINUE;
+ 933              		.loc 1 320 9 is_stmt 1 view .LVU318
+ 934              	.LVL46:
+ 935              		.loc 1 320 9 is_stmt 0 view .LVU319
+ 936 0026 08E0     		b	.L67
+ 937              	.LVL47:
+ 938              	.L64:
+ 310:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 939              		.loc 1 310 5 is_stmt 1 view .LVU320
+ 310:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 940              		.loc 1 310 7 is_stmt 0 view .LVU321
+ 941 0028 18B1     		cbz	r0, .L66
+ 310:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 942              		.loc 1 310 44 discriminator 1 view .LVU322
+ 943 002a 0228     		cmp	r0, #2
+ 944 002c 01D0     		beq	.L66
+ 304:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_MessageOwner_t msgOwner = ST25FTM_GetMessageOwner();
+ 945              		.loc 1 304 30 view .LVU323
+ 946 002e 0120     		movs	r0, #1
+ 947              	.LVL48:
+ 304:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_MessageOwner_t msgOwner = ST25FTM_GetMessageOwner();
+ 948              		.loc 1 304 30 view .LVU324
+ 949 0030 03E0     		b	.L67
+ 950              	.LVL49:
+ 951              	.L66:
+ 312:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     }
+ 952              		.loc 1 312 7 is_stmt 1 view .LVU325
+ 312:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     }
+ 953              		.loc 1 312 26 is_stmt 0 view .LVU326
+ 954 0032 0E4B     		ldr	r3, .L75
+ 955 0034 0522     		movs	r2, #5
+ 956 0036 1A73     		strb	r2, [r3, #12]
+ 304:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_MessageOwner_t msgOwner = ST25FTM_GetMessageOwner();
+ 957              		.loc 1 304 30 view .LVU327
+ 958 0038 0120     		movs	r0, #1
+ 959              	.LVL50:
+ 960              	.L67:
+ 321:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       } else if (gFtmState.tx.remainingData > 0U) {
+ 322:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****         gFtmState.tx.state = ST25FTM_WRITE_CMD;
+ 323:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****         control = ST25FTM_STATE_MACHINE_CONTINUE;
+ 324:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       } else {
+ 325:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****         gFtmState.tx.state = ST25FTM_WRITE_DONE;
+ 326:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       }
+ 327:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else if (msgOwner == ST25FTM_MESSAGE_PEER) {
+ 328:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       /* this is not expected
+ 329:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****          continue with reading the MB to know what to do
+ 330:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****          it may be a new command or a NACK to request retransmit */
+ 331:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       gFtmState.tx.nbError++;
+ 332:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       gFtmState.tx.state = ST25FTM_WRITE_READ_ACK;
+ 333:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       ST25FTM_LOG("Write error, mailbox busy 2\r\n");
+ARM GAS  /tmp/cc1Z0LnX.s 			page 27
+
+
+ 334:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       control = ST25FTM_STATE_MACHINE_CONTINUE;
+ 335:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else {
+ 336:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       /* this is still our message, do nothing */
+ 337:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     }
+ 961              		.loc 1 337 5 is_stmt 1 view .LVU328
+ 338:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   }
+ 339:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   return control;
+ 962              		.loc 1 339 3 view .LVU329
+ 340:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** }
+ 963              		.loc 1 340 1 is_stmt 0 view .LVU330
+ 964 003a 08BD     		pop	{r3, pc}
+ 965              	.LVL51:
+ 966              	.L69:
+ 321:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       } else if (gFtmState.tx.remainingData > 0U) {
+ 967              		.loc 1 321 14 is_stmt 1 view .LVU331
+ 321:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       } else if (gFtmState.tx.remainingData > 0U) {
+ 968              		.loc 1 321 30 is_stmt 0 view .LVU332
+ 969 003c 0B4B     		ldr	r3, .L75
+ 970 003e 9B69     		ldr	r3, [r3, #24]
+ 321:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       } else if (gFtmState.tx.remainingData > 0U) {
+ 971              		.loc 1 321 17 view .LVU333
+ 972 0040 1BB1     		cbz	r3, .L70
+ 322:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****         control = ST25FTM_STATE_MACHINE_CONTINUE;
+ 973              		.loc 1 322 9 is_stmt 1 view .LVU334
+ 322:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****         control = ST25FTM_STATE_MACHINE_CONTINUE;
+ 974              		.loc 1 322 28 is_stmt 0 view .LVU335
+ 975 0042 0A4B     		ldr	r3, .L75
+ 976 0044 0122     		movs	r2, #1
+ 977 0046 1A73     		strb	r2, [r3, #12]
+ 323:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       } else {
+ 978              		.loc 1 323 9 is_stmt 1 view .LVU336
+ 979              	.LVL52:
+ 323:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       } else {
+ 980              		.loc 1 323 9 is_stmt 0 view .LVU337
+ 981 0048 F7E7     		b	.L67
+ 982              	.LVL53:
+ 983              	.L70:
+ 325:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       }
+ 984              		.loc 1 325 9 is_stmt 1 view .LVU338
+ 325:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       }
+ 985              		.loc 1 325 28 is_stmt 0 view .LVU339
+ 986 004a 084B     		ldr	r3, .L75
+ 987 004c 0622     		movs	r2, #6
+ 988 004e 1A73     		strb	r2, [r3, #12]
+ 304:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_MessageOwner_t msgOwner = ST25FTM_GetMessageOwner();
+ 989              		.loc 1 304 30 view .LVU340
+ 990 0050 0120     		movs	r0, #1
+ 991              	.LVL54:
+ 304:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_MessageOwner_t msgOwner = ST25FTM_GetMessageOwner();
+ 992              		.loc 1 304 30 view .LVU341
+ 993 0052 F2E7     		b	.L67
+ 994              	.LVL55:
+ 995              	.L68:
+ 327:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       /* this is not expected
+ 996              		.loc 1 327 12 is_stmt 1 view .LVU342
+ 327:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       /* this is not expected
+ 997              		.loc 1 327 15 is_stmt 0 view .LVU343
+ARM GAS  /tmp/cc1Z0LnX.s 			page 28
+
+
+ 998 0054 0228     		cmp	r0, #2
+ 999 0056 01D0     		beq	.L74
+ 304:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_MessageOwner_t msgOwner = ST25FTM_GetMessageOwner();
+ 1000              		.loc 1 304 30 view .LVU344
+ 1001 0058 0120     		movs	r0, #1
+ 1002              	.LVL56:
+ 304:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_MessageOwner_t msgOwner = ST25FTM_GetMessageOwner();
+ 1003              		.loc 1 304 30 view .LVU345
+ 1004 005a EEE7     		b	.L67
+ 1005              	.LVL57:
+ 1006              	.L74:
+ 331:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       gFtmState.tx.state = ST25FTM_WRITE_READ_ACK;
+ 1007              		.loc 1 331 7 is_stmt 1 view .LVU346
+ 331:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       gFtmState.tx.state = ST25FTM_WRITE_READ_ACK;
+ 1008              		.loc 1 331 19 is_stmt 0 view .LVU347
+ 1009 005c 034B     		ldr	r3, .L75
+ 1010 005e 1A6A     		ldr	r2, [r3, #32]
+ 331:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       gFtmState.tx.state = ST25FTM_WRITE_READ_ACK;
+ 1011              		.loc 1 331 27 view .LVU348
+ 1012 0060 0132     		adds	r2, r2, #1
+ 1013 0062 1A62     		str	r2, [r3, #32]
+ 332:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       ST25FTM_LOG("Write error, mailbox busy 2\r\n");
+ 1014              		.loc 1 332 7 is_stmt 1 view .LVU349
+ 332:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       ST25FTM_LOG("Write error, mailbox busy 2\r\n");
+ 1015              		.loc 1 332 26 is_stmt 0 view .LVU350
+ 1016 0064 0522     		movs	r2, #5
+ 1017 0066 1A73     		strb	r2, [r3, #12]
+ 333:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       control = ST25FTM_STATE_MACHINE_CONTINUE;
+ 1018              		.loc 1 333 53 is_stmt 1 view .LVU351
+ 334:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else {
+ 1019              		.loc 1 334 7 view .LVU352
+ 1020              	.LVL58:
+ 334:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else {
+ 1021              		.loc 1 334 15 is_stmt 0 view .LVU353
+ 1022 0068 0020     		movs	r0, #0
+ 1023              	.LVL59:
+ 334:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else {
+ 1024              		.loc 1 334 15 view .LVU354
+ 1025 006a E6E7     		b	.L67
+ 1026              	.L76:
+ 1027              		.align	2
+ 1028              	.L75:
+ 1029 006c 00000000 		.word	gFtmState
+ 1030              		.cfi_endproc
+ 1031              	.LFE142:
+ 1033              		.section	.text.ST25FTM_TxStateInit,"ax",%progbits
+ 1034              		.align	1
+ 1035              		.global	ST25FTM_TxStateInit
+ 1036              		.syntax unified
+ 1037              		.thumb
+ 1038              		.thumb_func
+ 1039              		.fpu fpv4-sp-d16
+ 1041              	ST25FTM_TxStateInit:
+ 1042              	.LFB137:
+  96:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.state = ST25FTM_WRITE_IDLE;
+ 1043              		.loc 1 96 1 is_stmt 1 view -0
+ 1044              		.cfi_startproc
+ARM GAS  /tmp/cc1Z0LnX.s 			page 29
+
+
+ 1045              		@ args = 0, pretend = 0, frame = 0
+ 1046              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1047 0000 08B5     		push	{r3, lr}
+ 1048              	.LCFI9:
+ 1049              		.cfi_def_cfa_offset 8
+ 1050              		.cfi_offset 3, -8
+ 1051              		.cfi_offset 14, -4
+  97:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.lastState = ST25FTM_WRITE_IDLE;
+ 1052              		.loc 1 97 3 view .LVU356
+  97:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.lastState = ST25FTM_WRITE_IDLE;
+ 1053              		.loc 1 97 22 is_stmt 0 view .LVU357
+ 1054 0002 1248     		ldr	r0, .L79
+ 1055 0004 0021     		movs	r1, #0
+ 1056 0006 0173     		strb	r1, [r0, #12]
+  98:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.frameMaxLength = 0xFF;
+ 1057              		.loc 1 98 3 is_stmt 1 view .LVU358
+  98:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.frameMaxLength = 0xFF;
+ 1058              		.loc 1 98 26 is_stmt 0 view .LVU359
+ 1059 0008 4173     		strb	r1, [r0, #13]
+  99:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.cmdPtr = NULL;
+ 1060              		.loc 1 99 3 is_stmt 1 view .LVU360
+  99:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.cmdPtr = NULL;
+ 1061              		.loc 1 99 31 is_stmt 0 view .LVU361
+ 1062 000a FF23     		movs	r3, #255
+ 1063 000c C361     		str	r3, [r0, #28]
+ 100:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.cmdLen = 0;
+ 1064              		.loc 1 100 3 is_stmt 1 view .LVU362
+ 100:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.cmdLen = 0;
+ 1065              		.loc 1 100 23 is_stmt 0 view .LVU363
+ 1066 000e 0161     		str	r1, [r0, #16]
+ 101:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.remainingData = 0;
+ 1067              		.loc 1 101 3 is_stmt 1 view .LVU364
+ 101:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.remainingData = 0;
+ 1068              		.loc 1 101 23 is_stmt 0 view .LVU365
+ 1069 0010 4161     		str	r1, [r0, #20]
+ 102:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.nbError = 0;
+ 1070              		.loc 1 102 3 is_stmt 1 view .LVU366
+ 102:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.nbError = 0;
+ 1071              		.loc 1 102 30 is_stmt 0 view .LVU367
+ 1072 0012 8161     		str	r1, [r0, #24]
+ 103:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.sendAck = ST25FTM_SEND_WITH_ACK;
+ 1073              		.loc 1 103 3 is_stmt 1 view .LVU368
+ 103:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.sendAck = ST25FTM_SEND_WITH_ACK;
+ 1074              		.loc 1 103 24 is_stmt 0 view .LVU369
+ 1075 0014 0162     		str	r1, [r0, #32]
+ 104:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.dataPtr = NULL;
+ 1076              		.loc 1 104 3 is_stmt 1 view .LVU370
+ 104:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.dataPtr = NULL;
+ 1077              		.loc 1 104 24 is_stmt 0 view .LVU371
+ 1078 0016 0123     		movs	r3, #1
+ 1079 0018 80F82530 		strb	r3, [r0, #37]
+ 105:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentPtr = NULL;
+ 1080              		.loc 1 105 3 is_stmt 1 view .LVU372
+ 105:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentPtr = NULL;
+ 1081              		.loc 1 105 24 is_stmt 0 view .LVU373
+ 1082 001c 8162     		str	r1, [r0, #40]
+ 106:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentStart = NULL;
+ARM GAS  /tmp/cc1Z0LnX.s 			page 30
+
+
+ 1083              		.loc 1 106 3 is_stmt 1 view .LVU374
+ 106:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentStart = NULL;
+ 1084              		.loc 1 106 27 is_stmt 0 view .LVU375
+ 1085 001e C162     		str	r1, [r0, #44]
+ 107:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentLength = 0;
+ 1086              		.loc 1 107 3 is_stmt 1 view .LVU376
+ 107:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentLength = 0;
+ 1087              		.loc 1 107 29 is_stmt 0 view .LVU377
+ 1088 0020 0163     		str	r1, [r0, #48]
+ 108:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentRemainingData = 0;
+ 1089              		.loc 1 108 3 is_stmt 1 view .LVU378
+ 108:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentRemainingData = 0;
+ 1090              		.loc 1 108 30 is_stmt 0 view .LVU379
+ 1091 0022 4163     		str	r1, [r0, #52]
+ 109:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentMaxLength = ST25FTM_SEGMENT_LEN;
+ 1092              		.loc 1 109 3 is_stmt 1 view .LVU380
+ 109:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentMaxLength = ST25FTM_SEGMENT_LEN;
+ 1093              		.loc 1 109 37 is_stmt 0 view .LVU381
+ 1094 0024 8163     		str	r1, [r0, #56]
+ 110:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.retransmit = 0;
+ 1095              		.loc 1 110 3 is_stmt 1 view .LVU382
+ 110:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.retransmit = 0;
+ 1096              		.loc 1 110 33 is_stmt 0 view .LVU383
+ 1097 0026 41F2A363 		movw	r3, #5795
+ 1098 002a C363     		str	r3, [r0, #60]
+ 111:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.pktIndex = 0;
+ 1099              		.loc 1 111 3 is_stmt 1 view .LVU384
+ 111:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.pktIndex = 0;
+ 1100              		.loc 1 111 27 is_stmt 0 view .LVU385
+ 1101 002c 80F84010 		strb	r1, [r0, #64]
+ 112:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentIndex = 0;
+ 1102              		.loc 1 112 3 is_stmt 1 view .LVU386
+ 112:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentIndex = 0;
+ 1103              		.loc 1 112 25 is_stmt 0 view .LVU387
+ 1104 0030 4164     		str	r1, [r0, #68]
+ 113:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.packetLength = 0;
+ 1105              		.loc 1 113 3 is_stmt 1 view .LVU388
+ 113:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.packetLength = 0;
+ 1106              		.loc 1 113 29 is_stmt 0 view .LVU389
+ 1107 0032 8164     		str	r1, [r0, #72]
+ 114:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentNumber = 0;
+ 1108              		.loc 1 114 3 is_stmt 1 view .LVU390
+ 114:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentNumber = 0;
+ 1109              		.loc 1 114 29 is_stmt 0 view .LVU391
+ 1110 0034 C0F84C11 		str	r1, [r0, #332]
+ 115:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.getdata_cb = NULL;
+ 1111              		.loc 1 115 3 is_stmt 1 view .LVU392
+ 115:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.getdata_cb = NULL;
+ 1112              		.loc 1 115 30 is_stmt 0 view .LVU393
+ 1113 0038 C0F85011 		str	r1, [r0, #336]
+ 116:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   (void)memset(gFtmState.tx.packetBuf, 0, sizeof(gFtmState.tx.packetBuf));
+ 1114              		.loc 1 116 3 is_stmt 1 view .LVU394
+ 116:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   (void)memset(gFtmState.tx.packetBuf, 0, sizeof(gFtmState.tx.packetBuf));
+ 1115              		.loc 1 116 27 is_stmt 0 view .LVU395
+ 1116 003c C0F85411 		str	r1, [r0, #340]
+ 117:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** }
+ 1117              		.loc 1 117 3 is_stmt 1 view .LVU396
+ARM GAS  /tmp/cc1Z0LnX.s 			page 31
+
+
+ 117:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** }
+ 1118              		.loc 1 117 9 is_stmt 0 view .LVU397
+ 1119 0040 4FF48072 		mov	r2, #256
+ 1120 0044 4C30     		adds	r0, r0, #76
+ 1121 0046 FFF7FEFF 		bl	memset
+ 1122              	.LVL60:
+ 118:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+ 1123              		.loc 1 118 1 view .LVU398
+ 1124 004a 08BD     		pop	{r3, pc}
+ 1125              	.L80:
+ 1126              		.align	2
+ 1127              	.L79:
+ 1128 004c 00000000 		.word	gFtmState
+ 1129              		.cfi_endproc
+ 1130              	.LFE137:
+ 1132              		.section	.text.ST25FTM_TxResetSegment,"ax",%progbits
+ 1133              		.align	1
+ 1134              		.global	ST25FTM_TxResetSegment
+ 1135              		.syntax unified
+ 1136              		.thumb
+ 1137              		.thumb_func
+ 1138              		.fpu fpv4-sp-d16
+ 1140              	ST25FTM_TxResetSegment:
+ 1141              	.LFB145:
+ 341:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+ 342:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** static ST25FTM_StateMachineCtrl_t ST25FTM_StateTxReadAck(void)
+ 343:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** {
+ 344:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_StateMachineCtrl_t control = ST25FTM_STATE_MACHINE_RELEASE;
+ 345:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_Acknowledge_Status_t ack_status;
+ 346:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   
+ 347:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ack_status = ST25FTM_GetAcknowledgeStatus();
+ 348:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_LOG("Rx Ack=%d\r\n",ack_status);
+ 349:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   if(ack_status == ST25FTM_SEGMENT_OK)
+ 350:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   {
+ 351:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     ST25FTM_LOG("Ending Segment %d\r\n", gFtmState.tx.segmentNumber);
+ 352:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     gFtmState.tx.retransmit = 0U;
+ 353:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     gFtmState.tx.segmentIndex = 0U;
+ 354:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     gFtmState.tx.segmentNumber++;
+ 355:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     if(gFtmState.tx.remainingData == 0U)
+ 356:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 357:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       gFtmState.tx.state = ST25FTM_WRITE_DONE;
+ 358:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else { 
+ 359:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       /* there are other packets to send */
+ 360:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       gFtmState.tx.state = ST25FTM_WRITE_CMD;
+ 361:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       control = ST25FTM_STATE_MACHINE_CONTINUE;
+ 362:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     }
+ 363:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   } else if (ack_status == ST25FTM_ACK_BUSY) { 
+ 364:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     /* do nothing */
+ 365:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     gFtmState.tx.state = ST25FTM_WRITE_READ_ACK;
+ 366:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   } else if (ack_status == ST25FTM_CRC_ERROR) {
+ 367:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     ST25FTM_TxResetSegment();
+ 368:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     control = ST25FTM_STATE_MACHINE_CONTINUE;
+ 369:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   } else {
+ 370:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     /* this is not a ACK message, it must be a new command */
+ 371:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     gFtmState.tx.state = ST25FTM_WRITE_ERROR;
+ 372:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     ST25FTM_LOG("Write error, mailbox busy 3\r\n");
+ 373:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   }
+ARM GAS  /tmp/cc1Z0LnX.s 			page 32
+
+
+ 374:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   return control;
+ 375:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** }
+ 376:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+ 377:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** void ST25FTM_Transmit(void)
+ 378:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** {
+ 379:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_StateMachineCtrl_t control = ST25FTM_STATE_MACHINE_CONTINUE;
+ 380:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   while(control == ST25FTM_STATE_MACHINE_CONTINUE)
+ 381:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   {
+ 382:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     switch (gFtmState.tx.state)
+ 383:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 384:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     case ST25FTM_WRITE_IDLE:
+ 385:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       control = ST25FTM_StateTxIdle();
+ 386:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     break;
+ 387:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     case ST25FTM_WRITE_CMD:
+ 388:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       control = ST25FTM_StateTxCommand();
+ 389:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     break;
+ 390:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     case ST25FTM_WRITE_SEGMENT:
+ 391:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       control = ST25FTM_StateTxSegment();
+ 392:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     break;
+ 393:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     case ST25FTM_WRITE_PKT:
+ 394:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       control = ST25FTM_StateTxPacket();
+ 395:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     break;
+ 396:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     case ST25FTM_WRITE_WAIT_READ:
+ 397:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       control = ST25FTM_StateTxWaitRead();
+ 398:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     break;
+ 399:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     case ST25FTM_WRITE_READ_ACK:
+ 400:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       control = ST25FTM_StateTxReadAck();
+ 401:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     break;
+ 402:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     default:
+ 403:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       ST25FTM_Reset();
+ 404:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       control = ST25FTM_STATE_MACHINE_RELEASE;
+ 405:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     break;
+ 406:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     }
+ 407:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   }
+ 408:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** }
+ 409:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+ 410:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** void ST25FTM_TxResetSegment()
+ 411:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** {
+ 1142              		.loc 1 411 1 is_stmt 1 view -0
+ 1143              		.cfi_startproc
+ 1144              		@ args = 0, pretend = 0, frame = 0
+ 1145              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1146              		@ link register save eliminated.
+ 412:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.retryLength += gFtmState.tx.segmentLength - gFtmState.tx.segmentRemainingData;
+ 1147              		.loc 1 412 3 view .LVU400
+ 1148              		.loc 1 412 40 is_stmt 0 view .LVU401
+ 1149 0000 0A4B     		ldr	r3, .L82
+ 1150 0002 586B     		ldr	r0, [r3, #52]
+ 1151              		.loc 1 412 69 view .LVU402
+ 1152 0004 9A6B     		ldr	r2, [r3, #56]
+ 1153              		.loc 1 412 55 view .LVU403
+ 1154 0006 811A     		subs	r1, r0, r2
+ 1155              		.loc 1 412 25 view .LVU404
+ 1156 0008 9A68     		ldr	r2, [r3, #8]
+ 1157 000a 0A44     		add	r2, r2, r1
+ 1158 000c 9A60     		str	r2, [r3, #8]
+ 413:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   /* rewind to retransmit */
+ARM GAS  /tmp/cc1Z0LnX.s 			page 33
+
+
+ 414:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentRemainingData = gFtmState.tx.segmentLength;
+ 1159              		.loc 1 414 3 is_stmt 1 view .LVU405
+ 1160              		.loc 1 414 37 is_stmt 0 view .LVU406
+ 1161 000e 9863     		str	r0, [r3, #56]
+ 415:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.pktIndex -= gFtmState.tx.segmentIndex;
+ 1162              		.loc 1 415 3 is_stmt 1 view .LVU407
+ 1163              		.loc 1 415 40 is_stmt 0 view .LVU408
+ 1164 0010 996C     		ldr	r1, [r3, #72]
+ 1165              		.loc 1 415 25 view .LVU409
+ 1166 0012 5A6C     		ldr	r2, [r3, #68]
+ 1167 0014 521A     		subs	r2, r2, r1
+ 1168 0016 5A64     		str	r2, [r3, #68]
+ 416:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentPtr = gFtmState.tx.segmentStart;
+ 1169              		.loc 1 416 3 is_stmt 1 view .LVU410
+ 1170              		.loc 1 416 41 is_stmt 0 view .LVU411
+ 1171 0018 1A6B     		ldr	r2, [r3, #48]
+ 1172              		.loc 1 416 27 view .LVU412
+ 1173 001a DA62     		str	r2, [r3, #44]
+ 417:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.retransmit = 1;
+ 1174              		.loc 1 417 3 is_stmt 1 view .LVU413
+ 1175              		.loc 1 417 27 is_stmt 0 view .LVU414
+ 1176 001c 0122     		movs	r2, #1
+ 1177 001e 83F84020 		strb	r2, [r3, #64]
+ 418:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.segmentIndex = 0;
+ 1178              		.loc 1 418 3 is_stmt 1 view .LVU415
+ 1179              		.loc 1 418 29 is_stmt 0 view .LVU416
+ 1180 0022 0022     		movs	r2, #0
+ 1181 0024 9A64     		str	r2, [r3, #72]
+ 419:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   gFtmState.tx.state = ST25FTM_WRITE_SEGMENT;
+ 1182              		.loc 1 419 3 is_stmt 1 view .LVU417
+ 1183              		.loc 1 419 22 is_stmt 0 view .LVU418
+ 1184 0026 0222     		movs	r2, #2
+ 1185 0028 1A73     		strb	r2, [r3, #12]
+ 420:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** }
+ 1186              		.loc 1 420 1 view .LVU419
+ 1187 002a 7047     		bx	lr
+ 1188              	.L83:
+ 1189              		.align	2
+ 1190              	.L82:
+ 1191 002c 00000000 		.word	gFtmState
+ 1192              		.cfi_endproc
+ 1193              	.LFE145:
+ 1195              		.section	.text.ST25FTM_StateTxReadAck,"ax",%progbits
+ 1196              		.align	1
+ 1197              		.syntax unified
+ 1198              		.thumb
+ 1199              		.thumb_func
+ 1200              		.fpu fpv4-sp-d16
+ 1202              	ST25FTM_StateTxReadAck:
+ 1203              	.LFB143:
+ 343:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_StateMachineCtrl_t control = ST25FTM_STATE_MACHINE_RELEASE;
+ 1204              		.loc 1 343 1 is_stmt 1 view -0
+ 1205              		.cfi_startproc
+ 1206              		@ args = 0, pretend = 0, frame = 0
+ 1207              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1208 0000 08B5     		push	{r3, lr}
+ 1209              	.LCFI10:
+ARM GAS  /tmp/cc1Z0LnX.s 			page 34
+
+
+ 1210              		.cfi_def_cfa_offset 8
+ 1211              		.cfi_offset 3, -8
+ 1212              		.cfi_offset 14, -4
+ 344:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_Acknowledge_Status_t ack_status;
+ 1213              		.loc 1 344 3 view .LVU421
+ 1214              	.LVL61:
+ 345:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   
+ 1215              		.loc 1 345 3 view .LVU422
+ 347:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_LOG("Rx Ack=%d\r\n",ack_status);
+ 1216              		.loc 1 347 3 view .LVU423
+ 347:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_LOG("Rx Ack=%d\r\n",ack_status);
+ 1217              		.loc 1 347 16 is_stmt 0 view .LVU424
+ 1218 0002 FFF7FEFF 		bl	ST25FTM_GetAcknowledgeStatus
+ 1219              	.LVL62:
+ 348:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   if(ack_status == ST25FTM_SEGMENT_OK)
+ 1220              		.loc 1 348 42 is_stmt 1 view .LVU425
+ 349:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   {
+ 1221              		.loc 1 349 3 view .LVU426
+ 349:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   {
+ 1222              		.loc 1 349 5 is_stmt 0 view .LVU427
+ 1223 0006 A8B9     		cbnz	r0, .L85
+ 351:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     gFtmState.tx.retransmit = 0U;
+ 1224              		.loc 1 351 69 is_stmt 1 view .LVU428
+ 352:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     gFtmState.tx.segmentIndex = 0U;
+ 1225              		.loc 1 352 5 view .LVU429
+ 352:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     gFtmState.tx.segmentIndex = 0U;
+ 1226              		.loc 1 352 29 is_stmt 0 view .LVU430
+ 1227 0008 144B     		ldr	r3, .L93
+ 1228 000a 0022     		movs	r2, #0
+ 1229 000c 83F84020 		strb	r2, [r3, #64]
+ 353:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     gFtmState.tx.segmentNumber++;
+ 1230              		.loc 1 353 5 is_stmt 1 view .LVU431
+ 353:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     gFtmState.tx.segmentNumber++;
+ 1231              		.loc 1 353 31 is_stmt 0 view .LVU432
+ 1232 0010 9A64     		str	r2, [r3, #72]
+ 354:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     if(gFtmState.tx.remainingData == 0U)
+ 1233              		.loc 1 354 5 is_stmt 1 view .LVU433
+ 354:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     if(gFtmState.tx.remainingData == 0U)
+ 1234              		.loc 1 354 17 is_stmt 0 view .LVU434
+ 1235 0012 D3F85021 		ldr	r2, [r3, #336]
+ 354:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     if(gFtmState.tx.remainingData == 0U)
+ 1236              		.loc 1 354 31 view .LVU435
+ 1237 0016 0132     		adds	r2, r2, #1
+ 1238 0018 C3F85021 		str	r2, [r3, #336]
+ 355:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 1239              		.loc 1 355 5 is_stmt 1 view .LVU436
+ 355:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 1240              		.loc 1 355 20 is_stmt 0 view .LVU437
+ 1241 001c 9B69     		ldr	r3, [r3, #24]
+ 355:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 1242              		.loc 1 355 7 view .LVU438
+ 1243 001e 23B9     		cbnz	r3, .L86
+ 357:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else { 
+ 1244              		.loc 1 357 7 is_stmt 1 view .LVU439
+ 357:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     } else { 
+ 1245              		.loc 1 357 26 is_stmt 0 view .LVU440
+ 1246 0020 0E4B     		ldr	r3, .L93
+ARM GAS  /tmp/cc1Z0LnX.s 			page 35
+
+
+ 1247 0022 0622     		movs	r2, #6
+ 1248 0024 1A73     		strb	r2, [r3, #12]
+ 344:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_Acknowledge_Status_t ack_status;
+ 1249              		.loc 1 344 30 view .LVU441
+ 1250 0026 0120     		movs	r0, #1
+ 1251              	.LVL63:
+ 344:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_Acknowledge_Status_t ack_status;
+ 1252              		.loc 1 344 30 view .LVU442
+ 1253 0028 0DE0     		b	.L87
+ 1254              	.LVL64:
+ 1255              	.L86:
+ 360:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       control = ST25FTM_STATE_MACHINE_CONTINUE;
+ 1256              		.loc 1 360 7 is_stmt 1 view .LVU443
+ 360:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       control = ST25FTM_STATE_MACHINE_CONTINUE;
+ 1257              		.loc 1 360 26 is_stmt 0 view .LVU444
+ 1258 002a 0C4B     		ldr	r3, .L93
+ 1259 002c 0122     		movs	r2, #1
+ 1260 002e 1A73     		strb	r2, [r3, #12]
+ 361:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     }
+ 1261              		.loc 1 361 7 is_stmt 1 view .LVU445
+ 1262              	.LVL65:
+ 361:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     }
+ 1263              		.loc 1 361 15 is_stmt 0 view .LVU446
+ 1264 0030 0020     		movs	r0, #0
+ 1265              	.LVL66:
+ 361:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     }
+ 1266              		.loc 1 361 15 view .LVU447
+ 1267 0032 08E0     		b	.L87
+ 1268              	.LVL67:
+ 1269              	.L85:
+ 363:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     /* do nothing */
+ 1270              		.loc 1 363 10 is_stmt 1 view .LVU448
+ 363:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     /* do nothing */
+ 1271              		.loc 1 363 13 is_stmt 0 view .LVU449
+ 1272 0034 B0F1FF3F 		cmp	r0, #-1
+ 1273 0038 06D0     		beq	.L91
+ 366:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     ST25FTM_TxResetSegment();
+ 1274              		.loc 1 366 10 is_stmt 1 view .LVU450
+ 366:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     ST25FTM_TxResetSegment();
+ 1275              		.loc 1 366 13 is_stmt 0 view .LVU451
+ 1276 003a 0128     		cmp	r0, #1
+ 1277 003c 09D0     		beq	.L92
+ 371:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     ST25FTM_LOG("Write error, mailbox busy 3\r\n");
+ 1278              		.loc 1 371 5 is_stmt 1 view .LVU452
+ 371:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     ST25FTM_LOG("Write error, mailbox busy 3\r\n");
+ 1279              		.loc 1 371 24 is_stmt 0 view .LVU453
+ 1280 003e 074B     		ldr	r3, .L93
+ 1281 0040 0722     		movs	r2, #7
+ 1282 0042 1A73     		strb	r2, [r3, #12]
+ 344:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_Acknowledge_Status_t ack_status;
+ 1283              		.loc 1 344 30 view .LVU454
+ 1284 0044 0120     		movs	r0, #1
+ 1285              	.LVL68:
+ 1286              	.L87:
+ 372:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   }
+ 1287              		.loc 1 372 51 is_stmt 1 view .LVU455
+ 374:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** }
+ARM GAS  /tmp/cc1Z0LnX.s 			page 36
+
+
+ 1288              		.loc 1 374 3 view .LVU456
+ 375:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+ 1289              		.loc 1 375 1 is_stmt 0 view .LVU457
+ 1290 0046 08BD     		pop	{r3, pc}
+ 1291              	.LVL69:
+ 1292              	.L91:
+ 365:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   } else if (ack_status == ST25FTM_CRC_ERROR) {
+ 1293              		.loc 1 365 5 is_stmt 1 view .LVU458
+ 365:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   } else if (ack_status == ST25FTM_CRC_ERROR) {
+ 1294              		.loc 1 365 24 is_stmt 0 view .LVU459
+ 1295 0048 044B     		ldr	r3, .L93
+ 1296 004a 0522     		movs	r2, #5
+ 1297 004c 1A73     		strb	r2, [r3, #12]
+ 344:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_Acknowledge_Status_t ack_status;
+ 1298              		.loc 1 344 30 view .LVU460
+ 1299 004e 0120     		movs	r0, #1
+ 1300              	.LVL70:
+ 344:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_Acknowledge_Status_t ack_status;
+ 1301              		.loc 1 344 30 view .LVU461
+ 1302 0050 F9E7     		b	.L87
+ 1303              	.LVL71:
+ 1304              	.L92:
+ 367:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     control = ST25FTM_STATE_MACHINE_CONTINUE;
+ 1305              		.loc 1 367 5 is_stmt 1 view .LVU462
+ 1306 0052 FFF7FEFF 		bl	ST25FTM_TxResetSegment
+ 1307              	.LVL72:
+ 368:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   } else {
+ 1308              		.loc 1 368 5 view .LVU463
+ 368:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   } else {
+ 1309              		.loc 1 368 13 is_stmt 0 view .LVU464
+ 1310 0056 0020     		movs	r0, #0
+ 1311 0058 F5E7     		b	.L87
+ 1312              	.L94:
+ 1313 005a 00BF     		.align	2
+ 1314              	.L93:
+ 1315 005c 00000000 		.word	gFtmState
+ 1316              		.cfi_endproc
+ 1317              	.LFE143:
+ 1319              		.section	.text.ST25FTM_Transmit,"ax",%progbits
+ 1320              		.align	1
+ 1321              		.global	ST25FTM_Transmit
+ 1322              		.syntax unified
+ 1323              		.thumb
+ 1324              		.thumb_func
+ 1325              		.fpu fpv4-sp-d16
+ 1327              	ST25FTM_Transmit:
+ 1328              	.LFB144:
+ 378:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_StateMachineCtrl_t control = ST25FTM_STATE_MACHINE_CONTINUE;
+ 1329              		.loc 1 378 1 is_stmt 1 view -0
+ 1330              		.cfi_startproc
+ 1331              		@ args = 0, pretend = 0, frame = 0
+ 1332              		@ frame_needed = 0, uses_anonymous_args = 0
+ 379:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   while(control == ST25FTM_STATE_MACHINE_CONTINUE)
+ 1333              		.loc 1 379 3 view .LVU466
+ 1334              	.LVL73:
+ 380:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   {
+ 1335              		.loc 1 380 3 view .LVU467
+ARM GAS  /tmp/cc1Z0LnX.s 			page 37
+
+
+ 379:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   while(control == ST25FTM_STATE_MACHINE_CONTINUE)
+ 1336              		.loc 1 379 30 is_stmt 0 view .LVU468
+ 1337 0000 0020     		movs	r0, #0
+ 1338              	.LVL74:
+ 380:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   {
+ 1339              		.loc 1 380 8 is_stmt 1 view .LVU469
+ 1340 0002 48BB     		cbnz	r0, .L112
+ 378:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   ST25FTM_StateMachineCtrl_t control = ST25FTM_STATE_MACHINE_CONTINUE;
+ 1341              		.loc 1 378 1 is_stmt 0 view .LVU470
+ 1342 0004 08B5     		push	{r3, lr}
+ 1343              	.LCFI11:
+ 1344              		.cfi_def_cfa_offset 8
+ 1345              		.cfi_offset 3, -8
+ 1346              		.cfi_offset 14, -4
+ 1347 0006 02E0     		b	.L107
+ 1348              	.L104:
+ 385:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     break;
+ 1349              		.loc 1 385 7 is_stmt 1 view .LVU471
+ 385:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     break;
+ 1350              		.loc 1 385 17 is_stmt 0 view .LVU472
+ 1351 0008 FFF7FEFF 		bl	ST25FTM_StateTxIdle
+ 1352              	.LVL75:
+ 386:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     case ST25FTM_WRITE_CMD:
+ 1353              		.loc 1 386 5 is_stmt 1 view .LVU473
+ 1354              	.L96:
+ 380:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   {
+ 1355              		.loc 1 380 8 view .LVU474
+ 1356 000c 18BB     		cbnz	r0, .L95
+ 1357              	.L107:
+ 382:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 1358              		.loc 1 382 5 view .LVU475
+ 382:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 1359              		.loc 1 382 25 is_stmt 0 view .LVU476
+ 1360 000e 134B     		ldr	r3, .L113
+ 1361 0010 1B7B     		ldrb	r3, [r3, #12]	@ zero_extendqisi2
+ 382:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     {
+ 1362              		.loc 1 382 5 view .LVU477
+ 1363 0012 052B     		cmp	r3, #5
+ 1364 0014 1DD8     		bhi	.L97
+ 1365 0016 01A2     		adr	r2, .L99
+ 1366 0018 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 1367              		.p2align 2
+ 1368              	.L99:
+ 1369 001c 09000000 		.word	.L104+1
+ 1370 0020 35000000 		.word	.L103+1
+ 1371 0024 3B000000 		.word	.L102+1
+ 1372 0028 41000000 		.word	.L101+1
+ 1373 002c 47000000 		.word	.L100+1
+ 1374 0030 4D000000 		.word	.L98+1
+ 1375              		.p2align 1
+ 1376              	.L103:
+ 388:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     break;
+ 1377              		.loc 1 388 7 is_stmt 1 view .LVU478
+ 388:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     break;
+ 1378              		.loc 1 388 17 is_stmt 0 view .LVU479
+ 1379 0034 FFF7FEFF 		bl	ST25FTM_StateTxCommand
+ 1380              	.LVL76:
+ARM GAS  /tmp/cc1Z0LnX.s 			page 38
+
+
+ 389:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     case ST25FTM_WRITE_SEGMENT:
+ 1381              		.loc 1 389 5 is_stmt 1 view .LVU480
+ 1382 0038 E8E7     		b	.L96
+ 1383              	.L102:
+ 391:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     break;
+ 1384              		.loc 1 391 7 view .LVU481
+ 391:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     break;
+ 1385              		.loc 1 391 17 is_stmt 0 view .LVU482
+ 1386 003a FFF7FEFF 		bl	ST25FTM_StateTxSegment
+ 1387              	.LVL77:
+ 392:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     case ST25FTM_WRITE_PKT:
+ 1388              		.loc 1 392 5 is_stmt 1 view .LVU483
+ 1389 003e E5E7     		b	.L96
+ 1390              	.L101:
+ 394:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     break;
+ 1391              		.loc 1 394 7 view .LVU484
+ 394:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     break;
+ 1392              		.loc 1 394 17 is_stmt 0 view .LVU485
+ 1393 0040 FFF7FEFF 		bl	ST25FTM_StateTxPacket
+ 1394              	.LVL78:
+ 395:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     case ST25FTM_WRITE_WAIT_READ:
+ 1395              		.loc 1 395 5 is_stmt 1 view .LVU486
+ 1396 0044 E2E7     		b	.L96
+ 1397              	.L100:
+ 397:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     break;
+ 1398              		.loc 1 397 7 view .LVU487
+ 397:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     break;
+ 1399              		.loc 1 397 17 is_stmt 0 view .LVU488
+ 1400 0046 FFF7FEFF 		bl	ST25FTM_StateTxWaitRead
+ 1401              	.LVL79:
+ 398:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     case ST25FTM_WRITE_READ_ACK:
+ 1402              		.loc 1 398 5 is_stmt 1 view .LVU489
+ 1403 004a DFE7     		b	.L96
+ 1404              	.L98:
+ 400:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     break;
+ 1405              		.loc 1 400 7 view .LVU490
+ 400:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     break;
+ 1406              		.loc 1 400 17 is_stmt 0 view .LVU491
+ 1407 004c FFF7FEFF 		bl	ST25FTM_StateTxReadAck
+ 1408              	.LVL80:
+ 401:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     default:
+ 1409              		.loc 1 401 5 is_stmt 1 view .LVU492
+ 1410 0050 DCE7     		b	.L96
+ 1411              	.L97:
+ 403:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****       control = ST25FTM_STATE_MACHINE_RELEASE;
+ 1412              		.loc 1 403 7 view .LVU493
+ 1413 0052 FFF7FEFF 		bl	ST25FTM_Reset
+ 1414              	.LVL81:
+ 404:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     break;
+ 1415              		.loc 1 404 7 view .LVU494
+ 405:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****     }
+ 1416              		.loc 1 405 5 view .LVU495
+ 380:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c ****   {
+ 1417              		.loc 1 380 8 view .LVU496
+ 1418              	.L95:
+ 408:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+ 1419              		.loc 1 408 1 is_stmt 0 view .LVU497
+ARM GAS  /tmp/cc1Z0LnX.s 			page 39
+
+
+ 1420 0056 08BD     		pop	{r3, pc}
+ 1421              	.LVL82:
+ 1422              	.L112:
+ 1423              	.LCFI12:
+ 1424              		.cfi_def_cfa_offset 0
+ 1425              		.cfi_restore 3
+ 1426              		.cfi_restore 14
+ 408:Middlewares/ST/ST25FTM/Src/st25ftm_tx.c **** 
+ 1427              		.loc 1 408 1 view .LVU498
+ 1428 0058 7047     		bx	lr
+ 1429              	.L114:
+ 1430 005a 00BF     		.align	2
+ 1431              	.L113:
+ 1432 005c 00000000 		.word	gFtmState
+ 1433              		.cfi_endproc
+ 1434              	.LFE144:
+ 1436              		.text
+ 1437              	.Letext0:
+ 1438              		.file 2 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h"
+ 1439              		.file 3 "Middlewares/ST/ST25FTM/Inc/st25ftm_protocol.h"
+ 1440              		.file 4 "ST25FTM/App/st25ftm_config.h"
+ 1441              		.file 5 "Middlewares/ST/ST25FTM/Inc/st25ftm_common.h"
+ 1442              		.file 6 "<built-in>"
+ARM GAS  /tmp/cc1Z0LnX.s 			page 40
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 st25ftm_tx.c
+     /tmp/cc1Z0LnX.s:18     .text.ST25FTM_StateTxCommand:0000000000000000 $t
+     /tmp/cc1Z0LnX.s:25     .text.ST25FTM_StateTxCommand:0000000000000000 ST25FTM_StateTxCommand
+     /tmp/cc1Z0LnX.s:134    .text.ST25FTM_StateTxCommand:0000000000000054 $d
+     /tmp/cc1Z0LnX.s:139    .text.ST25FTM_StateTxIdle:0000000000000000 $t
+     /tmp/cc1Z0LnX.s:145    .text.ST25FTM_StateTxIdle:0000000000000000 ST25FTM_StateTxIdle
+     /tmp/cc1Z0LnX.s:207    .text.ST25FTM_StateTxIdle:0000000000000030 $d
+     /tmp/cc1Z0LnX.s:212    .text.ST25FTM_GetData:0000000000000000 $t
+     /tmp/cc1Z0LnX.s:218    .text.ST25FTM_GetData:0000000000000000 ST25FTM_GetData
+     /tmp/cc1Z0LnX.s:254    .text.ST25FTM_GetData:0000000000000014 $d
+     /tmp/cc1Z0LnX.s:259    .text.ST25FTM_Pack:0000000000000000 $t
+     /tmp/cc1Z0LnX.s:265    .text.ST25FTM_Pack:0000000000000000 ST25FTM_Pack
+     /tmp/cc1Z0LnX.s:483    .text.ST25FTM_Pack:00000000000000e0 $d
+     /tmp/cc1Z0LnX.s:488    .text.ST25FTM_StateTxSegment:0000000000000000 $t
+     /tmp/cc1Z0LnX.s:494    .text.ST25FTM_StateTxSegment:0000000000000000 ST25FTM_StateTxSegment
+     /tmp/cc1Z0LnX.s:784    .text.ST25FTM_StateTxSegment:0000000000000170 $d
+     /tmp/cc1Z0LnX.s:789    .text.ST25FTM_StateTxPacket:0000000000000000 $t
+     /tmp/cc1Z0LnX.s:795    .text.ST25FTM_StateTxPacket:0000000000000000 ST25FTM_StateTxPacket
+     /tmp/cc1Z0LnX.s:877    .text.ST25FTM_StateTxPacket:0000000000000044 $d
+     /tmp/cc1Z0LnX.s:882    .text.ST25FTM_StateTxWaitRead:0000000000000000 $t
+     /tmp/cc1Z0LnX.s:888    .text.ST25FTM_StateTxWaitRead:0000000000000000 ST25FTM_StateTxWaitRead
+     /tmp/cc1Z0LnX.s:1029   .text.ST25FTM_StateTxWaitRead:000000000000006c $d
+     /tmp/cc1Z0LnX.s:1034   .text.ST25FTM_TxStateInit:0000000000000000 $t
+     /tmp/cc1Z0LnX.s:1041   .text.ST25FTM_TxStateInit:0000000000000000 ST25FTM_TxStateInit
+     /tmp/cc1Z0LnX.s:1128   .text.ST25FTM_TxStateInit:000000000000004c $d
+     /tmp/cc1Z0LnX.s:1133   .text.ST25FTM_TxResetSegment:0000000000000000 $t
+     /tmp/cc1Z0LnX.s:1140   .text.ST25FTM_TxResetSegment:0000000000000000 ST25FTM_TxResetSegment
+     /tmp/cc1Z0LnX.s:1191   .text.ST25FTM_TxResetSegment:000000000000002c $d
+     /tmp/cc1Z0LnX.s:1196   .text.ST25FTM_StateTxReadAck:0000000000000000 $t
+     /tmp/cc1Z0LnX.s:1202   .text.ST25FTM_StateTxReadAck:0000000000000000 ST25FTM_StateTxReadAck
+     /tmp/cc1Z0LnX.s:1315   .text.ST25FTM_StateTxReadAck:000000000000005c $d
+     /tmp/cc1Z0LnX.s:1320   .text.ST25FTM_Transmit:0000000000000000 $t
+     /tmp/cc1Z0LnX.s:1327   .text.ST25FTM_Transmit:0000000000000000 ST25FTM_Transmit
+     /tmp/cc1Z0LnX.s:1369   .text.ST25FTM_Transmit:000000000000001c $d
+     /tmp/cc1Z0LnX.s:1375   .text.ST25FTM_Transmit:0000000000000034 $t
+     /tmp/cc1Z0LnX.s:1432   .text.ST25FTM_Transmit:000000000000005c $d
+
+UNDEFINED SYMBOLS
+gFtmState
+ST25FTM_CRC_Initialize
+memcpy
+ST25FTM_GetCrc
+memset
+logHexBuf
+ST25FTM_WriteMessage
+ST25FTM_GetMessageOwner
+ST25FTM_GetAcknowledgeStatus
+ST25FTM_Reset

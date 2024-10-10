@@ -1,0 +1,374 @@
+ARM GAS  /tmp/ccSFlcCA.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"st25ftm_common.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.logHexBuf,"ax",%progbits
+  18              		.align	1
+  19              		.global	logHexBuf
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	logHexBuf:
+  27              	.LVL0:
+  28              	.LFB135:
+  29              		.file 1 "Middlewares/ST/ST25FTM/Src/st25ftm_common.c"
+   1:Middlewares/ST/ST25FTM/Src/st25ftm_common.c **** /**
+   2:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   ******************************************************************************
+   3:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   * @file    st25ftm_common.c
+   4:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   * @author  MMY Application Team
+   5:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   * @version 1.0.0
+   6:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   * @date    29-July-2022
+   7:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   * @brief   Fast Transfer Memory protocol common file to utilities 
+   8:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   ******************************************************************************
+   9:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   * @attention
+  10:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   *
+  11:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   * Copyright (c) 2022 STMicroelectronics.
+  12:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   * All rights reserved.
+  13:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   *
+  14:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   * This software is licensed under terms that can be found in the LICENSE file
+  15:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   * in the root directory of this software component.
+  16:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
+  17:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   *
+  18:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   ******************************************************************************
+  19:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   */
+  20:Middlewares/ST/ST25FTM/Src/st25ftm_common.c **** 
+  21:Middlewares/ST/ST25FTM/Src/st25ftm_common.c **** #include <string.h>
+  22:Middlewares/ST/ST25FTM/Src/st25ftm_common.c **** #include "st25ftm_common.h"
+  23:Middlewares/ST/ST25FTM/Src/st25ftm_common.c **** #include "st25ftm_config.h"
+  24:Middlewares/ST/ST25FTM/Src/st25ftm_common.c **** 
+  25:Middlewares/ST/ST25FTM/Src/st25ftm_common.c **** ST25FTM_InternalState_t gFtmState;
+  26:Middlewares/ST/ST25FTM/Src/st25ftm_common.c **** 
+  27:Middlewares/ST/ST25FTM/Src/st25ftm_common.c **** void logHexBuf(uint8_t* buf, uint32_t len)
+  28:Middlewares/ST/ST25FTM/Src/st25ftm_common.c **** {
+  30              		.loc 1 28 1 view -0
+ARM GAS  /tmp/ccSFlcCA.s 			page 2
+
+
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  29:Middlewares/ST/ST25FTM/Src/st25ftm_common.c **** #if (ST25FTM_ENABLE_LOG != 0)
+  30:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   if(len > 32)
+  31:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   {
+  32:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****     char data[40];
+  33:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****     memset(data,0,sizeof(data));
+  34:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****     memcpy(data, ST25FTM_HEX2STR((uint8_t*)(buf + len - 16),16),32);
+  35:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****     ST25FTM_LOG("%s...%s\r\n",ST25FTM_HEX2STR(buf,16),data);
+  36:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   } else {
+  37:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****     ST25FTM_LOG("%s\r\n",ST25FTM_HEX2STR(buf,len));
+  38:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   }
+  39:Middlewares/ST/ST25FTM/Src/st25ftm_common.c **** #else
+  40:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   UNUSED(buf);
+  35              		.loc 1 40 3 view .LVU1
+  41:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   UNUSED(len);
+  36              		.loc 1 41 3 view .LVU2
+  42:Middlewares/ST/ST25FTM/Src/st25ftm_common.c **** #endif
+  43:Middlewares/ST/ST25FTM/Src/st25ftm_common.c **** }
+  37              		.loc 1 43 1 is_stmt 0 view .LVU3
+  38 0000 7047     		bx	lr
+  39              		.cfi_endproc
+  40              	.LFE135:
+  42              		.section	.text.ST25FTM_GetAcknowledgeStatus,"ax",%progbits
+  43              		.align	1
+  44              		.global	ST25FTM_GetAcknowledgeStatus
+  45              		.syntax unified
+  46              		.thumb
+  47              		.thumb_func
+  48              		.fpu fpv4-sp-d16
+  50              	ST25FTM_GetAcknowledgeStatus:
+  51              	.LFB136:
+  44:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****  
+  45:Middlewares/ST/ST25FTM/Src/st25ftm_common.c **** ST25FTM_Acknowledge_Status_t ST25FTM_GetAcknowledgeStatus(void)
+  46:Middlewares/ST/ST25FTM/Src/st25ftm_common.c **** {
+  52              		.loc 1 46 1 is_stmt 1 view -0
+  53              		.cfi_startproc
+  54              		@ args = 0, pretend = 0, frame = 264
+  55              		@ frame_needed = 0, uses_anonymous_args = 0
+  56 0000 00B5     		push	{lr}
+  57              	.LCFI0:
+  58              		.cfi_def_cfa_offset 4
+  59              		.cfi_offset 14, -4
+  60 0002 C3B0     		sub	sp, sp, #268
+  61              	.LCFI1:
+  62              		.cfi_def_cfa_offset 272
+  47:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   uint8_t msg[ST25FTM_BUFFER_LENGTH];
+  63              		.loc 1 47 3 view .LVU5
+  48:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   uint32_t msg_len = 0U;
+  64              		.loc 1 48 3 view .LVU6
+  65              		.loc 1 48 12 is_stmt 0 view .LVU7
+  66 0004 0023     		movs	r3, #0
+  67 0006 0193     		str	r3, [sp, #4]
+  49:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   ST25FTM_Acknowledge_Status_t status;
+  68              		.loc 1 49 3 is_stmt 1 view .LVU8
+ARM GAS  /tmp/ccSFlcCA.s 			page 3
+
+
+  50:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   if(ST25FTM_GetMessageOwner() == ST25FTM_MESSAGE_PEER)
+  69              		.loc 1 50 3 view .LVU9
+  70              		.loc 1 50 6 is_stmt 0 view .LVU10
+  71 0008 FFF7FEFF 		bl	ST25FTM_GetMessageOwner
+  72              	.LVL1:
+  73              		.loc 1 50 5 view .LVU11
+  74 000c 0228     		cmp	r0, #2
+  75 000e 0ED1     		bne	.L4
+  51:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   {
+  52:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****     if(ST25FTM_ReadMessage(msg, &msg_len) != ST25FTM_MSG_OK)
+  76              		.loc 1 52 5 is_stmt 1 view .LVU12
+  77              		.loc 1 52 8 is_stmt 0 view .LVU13
+  78 0010 01A9     		add	r1, sp, #4
+  79 0012 02A8     		add	r0, sp, #8
+  80 0014 FFF7FEFF 		bl	ST25FTM_ReadMessage
+  81              	.LVL2:
+  82              		.loc 1 52 7 view .LVU14
+  83 0018 60B9     		cbnz	r0, .L5
+  53:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****     {
+  54:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****       status = ST25FTM_ACK_BUSY;
+  55:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****     } else {
+  56:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****       if(msg[0] == ((uint8_t)ST25FTM_SEGMENT_OK | (uint8_t)ST25FTM_STATUS_BYTE))
+  84              		.loc 1 56 7 is_stmt 1 view .LVU15
+  85              		.loc 1 56 13 is_stmt 0 view .LVU16
+  86 001a 9DF80830 		ldrb	r3, [sp, #8]	@ zero_extendqisi2
+  87              		.loc 1 56 9 view .LVU17
+  88 001e 802B     		cmp	r3, #128
+  89 0020 0BD0     		beq	.L6
+  57:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****       {
+  58:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****         status = ST25FTM_SEGMENT_OK;
+  59:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****       } else if (msg[0] == ((uint8_t)ST25FTM_CRC_ERROR | (uint8_t)ST25FTM_STATUS_BYTE))
+  90              		.loc 1 59 14 is_stmt 1 view .LVU18
+  91              		.loc 1 59 17 is_stmt 0 view .LVU19
+  92 0022 812B     		cmp	r3, #129
+  93 0024 0BD1     		bne	.L7
+  60:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****       {
+  61:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****         status = ST25FTM_CRC_ERROR;
+  94              		.loc 1 61 16 view .LVU20
+  95 0026 0120     		movs	r0, #1
+  96              	.L3:
+  97              	.LVL3:
+  62:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****       } else {
+  63:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****         /* Unexpected value, this is not a ACK */
+  64:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****         status = ST25FTM_ACK_ERROR;
+  65:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****       }
+  66:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****     }
+  67:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   } else {
+  68:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****     status = ST25FTM_ACK_BUSY;
+  69:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   }
+  70:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   return status;
+  98              		.loc 1 70 3 is_stmt 1 view .LVU21
+  71:Middlewares/ST/ST25FTM/Src/st25ftm_common.c **** }
+  99              		.loc 1 71 1 is_stmt 0 view .LVU22
+ 100 0028 43B0     		add	sp, sp, #268
+ 101              	.LCFI2:
+ 102              		.cfi_remember_state
+ 103              		.cfi_def_cfa_offset 4
+ARM GAS  /tmp/ccSFlcCA.s 			page 4
+
+
+ 104              		@ sp needed
+ 105 002a 5DF804FB 		ldr	pc, [sp], #4
+ 106              	.LVL4:
+ 107              	.L4:
+ 108              	.LCFI3:
+ 109              		.cfi_restore_state
+  68:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   }
+ 110              		.loc 1 68 12 view .LVU23
+ 111 002e 4FF0FF30 		mov	r0, #-1
+ 112 0032 F9E7     		b	.L3
+ 113              	.L5:
+  54:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****     } else {
+ 114              		.loc 1 54 14 view .LVU24
+ 115 0034 4FF0FF30 		mov	r0, #-1
+ 116 0038 F6E7     		b	.L3
+ 117              	.L6:
+  58:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****       } else if (msg[0] == ((uint8_t)ST25FTM_CRC_ERROR | (uint8_t)ST25FTM_STATUS_BYTE))
+ 118              		.loc 1 58 16 view .LVU25
+ 119 003a 0020     		movs	r0, #0
+ 120 003c F4E7     		b	.L3
+ 121              	.L7:
+  64:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****       }
+ 122              		.loc 1 64 16 view .LVU26
+ 123 003e 6FF00100 		mvn	r0, #1
+ 124 0042 F1E7     		b	.L3
+ 125              		.cfi_endproc
+ 126              	.LFE136:
+ 128              		.section	.text.ST25FTM_State_Init,"ax",%progbits
+ 129              		.align	1
+ 130              		.global	ST25FTM_State_Init
+ 131              		.syntax unified
+ 132              		.thumb
+ 133              		.thumb_func
+ 134              		.fpu fpv4-sp-d16
+ 136              	ST25FTM_State_Init:
+ 137              	.LFB137:
+  72:Middlewares/ST/ST25FTM/Src/st25ftm_common.c **** 
+  73:Middlewares/ST/ST25FTM/Src/st25ftm_common.c **** void ST25FTM_State_Init(void)
+  74:Middlewares/ST/ST25FTM/Src/st25ftm_common.c **** {
+ 138              		.loc 1 74 1 is_stmt 1 view -0
+ 139              		.cfi_startproc
+ 140              		@ args = 0, pretend = 0, frame = 0
+ 141              		@ frame_needed = 0, uses_anonymous_args = 0
+ 142 0000 10B5     		push	{r4, lr}
+ 143              	.LCFI4:
+ 144              		.cfi_def_cfa_offset 8
+ 145              		.cfi_offset 4, -8
+ 146              		.cfi_offset 14, -4
+  75:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   gFtmState.state = ST25FTM_IDLE;
+ 147              		.loc 1 75 3 view .LVU28
+ 148              		.loc 1 75 19 is_stmt 0 view .LVU29
+ 149 0002 084C     		ldr	r4, .L11
+ 150 0004 0023     		movs	r3, #0
+ 151 0006 2370     		strb	r3, [r4]
+  76:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   gFtmState.lastState = ST25FTM_IDLE;
+ 152              		.loc 1 76 3 is_stmt 1 view .LVU30
+ 153              		.loc 1 76 23 is_stmt 0 view .LVU31
+ARM GAS  /tmp/ccSFlcCA.s 			page 5
+
+
+ 154 0008 6370     		strb	r3, [r4, #1]
+  77:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   gFtmState.rfField = ST25FTM_FIELD_OFF;
+ 155              		.loc 1 77 3 is_stmt 1 view .LVU32
+ 156              		.loc 1 77 21 is_stmt 0 view .LVU33
+ 157 000a A370     		strb	r3, [r4, #2]
+  78:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   gFtmState.totalDataLength = 0;
+ 158              		.loc 1 78 3 is_stmt 1 view .LVU34
+ 159              		.loc 1 78 29 is_stmt 0 view .LVU35
+ 160 000c 6360     		str	r3, [r4, #4]
+  79:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   gFtmState.retryLength = 0;
+ 161              		.loc 1 79 3 is_stmt 1 view .LVU36
+ 162              		.loc 1 79 25 is_stmt 0 view .LVU37
+ 163 000e A360     		str	r3, [r4, #8]
+  80:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   gFtmState.lastTick = ST25FTM_TICK();
+ 164              		.loc 1 80 3 is_stmt 1 view .LVU38
+ 165              		.loc 1 80 24 is_stmt 0 view .LVU39
+ 166 0010 FFF7FEFF 		bl	HAL_GetTick
+ 167              	.LVL5:
+ 168              		.loc 1 80 22 view .LVU40
+ 169 0014 C4F8A001 		str	r0, [r4, #416]
+  81:Middlewares/ST/ST25FTM/Src/st25ftm_common.c **** 
+  82:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   ST25FTM_TxStateInit();
+ 170              		.loc 1 82 3 is_stmt 1 view .LVU41
+ 171 0018 FFF7FEFF 		bl	ST25FTM_TxStateInit
+ 172              	.LVL6:
+  83:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   ST25FTM_RxStateInit();
+ 173              		.loc 1 83 3 view .LVU42
+ 174 001c FFF7FEFF 		bl	ST25FTM_RxStateInit
+ 175              	.LVL7:
+  84:Middlewares/ST/ST25FTM/Src/st25ftm_common.c **** }
+ 176              		.loc 1 84 1 is_stmt 0 view .LVU43
+ 177 0020 10BD     		pop	{r4, pc}
+ 178              	.L12:
+ 179 0022 00BF     		.align	2
+ 180              	.L11:
+ 181 0024 00000000 		.word	.LANCHOR0
+ 182              		.cfi_endproc
+ 183              	.LFE137:
+ 185              		.section	.text.ST25FTM_CompareTime,"ax",%progbits
+ 186              		.align	1
+ 187              		.global	ST25FTM_CompareTime
+ 188              		.syntax unified
+ 189              		.thumb
+ 190              		.thumb_func
+ 191              		.fpu fpv4-sp-d16
+ 193              	ST25FTM_CompareTime:
+ 194              	.LVL8:
+ 195              	.LFB138:
+  85:Middlewares/ST/ST25FTM/Src/st25ftm_common.c **** 
+  86:Middlewares/ST/ST25FTM/Src/st25ftm_common.c **** 
+  87:Middlewares/ST/ST25FTM/Src/st25ftm_common.c **** uint32_t ST25FTM_CompareTime(uint32_t a, uint32_t b)
+  88:Middlewares/ST/ST25FTM/Src/st25ftm_common.c **** {
+ 196              		.loc 1 88 1 is_stmt 1 view -0
+ 197              		.cfi_startproc
+ 198              		@ args = 0, pretend = 0, frame = 0
+ 199              		@ frame_needed = 0, uses_anonymous_args = 0
+ 200              		@ link register save eliminated.
+ARM GAS  /tmp/ccSFlcCA.s 			page 6
+
+
+  89:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   uint32_t result;
+ 201              		.loc 1 89 3 view .LVU45
+  90:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   if(a > b)
+ 202              		.loc 1 90 3 view .LVU46
+ 203              		.loc 1 90 5 is_stmt 0 view .LVU47
+ 204 0000 8842     		cmp	r0, r1
+ 205 0002 01D9     		bls	.L14
+  91:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   {
+  92:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****     result = a - b;
+ 206              		.loc 1 92 5 is_stmt 1 view .LVU48
+ 207              		.loc 1 92 12 is_stmt 0 view .LVU49
+ 208 0004 401A     		subs	r0, r0, r1
+ 209              	.LVL9:
+ 210              		.loc 1 92 12 view .LVU50
+ 211 0006 7047     		bx	lr
+ 212              	.LVL10:
+ 213              	.L14:
+  93:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   } else {
+  94:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****     result = b - a;
+ 214              		.loc 1 94 5 is_stmt 1 view .LVU51
+ 215              		.loc 1 94 12 is_stmt 0 view .LVU52
+ 216 0008 081A     		subs	r0, r1, r0
+ 217              	.LVL11:
+  95:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   }
+  96:Middlewares/ST/ST25FTM/Src/st25ftm_common.c ****   return result;
+ 218              		.loc 1 96 3 is_stmt 1 view .LVU53
+  97:Middlewares/ST/ST25FTM/Src/st25ftm_common.c **** }
+ 219              		.loc 1 97 1 is_stmt 0 view .LVU54
+ 220 000a 7047     		bx	lr
+ 221              		.cfi_endproc
+ 222              	.LFE138:
+ 224              		.global	gFtmState
+ 225              		.section	.bss.gFtmState,"aw",%nobits
+ 226              		.align	2
+ 227              		.set	.LANCHOR0,. + 0
+ 230              	gFtmState:
+ 231 0000 00000000 		.space	420
+ 231      00000000 
+ 231      00000000 
+ 231      00000000 
+ 231      00000000 
+ 232              		.text
+ 233              	.Letext0:
+ 234              		.file 2 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h"
+ 235              		.file 3 "Middlewares/ST/ST25FTM/Inc/st25ftm_protocol.h"
+ 236              		.file 4 "ST25FTM/App/st25ftm_config.h"
+ 237              		.file 5 "Middlewares/ST/ST25FTM/Inc/st25ftm_common.h"
+ 238              		.file 6 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h"
+ARM GAS  /tmp/ccSFlcCA.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 st25ftm_common.c
+     /tmp/ccSFlcCA.s:18     .text.logHexBuf:0000000000000000 $t
+     /tmp/ccSFlcCA.s:26     .text.logHexBuf:0000000000000000 logHexBuf
+     /tmp/ccSFlcCA.s:43     .text.ST25FTM_GetAcknowledgeStatus:0000000000000000 $t
+     /tmp/ccSFlcCA.s:50     .text.ST25FTM_GetAcknowledgeStatus:0000000000000000 ST25FTM_GetAcknowledgeStatus
+     /tmp/ccSFlcCA.s:129    .text.ST25FTM_State_Init:0000000000000000 $t
+     /tmp/ccSFlcCA.s:136    .text.ST25FTM_State_Init:0000000000000000 ST25FTM_State_Init
+     /tmp/ccSFlcCA.s:181    .text.ST25FTM_State_Init:0000000000000024 $d
+     /tmp/ccSFlcCA.s:186    .text.ST25FTM_CompareTime:0000000000000000 $t
+     /tmp/ccSFlcCA.s:193    .text.ST25FTM_CompareTime:0000000000000000 ST25FTM_CompareTime
+     /tmp/ccSFlcCA.s:230    .bss.gFtmState:0000000000000000 gFtmState
+     /tmp/ccSFlcCA.s:226    .bss.gFtmState:0000000000000000 $d
+
+UNDEFINED SYMBOLS
+ST25FTM_GetMessageOwner
+ST25FTM_ReadMessage
+HAL_GetTick
+ST25FTM_TxStateInit
+ST25FTM_RxStateInit
