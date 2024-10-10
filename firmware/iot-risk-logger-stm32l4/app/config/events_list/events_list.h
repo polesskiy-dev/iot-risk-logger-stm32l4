@@ -23,6 +23,19 @@ extern "C" {
  */
 typedef enum {
   EVENT_NONE = 0,
+  /**
+   * @brief Global Commands, their codes equal to the command codes in the protocol across the system
+   * @note Mobile phone application should send these commands to the device
+   */
+  // GLOBAL COMMANDS
+  GLOBAL_CMD_START_LOGGING    = 0xC0, ///< Start logging measurements
+  GLOBAL_CMD_STOP_LOGGING     = 0xC1, ///< Stop logging measurements
+  GLOBAL_CMD_WRITE_SETTINGS   = 0xC2, ///< Write settings to the device
+  GLOBAL_CMD_READ_SETTINGS    = 0xC3, ///< Read settings from the device
+  GLOBAL_CMD_READ_LOG_CHUNK   = 0xC4, ///< Read log chunk from the device
+  /**
+   * @brief Global Events in the system
+   */
   // GLOBAL Events
   GLOBAL_CMD_INITIALIZE,
   GLOBAL_INITIALIZE_SUCCESS,
@@ -36,8 +49,12 @@ typedef enum {
   GLOBAL_CMD_SET_WAKE_UP_PERIOD, ///< Set wake up period in seconds
   GLOBAL_CMD_START_CONTINUOUS_SENSING, ///< Start continuous sensors measurement
   GLOBAL_CMD_TURN_OFF, ///< Turn off to power saving mode
+  GLOBAL_NFC_MAILBOX_WRITE, ///< NFC mailbox write data event
   GLOBAL_ERROR,
   GLOBAL_EVENTS_MAX,
+  /**
+   * @brief Local Events for the system modules
+   */
   // INFO_LED
   INFO_LED_FLASH,
   // NFC

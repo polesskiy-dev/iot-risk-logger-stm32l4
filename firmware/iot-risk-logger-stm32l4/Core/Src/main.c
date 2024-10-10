@@ -26,7 +26,6 @@
 #include "rtc.h"
 #include "usb_device.h"
 #include "gpio.h"
-#include "SEGGER_RTT.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -119,9 +118,6 @@ int main(void)
 
   /* Call init function for freertos objects (in cmsis_os2.c) */
   MX_FREERTOS_Init();
-
-  /* Init SystemView */
-  SEGGER_SYSVIEW_Conf();
 
   /* Start scheduler */
   osKernelStart();

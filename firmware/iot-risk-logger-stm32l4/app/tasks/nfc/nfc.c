@@ -11,6 +11,8 @@
 
 static osStatus_t handleNFCFSM(NFC_Actor_t *this, message_t *message);
 static osStatus_t handleInit(NFC_Actor_t *this, message_t *message);
+static osStatus_t handleStandby(NFC_Actor_t *this, message_t *message);
+static osStatus_t handleMailboxTransmit(NFC_Actor_t *this, message_t *message);
 
 extern actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS];
 
@@ -68,11 +70,11 @@ void NFC_Task(void *argument) {
 static osStatus_t handleNFCFSM(NFC_Actor_t *this, message_t *message) {
   switch (this->state) {
     case NFC_NO_STATE:
-      handleInit(this, message);
-      return osOK;
+      return handleInit(this, message);
     case NFC_STANDBY_STATE:
-      // TODO handle low power state
-      return osOK;
+      return handleStandby(this, message);
+    case NFC_MAILBOX_TRANSMIT_STATE:
+      return handleMailboxTransmit(this, message);
     default:
       return osOK;
   }
@@ -95,14 +97,56 @@ static osStatus_t handleNFCFSM(NFC_Actor_t *this, message_t *message) {
 }
 
 static osStatus_t handleInit(NFC_Actor_t *this, message_t *message) {
-  osStatus_t status;
+  osStatus_t ioStatus;
+  ST25DV_UID uid = {0x00000000, 0x00000000};
+  const ST25DV_PASSWD i2cPwd = {0x00000000, 0x00000000};
 
   switch (message->event) {
     case GLOBAL_CMD_INITIALIZE:
-      status = NFC_ST25DVInit(&this->st25dv);
-      if (status != NFCTAG_OK)
+      ioStatus = NFC_ST25DVInit(&this->st25dv);
+      if (ioStatus != NFCTAG_OK)
         return osError;
-      this->state = NFC_STANDBY_STATE;
+
+      ioStatus = ST25DV_PresentI2CPassword(&this->st25dv, i2cPwd);
+      if (ioStatus != NFCTAG_OK)
+        return osError;
+
+      ioStatus = ST25DV_ReadUID(&this->st25dv, &uid);
+      if (ioStatus != NFCTAG_OK)
+        return osError;
+
+      #ifdef DEBUG
+            fprintf(stdout, "NFC task initialized, UID: 0x%x %x\n", uid.MsbUid, uid.LsbUid);
+      #endif
+
+      TO_STATE(this, NFC_STANDBY_STATE);
+      return osOK;
+    default:
+      return osOK;
+  }
+}
+
+static osStatus_t handleStandby(NFC_Actor_t *this, message_t *message) {
+  switch (message->event) {
+    case NFC_GPO_INTERRUPT:
+      NFC_HandleGPOInterrupt(&this->st25dv);
+
+      TO_STATE(this, NFC_MAILBOX_TRANSMIT_STATE);
+      return osOK;
+    default:
+      return osOK;
+  }
+}
+
+static osStatus_t handleMailboxTransmit(NFC_Actor_t *this, message_t *message) {
+  switch (message->event) {
+    case NFC_MAILBOX_HAS_NEW_MESSAGE:
+      NFC_ReadMailboxTo(&this->st25dv, this->mailboxBuffer);
+
+      // Print for debug purposes
+      for (int i = 0; i < ST25DV_MAX_MAILBOX_LENGTH; i++) {
+        fprintf(stdout, "0x%x ", this->mailboxBuffer[i]);
+      }
 
       return osOK;
     default:

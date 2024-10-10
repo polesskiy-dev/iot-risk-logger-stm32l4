@@ -19,6 +19,7 @@ extern "C" {
 typedef enum {
   NFC_NO_STATE = 0,
   NFC_STANDBY_STATE,
+  NFC_MAILBOX_TRANSMIT_STATE,
   NFC_STATE_ERROR,
   NFC_MAX_STATE
 } NFC_State_t;

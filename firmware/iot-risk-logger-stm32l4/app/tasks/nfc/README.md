@@ -2,6 +2,24 @@
 
 ### Overview
 
+### Communication
+
+Communication between NFC module and mobile phone is based on *client-server* model. 
+NFC module acts as a server and mobile phone as a client. 
+Communication is based by data exchange via *NFC Mailbox* which is 256 bytes buffer is ST25DV.
+
+Useful payload for now is about 128 bytes. Due to I2C reading from NOR Flash and transferring data to NFC Mailbox, *double buffer* is used in MCU SRAM.
+
+### Protocol Description
+
+| Name       | Size, bytes | Description                                                                                                      | Example |
+|------------|------------|------------------------------------------------------------------------------------------------------------------|---------|
+| Command ID | 1          | Command to process, response duplicates it                                                                       | 0xC1    |
+| Payload size | 1          | Actual data size                                                                                                 | 0x04    |
+| CRC8       | 1          | Payload checksum                                                                                                 | 0xAA |
+| Payload | 0...253    | Actual data, for commands it could be address to read or settings<br/> for response it could be e,g chunk of log | 0xAA... |
+
+
 ### State Diagram
 
 <details>
@@ -13,104 +31,23 @@ title NFC FSM
 hide empty description
 
 STANDBY: RF free\nI2C free
-MAILBOX_TRANSMISSION: Mailbox data exchange
+MAILBOX_RECEIVE_CMD: Mailbox received a message (command)
+VALIDATE_MAILBOX: Check CRC 
+MAILBOX_WRITE_RESPONSE: Write response to mailbox
 ERROR: Error state\n\nGLOBAL_ERROR: Error message
 
 [*] --> STANDBY : GLOBAL_CMD_INITIALIZE
-STANDBY --> MAILBOX_TRANSMISSION : NFC_GPO_INTERRUPT
-STANDBY --> ERROR : ERROR
-@enduml
-```
-</details>
+STANDBY --> MAILBOX_RECEIVE_CMD : GPO_INTERRUPT
 
-### Mailbox Data Exchange Protocol (ST25FTM) Packet Format
+MAILBOX_RECEIVE_CMD --> VALIDATE_MAILBOX : MAILBOX_READ
 
-| **Field**   | **Description**                                    |
-|-------------|----------------------------------------------------|
-| **Command** | 1 byte (e.g., `WRITE_PART`, `WRITE_FINAL`, `READ`) |
-| **Length**  | 1 byte size of the payload in bytes                |
-| **Payload** | up to 252 bytes                                    |
-| **Checksum**| 2 bytes (standard CRC16 for error detection)       |  
+VALIDATE_MAILBOX --> MAILBOX_WRITE_RESPONSE: CRC_ERROR
+VALIDATE_MAILBOX --> MAILBOX_WRITE_RESPONSE: GLOBAL_CMD_XXX
+note on link
+    Handles globally
+end note
 
-### Mailbox Data Exchange Protocol (ST25FTM) 
-
-<details>
-  <summary>Diagram as a code</summary>
-  
-```plantuml
-@startuml
-title ST25FTM Protocol Data Exchange (Abstract)
-
-actor "Mobile phone" as reader
-participant "ST25DV Tag" as tag
-participant "STM32L4 MCU" as mcu
-
-== Initial Setup ==
-reader -> tag : Initiate Communication
-tag -> mcu : Signal via Mailbox (Data Request)
-mcu -> mcu : Prepare Data for Transmission
-
-== Data Transmission (Chunk 1) ==
-mcu -> tag : Write Data Chunk 1 to Mailbox (T2H)
-tag -> reader : Notify Data Ready (Chunk 1)
-reader -> tag : Read Data Chunk 1 from Mailbox
-reader -> reader : Verify Data Integrity (Chunk 1)
-reader -> tag : Acknowledge Chunk 1 (ACK)
-
-== Data Transmission (Chunk 2) ==
-mcu -> mcu : Prepare Next Data Chunk (Chunk 2)
-mcu -> tag : Write Data Chunk 2 to Mailbox (T2H)
-tag -> reader : Notify Data Ready (Chunk 2)
-reader -> tag : Read Data Chunk 2 from Mailbox
-reader -> reader : Verify Data Integrity (Chunk 2)
-reader -> tag : Acknowledge Chunk 2 (ACK)
-
-== Finalization ==
-reader -> reader : Combine and Process Full Data
-reader -> tag : End Communication
-
-@enduml
-```
-</details>
-
-### Mailbox Data Exchange Protocol (ST25FTM) for NOR Flash Data transfer
-
-<details>
-  <summary>Diagram as a code</summary>
-  
-```plantuml
-@startuml
-actor "Mobile phone" as reader
-participant "ST25DV Tag" as tag
-participant "STM32L4 MCU" as mcu
-
-== Data Request ==
-
-reader -> tag : Request Data (Read NOR Flash Page)
-tag -> mcu : Signal Data Request (Mailbox Interrupt)
-
-== Data Chunk 1 (128 bytes) ==
-
-mcu -> mcu : Read NOR Flash (First 128 bytes)
-mcu -> tag : Write Chunk 1 to T2H Mailbox
-tag -> reader : Notify Data Available (Chunk 1)
-reader -> tag : Read T2H Mailbox (Chunk 1)
-
-reader -> reader : Process Data (Chunk 1)
-reader -> tag : ACK for Chunk 1
-
-== Data Chunk 2 (128 bytes) ==
-
-mcu -> mcu : Read NOR Flash (Next 128 bytes)
-mcu -> tag : Write Chunk 2 to T2H Mailbox
-tag -> reader : Notify Data Available (Chunk 2)
-reader -> tag : Read T2H Mailbox (Chunk 2)
-
-reader -> reader : Process Data (Chunk 2)
-reader -> tag : ACK for Chunk 2
-
-== Data Exchange Complete ==
-reader -> reader : Assemble Complete 256 bytes
+MAILBOX_WRITE_RESPONSE --> STANDBY: GLOBAL_NFC_MAILBOX_WRITE
 
 @enduml
 ```
