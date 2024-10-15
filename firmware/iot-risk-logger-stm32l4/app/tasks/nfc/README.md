@@ -11,14 +11,29 @@ Communication is based by data exchange via *NFC Mailbox* which is 256 bytes buf
 Useful payload for now is about 128 bytes. Due to I2C reading from NOR Flash and transferring data to NFC Mailbox, *double buffer* is used in MCU SRAM.
 
 ### Protocol Description
+#### Request (Command) Mobile -> Device
 
 | Name       | Size, bytes | Description                                                                                                      | Example |
 |------------|------------|------------------------------------------------------------------------------------------------------------------|---------|
+| CRC8       | 1          | Checksum                                                                                                         | 0xAA |
 | Command ID | 1          | Command to process, response duplicates it                                                                       | 0xC1    |
 | Payload size | 1          | Actual data size                                                                                                 | 0x04    |
-| CRC8       | 1          | Payload checksum                                                                                                 | 0xAA |
 | Payload | 0...253    | Actual data, for commands it could be address to read or settings<br/> for response it could be e,g chunk of log | 0xAA... |
 
+#### Response Device -> Mobile
+| Name             | Size, bytes | Description                                                                                                      | Example |
+|------------------|------------|------------------------------------------------------------------------------------------------------------------|---------|
+| CRC8             | 1          | Checksum                                                                                                         | 0xAA    |
+| Response Code ID | 1          | Command to process, response duplicates it                                                                       | 0xFF    |
+| Payload size     | 1          | Actual data size                                                                                                 | 0x04    |
+| Payload          | 0...253    | Actual data, for commands it could be address to read or settings<br/> for response it could be e,g chunk of log | 0xAA... | 
+
+#### Response Codes
+| Code | Description         |
+|------|---------------------|
+| 0x00 | ACK (OK)            |
+| 0xFF | NACK (Error -1)     |
+| 0xFE | NACK CRC (Error -2) |
 
 ### State Diagram
 
@@ -39,15 +54,15 @@ ERROR: Error state\n\nGLOBAL_ERROR: Error message
 [*] --> STANDBY : GLOBAL_CMD_INITIALIZE
 STANDBY --> MAILBOX_RECEIVE_CMD : GPO_INTERRUPT
 
-MAILBOX_RECEIVE_CMD --> VALIDATE_MAILBOX : MAILBOX_READ
+MAILBOX_RECEIVE_CMD --> VALIDATE_MAILBOX : NEW_MAILBOX_RF_CMD
 
 VALIDATE_MAILBOX --> MAILBOX_WRITE_RESPONSE: CRC_ERROR
 VALIDATE_MAILBOX --> MAILBOX_WRITE_RESPONSE: GLOBAL_CMD_XXX
 note on link
-    Handles globally
+    CMDs are processed globally
 end note
 
-MAILBOX_WRITE_RESPONSE --> STANDBY: GLOBAL_NFC_MAILBOX_WRITE
+MAILBOX_WRITE_RESPONSE --> STANDBY: GLOBAL_CMD_NFC_MAILBOX_WRITE
 
 @enduml
 ```

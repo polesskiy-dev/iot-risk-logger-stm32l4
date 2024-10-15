@@ -123,7 +123,7 @@ static osStatus_t handleMemoryFSM(MEMORY_Actor_t *this, message_t *message) {
 uint32_t MEMORY_SeekFreeSpaceAddress(void) {
   uint8_t readBuff[MEMORY_LOG_ENTRY_SIZE] = {0};
   uint8_t emptyLogEntryTemplate[MEMORY_LOG_ENTRY_SIZE] = {0xFF};
-  const uint32_t startAddress = FAT12_BOOT_SECTOR_SIZE + 1;
+  const uint32_t startAddress = INITIAL_LOG_START_ADDR;
   const uint8_t stepSize = MEMORY_LOG_ENTRY_SIZE;
 
   uint32_t offset = 0;
@@ -264,6 +264,16 @@ static osStatus_t handleSleep(MEMORY_Actor_t *this, message_t *message) {
 
       TO_STATE(this, MEMORY_WRITE_STATE);
       return ioStatus;
+
+    case GLOBAL_CMD_READ_SETTINGS:
+      // wake up the chip
+      W25Q_WakeUp(&MEMORY_W25QHandle);
+
+      // read settings from the memory
+      // TODO implement settings read
+
+      TO_STATE(this, MEMORY_SLEEP_STATE);
+      return osOK;
 
     default:
       TO_STATE(this, MEMORY_SLEEP_STATE);

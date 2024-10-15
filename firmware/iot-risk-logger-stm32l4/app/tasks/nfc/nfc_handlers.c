@@ -1,3 +1,4 @@
+#include <assert.h>
 #include "nfc_handlers.h"
 
 int32_t NFC_ST25DVInit(ST25DV_Object_t *pObj) {
@@ -35,7 +36,7 @@ void NFC_HandleGPOInterrupt(ST25DV_Object_t *pObj) {
   uint8_t ITStatus;
   ST25DV_ReadITSTStatus_Dyn(pObj, &ITStatus);
   if (ITStatus & ST25DV_ITSTS_DYN_RFPUTMSG_MASK) {
-    osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NFC_MAILBOX_HAS_NEW_MESSAGE}, 0, 0);
+    osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NEW_MAILBOX_RF_CMD}, 0, 0);
 
     #ifdef DEBUG
       fprintf(stdout, "NFC ITStatus: 0x%x\n", ITStatus);

@@ -21,6 +21,11 @@ extern "C" {
 #define FAT12_SECTORS           (9)
 #define FAT12_BOOT_SECTOR_SIZE  (FAT12_SECTOR_SIZE * FAT12_SECTORS)
 
+#define SETTINGS_FILE_NAME      "settings.bin"
+#define SETTINGS_FILE_SIZE      (0x1000) // 4KB - 1 erasable sector
+
+#define INITIAL_LOG_START_ADDR                        (FAT12_BOOT_SECTOR_SIZE + SETTINGS_FILE_SIZE + 1)
+
 #ifdef __cplusplus
 }
 #endif
