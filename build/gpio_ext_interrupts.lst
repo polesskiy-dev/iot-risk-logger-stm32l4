@@ -1,4 +1,4 @@
-ARM GAS  /tmp/cccoXtDU.s 			page 1
+ARM GAS  /tmp/ccI3Vcej.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,14 +58,14 @@ ARM GAS  /tmp/cccoXtDU.s 			page 1
    6:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****  *
    7:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****  * @date 07/10/2024
    8:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****  * @author artempolisskyi
-ARM GAS  /tmp/cccoXtDU.s 			page 2
+ARM GAS  /tmp/ccI3Vcej.s 			page 2
 
 
    9:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****  */
   10:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c **** 
   11:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c **** #include "gpio_ext_interrupts.h"
   12:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c **** 
-  13:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c **** extern actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS];
+  13:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c **** extern actor_t* ACTORS_LOOKUP_SystemRegistry[MAX_ACTORS];
   14:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c **** 
   15:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c **** void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
   40              		.loc 1 15 48 view -0
@@ -91,7 +91,7 @@ ARM GAS  /tmp/cccoXtDU.s 			page 1
   59              	.LVL1:
   60              	.L2:
   17:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     GPIO_PinState usbVBusPin = HAL_GPIO_ReadPin(USB_VBUS_SENSE_GPIO_Port, USB_VBUS_SENSE_Pin);
-  18:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
+  18:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LOOKUP_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessag
   19:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c **** 
   20:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     if (usbVBusPin == GPIO_PIN_SET) {
   21:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****       osMessageQueuePut(evManagerQueue, &(message_t) {USB_CONNECTED}, 0, 0);
@@ -118,7 +118,7 @@ ARM GAS  /tmp/cccoXtDU.s 			page 1
   37:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c **** #endif
   38:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NFC_GPO_INTERRUPT}, 0, 0);
   39:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****   }
-ARM GAS  /tmp/cccoXtDU.s 			page 3
+ARM GAS  /tmp/ccI3Vcej.s 			page 3
 
 
   40:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c **** }...
@@ -145,13 +145,13 @@ ARM GAS  /tmp/cccoXtDU.s 			page 1
   83              		.loc 1 17 32 view .LVU9
   84 001c FFF7FEFF 		bl	HAL_GPIO_ReadPin
   85              	.LVL4:
-  18:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
+  18:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LOOKUP_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessag
   86              		.loc 1 18 5 is_stmt 1 view .LVU10
-  18:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
-  87              		.loc 1 18 67 is_stmt 0 view .LVU11
+  18:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LOOKUP_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessag
+  87              		.loc 1 18 69 is_stmt 0 view .LVU11
   88 0020 224B     		ldr	r3, .L9
   89 0022 5B68     		ldr	r3, [r3, #4]
-  18:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQ
+  18:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     osMessageQueueId_t evManagerQueue = ACTORS_LOOKUP_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessag
   90              		.loc 1 18 24 view .LVU12
   91 0024 9D68     		ldr	r5, [r3, #8]
   92              	.LVL5:
@@ -170,7 +170,7 @@ ARM GAS  /tmp/cccoXtDU.s 			page 1
  101 002c 0492     		str	r2, [sp, #16]
  102 002e 0592     		str	r2, [sp, #20]
  103 0030 0692     		str	r2, [sp, #24]
- 104 0032 E523     		movs	r3, #229
+ 104 0032 E823     		movs	r3, #232
  105 0034 8DF81030 		strb	r3, [sp, #16]
   26:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****       osMessageQueuePut(evManagerQueue, &(message_t) {USB_DISCONNECTED}, 0, 0);
  106              		.loc 1 26 7 view .LVU17
@@ -178,7 +178,7 @@ ARM GAS  /tmp/cccoXtDU.s 			page 1
  108 003a 04A9     		add	r1, sp, #16
  109 003c 2846     		mov	r0, r5
  110              	.LVL6:
-ARM GAS  /tmp/cccoXtDU.s 			page 4
+ARM GAS  /tmp/ccI3Vcej.s 			page 4
 
 
   26:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****       osMessageQueuePut(evManagerQueue, &(message_t) {USB_DISCONNECTED}, 0, 0);
@@ -214,7 +214,7 @@ ARM GAS  /tmp/cccoXtDU.s 			page 1
  134 0056 0192     		str	r2, [sp, #4]
  135 0058 0292     		str	r2, [sp, #8]
  136 005a 0392     		str	r2, [sp, #12]
- 137 005c E423     		movs	r3, #228
+ 137 005c E723     		movs	r3, #231
  138 005e 8DF80430 		strb	r3, [sp, #4]
   21:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****       osMessageQueuePut(evManagerQueue, &(message_t) {USB_CONNECTED}, 0, 0);
  139              		.loc 1 21 7 view .LVU25
@@ -238,7 +238,7 @@ ARM GAS  /tmp/cccoXtDU.s 			page 1
  153 0072 0E22     		movs	r2, #14
  154 0074 0121     		movs	r1, #1
  155 0076 1048     		ldr	r0, .L9+12
-ARM GAS  /tmp/cccoXtDU.s 			page 5
+ARM GAS  /tmp/ccI3Vcej.s 			page 5
 
 
  156 0078 FFF7FEFF 		bl	fwrite
@@ -273,7 +273,7 @@ ARM GAS  /tmp/cccoXtDU.s 			page 1
  179 0090 0792     		str	r2, [sp, #28]
  180 0092 0892     		str	r2, [sp, #32]
  181 0094 0992     		str	r2, [sp, #36]
- 182 0096 D623     		movs	r3, #214
+ 182 0096 D923     		movs	r3, #217
  183 0098 8DF81C30 		strb	r3, [sp, #28]
   38:app/core/gpio_ext_interrupts/gpio_ext_interrupts.c ****     osMessageQueuePut(NFC_Actor.super.osMessageQueueId, &(message_t){NFC_GPO_INTERRUPT}, 0, 0);
  184              		.loc 1 38 5 view .LVU36
@@ -289,7 +289,7 @@ ARM GAS  /tmp/cccoXtDU.s 			page 1
  194              	.L10:
  195 00aa 00BF     		.align	2
  196              	.L9:
- 197 00ac 00000000 		.word	ACTORS_LIST_SystemRegistry
+ 197 00ac 00000000 		.word	ACTORS_LOOKUP_SystemRegistry
  198 00b0 00000000 		.word	_impure_ptr
  199 00b4 10000000 		.word	.LC1
  200 00b8 00000000 		.word	.LC0
@@ -298,7 +298,7 @@ ARM GAS  /tmp/cccoXtDU.s 			page 1
  203              		.cfi_endproc
  204              	.LFE139:
  206              		.text
-ARM GAS  /tmp/cccoXtDU.s 			page 6
+ARM GAS  /tmp/ccI3Vcej.s 			page 6
 
 
  207              	.Letext0:
@@ -313,26 +313,26 @@ ARM GAS  /tmp/cccoXtDU.s 			page 1
  216              		.file 10 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_gpio.h"
  217              		.file 11 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
  218              		.file 12 "app/core/actor/../../config/events_list/events_list.h"
- 219              		.file 13 "app/core/actor/../../config/actors_list/actors_list.h"
+ 219              		.file 13 "app/core/actor/../../config/actors_lookup/actors_lookup.h"
  220              		.file 14 "app/core/actor/actor.h"
  221              		.file 15 "Drivers/BSP/Components/ST25DV/st25dv_reg.h"
  222              		.file 16 "Drivers/BSP/Components/ST25DV/st25dv.h"
  223              		.file 17 "app/tasks/nfc/nfc.h"
  224              		.file 18 "<built-in>"
-ARM GAS  /tmp/cccoXtDU.s 			page 7
+ARM GAS  /tmp/ccI3Vcej.s 			page 7
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 gpio_ext_interrupts.c
-     /tmp/cccoXtDU.s:18     .rodata.HAL_GPIO_EXTI_Callback.str1.4:0000000000000000 $d
-     /tmp/cccoXtDU.s:28     .text.HAL_GPIO_EXTI_Callback:0000000000000000 $t
-     /tmp/cccoXtDU.s:36     .text.HAL_GPIO_EXTI_Callback:0000000000000000 HAL_GPIO_EXTI_Callback
-     /tmp/cccoXtDU.s:197    .text.HAL_GPIO_EXTI_Callback:00000000000000ac $d
+     /tmp/ccI3Vcej.s:18     .rodata.HAL_GPIO_EXTI_Callback.str1.4:0000000000000000 $d
+     /tmp/ccI3Vcej.s:28     .text.HAL_GPIO_EXTI_Callback:0000000000000000 $t
+     /tmp/ccI3Vcej.s:36     .text.HAL_GPIO_EXTI_Callback:0000000000000000 HAL_GPIO_EXTI_Callback
+     /tmp/ccI3Vcej.s:197    .text.HAL_GPIO_EXTI_Callback:00000000000000ac $d
 
 UNDEFINED SYMBOLS
 HAL_GPIO_ReadPin
 osMessageQueuePut
 fwrite
-ACTORS_LIST_SystemRegistry
+ACTORS_LOOKUP_SystemRegistry
 _impure_ptr
 NFC_Actor

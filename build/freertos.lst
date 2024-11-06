@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccoLrBvV.s 			page 1
+ARM GAS  /tmp/ccjEeQD9.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccoLrBvV.s 			page 1
   27:Core/Src/freertos.c **** /* USER CODE BEGIN Includes */
   28:Core/Src/freertos.c **** 
   29:Core/Src/freertos.c **** /* USER CODE END Includes */
-ARM GAS  /tmp/ccoLrBvV.s 			page 2
+ARM GAS  /tmp/ccjEeQD9.s 			page 2
 
 
   30:Core/Src/freertos.c **** 
@@ -118,7 +118,7 @@ ARM GAS  /tmp/ccoLrBvV.s 			page 1
   84:Core/Src/freertos.c ****   /* add semaphores, ... */
   85:Core/Src/freertos.c ****   /* USER CODE END RTOS_SEMAPHORES */
   86:Core/Src/freertos.c **** 
-ARM GAS  /tmp/ccoLrBvV.s 			page 3
+ARM GAS  /tmp/ccjEeQD9.s 			page 3
 
 
   87:Core/Src/freertos.c ****   /* USER CODE BEGIN RTOS_TIMERS */
@@ -134,19 +134,19 @@ ARM GAS  /tmp/ccoLrBvV.s 			page 1
   97:Core/Src/freertos.c ****   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
   98:Core/Src/freertos.c **** 
   99:Core/Src/freertos.c ****   /* USER CODE BEGIN RTOS_THREADS */
- 100:Core/Src/freertos.c ****   extern actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS];
+ 100:Core/Src/freertos.c ****   extern actor_t* ACTORS_LOOKUP_SystemRegistry[MAX_ACTORS];
  101:Core/Src/freertos.c ****   /* add threads, ... */
  102:Core/Src/freertos.c ****   /**
  103:Core/Src/freertos.c ****    * Initialize actors threads and save pointers to them in common registry
  104:Core/Src/freertos.c ****    * Not actors have threads but all of them have os message queues so they're should be initialize
  105:Core/Src/freertos.c ****    * */
- 106:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[CRON_ACTOR_ID]                         = CRON_ActorInit();
- 107:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[PWRM_MANAGER_ACTOR_ID]                 = PWRM_MANAGER_ActorInit();
- 108:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID]  = TH_SENS_TaskInit();
- 109:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[LIGHT_SENSOR_ACTOR_ID]                 = LIGHT_SENS_TaskInit();
- 110:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[MEMORY_ACTOR_ID]                       = MEMORY_TaskInit();
- 111:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[NFC_ACTOR_ID]                          = NFC_TaskInit();
- 112:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]                   = EV_MANAGER_ActorInit(defaultT
+ 106:Core/Src/freertos.c ****   ACTORS_LOOKUP_SystemRegistry[CRON_ACTOR_ID]                         = CRON_ActorInit();
+ 107:Core/Src/freertos.c ****   ACTORS_LOOKUP_SystemRegistry[PWRM_MANAGER_ACTOR_ID]                 = PWRM_MANAGER_ActorInit();
+ 108:Core/Src/freertos.c ****   ACTORS_LOOKUP_SystemRegistry[TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID]  = TH_SENS_TaskInit();
+ 109:Core/Src/freertos.c ****   ACTORS_LOOKUP_SystemRegistry[LIGHT_SENSOR_ACTOR_ID]                 = LIGHT_SENS_TaskInit();
+ 110:Core/Src/freertos.c ****   ACTORS_LOOKUP_SystemRegistry[MEMORY_ACTOR_ID]                       = MEMORY_TaskInit();
+ 111:Core/Src/freertos.c ****   ACTORS_LOOKUP_SystemRegistry[NFC_ACTOR_ID]                          = NFC_TaskInit();
+ 112:Core/Src/freertos.c ****   ACTORS_LOOKUP_SystemRegistry[EV_MANAGER_ACTOR_ID]                   = EV_MANAGER_ActorInit(defaul
  113:Core/Src/freertos.c ****   // TODO
  114:Core/Src/freertos.c ****   // ACCEL_TaskInit();
  115:Core/Src/freertos.c **** 
@@ -178,7 +178,7 @@ ARM GAS  /tmp/ccoLrBvV.s 			page 1
   38              		.cfi_def_cfa_offset 4
   39              		.cfi_offset 14, -4
   40 0002 85B0     		sub	sp, sp, #20
-ARM GAS  /tmp/ccoLrBvV.s 			page 4
+ARM GAS  /tmp/ccjEeQD9.s 			page 4
 
 
   41              	.LCFI1:
@@ -238,7 +238,7 @@ ARM GAS  /tmp/ccoLrBvV.s 			page 1
   78              		.cfi_endproc
   79              	.LFE140:
   81              		.section	.rodata.MX_FREERTOS_Init.str1.4,"aMS",%progbits,1
-ARM GAS  /tmp/ccoLrBvV.s 			page 5
+ARM GAS  /tmp/ccjEeQD9.s 			page 5
 
 
   82              		.align	2
@@ -298,7 +298,7 @@ ARM GAS  /tmp/ccoLrBvV.s 			page 1
  128 0020 1148     		ldr	r0, .L10+12
  129 0022 FFF7FEFF 		bl	osThreadNew
  130              	.LVL5:
-ARM GAS  /tmp/ccoLrBvV.s 			page 6
+ARM GAS  /tmp/ccjEeQD9.s 			page 6
 
 
   97:Core/Src/freertos.c **** 
@@ -307,73 +307,73 @@ ARM GAS  /tmp/ccoLrBvV.s 			page 1
  133 0028 2860     		str	r0, [r5]
  100:Core/Src/freertos.c ****   /* add threads, ... */
  134              		.loc 1 100 3 is_stmt 1 view .LVU21
- 106:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[PWRM_MANAGER_ACTOR_ID]                 = PWRM_MANAGER_ActorInit();
+ 106:Core/Src/freertos.c ****   ACTORS_LOOKUP_SystemRegistry[PWRM_MANAGER_ACTOR_ID]                 = PWRM_MANAGER_ActorInit();
  135              		.loc 1 106 3 view .LVU22
- 106:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[PWRM_MANAGER_ACTOR_ID]                 = PWRM_MANAGER_ActorInit();
- 136              		.loc 1 106 71 is_stmt 0 view .LVU23
+ 106:Core/Src/freertos.c ****   ACTORS_LOOKUP_SystemRegistry[PWRM_MANAGER_ACTOR_ID]                 = PWRM_MANAGER_ActorInit();
+ 136              		.loc 1 106 73 is_stmt 0 view .LVU23
  137 002a FFF7FEFF 		bl	CRON_ActorInit
  138              	.LVL6:
- 106:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[PWRM_MANAGER_ACTOR_ID]                 = PWRM_MANAGER_ActorInit();
- 139              		.loc 1 106 69 view .LVU24
+ 106:Core/Src/freertos.c ****   ACTORS_LOOKUP_SystemRegistry[PWRM_MANAGER_ACTOR_ID]                 = PWRM_MANAGER_ActorInit();
+ 139              		.loc 1 106 71 view .LVU24
  140 002e 104C     		ldr	r4, .L10+20
  141 0030 A060     		str	r0, [r4, #8]
- 107:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID]  = TH_SENS_TaskInit();
+ 107:Core/Src/freertos.c ****   ACTORS_LOOKUP_SystemRegistry[TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID]  = TH_SENS_TaskInit();
  142              		.loc 1 107 3 is_stmt 1 view .LVU25
- 107:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID]  = TH_SENS_TaskInit();
- 143              		.loc 1 107 71 is_stmt 0 view .LVU26
+ 107:Core/Src/freertos.c ****   ACTORS_LOOKUP_SystemRegistry[TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID]  = TH_SENS_TaskInit();
+ 143              		.loc 1 107 73 is_stmt 0 view .LVU26
  144 0032 FFF7FEFF 		bl	PWRM_MANAGER_ActorInit
  145              	.LVL7:
- 107:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID]  = TH_SENS_TaskInit();
- 146              		.loc 1 107 69 view .LVU27
+ 107:Core/Src/freertos.c ****   ACTORS_LOOKUP_SystemRegistry[TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID]  = TH_SENS_TaskInit();
+ 146              		.loc 1 107 71 view .LVU27
  147 0036 E060     		str	r0, [r4, #12]
- 108:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[LIGHT_SENSOR_ACTOR_ID]                 = LIGHT_SENS_TaskInit();
+ 108:Core/Src/freertos.c ****   ACTORS_LOOKUP_SystemRegistry[LIGHT_SENSOR_ACTOR_ID]                 = LIGHT_SENS_TaskInit();
  148              		.loc 1 108 3 is_stmt 1 view .LVU28
- 108:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[LIGHT_SENSOR_ACTOR_ID]                 = LIGHT_SENS_TaskInit();
- 149              		.loc 1 108 71 is_stmt 0 view .LVU29
+ 108:Core/Src/freertos.c ****   ACTORS_LOOKUP_SystemRegistry[LIGHT_SENSOR_ACTOR_ID]                 = LIGHT_SENS_TaskInit();
+ 149              		.loc 1 108 73 is_stmt 0 view .LVU29
  150 0038 FFF7FEFF 		bl	TH_SENS_TaskInit
  151              	.LVL8:
- 108:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[LIGHT_SENSOR_ACTOR_ID]                 = LIGHT_SENS_TaskInit();
- 152              		.loc 1 108 69 view .LVU30
+ 108:Core/Src/freertos.c ****   ACTORS_LOOKUP_SystemRegistry[LIGHT_SENSOR_ACTOR_ID]                 = LIGHT_SENS_TaskInit();
+ 152              		.loc 1 108 71 view .LVU30
  153 003c A061     		str	r0, [r4, #24]
- 109:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[MEMORY_ACTOR_ID]                       = MEMORY_TaskInit();
+ 109:Core/Src/freertos.c ****   ACTORS_LOOKUP_SystemRegistry[MEMORY_ACTOR_ID]                       = MEMORY_TaskInit();
  154              		.loc 1 109 3 is_stmt 1 view .LVU31
- 109:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[MEMORY_ACTOR_ID]                       = MEMORY_TaskInit();
- 155              		.loc 1 109 71 is_stmt 0 view .LVU32
+ 109:Core/Src/freertos.c ****   ACTORS_LOOKUP_SystemRegistry[MEMORY_ACTOR_ID]                       = MEMORY_TaskInit();
+ 155              		.loc 1 109 73 is_stmt 0 view .LVU32
  156 003e FFF7FEFF 		bl	LIGHT_SENS_TaskInit
  157              	.LVL9:
- 109:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[MEMORY_ACTOR_ID]                       = MEMORY_TaskInit();
- 158              		.loc 1 109 69 view .LVU33
+ 109:Core/Src/freertos.c ****   ACTORS_LOOKUP_SystemRegistry[MEMORY_ACTOR_ID]                       = MEMORY_TaskInit();
+ 158              		.loc 1 109 71 view .LVU33
  159 0042 E061     		str	r0, [r4, #28]
- 110:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[NFC_ACTOR_ID]                          = NFC_TaskInit();
+ 110:Core/Src/freertos.c ****   ACTORS_LOOKUP_SystemRegistry[NFC_ACTOR_ID]                          = NFC_TaskInit();
  160              		.loc 1 110 3 is_stmt 1 view .LVU34
- 110:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[NFC_ACTOR_ID]                          = NFC_TaskInit();
- 161              		.loc 1 110 71 is_stmt 0 view .LVU35
+ 110:Core/Src/freertos.c ****   ACTORS_LOOKUP_SystemRegistry[NFC_ACTOR_ID]                          = NFC_TaskInit();
+ 161              		.loc 1 110 73 is_stmt 0 view .LVU35
  162 0044 FFF7FEFF 		bl	MEMORY_TaskInit
  163              	.LVL10:
- 110:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[NFC_ACTOR_ID]                          = NFC_TaskInit();
- 164              		.loc 1 110 69 view .LVU36
+ 110:Core/Src/freertos.c ****   ACTORS_LOOKUP_SystemRegistry[NFC_ACTOR_ID]                          = NFC_TaskInit();
+ 164              		.loc 1 110 71 view .LVU36
  165 0048 2062     		str	r0, [r4, #32]
- 111:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]                   = EV_MANAGER_ActorInit(defaultT
+ 111:Core/Src/freertos.c ****   ACTORS_LOOKUP_SystemRegistry[EV_MANAGER_ACTOR_ID]                   = EV_MANAGER_ActorInit(defaul
  166              		.loc 1 111 3 is_stmt 1 view .LVU37
- 111:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]                   = EV_MANAGER_ActorInit(defaultT
- 167              		.loc 1 111 71 is_stmt 0 view .LVU38
+ 111:Core/Src/freertos.c ****   ACTORS_LOOKUP_SystemRegistry[EV_MANAGER_ACTOR_ID]                   = EV_MANAGER_ActorInit(defaul
+ 167              		.loc 1 111 73 is_stmt 0 view .LVU38
  168 004a FFF7FEFF 		bl	NFC_TaskInit
-ARM GAS  /tmp/ccoLrBvV.s 			page 7
+ARM GAS  /tmp/ccjEeQD9.s 			page 7
 
 
  169              	.LVL11:
- 111:Core/Src/freertos.c ****   ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]                   = EV_MANAGER_ActorInit(defaultT
- 170              		.loc 1 111 69 view .LVU39
+ 111:Core/Src/freertos.c ****   ACTORS_LOOKUP_SystemRegistry[EV_MANAGER_ACTOR_ID]                   = EV_MANAGER_ActorInit(defaul
+ 170              		.loc 1 111 71 view .LVU39
  171 004e 2061     		str	r0, [r4, #16]
  112:Core/Src/freertos.c ****   // TODO
  172              		.loc 1 112 3 is_stmt 1 view .LVU40
  112:Core/Src/freertos.c ****   // TODO
- 173              		.loc 1 112 71 is_stmt 0 view .LVU41
+ 173              		.loc 1 112 73 is_stmt 0 view .LVU41
  174 0050 2868     		ldr	r0, [r5]
  175 0052 FFF7FEFF 		bl	EV_MANAGER_ActorInit
  176              	.LVL12:
  112:Core/Src/freertos.c ****   // TODO
- 177              		.loc 1 112 69 view .LVU42
+ 177              		.loc 1 112 71 view .LVU42
  178 0056 6060     		str	r0, [r4, #4]
  122:Core/Src/freertos.c **** 
  179              		.loc 1 122 1 view .LVU43
@@ -390,7 +390,7 @@ ARM GAS  /tmp/ccoLrBvV.s 			page 1
  190 0064 00000000 		.word	.LANCHOR1
  191 0068 00000000 		.word	StartDefaultTask
  192 006c 00000000 		.word	.LANCHOR2
- 193 0070 00000000 		.word	ACTORS_LIST_SystemRegistry
+ 193 0070 00000000 		.word	ACTORS_LOOKUP_SystemRegistry
  194              		.cfi_endproc
  195              	.LFE139:
  197              		.global	defaultTask_attributes
@@ -418,7 +418,7 @@ ARM GAS  /tmp/ccoLrBvV.s 			page 1
  223              	defaultTask_attributes:
  224 0000 00000000 		.word	.LC1
  225 0004 00000000 		.space	16
-ARM GAS  /tmp/ccoLrBvV.s 			page 8
+ARM GAS  /tmp/ccjEeQD9.s 			page 8
 
 
  225      00000000 
@@ -435,7 +435,7 @@ ARM GAS  /tmp/ccoLrBvV.s 			page 1
  233              		.file 4 "/usr/include/newlib/sys/types.h"
  234              		.file 5 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
  235              		.file 6 "app/core/actor/../../config/events_list/events_list.h"
- 236              		.file 7 "app/core/actor/../../config/actors_list/actors_list.h"
+ 236              		.file 7 "app/core/actor/../../config/actors_lookup/actors_lookup.h"
  237              		.file 8 "app/core/actor/actor.h"
  238              		.file 9 "app/tasks/event_manager/event_manager.h"
  239              		.file 10 "app/core/cron/cron.h"
@@ -444,25 +444,25 @@ ARM GAS  /tmp/ccoLrBvV.s 			page 1
  242              		.file 13 "app/tasks/light_sensor/light_sensor.h"
  243              		.file 14 "app/tasks/memory/memory.h"
  244              		.file 15 "app/tasks/nfc/nfc.h"
-ARM GAS  /tmp/ccoLrBvV.s 			page 9
+ARM GAS  /tmp/ccjEeQD9.s 			page 9
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 freertos.c
-     /tmp/ccoLrBvV.s:18     .text.StartDefaultTask:0000000000000000 $t
-     /tmp/ccoLrBvV.s:26     .text.StartDefaultTask:0000000000000000 StartDefaultTask
-     /tmp/ccoLrBvV.s:77     .text.StartDefaultTask:0000000000000028 $d
-     /tmp/ccoLrBvV.s:82     .rodata.MX_FREERTOS_Init.str1.4:0000000000000000 $d
-     /tmp/ccoLrBvV.s:86     .text.MX_FREERTOS_Init:0000000000000000 $t
-     /tmp/ccoLrBvV.s:93     .text.MX_FREERTOS_Init:0000000000000000 MX_FREERTOS_Init
-     /tmp/ccoLrBvV.s:188    .text.MX_FREERTOS_Init:000000000000005c $d
-     /tmp/ccoLrBvV.s:223    .rodata.defaultTask_attributes:0000000000000000 defaultTask_attributes
-     /tmp/ccoLrBvV.s:199    .rodata.str1.4:0000000000000000 $d
-     /tmp/ccoLrBvV.s:209    .bss.defaultTaskHandle:0000000000000000 defaultTaskHandle
-     /tmp/ccoLrBvV.s:216    .bss.i2cMutexHandle:0000000000000000 i2cMutexHandle
-     /tmp/ccoLrBvV.s:205    .bss.defaultTaskHandle:0000000000000000 $d
-     /tmp/ccoLrBvV.s:212    .bss.i2cMutexHandle:0000000000000000 $d
-     /tmp/ccoLrBvV.s:219    .rodata.defaultTask_attributes:0000000000000000 $d
+     /tmp/ccjEeQD9.s:18     .text.StartDefaultTask:0000000000000000 $t
+     /tmp/ccjEeQD9.s:26     .text.StartDefaultTask:0000000000000000 StartDefaultTask
+     /tmp/ccjEeQD9.s:77     .text.StartDefaultTask:0000000000000028 $d
+     /tmp/ccjEeQD9.s:82     .rodata.MX_FREERTOS_Init.str1.4:0000000000000000 $d
+     /tmp/ccjEeQD9.s:86     .text.MX_FREERTOS_Init:0000000000000000 $t
+     /tmp/ccjEeQD9.s:93     .text.MX_FREERTOS_Init:0000000000000000 MX_FREERTOS_Init
+     /tmp/ccjEeQD9.s:188    .text.MX_FREERTOS_Init:000000000000005c $d
+     /tmp/ccjEeQD9.s:223    .rodata.defaultTask_attributes:0000000000000000 defaultTask_attributes
+     /tmp/ccjEeQD9.s:199    .rodata.str1.4:0000000000000000 $d
+     /tmp/ccjEeQD9.s:209    .bss.defaultTaskHandle:0000000000000000 defaultTaskHandle
+     /tmp/ccjEeQD9.s:216    .bss.i2cMutexHandle:0000000000000000 i2cMutexHandle
+     /tmp/ccjEeQD9.s:205    .bss.defaultTaskHandle:0000000000000000 $d
+     /tmp/ccjEeQD9.s:212    .bss.i2cMutexHandle:0000000000000000 $d
+     /tmp/ccjEeQD9.s:219    .rodata.defaultTask_attributes:0000000000000000 $d
 
 UNDEFINED SYMBOLS
 MX_USB_DEVICE_Init
@@ -477,4 +477,4 @@ LIGHT_SENS_TaskInit
 MEMORY_TaskInit
 NFC_TaskInit
 EV_MANAGER_ActorInit
-ACTORS_LIST_SystemRegistry
+ACTORS_LOOKUP_SystemRegistry

@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccZ2ECsl.s 			page 1
+ARM GAS  /tmp/cc4yuHkn.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccZ2ECsl.s 			page 1
   27:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c ****   * @{
   28:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c ****   */
   29:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c **** 
-ARM GAS  /tmp/ccZ2ECsl.s 			page 2
+ARM GAS  /tmp/cc4yuHkn.s 			page 2
 
 
   30:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c **** /** @defgroup PCDEx PCDEx
@@ -118,7 +118,7 @@ ARM GAS  /tmp/ccZ2ECsl.s 			page 1
   84:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c **** 
   85:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c ****   Tx_Offset = hpcd->Instance->GRXFSIZ;
   86:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c **** 
-ARM GAS  /tmp/ccZ2ECsl.s 			page 3
+ARM GAS  /tmp/cc4yuHkn.s 			page 3
 
 
   87:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c ****   if (fifo == 0U)
@@ -178,7 +178,7 @@ ARM GAS  /tmp/ccZ2ECsl.s 			page 1
  141:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c **** HAL_StatusTypeDef HAL_PCDEx_DeActivateLPM(PCD_HandleTypeDef *hpcd)
  142:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c **** {
  143:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c ****   USB_OTG_GlobalTypeDef *USBx = hpcd->Instance;
-ARM GAS  /tmp/ccZ2ECsl.s 			page 4
+ARM GAS  /tmp/cc4yuHkn.s 			page 4
 
 
  144:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c **** 
@@ -238,7 +238,7 @@ ARM GAS  /tmp/ccZ2ECsl.s 			page 1
  198:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c ****     Port or Dedicated Charging Port */
  199:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c ****     USBx->GCCFG &= ~(USB_OTG_GCCFG_PDEN);
  200:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c ****     HAL_Delay(50U);
-ARM GAS  /tmp/ccZ2ECsl.s 			page 5
+ARM GAS  /tmp/cc4yuHkn.s 			page 5
 
 
  201:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c ****     USBx->GCCFG |= USB_OTG_GCCFG_SDEN;
@@ -298,7 +298,7 @@ ARM GAS  /tmp/ccZ2ECsl.s 			page 1
  255:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c ****   USBx->GCCFG &= ~(USB_OTG_GCCFG_PDEN);
  256:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c ****   USBx->GCCFG &= ~(USB_OTG_GCCFG_SDEN);
  257:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c **** 
-ARM GAS  /tmp/ccZ2ECsl.s 			page 6
+ARM GAS  /tmp/cc4yuHkn.s 			page 6
 
 
  258:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c ****   /* Power Down USB transceiver  */
@@ -358,7 +358,7 @@ ARM GAS  /tmp/ccZ2ECsl.s 			page 1
   31              		.cfi_startproc
   32              		@ args = 0, pretend = 0, frame = 0
   33              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  /tmp/ccZ2ECsl.s 			page 7
+ARM GAS  /tmp/cc4yuHkn.s 			page 7
 
 
   34              		@ link register save eliminated.
@@ -418,7 +418,7 @@ ARM GAS  /tmp/ccZ2ECsl.s 			page 1
  337:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c ****     ep->pmaaddr0 = (uint16_t)(pmaadress & 0xFFFFU);
  338:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c ****     ep->pmaaddr1 = (uint16_t)((pmaadress & 0xFFFF0000U) >> 16);
  339:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c ****   }
-ARM GAS  /tmp/ccZ2ECsl.s 			page 8
+ARM GAS  /tmp/cc4yuHkn.s 			page 8
 
 
  340:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c **** #endif /* (USE_USB_DOUBLE_BUFFER == 1U) */
@@ -478,7 +478,7 @@ ARM GAS  /tmp/ccZ2ECsl.s 			page 1
  101              		.section	.text.HAL_PCDEx_ActivateBCD,"ax",%progbits
  102              		.align	1
  103              		.global	HAL_PCDEx_ActivateBCD
-ARM GAS  /tmp/ccZ2ECsl.s 			page 9
+ARM GAS  /tmp/cc4yuHkn.s 			page 9
 
 
  104              		.syntax unified
@@ -538,7 +538,7 @@ ARM GAS  /tmp/ccZ2ECsl.s 			page 1
  142 002c 22F00802 		bic	r2, r2, #8
  143 0030 92B2     		uxth	r2, r2
  144 0032 A3F85820 		strh	r2, [r3, #88]	@ movhi
-ARM GAS  /tmp/ccZ2ECsl.s 			page 10
+ARM GAS  /tmp/cc4yuHkn.s 			page 10
 
 
  361:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c ****   USBx->BCDR |= USB_BCDR_DCDEN;
@@ -598,7 +598,7 @@ ARM GAS  /tmp/ccZ2ECsl.s 			page 1
  187 0006 C3F8D802 		str	r0, [r3, #728]
  375:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c **** 
  376:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c ****   /* Disable BCD feature */
-ARM GAS  /tmp/ccZ2ECsl.s 			page 11
+ARM GAS  /tmp/cc4yuHkn.s 			page 11
 
 
  377:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c ****   USBx->BCDR &= ~(USB_BCDR_BCDEN);
@@ -658,7 +658,7 @@ ARM GAS  /tmp/ccZ2ECsl.s 			page 1
  407:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c ****   HAL_Delay(50U);
  408:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c ****   USBx->BCDR |= (USB_BCDR_PDEN);
  409:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c ****   HAL_Delay(50U);
-ARM GAS  /tmp/ccZ2ECsl.s 			page 12
+ARM GAS  /tmp/cc4yuHkn.s 			page 12
 
 
  410:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c **** 
@@ -718,7 +718,7 @@ ARM GAS  /tmp/ccZ2ECsl.s 			page 1
  464:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c ****   {
  465:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c **** #if (USE_HAL_PCD_REGISTER_CALLBACKS == 1U)
  466:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c ****     hpcd->BCDCallback(hpcd, PCD_BCD_DISCOVERY_COMPLETED);
-ARM GAS  /tmp/ccZ2ECsl.s 			page 13
+ARM GAS  /tmp/cc4yuHkn.s 			page 13
 
 
  467:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c **** #else
@@ -778,7 +778,7 @@ ARM GAS  /tmp/ccZ2ECsl.s 			page 1
  248 0026 A2F85430 		strh	r3, [r2, #84]	@ movhi
  487:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c **** 
  488:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c ****   return HAL_OK;
-ARM GAS  /tmp/ccZ2ECsl.s 			page 14
+ARM GAS  /tmp/cc4yuHkn.s 			page 14
 
 
  249              		.loc 1 488 3 is_stmt 1 view .LVU70
@@ -838,7 +838,7 @@ ARM GAS  /tmp/ccZ2ECsl.s 			page 1
  291 0016 A2F85430 		strh	r3, [r2, #84]	@ movhi
  503:Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pcd_ex.c ****   USBx->LPMCSR &= ~(USB_LPMCSR_LPMACK);
  292              		.loc 1 503 3 is_stmt 1 view .LVU82
-ARM GAS  /tmp/ccZ2ECsl.s 			page 15
+ARM GAS  /tmp/cc4yuHkn.s 			page 15
 
 
  293              		.loc 1 503 16 is_stmt 0 view .LVU83
@@ -898,7 +898,7 @@ ARM GAS  /tmp/ccZ2ECsl.s 			page 1
  329              		.align	1
  330              		.weak	HAL_PCDEx_BCD_Callback
  331              		.syntax unified
-ARM GAS  /tmp/ccZ2ECsl.s 			page 16
+ARM GAS  /tmp/cc4yuHkn.s 			page 16
 
 
  332              		.thumb
@@ -958,7 +958,7 @@ ARM GAS  /tmp/ccZ2ECsl.s 			page 1
  370              		.cfi_offset 4, -16
  371              		.cfi_offset 5, -12
  372              		.cfi_offset 6, -8
-ARM GAS  /tmp/ccZ2ECsl.s 			page 17
+ARM GAS  /tmp/cc4yuHkn.s 			page 17
 
 
  373              		.cfi_offset 14, -4
@@ -1018,7 +1018,7 @@ ARM GAS  /tmp/ccZ2ECsl.s 			page 1
  412 0034 B4F85830 		ldrh	r3, [r4, #88]
  413 0038 9BB2     		uxth	r3, r3
  414 003a 43F00403 		orr	r3, r3, #4
-ARM GAS  /tmp/ccZ2ECsl.s 			page 18
+ARM GAS  /tmp/cc4yuHkn.s 			page 18
 
 
  415 003e A4F85830 		strh	r3, [r4, #88]	@ movhi
@@ -1078,7 +1078,7 @@ ARM GAS  /tmp/ccZ2ECsl.s 			page 1
  455 0088 2846     		mov	r0, r5
  456 008a FFF7FEFF 		bl	HAL_PCDEx_BCD_Callback
  457              	.LVL37:
-ARM GAS  /tmp/ccZ2ECsl.s 			page 19
+ARM GAS  /tmp/cc4yuHkn.s 			page 19
 
 
  458 008e 0DE0     		b	.L16
@@ -1138,7 +1138,7 @@ ARM GAS  /tmp/ccZ2ECsl.s 			page 1
  501              		.loc 1 471 1 is_stmt 0 view .LVU135
  502 00c6 70BD     		pop	{r4, r5, r6, pc}
  503              	.LVL45:
-ARM GAS  /tmp/ccZ2ECsl.s 			page 20
+ARM GAS  /tmp/cc4yuHkn.s 			page 20
 
 
  504              	.L17:
@@ -1161,27 +1161,27 @@ ARM GAS  /tmp/ccZ2ECsl.s 			page 1
  520              		.file 5 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_usb.h"
  521              		.file 6 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pcd.h"
  522              		.file 7 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h"
-ARM GAS  /tmp/ccZ2ECsl.s 			page 21
+ARM GAS  /tmp/cc4yuHkn.s 			page 21
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 stm32l4xx_hal_pcd_ex.c
-     /tmp/ccZ2ECsl.s:18     .text.HAL_PCDEx_PMAConfig:0000000000000000 $t
-     /tmp/ccZ2ECsl.s:26     .text.HAL_PCDEx_PMAConfig:0000000000000000 HAL_PCDEx_PMAConfig
-     /tmp/ccZ2ECsl.s:102    .text.HAL_PCDEx_ActivateBCD:0000000000000000 $t
-     /tmp/ccZ2ECsl.s:109    .text.HAL_PCDEx_ActivateBCD:0000000000000000 HAL_PCDEx_ActivateBCD
-     /tmp/ccZ2ECsl.s:161    .text.HAL_PCDEx_DeActivateBCD:0000000000000000 $t
-     /tmp/ccZ2ECsl.s:168    .text.HAL_PCDEx_DeActivateBCD:0000000000000000 HAL_PCDEx_DeActivateBCD
-     /tmp/ccZ2ECsl.s:204    .text.HAL_PCDEx_ActivateLPM:0000000000000000 $t
-     /tmp/ccZ2ECsl.s:211    .text.HAL_PCDEx_ActivateLPM:0000000000000000 HAL_PCDEx_ActivateLPM
-     /tmp/ccZ2ECsl.s:256    .text.HAL_PCDEx_DeActivateLPM:0000000000000000 $t
-     /tmp/ccZ2ECsl.s:263    .text.HAL_PCDEx_DeActivateLPM:0000000000000000 HAL_PCDEx_DeActivateLPM
-     /tmp/ccZ2ECsl.s:306    .text.HAL_PCDEx_LPM_Callback:0000000000000000 $t
-     /tmp/ccZ2ECsl.s:313    .text.HAL_PCDEx_LPM_Callback:0000000000000000 HAL_PCDEx_LPM_Callback
-     /tmp/ccZ2ECsl.s:329    .text.HAL_PCDEx_BCD_Callback:0000000000000000 $t
-     /tmp/ccZ2ECsl.s:336    .text.HAL_PCDEx_BCD_Callback:0000000000000000 HAL_PCDEx_BCD_Callback
-     /tmp/ccZ2ECsl.s:352    .text.HAL_PCDEx_BCD_VBUSDetect:0000000000000000 $t
-     /tmp/ccZ2ECsl.s:359    .text.HAL_PCDEx_BCD_VBUSDetect:0000000000000000 HAL_PCDEx_BCD_VBUSDetect
+     /tmp/cc4yuHkn.s:18     .text.HAL_PCDEx_PMAConfig:0000000000000000 $t
+     /tmp/cc4yuHkn.s:26     .text.HAL_PCDEx_PMAConfig:0000000000000000 HAL_PCDEx_PMAConfig
+     /tmp/cc4yuHkn.s:102    .text.HAL_PCDEx_ActivateBCD:0000000000000000 $t
+     /tmp/cc4yuHkn.s:109    .text.HAL_PCDEx_ActivateBCD:0000000000000000 HAL_PCDEx_ActivateBCD
+     /tmp/cc4yuHkn.s:161    .text.HAL_PCDEx_DeActivateBCD:0000000000000000 $t
+     /tmp/cc4yuHkn.s:168    .text.HAL_PCDEx_DeActivateBCD:0000000000000000 HAL_PCDEx_DeActivateBCD
+     /tmp/cc4yuHkn.s:204    .text.HAL_PCDEx_ActivateLPM:0000000000000000 $t
+     /tmp/cc4yuHkn.s:211    .text.HAL_PCDEx_ActivateLPM:0000000000000000 HAL_PCDEx_ActivateLPM
+     /tmp/cc4yuHkn.s:256    .text.HAL_PCDEx_DeActivateLPM:0000000000000000 $t
+     /tmp/cc4yuHkn.s:263    .text.HAL_PCDEx_DeActivateLPM:0000000000000000 HAL_PCDEx_DeActivateLPM
+     /tmp/cc4yuHkn.s:306    .text.HAL_PCDEx_LPM_Callback:0000000000000000 $t
+     /tmp/cc4yuHkn.s:313    .text.HAL_PCDEx_LPM_Callback:0000000000000000 HAL_PCDEx_LPM_Callback
+     /tmp/cc4yuHkn.s:329    .text.HAL_PCDEx_BCD_Callback:0000000000000000 $t
+     /tmp/cc4yuHkn.s:336    .text.HAL_PCDEx_BCD_Callback:0000000000000000 HAL_PCDEx_BCD_Callback
+     /tmp/cc4yuHkn.s:352    .text.HAL_PCDEx_BCD_VBUSDetect:0000000000000000 $t
+     /tmp/cc4yuHkn.s:359    .text.HAL_PCDEx_BCD_VBUSDetect:0000000000000000 HAL_PCDEx_BCD_VBUSDetect
 
 UNDEFINED SYMBOLS
 HAL_GetTick

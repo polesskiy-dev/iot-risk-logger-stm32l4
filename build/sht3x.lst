@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccniCcfO.s 			page 1
+ARM GAS  /tmp/cc7hROb0.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccniCcfO.s 			page 1
   27:app/drivers/sht3x/sht3x.c ****  */
   28:app/drivers/sht3x/sht3x.c **** const uint8_t crc8LookupTable[16 * 16] = {
   29:app/drivers/sht3x/sht3x.c ****         0x00, 0x31, 0x62, 0x53, 0xc4, 0xf5, 0xa6, 0x97,
-ARM GAS  /tmp/ccniCcfO.s 			page 2
+ARM GAS  /tmp/cc7hROb0.s 			page 2
 
 
   30:app/drivers/sht3x/sht3x.c ****         0xb9, 0x88, 0xdb, 0xea, 0x7d, 0x4c, 0x1f, 0x2e,
@@ -118,7 +118,7 @@ ARM GAS  /tmp/ccniCcfO.s 			page 1
   84:app/drivers/sht3x/sht3x.c ****  *
   85:app/drivers/sht3x/sht3x.c ****  * @note the sensor needs the time tIDLE = 1ms to respond to the I2C read header with an ACK Bit
   86:app/drivers/sht3x/sht3x.c ****  *
-ARM GAS  /tmp/ccniCcfO.s 			page 3
+ARM GAS  /tmp/cc7hROb0.s 			page 3
 
 
   87:app/drivers/sht3x/sht3x.c ****  * @see https://sensirion.com/media/documents/E5762713/63D103C2/Sensirion_electronic_identification
@@ -178,7 +178,7 @@ ARM GAS  /tmp/ccniCcfO.s 			page 1
  141:app/drivers/sht3x/sht3x.c ****     return result;
  142:app/drivers/sht3x/sht3x.c **** 
  143:app/drivers/sht3x/sht3x.c ****   // Check CRC
-ARM GAS  /tmp/ccniCcfO.s 			page 4
+ARM GAS  /tmp/cc7hROb0.s 			page 4
 
 
  144:app/drivers/sht3x/sht3x.c ****   uint8_t temperatureCRC = data[2];
@@ -238,7 +238,7 @@ ARM GAS  /tmp/ccniCcfO.s 			page 1
   48              	.LBB3:
   49              		.loc 1 178 23 is_stmt 1 view .LVU7
   50              		.loc 1 178 3 is_stmt 0 view .LVU8
-ARM GAS  /tmp/ccniCcfO.s 			page 5
+ARM GAS  /tmp/cc7hROb0.s 			page 5
 
 
   51 0006 8B42     		cmp	r3, r1
@@ -298,7 +298,7 @@ ARM GAS  /tmp/ccniCcfO.s 			page 1
   94              	.L9:
   95 0028 00000000 		.word	.LANCHOR0
   96              		.cfi_endproc
-ARM GAS  /tmp/ccniCcfO.s 			page 6
+ARM GAS  /tmp/cc7hROb0.s 			page 6
 
 
   97              	.LFE145:
@@ -358,7 +358,7 @@ ARM GAS  /tmp/ccniCcfO.s 			page 1
  140 0010 034B     		ldr	r3, .L16
  141              	.LVL7:
   69:app/drivers/sht3x/sht3x.c ****   SHT3x_IO.crc8 = (crc8 == NULL)
-ARM GAS  /tmp/ccniCcfO.s 			page 7
+ARM GAS  /tmp/cc7hROb0.s 			page 7
 
 
  142              		.loc 1 69 17 view .LVU35
@@ -418,7 +418,7 @@ ARM GAS  /tmp/ccniCcfO.s 			page 1
  191              		.cfi_def_cfa_offset 28
  192              		.cfi_offset 4, -28
  193              		.cfi_offset 5, -24
-ARM GAS  /tmp/ccniCcfO.s 			page 8
+ARM GAS  /tmp/cc7hROb0.s 			page 8
 
 
  194              		.cfi_offset 6, -20
@@ -478,7 +478,7 @@ ARM GAS  /tmp/ccniCcfO.s 			page 1
  235              	.LVL14:
  100:app/drivers/sht3x/sht3x.c ****     SHT3x_IO.delayMs(1);
  236              		.loc 1 100 5 view .LVU56
-ARM GAS  /tmp/ccniCcfO.s 			page 9
+ARM GAS  /tmp/cc7hROb0.s 			page 9
 
 
  237 0032 9847     		blx	r3
@@ -538,7 +538,7 @@ ARM GAS  /tmp/ccniCcfO.s 			page 1
  111:app/drivers/sht3x/sht3x.c ****     bool word2CRCValid = SHT3x_IO.crc8(serialNumberData + 3, 2) == word2ReceivedCRC;
  276              		.loc 1 111 26 view .LVU72
  277 0058 0221     		movs	r1, #2
-ARM GAS  /tmp/ccniCcfO.s 			page 10
+ARM GAS  /tmp/cc7hROb0.s 			page 10
 
 
  278 005a 0DF10B00 		add	r0, sp, #11
@@ -598,7 +598,7 @@ ARM GAS  /tmp/ccniCcfO.s 			page 1
  317 008a BDE8F083 		pop	{r4, r5, r6, r7, r8, r9, pc}
  318              	.LVL24:
  319              	.L20:
-ARM GAS  /tmp/ccniCcfO.s 			page 11
+ARM GAS  /tmp/cc7hROb0.s 			page 11
 
 
  320              	.LCFI8:
@@ -658,7 +658,7 @@ ARM GAS  /tmp/ccniCcfO.s 			page 1
  368 0004 030A     		lsrs	r3, r0, #8
  369 0006 8DF80430 		strb	r3, [sp, #4]
  370 000a 8DF80500 		strb	r0, [sp, #5]
-ARM GAS  /tmp/ccniCcfO.s 			page 12
+ARM GAS  /tmp/cc7hROb0.s 			page 12
 
 
  125:app/drivers/sht3x/sht3x.c ****   return SHT3x_IO.write(SHT3x_IO.i2cAddress, cmd, SHT3x_CMD_SIZE);
@@ -718,7 +718,7 @@ ARM GAS  /tmp/ccniCcfO.s 			page 1
  420              		.cfi_offset 9, -12
  421              		.cfi_offset 10, -8
  422              		.cfi_offset 14, -4
-ARM GAS  /tmp/ccniCcfO.s 			page 13
+ARM GAS  /tmp/cc7hROb0.s 			page 13
 
 
  423 0004 84B0     		sub	sp, sp, #16
@@ -778,7 +778,7 @@ ARM GAS  /tmp/ccniCcfO.s 			page 1
  463              		.loc 1 138 12 view .LVU116
  464 0036 A047     		blx	r4
  465              	.LVL35:
-ARM GAS  /tmp/ccniCcfO.s 			page 14
+ARM GAS  /tmp/cc7hROb0.s 			page 14
 
 
  140:app/drivers/sht3x/sht3x.c ****   if (result != SHT3x_OK)
@@ -838,7 +838,7 @@ ARM GAS  /tmp/ccniCcfO.s 			page 1
  504 0064 4845     		cmp	r0, r9
  505 0066 14D1     		bne	.L32
  153:app/drivers/sht3x/sht3x.c ****   *rawTemperature = data[0] << 8 | data[1];
-ARM GAS  /tmp/ccniCcfO.s 			page 15
+ARM GAS  /tmp/cc7hROb0.s 			page 15
 
 
  506              		.loc 1 153 3 is_stmt 1 view .LVU133
@@ -898,7 +898,7 @@ ARM GAS  /tmp/ccniCcfO.s 			page 1
  546              		.loc 1 150 12 view .LVU147
  547 0092 6FF00304 		mvn	r4, #3
  548              	.LVL46:
-ARM GAS  /tmp/ccniCcfO.s 			page 16
+ARM GAS  /tmp/cc7hROb0.s 			page 16
 
 
  150:app/drivers/sht3x/sht3x.c ****     return SHT3x_CRC_ERROR;
@@ -958,7 +958,7 @@ ARM GAS  /tmp/ccniCcfO.s 			page 1
  596              	.L37:
  597 0024 0000C842 		.word	1120403456
  598              		.cfi_endproc
-ARM GAS  /tmp/ccniCcfO.s 			page 17
+ARM GAS  /tmp/cc7hROb0.s 			page 17
 
 
  599              	.LFE143:
@@ -1018,7 +1018,7 @@ ARM GAS  /tmp/ccniCcfO.s 			page 1
  648              		.align	2
  649              		.set	.LANCHOR1,. + 0
  652              	SHT3x_IO:
-ARM GAS  /tmp/ccniCcfO.s 			page 18
+ARM GAS  /tmp/cc7hROb0.s 			page 18
 
 
  653 0000 00000000 		.space	20
@@ -1078,7 +1078,7 @@ ARM GAS  /tmp/ccniCcfO.s 			page 1
  669      5A6B4574 
  669      271681B0 
  669      E3D2BF8E 
-ARM GAS  /tmp/ccniCcfO.s 			page 19
+ARM GAS  /tmp/cc7hROb0.s 			page 19
 
 
  669      DDEC
@@ -1107,36 +1107,36 @@ ARM GAS  /tmp/ccniCcfO.s 			page 1
  676              		.file 2 "/usr/include/newlib/machine/_default_types.h"
  677              		.file 3 "/usr/include/newlib/sys/_stdint.h"
  678              		.file 4 "app/drivers/sht3x/sht3x.h"
-ARM GAS  /tmp/ccniCcfO.s 			page 20
+ARM GAS  /tmp/cc7hROb0.s 			page 20
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 sht3x.c
-     /tmp/ccniCcfO.s:18     .text.SHT3x_CRC8:0000000000000000 $t
-     /tmp/ccniCcfO.s:26     .text.SHT3x_CRC8:0000000000000000 SHT3x_CRC8
-     /tmp/ccniCcfO.s:95     .text.SHT3x_CRC8:0000000000000028 $d
-     /tmp/ccniCcfO.s:100    .text.SHT3x_InitIO:0000000000000000 $t
-     /tmp/ccniCcfO.s:107    .text.SHT3x_InitIO:0000000000000000 SHT3x_InitIO
-     /tmp/ccniCcfO.s:168    .text.SHT3x_InitIO:0000000000000020 $d
-     /tmp/ccniCcfO.s:174    .text.SHT3x_ReadDeviceID:0000000000000000 $t
-     /tmp/ccniCcfO.s:181    .text.SHT3x_ReadDeviceID:0000000000000000 SHT3x_ReadDeviceID
-     /tmp/ccniCcfO.s:337    .text.SHT3x_ReadDeviceID:000000000000009c $d
-     /tmp/ccniCcfO.s:343    .text.SHT3x_PeriodicAcquisitionMode:0000000000000000 $t
-     /tmp/ccniCcfO.s:350    .text.SHT3x_PeriodicAcquisitionMode:0000000000000000 SHT3x_PeriodicAcquisitionMode
-     /tmp/ccniCcfO.s:392    .text.SHT3x_PeriodicAcquisitionMode:0000000000000020 $d
-     /tmp/ccniCcfO.s:397    .text.SHT3x_ReadMeasurements:0000000000000000 $t
-     /tmp/ccniCcfO.s:404    .text.SHT3x_ReadMeasurements:0000000000000000 SHT3x_ReadMeasurements
-     /tmp/ccniCcfO.s:554    .text.SHT3x_ReadMeasurements:0000000000000098 $d
-     /tmp/ccniCcfO.s:560    .text.SHT3x_RawToTemperatureC:0000000000000000 $t
-     /tmp/ccniCcfO.s:567    .text.SHT3x_RawToTemperatureC:0000000000000000 SHT3x_RawToTemperatureC
-     /tmp/ccniCcfO.s:597    .text.SHT3x_RawToTemperatureC:0000000000000024 $d
-     /tmp/ccniCcfO.s:602    .text.SHT3x_RawToHumidityRH:0000000000000000 $t
-     /tmp/ccniCcfO.s:609    .text.SHT3x_RawToHumidityRH:0000000000000000 SHT3x_RawToHumidityRH
-     /tmp/ccniCcfO.s:636    .text.SHT3x_RawToHumidityRH:000000000000001c $d
-     /tmp/ccniCcfO.s:659    .rodata.crc8LookupTable:0000000000000000 crc8LookupTable
-     /tmp/ccniCcfO.s:652    .bss.SHT3x_IO:0000000000000000 SHT3x_IO
-     /tmp/ccniCcfO.s:643    .rodata:0000000000000000 $d
-     /tmp/ccniCcfO.s:648    .bss.SHT3x_IO:0000000000000000 $d
-     /tmp/ccniCcfO.s:655    .rodata.crc8LookupTable:0000000000000000 $d
+     /tmp/cc7hROb0.s:18     .text.SHT3x_CRC8:0000000000000000 $t
+     /tmp/cc7hROb0.s:26     .text.SHT3x_CRC8:0000000000000000 SHT3x_CRC8
+     /tmp/cc7hROb0.s:95     .text.SHT3x_CRC8:0000000000000028 $d
+     /tmp/cc7hROb0.s:100    .text.SHT3x_InitIO:0000000000000000 $t
+     /tmp/cc7hROb0.s:107    .text.SHT3x_InitIO:0000000000000000 SHT3x_InitIO
+     /tmp/cc7hROb0.s:168    .text.SHT3x_InitIO:0000000000000020 $d
+     /tmp/cc7hROb0.s:174    .text.SHT3x_ReadDeviceID:0000000000000000 $t
+     /tmp/cc7hROb0.s:181    .text.SHT3x_ReadDeviceID:0000000000000000 SHT3x_ReadDeviceID
+     /tmp/cc7hROb0.s:337    .text.SHT3x_ReadDeviceID:000000000000009c $d
+     /tmp/cc7hROb0.s:343    .text.SHT3x_PeriodicAcquisitionMode:0000000000000000 $t
+     /tmp/cc7hROb0.s:350    .text.SHT3x_PeriodicAcquisitionMode:0000000000000000 SHT3x_PeriodicAcquisitionMode
+     /tmp/cc7hROb0.s:392    .text.SHT3x_PeriodicAcquisitionMode:0000000000000020 $d
+     /tmp/cc7hROb0.s:397    .text.SHT3x_ReadMeasurements:0000000000000000 $t
+     /tmp/cc7hROb0.s:404    .text.SHT3x_ReadMeasurements:0000000000000000 SHT3x_ReadMeasurements
+     /tmp/cc7hROb0.s:554    .text.SHT3x_ReadMeasurements:0000000000000098 $d
+     /tmp/cc7hROb0.s:560    .text.SHT3x_RawToTemperatureC:0000000000000000 $t
+     /tmp/cc7hROb0.s:567    .text.SHT3x_RawToTemperatureC:0000000000000000 SHT3x_RawToTemperatureC
+     /tmp/cc7hROb0.s:597    .text.SHT3x_RawToTemperatureC:0000000000000024 $d
+     /tmp/cc7hROb0.s:602    .text.SHT3x_RawToHumidityRH:0000000000000000 $t
+     /tmp/cc7hROb0.s:609    .text.SHT3x_RawToHumidityRH:0000000000000000 SHT3x_RawToHumidityRH
+     /tmp/cc7hROb0.s:636    .text.SHT3x_RawToHumidityRH:000000000000001c $d
+     /tmp/cc7hROb0.s:659    .rodata.crc8LookupTable:0000000000000000 crc8LookupTable
+     /tmp/cc7hROb0.s:652    .bss.SHT3x_IO:0000000000000000 SHT3x_IO
+     /tmp/cc7hROb0.s:643    .rodata:0000000000000000 $d
+     /tmp/cc7hROb0.s:648    .bss.SHT3x_IO:0000000000000000 $d
+     /tmp/cc7hROb0.s:655    .rodata.crc8LookupTable:0000000000000000 $d
 
 NO UNDEFINED SYMBOLS
