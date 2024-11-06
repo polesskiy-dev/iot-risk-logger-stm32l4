@@ -97,19 +97,19 @@ void MX_FREERTOS_Init(void) {
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
-  extern actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS];
+  extern actor_t* ACTORS_LOOKUP_SystemRegistry[MAX_ACTORS];
   /* add threads, ... */
   /**
    * Initialize actors threads and save pointers to them in common registry
    * Not actors have threads but all of them have os message queues so they're should be initialized in terms of os
    * */
-  ACTORS_LIST_SystemRegistry[CRON_ACTOR_ID]                         = CRON_ActorInit();
-  ACTORS_LIST_SystemRegistry[PWRM_MANAGER_ACTOR_ID]                 = PWRM_MANAGER_ActorInit();
-  ACTORS_LIST_SystemRegistry[TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID]  = TH_SENS_TaskInit();
-  ACTORS_LIST_SystemRegistry[LIGHT_SENSOR_ACTOR_ID]                 = LIGHT_SENS_TaskInit();
-  ACTORS_LIST_SystemRegistry[MEMORY_ACTOR_ID]                       = MEMORY_TaskInit();
-  ACTORS_LIST_SystemRegistry[NFC_ACTOR_ID]                          = NFC_TaskInit();
-  ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]                   = EV_MANAGER_ActorInit(defaultTaskHandle); // should be initialized last
+  ACTORS_LOOKUP_SystemRegistry[CRON_ACTOR_ID]                         = CRON_ActorInit();
+  ACTORS_LOOKUP_SystemRegistry[PWRM_MANAGER_ACTOR_ID]                 = PWRM_MANAGER_ActorInit();
+  ACTORS_LOOKUP_SystemRegistry[TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID]  = TH_SENS_TaskInit();
+  ACTORS_LOOKUP_SystemRegistry[LIGHT_SENSOR_ACTOR_ID]                 = LIGHT_SENS_TaskInit();
+  ACTORS_LOOKUP_SystemRegistry[MEMORY_ACTOR_ID]                       = MEMORY_TaskInit();
+  ACTORS_LOOKUP_SystemRegistry[NFC_ACTOR_ID]                          = NFC_TaskInit();
+  ACTORS_LOOKUP_SystemRegistry[EV_MANAGER_ACTOR_ID]                   = EV_MANAGER_ActorInit(defaultTaskHandle); // should be initialized last
   // TODO
   // ACCEL_TaskInit();
 

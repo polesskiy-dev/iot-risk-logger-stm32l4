@@ -124,7 +124,7 @@ app/core/power_mode_manager/power_mode_manager.c \
 app/core/cron/cron.c \
 app/core/fs_static/fs_static.c \
 app/core/info_led/info_led.c \
-app/config/actors_list/actors_list.c \
+app/config/actors_lookup/actors_lookup.c \
 app/config/events_list/events_list.c \
 app/config/bsp_bus/bsp_bus.c \
 app/tasks/event_manager/event_manager.c \
@@ -232,7 +232,7 @@ C_INCLUDES =  \
 -Iapp/core/cron \
 -Iapp/core/info_led \
 -Iapp/core/gpio_ext_interrupts \
--Iapp/config/actors_list/actors_list \
+-Iapp/config/actors_lookup/actors_lookup \
 -Iapp/config/events_list/events_list \
 -Iapp/tasks/event_manager \
 -Iapp/drivers/opt3001 \

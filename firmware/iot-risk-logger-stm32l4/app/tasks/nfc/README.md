@@ -13,11 +13,13 @@ Useful payload for now is about 128 bytes. Due to I2C reading from NOR Flash and
 ### Protocol Description
 #### Request (Command) Mobile -> Device
 
+TODO: Should I add packet number / total data size in protocol? e.g. size could be in packets
+
 | Name       | Size, bytes | Description                                                                                                      | Example |
 |------------|------------|------------------------------------------------------------------------------------------------------------------|---------|
 | CRC8       | 1          | Checksum                                                                                                         | 0xAA |
 | Command ID | 1          | Command to process, response duplicates it                                                                       | 0xC1    |
-| Payload size | 1          | Actual data size                                                                                                 | 0x04    |
+| Payload size | 1          | Actual data size in packet                                                                                       | 0x04    |
 | Payload | 0...253    | Actual data, for commands it could be address to read or settings<br/> for response it could be e,g chunk of log | 0xAA... |
 
 #### Response Device -> Mobile
@@ -25,7 +27,7 @@ Useful payload for now is about 128 bytes. Due to I2C reading from NOR Flash and
 |------------------|------------|------------------------------------------------------------------------------------------------------------------|---------|
 | CRC8             | 1          | Checksum                                                                                                         | 0xAA    |
 | Response Code ID | 1          | Command to process, response duplicates it                                                                       | 0xFF    |
-| Payload size     | 1          | Actual data size                                                                                                 | 0x04    |
+| Payload size     | 1          | Actual data size in packet                                                                                       | 0x04    |
 | Payload          | 0...253    | Actual data, for commands it could be address to read or settings<br/> for response it could be e,g chunk of log | 0xAA... | 
 
 #### Response Codes

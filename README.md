@@ -11,9 +11,23 @@
 
 Open source & open hardware project aimed to collect environment data e.g for logistics, cold chain monitoring, last mile delivery, etc.
 
+## Features
+TODO
+
 ## Firmware docs
 
 [Documentation: Doxygen](https://polesskiy-dev.github.io/iot-risk-logger-stm32l4/)
+
+## Firmware structure
+* enclosure - 3D models for enclosure
+* hardware - schematics, PCB, BOM
+* firmware/iot-risk-logger-stm32l4 - main application
+  * libraries - external libraries
+  * [app](https://github.com/polesskiy-dev/iot-risk-logger-stm32l4/tree/main/firmware/iot-risk-logger-stm32l4/app) - main application
+    * drivers - drivers for peripherals
+    * core - actors util functions, core non-threaded modules
+    * config - configuration files, list of events and actors    
+    * [tasks](https://github.com/polesskiy-dev/iot-risk-logger-stm32l4/tree/main/firmware/iot-risk-logger-stm32l4/app/tasks) - main threads
 
 ## Parts video 
 

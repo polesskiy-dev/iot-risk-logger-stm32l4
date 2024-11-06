@@ -1,6 +1,6 @@
 /*!
  * @file actors_list.c
- * @brief implementation of actors_list
+ * @brief implementation of actors_lookup
  *
  * Detailed description of the implementation file.
  *
@@ -8,7 +8,7 @@
  * @author artempolisskyi
  */
 
-#include "actors_list.h"
+#include "actors_lookup.h"
 
 /**
  * @brief Global registry for all actors in the system.
@@ -19,12 +19,12 @@
  *
  * Example usage:
  * @code
- * ACTORS_LIST_SystemRegistry[CRON_ACTOR_ID] = CRON_ActorInit();
+ * ACTORS_LOOKUP_SystemRegistry[CRON_ACTOR_ID] = CRON_ActorInit();
  * @endcode
  *
  * @warning Ensure that each actor is correctly initialized before adding it to the registry.
  */
-actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS] = {
+actor_t* ACTORS_LOOKUP_SystemRegistry[MAX_ACTORS] = {
   [EV_MANAGER_ACTOR_ID] = NULL,
   [CRON_ACTOR_ID] = NULL,
   [PWRM_MANAGER_ACTOR_ID] = NULL,

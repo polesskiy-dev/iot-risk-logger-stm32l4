@@ -15,11 +15,13 @@ static osStatus_t handleMemoryFSM(MEMORY_Actor_t *this, message_t *message);
 static osStatus_t handleInit(MEMORY_Actor_t *this, message_t *message);
 static osStatus_t handleSleep(MEMORY_Actor_t *this, message_t *message);
 static osStatus_t handleWrite(MEMORY_Actor_t *this, message_t *message);
+
 static osStatus_t writeFAT12BootSector(MEMORY_Actor_t *this);
+static osStatus_t writeSettingsToMemory(MEMORY_Actor_t *this, uint8_t *settingsWriteBuff);
 static void publishMemoryWriteOnMeasurementsReady(MEMORY_Actor_t *this);
 static osStatus_t appendMeasurementsToNORFlashLogTail(MEMORY_Actor_t *this);
 
-extern actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS];
+extern actor_t* ACTORS_LOOKUP_SystemRegistry[MAX_ACTORS];
 extern uint8_t FAT12_BootSector[FAT12_BOOT_SECTOR_SIZE];
 
 extern USBD_StorageTypeDef USBD_Storage_Interface_fops_FS;
@@ -97,7 +99,7 @@ void MEMORY_Task(void *argument) {
       osStatus_t status = MEMORY_Actor.super.messageHandler((actor_t *) &MEMORY_Actor, &msg);
 
       if (status != osOK) {
-        osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
+        osMessageQueueId_t evManagerQueue = ACTORS_LOOKUP_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
         osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = MEMORY_ACTOR_ID}, 0, 0);
         TO_STATE(&MEMORY_Actor, MEMORY_STATE_ERROR);
       }
@@ -216,7 +218,7 @@ static osStatus_t handleInit(MEMORY_Actor_t *this, message_t *message) {
     if (ioStatus != osOK) return osError;
 
     // publish to event manager that memory is initialized
-    osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
+    osMessageQueueId_t evManagerQueue = ACTORS_LOOKUP_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
     osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_INITIALIZE_SUCCESS, .payload.value = MEMORY_ACTOR_ID}, 0, 0);
 
     #ifdef DEBUG
@@ -231,6 +233,11 @@ static osStatus_t handleInit(MEMORY_Actor_t *this, message_t *message) {
 
 static osStatus_t handleSleep(MEMORY_Actor_t *this, message_t *message) {
   osStatus_t ioStatus = osOK;
+  uint8_t *measurementsLogReadBuff = NULL;
+  uint8_t *settingsWriteBuff = NULL;
+  uint8_t *settingsReadBuff = NULL;
+
+  osMessageQueueId_t evManagerQueue = ACTORS_LOOKUP_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
 
   switch (message->event) {
     case GLOBAL_TEMPERATURE_HUMIDITY_MEASUREMENTS_READY:
@@ -260,7 +267,34 @@ static osStatus_t handleSleep(MEMORY_Actor_t *this, message_t *message) {
       // save measurements to the memory, increment log tail address
       ioStatus = appendMeasurementsToNORFlashLogTail(this);
 
-      osMessageQueuePut(this->super.osMessageQueueId, &(message_t) {GLOBAL_MEASUREMENTS_WRITE_SUCCESS}, 0, 0);
+      // TODO if ioStatus is not OK return it
+
+      osMessageQueuePut(evManagerQueue, &(message_t) {GLOBAL_MEASUREMENTS_WRITE_SUCCESS}, 0, 0);
+
+      TO_STATE(this, MEMORY_WRITE_STATE);
+      return ioStatus;
+
+    case GLOBAL_CMD_READ_LOG_CHUNK:
+      // TODO implement settings and log chunk read/write
+      assert_param(false);
+
+      osMessageQueuePut(evManagerQueue, &(message_t) {GLOBAL_LOG_CHUNK_READ_SUCCESS}, 0, 0);
+
+      TO_STATE(this, MEMORY_SLEEP_STATE);
+      return osOK;
+
+    case GLOBAL_CMD_WRITE_SETTINGS:
+      // wake up the chip
+      W25Q_WakeUp(&MEMORY_W25QHandle);
+
+      settingsWriteBuff = (uint8_t *) message->payload.ptr;
+
+      // write settings to the memory
+      ioStatus = writeSettingsToMemory(this, settingsWriteBuff);
+
+      // TODO if ioStatus is not OK return it
+
+      osMessageQueuePut(evManagerQueue, &(message_t) {GLOBAL_SETTINGS_WRITE_SUCCESS}, 0, 0);
 
       TO_STATE(this, MEMORY_WRITE_STATE);
       return ioStatus;
@@ -269,11 +303,15 @@ static osStatus_t handleSleep(MEMORY_Actor_t *this, message_t *message) {
       // wake up the chip
       W25Q_WakeUp(&MEMORY_W25QHandle);
 
+      measurementsLogReadBuff = (uint8_t *) message->payload.ptr;
+
       // read settings from the memory
-      // TODO implement settings read
+      ioStatus = W25Q_ReadData(&MEMORY_W25QHandle, measurementsLogReadBuff, SETTINGS_FILE_ADDR, SETTINGS_DATA_SIZE);
+
+      osMessageQueuePut(evManagerQueue, &(message_t) {GLOBAL_SETTINGS_READ_SUCCESS}, 0, 0);
 
       TO_STATE(this, MEMORY_SLEEP_STATE);
-      return osOK;
+      return ioStatus;
 
     default:
       TO_STATE(this, MEMORY_SLEEP_STATE);
@@ -286,6 +324,7 @@ static osStatus_t handleWrite(MEMORY_Actor_t *this, message_t *message) {
 
   switch (message->event) {
     case GLOBAL_MEASUREMENTS_WRITE_SUCCESS:
+    case GLOBAL_SETTINGS_WRITE_SUCCESS:
       ioStatus = W25Q_Sleep(&MEMORY_W25QHandle);
 
       TO_STATE(this, MEMORY_SLEEP_STATE);
@@ -295,6 +334,18 @@ static osStatus_t handleWrite(MEMORY_Actor_t *this, message_t *message) {
       TO_STATE(this, MEMORY_WRITE_STATE);
       return osOK;
   }
+}
+
+static osStatus_t writeSettingsToMemory(MEMORY_Actor_t *this, uint8_t *settingsWriteBuff) {
+  osStatus_t ioStatus = osOK;
+
+  // clear previous settings - erase the sector
+  ioStatus = W25Q_EraseSector(&MEMORY_W25QHandle, SETTINGS_FILE_ADDR);
+
+  // write settings to the memory
+  ioStatus = W25Q_WriteData(&MEMORY_W25QHandle, settingsWriteBuff, SETTINGS_FILE_ADDR, SETTINGS_DATA_SIZE) && ioStatus;
+
+  return ioStatus;
 }
 
 /**
@@ -311,8 +362,8 @@ static osStatus_t appendMeasurementsToNORFlashLogTail(MEMORY_Actor_t *this) {
   osStatus_t ioStatus = osOK;
 
   // sensors actors pointers from the system registry
-  TH_SENS_Actor_t *thSensActor = (TH_SENS_Actor_t *)ACTORS_LIST_SystemRegistry[TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID];
-  LIGHT_SENS_Actor_t *lightSensorActor = (LIGHT_SENS_Actor_t *)ACTORS_LIST_SystemRegistry[LIGHT_SENSOR_ACTOR_ID];
+  TH_SENS_Actor_t *thSensActor = (TH_SENS_Actor_t *)ACTORS_LOOKUP_SystemRegistry[TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID];
+  LIGHT_SENS_Actor_t *lightSensorActor = (LIGHT_SENS_Actor_t *)ACTORS_LOOKUP_SystemRegistry[LIGHT_SENSOR_ACTOR_ID];
 
   // current timestamp in UNIX format
   int32_t timestamp = CRON_GetCurrentUnixTimestamp();

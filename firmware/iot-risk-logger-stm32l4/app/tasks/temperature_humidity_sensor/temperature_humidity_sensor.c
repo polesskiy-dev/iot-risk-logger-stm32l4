@@ -19,7 +19,7 @@ static osStatus_t handleError(TH_SENS_Actor_t *this, message_t *message);
 /** utils */
 static uint32_t delayMs(uint32_t ms);
 
-extern actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS];
+extern actor_t* ACTORS_LOOKUP_SystemRegistry[MAX_ACTORS];
 
 /**
  * @brief Temperature & Humidity Sensor actor struct
@@ -85,7 +85,7 @@ void TH_SENS_Task(void *argument) {
           fprintf(stderr,  "%s: Error handling event %u in state %ul\n", thSensorTaskDescription.name, msg.event, TH_SENS_Actor.state);
         #endif
 
-        osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
+        osMessageQueueId_t evManagerQueue = ACTORS_LOOKUP_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
         osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID}, 0, 0);
         TO_STATE(&TH_SENS_Actor, TH_SENS_STATE_ERROR);
       }
@@ -133,7 +133,7 @@ static osStatus_t handleInit(TH_SENS_Actor_t *this, message_t *message) {
     #endif
 
     // publish to event manager that the sensor is initialized
-    osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
+    osMessageQueueId_t evManagerQueue = ACTORS_LOOKUP_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
     osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_INITIALIZE_SUCCESS, .payload.value = TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID}, 0, 0);
 
     #ifdef DEBUG
@@ -185,7 +185,7 @@ static osStatus_t handleContinuousMeasure(TH_SENS_Actor_t *this, message_t *mess
 //      #endif
 
       // publish to event manager that temperature and humidity are ready with the pointer to the TH actor
-      osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
+      osMessageQueueId_t evManagerQueue = ACTORS_LOOKUP_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
       osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_TEMPERATURE_HUMIDITY_MEASUREMENTS_READY, .payload.ptr = this /* TH Actor */}, 0, 0);
 
       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);

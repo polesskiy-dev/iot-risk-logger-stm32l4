@@ -10,12 +10,12 @@
 
 #include "gpio_ext_interrupts.h"
 
-extern actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS];
+extern actor_t* ACTORS_LOOKUP_SystemRegistry[MAX_ACTORS];
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
   if (GPIO_Pin == USB_VBUS_SENSE_Pin) {
     GPIO_PinState usbVBusPin = HAL_GPIO_ReadPin(USB_VBUS_SENSE_GPIO_Port, USB_VBUS_SENSE_Pin);
-    osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
+    osMessageQueueId_t evManagerQueue = ACTORS_LOOKUP_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
 
     if (usbVBusPin == GPIO_PIN_SET) {
       osMessageQueuePut(evManagerQueue, &(message_t) {USB_CONNECTED}, 0, 0);

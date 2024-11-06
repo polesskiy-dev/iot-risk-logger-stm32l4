@@ -17,7 +17,7 @@ static osStatus_t handleTurnedOff(LIGHT_SENS_Actor_t *this, message_t *message);
 static osStatus_t handleContinuousMeasure(LIGHT_SENS_Actor_t *this, message_t *message);
 static osStatus_t handleOutOfRange(LIGHT_SENS_Actor_t *this, message_t *message);
 
-extern actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS];
+extern actor_t* ACTORS_LOOKUP_SystemRegistry[MAX_ACTORS];
 
 /**
  * @brief Light Sensor actor struct
@@ -78,7 +78,7 @@ void LIGHT_SENS_Task(void *argument) {
 
       if (handleMessageStatus != osOK) {
         fprintf(stderr,  "%s: Error handling event %u in state %ul\n", lightSensorTaskDescription.name, msg.event, LIGHT_SENS_Actor.state);
-        osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
+        osMessageQueueId_t evManagerQueue = ACTORS_LOOKUP_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
         osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = LIGHT_SENSOR_ACTOR_ID}, 0, 0);
         TO_STATE(&LIGHT_SENS_Actor, LIGHT_SENS_STATE_ERROR);
       }
@@ -137,7 +137,7 @@ static osStatus_t handleInit(LIGHT_SENS_Actor_t *this, message_t *message) {
     if (ioStatus != osOK) return osError;
 
     // publish to event manager that the sensor is initialized
-    osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
+    osMessageQueueId_t evManagerQueue = ACTORS_LOOKUP_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
     osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_INITIALIZE_SUCCESS, .payload.value = LIGHT_SENSOR_ACTOR_ID}, 0, 0);
 
     fprintf(stdout, "Light sensor %ul initialized\n", LIGHT_SENSOR_ACTOR_ID);
@@ -220,7 +220,7 @@ static osStatus_t handleContinuousMeasure(LIGHT_SENS_Actor_t *this, message_t *m
       #endif
 
       // publish to event manager that lux measurement is ready with the pointer to the LIGHT actor
-      osMessageQueueId_t evManagerQueue = ACTORS_LIST_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
+      osMessageQueueId_t evManagerQueue = ACTORS_LOOKUP_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
       osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_LIGHT_MEASUREMENTS_READY, .payload.ptr = this /* LIGHT Actor */}, 0, 0);
 
       TO_STATE(this, LIGHT_SENS_CONTINUOUS_MEASURE_STATE);

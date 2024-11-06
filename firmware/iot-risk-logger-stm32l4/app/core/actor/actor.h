@@ -20,7 +20,7 @@ extern "C" {
 
 #include "cmsis_os2.h"
 #include "../../config/events_list/events_list.h"
-#include "../../config/actors_list/actors_list.h"
+#include "../../config/actors_lookup/actors_lookup.h"
 
 #define DEFAULT_QUEUE_SIZE 8
 #define DEFAULT_QUEUE_MESSAGE_SIZE sizeof(message_t)

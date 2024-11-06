@@ -44,6 +44,9 @@ typedef enum {
   GLOBAL_TEMPERATURE_HUMIDITY_MEASUREMENTS_READY, ///< Temperature and humidity measurements are ready
   GLOBAL_LIGHT_MEASUREMENTS_READY, ///< Light measurements are ready
   GLOBAL_MEASUREMENTS_WRITE_SUCCESS, ///< Sensors measurements are successfully written to the NOR memory
+  GLOBAL_LOG_CHUNK_READ_SUCCESS, ///< Log chunk is successfully read from the NOR memory
+  GLOBAL_SETTINGS_WRITE_SUCCESS, ///< Settings are successfully written to the NOR memory
+  GLOBAL_SETTINGS_READ_SUCCESS, ///< Settings are successfully read from the NOR memory
   GLOBAL_CMD_INFO_LED_ON,
   GLOBAL_CMD_INFO_LED_OFF,
   GLOBAL_CMD_SET_TIME_DATE, ///< Set time and date from int32 UNIX timestamp

@@ -16,7 +16,7 @@ static osStatus_t handleMailboxReceiveCMD(NFC_Actor_t *this, message_t *message)
 static osStatus_t handleMailboxValidate(NFC_Actor_t *this, message_t *message);
 static osStatus_t handleMailboxWriteResponse(NFC_Actor_t *this, message_t *message);
 
-extern actor_t* ACTORS_LIST_SystemRegistry[MAX_ACTORS];
+extern actor_t* ACTORS_LOOKUP_SystemRegistry[MAX_ACTORS];
 
 NFC_Actor_t NFC_Actor = {
         .super = {
