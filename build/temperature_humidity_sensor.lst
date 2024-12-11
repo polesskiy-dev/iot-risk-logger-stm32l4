@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccv20xdI.s 			page 1
+ARM GAS  /tmp/ccJxUiOr.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccv20xdI.s 			page 1
   28:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** TH_SENS_Actor_t TH_SENS_Actor = {
   29:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         .super = {
   30:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****                 .actorId = TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID,
-ARM GAS  /tmp/ccv20xdI.s 			page 2
+ARM GAS  /tmp/ccJxUiOr.s 			page 2
 
 
   31:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****                 .messageHandler = (messageHandler_t) handleTHSensorFSM,
@@ -118,7 +118,7 @@ ARM GAS  /tmp/ccv20xdI.s 			page 1
   85:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****           fprintf(stderr,  "%s: Error handling event %u in state %ul\n", thSensorTaskDescription.na
   86:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         #endif
   87:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
-ARM GAS  /tmp/ccv20xdI.s 			page 3
+ARM GAS  /tmp/ccJxUiOr.s 			page 3
 
 
   88:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****         osMessageQueueId_t evManagerQueue = ACTORS_LOOKUP_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMe
@@ -178,7 +178,7 @@ ARM GAS  /tmp/ccv20xdI.s 			page 1
  142:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
  143:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     TO_STATE(this, TH_SENS_IDLE_STATE);
  144:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   }
-ARM GAS  /tmp/ccv20xdI.s 			page 4
+ARM GAS  /tmp/ccJxUiOr.s 			page 4
 
 
  145:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** 
@@ -238,7 +238,7 @@ ARM GAS  /tmp/ccv20xdI.s 			page 1
   29              		.loc 1 198 74 view -0
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
-ARM GAS  /tmp/ccv20xdI.s 			page 5
+ARM GAS  /tmp/ccJxUiOr.s 			page 5
 
 
   32              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -298,7 +298,7 @@ ARM GAS  /tmp/ccv20xdI.s 			page 1
   81              	.L5:
   82              		.align	2
   83              	.L4:
-ARM GAS  /tmp/ccv20xdI.s 			page 6
+ARM GAS  /tmp/ccJxUiOr.s 			page 6
 
 
   84 0018 D34D6210 		.word	274877907
@@ -358,7 +358,7 @@ ARM GAS  /tmp/ccv20xdI.s 			page 1
  125              	.LCFI2:
  126              		.cfi_def_cfa_offset 48
  113:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****   if (GLOBAL_CMD_INITIALIZE == message->event) {
-ARM GAS  /tmp/ccv20xdI.s 			page 7
+ARM GAS  /tmp/ccJxUiOr.s 			page 7
 
 
  127              		.loc 1 113 3 is_stmt 1 view .LVU15
@@ -418,7 +418,7 @@ ARM GAS  /tmp/ccv20xdI.s 			page 1
  120:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****     HAL_GPIO_WritePin(_TEMP_RESET_GPIO_Port, _TEMP_RESET_Pin, GPIO_PIN_RESET);
  170              		.loc 1 120 5 is_stmt 1 view .LVU27
  171 0028 234C     		ldr	r4, .L12+12
-ARM GAS  /tmp/ccv20xdI.s 			page 8
+ARM GAS  /tmp/ccJxUiOr.s 			page 8
 
 
  172 002a 0022     		movs	r2, #0
@@ -478,7 +478,7 @@ ARM GAS  /tmp/ccv20xdI.s 			page 1
  213 0060 9868     		ldr	r0, [r3, #8]
  214              	.LVL19:
  132:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       fprintf(stdout, "SHT3x ID: %lu\n", sht3xId);
-ARM GAS  /tmp/ccv20xdI.s 			page 9
+ARM GAS  /tmp/ccJxUiOr.s 			page 9
 
 
  215              		.loc 1 132 7 view .LVU41
@@ -538,7 +538,7 @@ ARM GAS  /tmp/ccv20xdI.s 			page 1
  257 009c 0C49     		ldr	r1, .L12+36
  258 009e 8068     		ldr	r0, [r0, #8]
  259 00a0 FFF7FEFF 		bl	fprintf
-ARM GAS  /tmp/ccv20xdI.s 			page 10
+ARM GAS  /tmp/ccJxUiOr.s 			page 10
 
 
  260              	.LVL24:
@@ -598,7 +598,7 @@ ARM GAS  /tmp/ccv20xdI.s 			page 1
  307              		.cfi_def_cfa_offset 16
  308              		.cfi_offset 3, -16
  309              		.cfi_offset 4, -12
-ARM GAS  /tmp/ccv20xdI.s 			page 11
+ARM GAS  /tmp/ccJxUiOr.s 			page 11
 
 
  310              		.cfi_offset 5, -8
@@ -658,7 +658,7 @@ ARM GAS  /tmp/ccv20xdI.s 			page 1
  350              		.loc 1 157 7 is_stmt 0 view .LVU72
  351 0028 0B4B     		ldr	r3, .L20+4
  352 002a 2268     		ldr	r2, [r4]
-ARM GAS  /tmp/ccv20xdI.s 			page 12
+ARM GAS  /tmp/ccJxUiOr.s 			page 12
 
 
  353 002c 0B49     		ldr	r1, .L20+8
@@ -718,7 +718,7 @@ ARM GAS  /tmp/ccv20xdI.s 			page 1
  393              		.align	2
  394              	.L20:
  395 0054 00000000 		.word	_impure_ptr
-ARM GAS  /tmp/ccv20xdI.s 			page 13
+ARM GAS  /tmp/ccJxUiOr.s 			page 13
 
 
  396 0058 00000000 		.word	.LC4
@@ -778,7 +778,7 @@ ARM GAS  /tmp/ccv20xdI.s 			page 1
  443 000e 05B0     		add	sp, sp, #20
  444              	.LCFI8:
  445              		.cfi_remember_state
-ARM GAS  /tmp/ccv20xdI.s 			page 14
+ARM GAS  /tmp/ccJxUiOr.s 			page 14
 
 
  446              		.cfi_def_cfa_offset 12
@@ -838,7 +838,7 @@ ARM GAS  /tmp/ccv20xdI.s 			page 1
  487 0038 1346     		mov	r3, r2
  488 003a 01A9     		add	r1, sp, #4
  489 003c FFF7FEFF 		bl	osMessageQueuePut
-ARM GAS  /tmp/ccv20xdI.s 			page 15
+ARM GAS  /tmp/ccJxUiOr.s 			page 15
 
 
  490              	.LVL47:
@@ -898,7 +898,7 @@ ARM GAS  /tmp/ccv20xdI.s 			page 1
  537              		@ args = 0, pretend = 0, frame = 0
  538              		@ frame_needed = 0, uses_anonymous_args = 0
   96:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c **** static osStatus_t handleTHSensorFSM(TH_SENS_Actor_t *this, message_t *message) {
-ARM GAS  /tmp/ccv20xdI.s 			page 16
+ARM GAS  /tmp/ccJxUiOr.s 			page 16
 
 
  539              		.loc 1 96 80 is_stmt 0 view .LVU118
@@ -958,7 +958,7 @@ ARM GAS  /tmp/ccv20xdI.s 			page 1
  581              		.loc 1 103 14 view .LVU130
  582 0022 F8E7     		b	.L30
  583              	.LVL56:
-ARM GAS  /tmp/ccv20xdI.s 			page 17
+ARM GAS  /tmp/ccJxUiOr.s 			page 17
 
 
  584              	.L32:
@@ -1018,7 +1018,7 @@ ARM GAS  /tmp/ccv20xdI.s 			page 1
  619              		.thumb_func
  620              		.fpu fpv4-sp-d16
  622              	TH_SENS_Task:
-ARM GAS  /tmp/ccv20xdI.s 			page 18
+ARM GAS  /tmp/ccJxUiOr.s 			page 18
 
 
  623              	.LVL60:
@@ -1078,7 +1078,7 @@ ARM GAS  /tmp/ccv20xdI.s 			page 1
  665 0022 0028     		cmp	r0, #0
  666 0024 F5D1     		bne	.L40
  667              	.LBB5:
-ARM GAS  /tmp/ccv20xdI.s 			page 19
+ARM GAS  /tmp/ccJxUiOr.s 			page 19
 
 
   81:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****       osStatus_t handleMessageStatus = TH_SENS_Actor.super.messageHandler((actor_t *) &TH_SENS_Acto
@@ -1138,7 +1138,7 @@ ARM GAS  /tmp/ccv20xdI.s 			page 1
  708 0054 0692     		str	r2, [sp, #24]
  709 0056 0792     		str	r2, [sp, #28]
  710 0058 D623     		movs	r3, #214
-ARM GAS  /tmp/ccv20xdI.s 			page 20
+ARM GAS  /tmp/ccJxUiOr.s 			page 20
 
 
  711 005a 8DF81430 		strb	r3, [sp, #20]
@@ -1198,7 +1198,7 @@ ARM GAS  /tmp/ccv20xdI.s 			page 1
  757              		.syntax unified
  758              		.thumb
  759              		.thumb_func
-ARM GAS  /tmp/ccv20xdI.s 			page 21
+ARM GAS  /tmp/ccJxUiOr.s 			page 21
 
 
  760              		.fpu fpv4-sp-d16
@@ -1258,7 +1258,7 @@ ARM GAS  /tmp/ccv20xdI.s 			page 1
  806              		.loc 1 62 3 is_stmt 1 view .LVU176
   63:app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c ****  }
  807              		.loc 1 63 2 is_stmt 0 view .LVU177
-ARM GAS  /tmp/ccv20xdI.s 			page 22
+ARM GAS  /tmp/ccJxUiOr.s 			page 22
 
 
  808 0030 2846     		mov	r0, r5
@@ -1318,7 +1318,7 @@ ARM GAS  /tmp/ccv20xdI.s 			page 1
  863 0008 00000000 		.word	thSensorTaskControlBlock
  864 000c 5C000000 		.word	92
  865 0010 00000000 		.word	thSensorTaskBuffer
-ARM GAS  /tmp/ccv20xdI.s 			page 23
+ARM GAS  /tmp/ccJxUiOr.s 			page 23
 
 
  866 0014 00020000 		.word	512
@@ -1345,48 +1345,48 @@ ARM GAS  /tmp/ccv20xdI.s 			page 1
  886              		.file 17 "app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.h"
  887              		.file 18 "app/drivers/sht3x/sht3x.h"
  888              		.file 19 "/usr/include/newlib/stdio.h"
-ARM GAS  /tmp/ccv20xdI.s 			page 24
+ARM GAS  /tmp/ccJxUiOr.s 			page 24
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 temperature_humidity_sensor.c
-     /tmp/ccv20xdI.s:18     .text.handleError:0000000000000000 $t
-     /tmp/ccv20xdI.s:25     .text.handleError:0000000000000000 handleError
-     /tmp/ccv20xdI.s:44     .text.delayMs:0000000000000000 $t
-     /tmp/ccv20xdI.s:50     .text.delayMs:0000000000000000 delayMs
-     /tmp/ccv20xdI.s:84     .text.delayMs:0000000000000018 $d
-     /tmp/ccv20xdI.s:89     .rodata.handleInit.str1.4:0000000000000000 $d
-     /tmp/ccv20xdI.s:102    .text.handleInit:0000000000000000 $t
-     /tmp/ccv20xdI.s:108    .text.handleInit:0000000000000000 handleInit
-     /tmp/ccv20xdI.s:272    .text.handleInit:00000000000000ac $d
-     /tmp/ccv20xdI.s:287    .rodata.handleIdle.str1.4:0000000000000000 $d
-     /tmp/ccv20xdI.s:291    .text.handleIdle:0000000000000000 $t
-     /tmp/ccv20xdI.s:297    .text.handleIdle:0000000000000000 handleIdle
-     /tmp/ccv20xdI.s:395    .text.handleIdle:0000000000000054 $d
-     /tmp/ccv20xdI.s:403    .text.handleContinuousMeasure:0000000000000000 $t
-     /tmp/ccv20xdI.s:409    .text.handleContinuousMeasure:0000000000000000 handleContinuousMeasure
-     /tmp/ccv20xdI.s:517    .text.handleContinuousMeasure:000000000000005c $d
-     /tmp/ccv20xdI.s:526    .text.handleTHSensorFSM:0000000000000000 $t
-     /tmp/ccv20xdI.s:532    .text.handleTHSensorFSM:0000000000000000 handleTHSensorFSM
-     /tmp/ccv20xdI.s:553    .text.handleTHSensorFSM:000000000000000c $d
-     /tmp/ccv20xdI.s:602    .rodata.TH_SENS_Task.str1.4:0000000000000000 $d
-     /tmp/ccv20xdI.s:615    .text.TH_SENS_Task:0000000000000000 $t
-     /tmp/ccv20xdI.s:622    .text.TH_SENS_Task:0000000000000000 TH_SENS_Task
-     /tmp/ccv20xdI.s:737    .text.TH_SENS_Task:0000000000000080 $d
-     /tmp/ccv20xdI.s:751    .rodata.TH_SENS_TaskInit.str1.4:0000000000000000 $d
-     /tmp/ccv20xdI.s:755    .text.TH_SENS_TaskInit:0000000000000000 $t
-     /tmp/ccv20xdI.s:762    .text.TH_SENS_TaskInit:0000000000000000 TH_SENS_TaskInit
-     /tmp/ccv20xdI.s:817    .text.TH_SENS_TaskInit:0000000000000038 $d
-     /tmp/ccv20xdI.s:860    .rodata.thSensorTaskDescription:0000000000000000 thSensorTaskDescription
-     /tmp/ccv20xdI.s:838    .bss.thSensorTaskControlBlock:0000000000000000 thSensorTaskControlBlock
-     /tmp/ccv20xdI.s:832    .bss.thSensorTaskBuffer:0000000000000000 thSensorTaskBuffer
-     /tmp/ccv20xdI.s:845    .data.TH_SENS_Actor:0000000000000000 TH_SENS_Actor
-     /tmp/ccv20xdI.s:829    .bss.thSensorTaskBuffer:0000000000000000 $d
-     /tmp/ccv20xdI.s:835    .bss.thSensorTaskControlBlock:0000000000000000 $d
-     /tmp/ccv20xdI.s:841    .data.TH_SENS_Actor:0000000000000000 $d
-     /tmp/ccv20xdI.s:856    .rodata.thSensorTaskDescription:0000000000000000 $d
-     /tmp/ccv20xdI.s:558    .text.handleTHSensorFSM:0000000000000011 $d
-     /tmp/ccv20xdI.s:558    .text.handleTHSensorFSM:0000000000000012 $t
+     /tmp/ccJxUiOr.s:18     .text.handleError:0000000000000000 $t
+     /tmp/ccJxUiOr.s:25     .text.handleError:0000000000000000 handleError
+     /tmp/ccJxUiOr.s:44     .text.delayMs:0000000000000000 $t
+     /tmp/ccJxUiOr.s:50     .text.delayMs:0000000000000000 delayMs
+     /tmp/ccJxUiOr.s:84     .text.delayMs:0000000000000018 $d
+     /tmp/ccJxUiOr.s:89     .rodata.handleInit.str1.4:0000000000000000 $d
+     /tmp/ccJxUiOr.s:102    .text.handleInit:0000000000000000 $t
+     /tmp/ccJxUiOr.s:108    .text.handleInit:0000000000000000 handleInit
+     /tmp/ccJxUiOr.s:272    .text.handleInit:00000000000000ac $d
+     /tmp/ccJxUiOr.s:287    .rodata.handleIdle.str1.4:0000000000000000 $d
+     /tmp/ccJxUiOr.s:291    .text.handleIdle:0000000000000000 $t
+     /tmp/ccJxUiOr.s:297    .text.handleIdle:0000000000000000 handleIdle
+     /tmp/ccJxUiOr.s:395    .text.handleIdle:0000000000000054 $d
+     /tmp/ccJxUiOr.s:403    .text.handleContinuousMeasure:0000000000000000 $t
+     /tmp/ccJxUiOr.s:409    .text.handleContinuousMeasure:0000000000000000 handleContinuousMeasure
+     /tmp/ccJxUiOr.s:517    .text.handleContinuousMeasure:000000000000005c $d
+     /tmp/ccJxUiOr.s:526    .text.handleTHSensorFSM:0000000000000000 $t
+     /tmp/ccJxUiOr.s:532    .text.handleTHSensorFSM:0000000000000000 handleTHSensorFSM
+     /tmp/ccJxUiOr.s:553    .text.handleTHSensorFSM:000000000000000c $d
+     /tmp/ccJxUiOr.s:602    .rodata.TH_SENS_Task.str1.4:0000000000000000 $d
+     /tmp/ccJxUiOr.s:615    .text.TH_SENS_Task:0000000000000000 $t
+     /tmp/ccJxUiOr.s:622    .text.TH_SENS_Task:0000000000000000 TH_SENS_Task
+     /tmp/ccJxUiOr.s:737    .text.TH_SENS_Task:0000000000000080 $d
+     /tmp/ccJxUiOr.s:751    .rodata.TH_SENS_TaskInit.str1.4:0000000000000000 $d
+     /tmp/ccJxUiOr.s:755    .text.TH_SENS_TaskInit:0000000000000000 $t
+     /tmp/ccJxUiOr.s:762    .text.TH_SENS_TaskInit:0000000000000000 TH_SENS_TaskInit
+     /tmp/ccJxUiOr.s:817    .text.TH_SENS_TaskInit:0000000000000038 $d
+     /tmp/ccJxUiOr.s:860    .rodata.thSensorTaskDescription:0000000000000000 thSensorTaskDescription
+     /tmp/ccJxUiOr.s:838    .bss.thSensorTaskControlBlock:0000000000000000 thSensorTaskControlBlock
+     /tmp/ccJxUiOr.s:832    .bss.thSensorTaskBuffer:0000000000000000 thSensorTaskBuffer
+     /tmp/ccJxUiOr.s:845    .data.TH_SENS_Actor:0000000000000000 TH_SENS_Actor
+     /tmp/ccJxUiOr.s:829    .bss.thSensorTaskBuffer:0000000000000000 $d
+     /tmp/ccJxUiOr.s:835    .bss.thSensorTaskControlBlock:0000000000000000 $d
+     /tmp/ccJxUiOr.s:841    .data.TH_SENS_Actor:0000000000000000 $d
+     /tmp/ccJxUiOr.s:856    .rodata.thSensorTaskDescription:0000000000000000 $d
+     /tmp/ccJxUiOr.s:558    .text.handleTHSensorFSM:0000000000000011 $d
+     /tmp/ccJxUiOr.s:558    .text.handleTHSensorFSM:0000000000000012 $t
 
 UNDEFINED SYMBOLS
 osDelay

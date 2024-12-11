@@ -1,4 +1,4 @@
-ARM GAS  /tmp/cc16hDXu.s 			page 1
+ARM GAS  /tmp/ccWTOyQ8.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /tmp/cc16hDXu.s 			page 1
   15:app/tasks/event_manager/event_manager.c **** 
   16:app/tasks/event_manager/event_manager.c **** extern actor_t* ACTORS_LOOKUP_SystemRegistry[MAX_ACTORS];
   17:app/tasks/event_manager/event_manager.c **** 
-ARM GAS  /tmp/cc16hDXu.s 			page 2
+ARM GAS  /tmp/ccWTOyQ8.s 			page 2
 
 
   18:app/tasks/event_manager/event_manager.c **** /**
@@ -89,262 +89,257 @@ ARM GAS  /tmp/cc16hDXu.s 			page 1
   43:app/tasks/event_manager/event_manager.c ****   [GLOBAL_LOG_CHUNK_READ_SUCCESS]                   = { NFC_ACTOR_ID},
   44:app/tasks/event_manager/event_manager.c ****   [GLOBAL_SETTINGS_WRITE_SUCCESS]                   = {MEMORY_ACTOR_ID, NFC_ACTOR_ID},
   45:app/tasks/event_manager/event_manager.c ****   [GLOBAL_SETTINGS_READ_SUCCESS]                    = { NFC_ACTOR_ID},
-  46:app/tasks/event_manager/event_manager.c ****   [GLOBAL_CMD_START_CONTINUOUS_SENSING]             = {TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID, LIGHT_
-  47:app/tasks/event_manager/event_manager.c ****   [GLOBAL_CMD_SET_TIME_DATE]                        = {CRON_ACTOR_ID},
-  48:app/tasks/event_manager/event_manager.c ****   [GLOBAL_CMD_SET_WAKE_UP_PERIOD]                   = {CRON_ACTOR_ID},
-  49:app/tasks/event_manager/event_manager.c ****   [GLOBAL_CMD_TURN_OFF]                             = {TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID, LIGHT_
-  50:app/tasks/event_manager/event_manager.c **** };
-  51:app/tasks/event_manager/event_manager.c **** 
-  52:app/tasks/event_manager/event_manager.c **** EV_MANAGER_Actor_t EV_MANAGER_Actor = {
-  53:app/tasks/event_manager/event_manager.c ****         .super = {
-  54:app/tasks/event_manager/event_manager.c ****                 .actorId = EV_MANAGER_ACTOR_ID,
-  55:app/tasks/event_manager/event_manager.c ****                 .messageHandler = (messageHandler_t) handleEvManagerMessage,
-  56:app/tasks/event_manager/event_manager.c ****                 .osMessageQueueId = NULL,
-  57:app/tasks/event_manager/event_manager.c ****                 .osThreadId = NULL,
-  58:app/tasks/event_manager/event_manager.c ****         }
-  59:app/tasks/event_manager/event_manager.c **** };
-  60:app/tasks/event_manager/event_manager.c **** 
-  61:app/tasks/event_manager/event_manager.c **** actor_t* EV_MANAGER_ActorInit(osThreadId_t defaultTaskHandle) {
-  62:app/tasks/event_manager/event_manager.c ****   EV_MANAGER_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MES
-  63:app/tasks/event_manager/event_manager.c ****           .name = "eventManagerQueue"
-  64:app/tasks/event_manager/event_manager.c ****   });
-  65:app/tasks/event_manager/event_manager.c ****   EV_MANAGER_Actor.super.osThreadId = defaultTaskHandle;
-  66:app/tasks/event_manager/event_manager.c **** 
-  67:app/tasks/event_manager/event_manager.c ****   fprintf(stdout, "Event Manager initialized\n");
-  68:app/tasks/event_manager/event_manager.c **** 
-  69:app/tasks/event_manager/event_manager.c ****   // TODO move to init manager
-  70:app/tasks/event_manager/event_manager.c ****   osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_CMD_INITIALIZE}, 0
-  71:app/tasks/event_manager/event_manager.c **** 
-  72:app/tasks/event_manager/event_manager.c ****   return &EV_MANAGER_Actor.super;
-  73:app/tasks/event_manager/event_manager.c **** }
-  74:app/tasks/event_manager/event_manager.c **** 
-ARM GAS  /tmp/cc16hDXu.s 			page 3
+  46:app/tasks/event_manager/event_manager.c ****   [GLOBAL_CMD_READ_SETTINGS]                        = { MEMORY_ACTOR_ID},
+  47:app/tasks/event_manager/event_manager.c ****   [GLOBAL_CMD_START_CONTINUOUS_SENSING]             = {TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID, LIGHT_
+  48:app/tasks/event_manager/event_manager.c ****   [GLOBAL_CMD_SET_TIME_DATE]                        = {CRON_ACTOR_ID},
+  49:app/tasks/event_manager/event_manager.c ****   [GLOBAL_CMD_SET_WAKE_UP_PERIOD]                   = {CRON_ACTOR_ID},
+  50:app/tasks/event_manager/event_manager.c ****   [GLOBAL_CMD_TURN_OFF]                             = {TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID, LIGHT_
+  51:app/tasks/event_manager/event_manager.c **** };
+  52:app/tasks/event_manager/event_manager.c **** 
+  53:app/tasks/event_manager/event_manager.c **** EV_MANAGER_Actor_t EV_MANAGER_Actor = {
+  54:app/tasks/event_manager/event_manager.c ****         .super = {
+  55:app/tasks/event_manager/event_manager.c ****                 .actorId = EV_MANAGER_ACTOR_ID,
+  56:app/tasks/event_manager/event_manager.c ****                 .messageHandler = (messageHandler_t) handleEvManagerMessage,
+  57:app/tasks/event_manager/event_manager.c ****                 .osMessageQueueId = NULL,
+  58:app/tasks/event_manager/event_manager.c ****                 .osThreadId = NULL,
+  59:app/tasks/event_manager/event_manager.c ****         }
+  60:app/tasks/event_manager/event_manager.c **** };
+  61:app/tasks/event_manager/event_manager.c **** 
+  62:app/tasks/event_manager/event_manager.c **** actor_t* EV_MANAGER_ActorInit(osThreadId_t defaultTaskHandle) {
+  63:app/tasks/event_manager/event_manager.c ****   EV_MANAGER_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MES
+  64:app/tasks/event_manager/event_manager.c ****           .name = "eventManagerQueue"
+  65:app/tasks/event_manager/event_manager.c ****   });
+  66:app/tasks/event_manager/event_manager.c ****   EV_MANAGER_Actor.super.osThreadId = defaultTaskHandle;
+  67:app/tasks/event_manager/event_manager.c **** 
+  68:app/tasks/event_manager/event_manager.c ****   fprintf(stdout, "Event Manager initialized\n");
+  69:app/tasks/event_manager/event_manager.c **** 
+  70:app/tasks/event_manager/event_manager.c ****   // TODO move to init manager
+  71:app/tasks/event_manager/event_manager.c ****   osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_CMD_INITIALIZE}, 0
+  72:app/tasks/event_manager/event_manager.c **** 
+  73:app/tasks/event_manager/event_manager.c ****   return &EV_MANAGER_Actor.super;
+  74:app/tasks/event_manager/event_manager.c **** }
+ARM GAS  /tmp/ccWTOyQ8.s 			page 3
 
 
-  75:app/tasks/event_manager/event_manager.c **** static osStatus_t handleEvManagerMessage(EV_MANAGER_Actor_t *this, message_t *message) {
-  76:app/tasks/event_manager/event_manager.c ****   switch (message->event) {
-  77:app/tasks/event_manager/event_manager.c ****     case GLOBAL_CMD_INITIALIZE:
-  78:app/tasks/event_manager/event_manager.c ****       publishEventToSubscribers(message);
-  79:app/tasks/event_manager/event_manager.c ****       // TODO handle initialize event
-  80:app/tasks/event_manager/event_manager.c ****       // TODO remove from here
-  81:app/tasks/event_manager/event_manager.c ****       osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_INITIALIZE_SUC
-  82:app/tasks/event_manager/event_manager.c ****       return osOK;
-  83:app/tasks/event_manager/event_manager.c ****     case GLOBAL_INITIALIZE_SUCCESS:
-  84:app/tasks/event_manager/event_manager.c ****       publishEventToSubscribers(message);
-  85:app/tasks/event_manager/event_manager.c ****       // TODO remove from here, emit only in NFC
-  86:app/tasks/event_manager/event_manager.c ****       osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_CMD_START_CONT
-  87:app/tasks/event_manager/event_manager.c ****       return osOK;
-  88:app/tasks/event_manager/event_manager.c ****     case GLOBAL_WAKE_N_READ:
-  89:app/tasks/event_manager/event_manager.c ****     case GLOBAL_TEMPERATURE_HUMIDITY_MEASUREMENTS_READY:
-  90:app/tasks/event_manager/event_manager.c ****     case GLOBAL_LIGHT_MEASUREMENTS_READY:
-  91:app/tasks/event_manager/event_manager.c ****     case GLOBAL_MEASUREMENTS_WRITE_SUCCESS:
-  92:app/tasks/event_manager/event_manager.c ****     case GLOBAL_CMD_START_CONTINUOUS_SENSING:
-  93:app/tasks/event_manager/event_manager.c ****     case GLOBAL_CMD_SET_TIME_DATE:
-  94:app/tasks/event_manager/event_manager.c ****     case GLOBAL_CMD_SET_WAKE_UP_PERIOD:
-  95:app/tasks/event_manager/event_manager.c ****     case GLOBAL_CMD_TURN_OFF:
-  96:app/tasks/event_manager/event_manager.c ****       publishEventToSubscribers(message);
-  97:app/tasks/event_manager/event_manager.c ****       return osOK;
-  98:app/tasks/event_manager/event_manager.c ****   }
-  99:app/tasks/event_manager/event_manager.c **** 
- 100:app/tasks/event_manager/event_manager.c ****   return osOK;
- 101:app/tasks/event_manager/event_manager.c **** }
- 102:app/tasks/event_manager/event_manager.c **** 
- 103:app/tasks/event_manager/event_manager.c **** // TODO explain the system in graph: queueId -> actor -> ACTORS_LIST_SystemRegistry -> EV_MANAGER_S
- 104:app/tasks/event_manager/event_manager.c **** /**
- 105:app/tasks/event_manager/event_manager.c ****  * @brief Publishes an event to all subscribed actors.
- 106:app/tasks/event_manager/event_manager.c ****  *
- 107:app/tasks/event_manager/event_manager.c ****  * This function traverses the list of actors subscribed to a given event and dispatches the event 
- 108:app/tasks/event_manager/event_manager.c ****  * to each actor's message queue. If an actor does not have a message queue, the message is process
- 109:app/tasks/event_manager/event_manager.c ****  * using the actor's message handler.
- 110:app/tasks/event_manager/event_manager.c ****  *
- 111:app/tasks/event_manager/event_manager.c ****  * @param[in] message Pointer to the message to be published.
- 112:app/tasks/event_manager/event_manager.c ****  *
- 113:app/tasks/event_manager/event_manager.c ****  * Example usage:
- 114:app/tasks/event_manager/event_manager.c ****  * @code
- 115:app/tasks/event_manager/event_manager.c ****  * message_t msg = { .event = GLOBAL_CMD_INITIALIZE, .payload.value = 0 };
- 116:app/tasks/event_manager/event_manager.c ****  * publishEventToSubscribers(&msg);
- 117:app/tasks/event_manager/event_manager.c ****  * @endcode
- 118:app/tasks/event_manager/event_manager.c ****  *
- 119:app/tasks/event_manager/event_manager.c ****  * @warning This function assumes that the message queue for each actor has been properly initializ
- 120:app/tasks/event_manager/event_manager.c ****  *          If the queue is full, the message will be lost.
- 121:app/tasks/event_manager/event_manager.c ****  */
- 122:app/tasks/event_manager/event_manager.c **** static osStatus_t publishEventToSubscribers(message_t *message) {
-  34              		.loc 1 122 65 view -0
+  75:app/tasks/event_manager/event_manager.c **** 
+  76:app/tasks/event_manager/event_manager.c **** static osStatus_t handleEvManagerMessage(EV_MANAGER_Actor_t *this, message_t *message) {
+  77:app/tasks/event_manager/event_manager.c ****   switch (message->event) {
+  78:app/tasks/event_manager/event_manager.c ****     case GLOBAL_CMD_INITIALIZE:
+  79:app/tasks/event_manager/event_manager.c ****       publishEventToSubscribers(message);
+  80:app/tasks/event_manager/event_manager.c ****       // TODO handle initialize event
+  81:app/tasks/event_manager/event_manager.c ****       // TODO remove from here
+  82:app/tasks/event_manager/event_manager.c ****       osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_INITIALIZE_SUC
+  83:app/tasks/event_manager/event_manager.c ****       return osOK;
+  84:app/tasks/event_manager/event_manager.c ****     case GLOBAL_INITIALIZE_SUCCESS:
+  85:app/tasks/event_manager/event_manager.c ****       publishEventToSubscribers(message);
+  86:app/tasks/event_manager/event_manager.c ****       // TODO remove from here, emit only in NFC
+  87:app/tasks/event_manager/event_manager.c ****       osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_CMD_START_CONT
+  88:app/tasks/event_manager/event_manager.c ****       return osOK;
+  89:app/tasks/event_manager/event_manager.c ****     // all not specially dedicated to evManager events are published to subscribers
+  90:app/tasks/event_manager/event_manager.c ****     default:
+  91:app/tasks/event_manager/event_manager.c ****       publishEventToSubscribers(message);
+  92:app/tasks/event_manager/event_manager.c ****       return osOK;
+  93:app/tasks/event_manager/event_manager.c ****   }
+  94:app/tasks/event_manager/event_manager.c **** 
+  95:app/tasks/event_manager/event_manager.c ****   return osOK;
+  96:app/tasks/event_manager/event_manager.c **** }
+  97:app/tasks/event_manager/event_manager.c **** 
+  98:app/tasks/event_manager/event_manager.c **** // TODO explain the system in graph: queueId -> actor -> ACTORS_LIST_SystemRegistry -> EV_MANAGER_S
+  99:app/tasks/event_manager/event_manager.c **** /**
+ 100:app/tasks/event_manager/event_manager.c ****  * @brief Publishes an event to all subscribed actors.
+ 101:app/tasks/event_manager/event_manager.c ****  *
+ 102:app/tasks/event_manager/event_manager.c ****  * This function traverses the list of actors subscribed to a given event and dispatches the event 
+ 103:app/tasks/event_manager/event_manager.c ****  * to each actor's message queue. If an actor does not have a message queue, the message is process
+ 104:app/tasks/event_manager/event_manager.c ****  * using the actor's message handler.
+ 105:app/tasks/event_manager/event_manager.c ****  *
+ 106:app/tasks/event_manager/event_manager.c ****  * @param[in] message Pointer to the message to be published.
+ 107:app/tasks/event_manager/event_manager.c ****  *
+ 108:app/tasks/event_manager/event_manager.c ****  * Example usage:
+ 109:app/tasks/event_manager/event_manager.c ****  * @code
+ 110:app/tasks/event_manager/event_manager.c ****  * message_t msg = { .event = GLOBAL_CMD_INITIALIZE, .payload.value = 0 };
+ 111:app/tasks/event_manager/event_manager.c ****  * publishEventToSubscribers(&msg);
+ 112:app/tasks/event_manager/event_manager.c ****  * @endcode
+ 113:app/tasks/event_manager/event_manager.c ****  *
+ 114:app/tasks/event_manager/event_manager.c ****  * @warning This function assumes that the message queue for each actor has been properly initializ
+ 115:app/tasks/event_manager/event_manager.c ****  *          If the queue is full, the message will be lost.
+ 116:app/tasks/event_manager/event_manager.c ****  */
+ 117:app/tasks/event_manager/event_manager.c **** static osStatus_t publishEventToSubscribers(message_t *message) {
+  34              		.loc 1 117 65 view -0
   35              		.cfi_startproc
   36              		@ args = 0, pretend = 0, frame = 0
   37              		@ frame_needed = 0, uses_anonymous_args = 0
-  38              		.loc 1 122 65 is_stmt 0 view .LVU1
+  38              		.loc 1 117 65 is_stmt 0 view .LVU1
   39 0000 70B5     		push	{r4, r5, r6, lr}
   40              	.LCFI0:
   41              		.cfi_def_cfa_offset 16
   42              		.cfi_offset 4, -16
-ARM GAS  /tmp/cc16hDXu.s 			page 4
-
-
   43              		.cfi_offset 5, -12
   44              		.cfi_offset 6, -8
   45              		.cfi_offset 14, -4
   46 0002 0646     		mov	r6, r0
- 123:app/tasks/event_manager/event_manager.c ****   const ACTOR_ID* subscribersIds = EV_MANAGER_SubscribersIdsMatrix[message->event];
-  47              		.loc 1 123 3 is_stmt 1 view .LVU2
-  48              		.loc 1 123 75 is_stmt 0 view .LVU3
+ 118:app/tasks/event_manager/event_manager.c ****   const ACTOR_ID* subscribersIds = EV_MANAGER_SubscribersIdsMatrix[message->event];
+ARM GAS  /tmp/ccWTOyQ8.s 			page 4
+
+
+  47              		.loc 1 118 3 is_stmt 1 view .LVU2
+  48              		.loc 1 118 75 is_stmt 0 view .LVU3
   49 0004 0578     		ldrb	r5, [r0]	@ zero_extendqisi2
-  50              		.loc 1 123 19 view .LVU4
+  50              		.loc 1 118 19 view .LVU4
   51 0006 05EB8505 		add	r5, r5, r5, lsl #2
   52 000a 134B     		ldr	r3, .L11
   53 000c 03EB4505 		add	r5, r3, r5, lsl #1
   54              	.LVL1:
- 124:app/tasks/event_manager/event_manager.c **** 
- 125:app/tasks/event_manager/event_manager.c ****   // traverse all subscribers IDs and put message to their queues/handlers, subscribers are [NO_ACT
- 126:app/tasks/event_manager/event_manager.c ****   for (int32_t i = 0; i < MAX_ACTORS; i++) {
-  55              		.loc 1 126 3 is_stmt 1 view .LVU5
+ 119:app/tasks/event_manager/event_manager.c **** 
+ 120:app/tasks/event_manager/event_manager.c ****   // traverse all subscribers IDs and put message to their queues/handlers, subscribers are [NO_ACT
+ 121:app/tasks/event_manager/event_manager.c ****   for (int32_t i = 0; i < MAX_ACTORS; i++) {
+  55              		.loc 1 121 3 is_stmt 1 view .LVU5
   56              	.LBB2:
-  57              		.loc 1 126 8 view .LVU6
-  58              		.loc 1 126 16 is_stmt 0 view .LVU7
+  57              		.loc 1 121 8 view .LVU6
+  58              		.loc 1 121 16 is_stmt 0 view .LVU7
   59 0010 0024     		movs	r4, #0
-  60              		.loc 1 126 3 view .LVU8
+  60              		.loc 1 121 3 view .LVU8
   61 0012 0BE0     		b	.L2
   62              	.LVL2:
   63              	.L9:
   64              	.LBB3:
- 127:app/tasks/event_manager/event_manager.c ****     if (subscribersIds[i] == NO_ACTOR_ID)
- 128:app/tasks/event_manager/event_manager.c ****       continue;
- 129:app/tasks/event_manager/event_manager.c **** 
- 130:app/tasks/event_manager/event_manager.c ****     ACTOR_ID subscribedActorId = subscribersIds[i];
- 131:app/tasks/event_manager/event_manager.c ****     actor_t* subscribedActor = ACTORS_LOOKUP_SystemRegistry[subscribedActorId];
- 132:app/tasks/event_manager/event_manager.c **** 
- 133:app/tasks/event_manager/event_manager.c ****     if (subscribedActor == NULL) {
- 134:app/tasks/event_manager/event_manager.c ****       fprintf(stderr,  "Actor with ID %d subscribed on event %d is not found, check ACTORS_LIST_Sys
-  65              		.loc 1 134 7 is_stmt 1 view .LVU9
-  66              		.loc 1 134 15 is_stmt 0 view .LVU10
+ 122:app/tasks/event_manager/event_manager.c ****     if (subscribersIds[i] == NO_ACTOR_ID)
+ 123:app/tasks/event_manager/event_manager.c ****       continue;
+ 124:app/tasks/event_manager/event_manager.c **** 
+ 125:app/tasks/event_manager/event_manager.c ****     ACTOR_ID subscribedActorId = subscribersIds[i];
+ 126:app/tasks/event_manager/event_manager.c ****     actor_t* subscribedActor = ACTORS_LOOKUP_SystemRegistry[subscribedActorId];
+ 127:app/tasks/event_manager/event_manager.c **** 
+ 128:app/tasks/event_manager/event_manager.c ****     if (subscribedActor == NULL) {
+ 129:app/tasks/event_manager/event_manager.c ****       fprintf(stderr,  "Actor with ID %d subscribed on event %d is not found, check ACTORS_LIST_Sys
+  65              		.loc 1 129 7 is_stmt 1 view .LVU9
+  66              		.loc 1 129 15 is_stmt 0 view .LVU10
   67 0014 114B     		ldr	r3, .L11+4
   68 0016 1868     		ldr	r0, [r3]
   69              	.LVL3:
-  70              		.loc 1 134 7 view .LVU11
+  70              		.loc 1 129 7 view .LVU11
   71 0018 3378     		ldrb	r3, [r6]	@ zero_extendqisi2
   72 001a 1149     		ldr	r1, .L11+8
   73 001c C068     		ldr	r0, [r0, #12]
   74 001e FFF7FEFF 		bl	fprintf
   75              	.LVL4:
- 135:app/tasks/event_manager/event_manager.c ****       continue;
-  76              		.loc 1 135 7 is_stmt 1 view .LVU12
+ 130:app/tasks/event_manager/event_manager.c ****       continue;
+  76              		.loc 1 130 7 is_stmt 1 view .LVU12
   77 0022 02E0     		b	.L3
   78              	.LVL5:
   79              	.L10:
- 136:app/tasks/event_manager/event_manager.c ****     }
- 137:app/tasks/event_manager/event_manager.c **** 
- 138:app/tasks/event_manager/event_manager.c ****     bool isTask = subscribedActor->osThreadId != NULL;
- 139:app/tasks/event_manager/event_manager.c **** 
- 140:app/tasks/event_manager/event_manager.c ****     // actor doesn't have task, hence it can simply process message immediately
- 141:app/tasks/event_manager/event_manager.c ****     if (!isTask) {
- 142:app/tasks/event_manager/event_manager.c ****       subscribedActor->messageHandler(subscribedActor, message);
-ARM GAS  /tmp/cc16hDXu.s 			page 5
-
-
-  80              		.loc 1 142 7 view .LVU13
-  81              		.loc 1 142 22 is_stmt 0 view .LVU14
+ 131:app/tasks/event_manager/event_manager.c ****     }
+ 132:app/tasks/event_manager/event_manager.c **** 
+ 133:app/tasks/event_manager/event_manager.c ****     bool isTask = subscribedActor->osThreadId != NULL;
+ 134:app/tasks/event_manager/event_manager.c **** 
+ 135:app/tasks/event_manager/event_manager.c ****     // actor doesn't have task, hence it can simply process message immediately
+ 136:app/tasks/event_manager/event_manager.c ****     if (!isTask) {
+ 137:app/tasks/event_manager/event_manager.c ****       subscribedActor->messageHandler(subscribedActor, message);
+  80              		.loc 1 137 7 view .LVU13
+  81              		.loc 1 137 22 is_stmt 0 view .LVU14
   82 0024 C368     		ldr	r3, [r0, #12]
   83              	.LVL6:
-  84              		.loc 1 142 7 view .LVU15
+  84              		.loc 1 137 7 view .LVU15
+ARM GAS  /tmp/ccWTOyQ8.s 			page 5
+
+
   85 0026 3146     		mov	r1, r6
   86 0028 9847     		blx	r3
   87              	.LVL7:
- 143:app/tasks/event_manager/event_manager.c ****       continue;
-  88              		.loc 1 143 7 is_stmt 1 view .LVU16
+ 138:app/tasks/event_manager/event_manager.c ****       continue;
+  88              		.loc 1 138 7 is_stmt 1 view .LVU16
   89              	.L3:
-  90              		.loc 1 143 7 is_stmt 0 view .LVU17
+  90              		.loc 1 138 7 is_stmt 0 view .LVU17
   91              	.LBE3:
- 126:app/tasks/event_manager/event_manager.c ****     if (subscribersIds[i] == NO_ACTOR_ID)
-  92              		.loc 1 126 39 is_stmt 1 discriminator 2 view .LVU18
- 126:app/tasks/event_manager/event_manager.c ****     if (subscribersIds[i] == NO_ACTOR_ID)
-  93              		.loc 1 126 40 is_stmt 0 discriminator 2 view .LVU19
+ 121:app/tasks/event_manager/event_manager.c ****     if (subscribersIds[i] == NO_ACTOR_ID)
+  92              		.loc 1 121 39 is_stmt 1 discriminator 2 view .LVU18
+ 121:app/tasks/event_manager/event_manager.c ****     if (subscribersIds[i] == NO_ACTOR_ID)
+  93              		.loc 1 121 40 is_stmt 0 discriminator 2 view .LVU19
   94 002a 0134     		adds	r4, r4, #1
   95              	.LVL8:
   96              	.L2:
- 126:app/tasks/event_manager/event_manager.c ****     if (subscribersIds[i] == NO_ACTOR_ID)
-  97              		.loc 1 126 23 is_stmt 1 discriminator 1 view .LVU20
- 126:app/tasks/event_manager/event_manager.c ****     if (subscribersIds[i] == NO_ACTOR_ID)
-  98              		.loc 1 126 3 is_stmt 0 discriminator 1 view .LVU21
+ 121:app/tasks/event_manager/event_manager.c ****     if (subscribersIds[i] == NO_ACTOR_ID)
+  97              		.loc 1 121 23 is_stmt 1 discriminator 1 view .LVU20
+ 121:app/tasks/event_manager/event_manager.c ****     if (subscribersIds[i] == NO_ACTOR_ID)
+  98              		.loc 1 121 3 is_stmt 0 discriminator 1 view .LVU21
   99 002c 092C     		cmp	r4, #9
  100 002e 11DC     		bgt	.L8
  101              	.LBB4:
- 127:app/tasks/event_manager/event_manager.c ****       continue;
- 102              		.loc 1 127 5 is_stmt 1 view .LVU22
- 127:app/tasks/event_manager/event_manager.c ****       continue;
- 103              		.loc 1 127 23 is_stmt 0 view .LVU23
+ 122:app/tasks/event_manager/event_manager.c ****       continue;
+ 102              		.loc 1 122 5 is_stmt 1 view .LVU22
+ 122:app/tasks/event_manager/event_manager.c ****       continue;
+ 103              		.loc 1 122 23 is_stmt 0 view .LVU23
  104 0030 2A5D     		ldrb	r2, [r5, r4]	@ zero_extendqisi2
- 127:app/tasks/event_manager/event_manager.c ****       continue;
- 105              		.loc 1 127 8 view .LVU24
+ 122:app/tasks/event_manager/event_manager.c ****       continue;
+ 105              		.loc 1 122 8 view .LVU24
  106 0032 002A     		cmp	r2, #0
  107 0034 F9D0     		beq	.L3
- 130:app/tasks/event_manager/event_manager.c ****     actor_t* subscribedActor = ACTORS_LOOKUP_SystemRegistry[subscribedActorId];
- 108              		.loc 1 130 5 is_stmt 1 view .LVU25
+ 125:app/tasks/event_manager/event_manager.c ****     actor_t* subscribedActor = ACTORS_LOOKUP_SystemRegistry[subscribedActorId];
+ 108              		.loc 1 125 5 is_stmt 1 view .LVU25
  109              	.LVL9:
- 131:app/tasks/event_manager/event_manager.c **** 
- 110              		.loc 1 131 5 view .LVU26
- 131:app/tasks/event_manager/event_manager.c **** 
- 111              		.loc 1 131 14 is_stmt 0 view .LVU27
+ 126:app/tasks/event_manager/event_manager.c **** 
+ 110              		.loc 1 126 5 view .LVU26
+ 126:app/tasks/event_manager/event_manager.c **** 
+ 111              		.loc 1 126 14 is_stmt 0 view .LVU27
  112 0036 0B4B     		ldr	r3, .L11+12
  113 0038 53F82200 		ldr	r0, [r3, r2, lsl #2]
  114              	.LVL10:
- 133:app/tasks/event_manager/event_manager.c ****       fprintf(stderr,  "Actor with ID %d subscribed on event %d is not found, check ACTORS_LIST_Sys
- 115              		.loc 1 133 5 is_stmt 1 view .LVU28
- 133:app/tasks/event_manager/event_manager.c ****       fprintf(stderr,  "Actor with ID %d subscribed on event %d is not found, check ACTORS_LIST_Sys
- 116              		.loc 1 133 8 is_stmt 0 view .LVU29
+ 128:app/tasks/event_manager/event_manager.c ****       fprintf(stderr,  "Actor with ID %d subscribed on event %d is not found, check ACTORS_LIST_Sys
+ 115              		.loc 1 128 5 is_stmt 1 view .LVU28
+ 128:app/tasks/event_manager/event_manager.c ****       fprintf(stderr,  "Actor with ID %d subscribed on event %d is not found, check ACTORS_LIST_Sys
+ 116              		.loc 1 128 8 is_stmt 0 view .LVU29
  117 003c 0028     		cmp	r0, #0
  118 003e E9D0     		beq	.L9
- 138:app/tasks/event_manager/event_manager.c **** 
- 119              		.loc 1 138 5 is_stmt 1 view .LVU30
- 138:app/tasks/event_manager/event_manager.c **** 
- 120              		.loc 1 138 34 is_stmt 0 view .LVU31
+ 133:app/tasks/event_manager/event_manager.c **** 
+ 119              		.loc 1 133 5 is_stmt 1 view .LVU30
+ 133:app/tasks/event_manager/event_manager.c **** 
+ 120              		.loc 1 133 34 is_stmt 0 view .LVU31
  121 0040 4368     		ldr	r3, [r0, #4]
-ARM GAS  /tmp/cc16hDXu.s 			page 6
-
-
  122              	.LVL11:
- 141:app/tasks/event_manager/event_manager.c ****       subscribedActor->messageHandler(subscribedActor, message);
- 123              		.loc 1 141 5 is_stmt 1 view .LVU32
- 141:app/tasks/event_manager/event_manager.c ****       subscribedActor->messageHandler(subscribedActor, message);
- 124              		.loc 1 141 8 is_stmt 0 view .LVU33
+ 136:app/tasks/event_manager/event_manager.c ****       subscribedActor->messageHandler(subscribedActor, message);
+ 123              		.loc 1 136 5 is_stmt 1 view .LVU32
+ 136:app/tasks/event_manager/event_manager.c ****       subscribedActor->messageHandler(subscribedActor, message);
+ 124              		.loc 1 136 8 is_stmt 0 view .LVU33
+ARM GAS  /tmp/ccWTOyQ8.s 			page 6
+
+
  125 0042 002B     		cmp	r3, #0
  126 0044 EED0     		beq	.L10
- 144:app/tasks/event_manager/event_manager.c ****     }
- 145:app/tasks/event_manager/event_manager.c **** 
- 146:app/tasks/event_manager/event_manager.c ****     // actor has task, hence we should put message to its queue
- 147:app/tasks/event_manager/event_manager.c ****     osMessageQueueId_t actorsOsMessageQueueId = subscribedActor->osMessageQueueId;
- 127              		.loc 1 147 5 is_stmt 1 view .LVU34
+ 139:app/tasks/event_manager/event_manager.c ****     }
+ 140:app/tasks/event_manager/event_manager.c **** 
+ 141:app/tasks/event_manager/event_manager.c ****     // actor has task, hence we should put message to its queue
+ 142:app/tasks/event_manager/event_manager.c ****     osMessageQueueId_t actorsOsMessageQueueId = subscribedActor->osMessageQueueId;
+ 127              		.loc 1 142 5 is_stmt 1 view .LVU34
  128              	.LVL12:
- 148:app/tasks/event_manager/event_manager.c ****     osMessageQueuePut(actorsOsMessageQueueId, message, 0, 0);
- 129              		.loc 1 148 5 view .LVU35
+ 143:app/tasks/event_manager/event_manager.c ****     osMessageQueuePut(actorsOsMessageQueueId, message, 0, 0);
+ 129              		.loc 1 143 5 view .LVU35
  130 0046 0023     		movs	r3, #0
  131              	.LVL13:
- 132              		.loc 1 148 5 is_stmt 0 view .LVU36
+ 132              		.loc 1 143 5 is_stmt 0 view .LVU36
  133 0048 1A46     		mov	r2, r3
  134              	.LVL14:
- 135              		.loc 1 148 5 view .LVU37
+ 135              		.loc 1 143 5 view .LVU37
  136 004a 3146     		mov	r1, r6
  137 004c 8068     		ldr	r0, [r0, #8]
  138              	.LVL15:
- 139              		.loc 1 148 5 view .LVU38
+ 139              		.loc 1 143 5 view .LVU38
  140 004e FFF7FEFF 		bl	osMessageQueuePut
  141              	.LVL16:
- 142              		.loc 1 148 5 view .LVU39
+ 142              		.loc 1 143 5 view .LVU39
  143 0052 EAE7     		b	.L3
  144              	.L8:
- 145              		.loc 1 148 5 view .LVU40
+ 145              		.loc 1 143 5 view .LVU40
  146              	.LBE4:
  147              	.LBE2:
- 149:app/tasks/event_manager/event_manager.c ****   }
- 150:app/tasks/event_manager/event_manager.c **** 
- 151:app/tasks/event_manager/event_manager.c ****   return osOK;
- 148              		.loc 1 151 3 is_stmt 1 view .LVU41
- 152:app/tasks/event_manager/event_manager.c **** }...
- 149              		.loc 1 152 1 is_stmt 0 view .LVU42
+ 144:app/tasks/event_manager/event_manager.c ****   }
+ 145:app/tasks/event_manager/event_manager.c **** 
+ 146:app/tasks/event_manager/event_manager.c ****   return osOK;
+ 148              		.loc 1 146 3 is_stmt 1 view .LVU41
+ 147:app/tasks/event_manager/event_manager.c **** }...
+ 149              		.loc 1 147 1 is_stmt 0 view .LVU42
  150 0054 0020     		movs	r0, #0
  151 0056 70BD     		pop	{r4, r5, r6, pc}
  152              	.LVL17:
  153              	.L12:
- 154              		.loc 1 152 1 view .LVU43
+ 154              		.loc 1 147 1 view .LVU43
  155              		.align	2
  156              	.L11:
  157 0058 00000000 		.word	.LANCHOR0
@@ -358,20 +353,20 @@ ARM GAS  /tmp/cc16hDXu.s 			page 1
  166              		.syntax unified
  167              		.thumb
  168              		.thumb_func
-ARM GAS  /tmp/cc16hDXu.s 			page 7
-
-
  169              		.fpu fpv4-sp-d16
  171              	handleEvManagerMessage:
  172              	.LVL18:
  173              	.LFB140:
-  75:app/tasks/event_manager/event_manager.c **** static osStatus_t handleEvManagerMessage(EV_MANAGER_Actor_t *this, message_t *message) {
- 174              		.loc 1 75 88 is_stmt 1 view -0
+  76:app/tasks/event_manager/event_manager.c **** static osStatus_t handleEvManagerMessage(EV_MANAGER_Actor_t *this, message_t *message) {
+ARM GAS  /tmp/ccWTOyQ8.s 			page 7
+
+
+ 174              		.loc 1 76 88 is_stmt 1 view -0
  175              		.cfi_startproc
  176              		@ args = 0, pretend = 0, frame = 24
  177              		@ frame_needed = 0, uses_anonymous_args = 0
-  75:app/tasks/event_manager/event_manager.c **** static osStatus_t handleEvManagerMessage(EV_MANAGER_Actor_t *this, message_t *message) {
- 178              		.loc 1 75 88 is_stmt 0 view .LVU45
+  76:app/tasks/event_manager/event_manager.c **** static osStatus_t handleEvManagerMessage(EV_MANAGER_Actor_t *this, message_t *message) {
+ 178              		.loc 1 76 88 is_stmt 0 view .LVU45
  179 0000 00B5     		push	{lr}
  180              	.LCFI1:
  181              		.cfi_def_cfa_offset 4
@@ -381,389 +376,377 @@ ARM GAS  /tmp/cc16hDXu.s 			page 1
  185              		.cfi_def_cfa_offset 32
  186 0004 0846     		mov	r0, r1
  187              	.LVL19:
-  76:app/tasks/event_manager/event_manager.c ****   switch (message->event) {
- 188              		.loc 1 76 3 is_stmt 1 view .LVU46
-  76:app/tasks/event_manager/event_manager.c ****   switch (message->event) {
- 189              		.loc 1 76 18 is_stmt 0 view .LVU47
+  77:app/tasks/event_manager/event_manager.c ****   switch (message->event) {
+ 188              		.loc 1 77 3 is_stmt 1 view .LVU46
+  77:app/tasks/event_manager/event_manager.c ****   switch (message->event) {
+ 189              		.loc 1 77 18 is_stmt 0 view .LVU47
  190 0006 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
-  76:app/tasks/event_manager/event_manager.c ****   switch (message->event) {
- 191              		.loc 1 76 3 view .LVU48
- 192 0008 C63B     		subs	r3, r3, #198
- 193 000a 0E2B     		cmp	r3, #14
- 194 000c 18D8     		bhi	.L14
- 195 000e DFE803F0 		tbb	[pc, r3]
- 196              	.L16:
- 197 0012 08       		.byte	(.L18-.L16)/2
- 198 0013 1B       		.byte	(.L17-.L16)/2
- 199 0014 2B       		.byte	(.L15-.L16)/2
- 200 0015 2B       		.byte	(.L15-.L16)/2
- 201 0016 2B       		.byte	(.L15-.L16)/2
- 202 0017 2B       		.byte	(.L15-.L16)/2
- 203 0018 17       		.byte	(.L14-.L16)/2
- 204 0019 17       		.byte	(.L14-.L16)/2
- 205 001a 17       		.byte	(.L14-.L16)/2
- 206 001b 17       		.byte	(.L14-.L16)/2
- 207 001c 17       		.byte	(.L14-.L16)/2
- 208 001d 2B       		.byte	(.L15-.L16)/2
- 209 001e 2B       		.byte	(.L15-.L16)/2
- 210 001f 2B       		.byte	(.L15-.L16)/2
- 211 0020 2B       		.byte	(.L15-.L16)/2
- 212 0021 00       		.p2align 1
- 213              	.L18:
- 214              	.LBB5:
-  78:app/tasks/event_manager/event_manager.c ****       publishEventToSubscribers(message);
- 215              		.loc 1 78 7 is_stmt 1 view .LVU49
- 216 0022 FFF7FEFF 		bl	publishEventToSubscribers
- 217              	.LVL20:
-  81:app/tasks/event_manager/event_manager.c ****       osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_INITIALIZE_SUC
- 218              		.loc 1 81 7 view .LVU50
-  81:app/tasks/event_manager/event_manager.c ****       osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_INITIALIZE_SUC
-ARM GAS  /tmp/cc16hDXu.s 			page 8
+  77:app/tasks/event_manager/event_manager.c ****   switch (message->event) {
+ 191              		.loc 1 77 3 view .LVU48
+ 192 0008 C62B     		cmp	r3, #198
+ 193 000a 04D0     		beq	.L14
+ 194 000c C72B     		cmp	r3, #199
+ 195 000e 15D0     		beq	.L15
+ 196              	.LBB5:
+  91:app/tasks/event_manager/event_manager.c ****       publishEventToSubscribers(message);
+ 197              		.loc 1 91 7 is_stmt 1 view .LVU49
+ 198 0010 FFF7FEFF 		bl	publishEventToSubscribers
+ 199              	.LVL20:
+  92:app/tasks/event_manager/event_manager.c ****       return osOK;
+ 200              		.loc 1 92 7 view .LVU50
+  92:app/tasks/event_manager/event_manager.c ****       return osOK;
+ 201              		.loc 1 92 14 is_stmt 0 view .LVU51
+ 202 0014 0EE0     		b	.L17
+ 203              	.LVL21:
+ 204              	.L14:
+  79:app/tasks/event_manager/event_manager.c ****       publishEventToSubscribers(message);
+ 205              		.loc 1 79 7 is_stmt 1 view .LVU52
+ 206 0016 FFF7FEFF 		bl	publishEventToSubscribers
+ 207              	.LVL22:
+  82:app/tasks/event_manager/event_manager.c ****       osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_INITIALIZE_SUC
+ 208              		.loc 1 82 7 view .LVU53
+  82:app/tasks/event_manager/event_manager.c ****       osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_INITIALIZE_SUC
+ 209              		.loc 1 82 78 is_stmt 0 view .LVU54
+ 210 001a 0022     		movs	r2, #0
+ 211 001c 0092     		str	r2, [sp]
+ 212 001e 0192     		str	r2, [sp, #4]
+ 213 0020 0292     		str	r2, [sp, #8]
+ 214 0022 C723     		movs	r3, #199
+ 215 0024 8DF80030 		strb	r3, [sp]
+  82:app/tasks/event_manager/event_manager.c ****       osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_INITIALIZE_SUC
+ 216              		.loc 1 82 7 view .LVU55
+ 217 0028 1346     		mov	r3, r2
+ 218 002a 6946     		mov	r1, sp
+ 219 002c 0B48     		ldr	r0, .L20
+ARM GAS  /tmp/ccWTOyQ8.s 			page 8
 
 
- 219              		.loc 1 81 78 is_stmt 0 view .LVU51
- 220 0026 0022     		movs	r2, #0
- 221 0028 0092     		str	r2, [sp]
- 222 002a 0192     		str	r2, [sp, #4]
- 223 002c 0292     		str	r2, [sp, #8]
- 224 002e C723     		movs	r3, #199
- 225 0030 8DF80030 		strb	r3, [sp]
-  81:app/tasks/event_manager/event_manager.c ****       osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_INITIALIZE_SUC
- 226              		.loc 1 81 7 view .LVU52
- 227 0034 1346     		mov	r3, r2
- 228 0036 6946     		mov	r1, sp
- 229 0038 0D48     		ldr	r0, .L21
- 230 003a 8068     		ldr	r0, [r0, #8]
- 231 003c FFF7FEFF 		bl	osMessageQueuePut
- 232              	.LVL21:
-  82:app/tasks/event_manager/event_manager.c ****       return osOK;
- 233              		.loc 1 82 7 is_stmt 1 view .LVU53
- 234              	.L14:
- 235              	.LBE5:
- 101:app/tasks/event_manager/event_manager.c **** }
- 236              		.loc 1 101 1 is_stmt 0 discriminator 1 view .LVU54
- 237 0040 0020     		movs	r0, #0
- 238 0042 07B0     		add	sp, sp, #28
- 239              	.LCFI3:
- 240              		.cfi_remember_state
- 241              		.cfi_def_cfa_offset 4
- 242              		@ sp needed
- 243 0044 5DF804FB 		ldr	pc, [sp], #4
- 244              	.LVL22:
- 245              	.L17:
- 246              	.LCFI4:
- 247              		.cfi_restore_state
- 248              	.LBB6:
-  84:app/tasks/event_manager/event_manager.c ****       publishEventToSubscribers(message);
- 249              		.loc 1 84 7 is_stmt 1 view .LVU55
- 250 0048 FFF7FEFF 		bl	publishEventToSubscribers
- 251              	.LVL23:
-  86:app/tasks/event_manager/event_manager.c ****       osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_CMD_START_CONT
- 252              		.loc 1 86 7 view .LVU56
-  86:app/tasks/event_manager/event_manager.c ****       osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_CMD_START_CONT
- 253              		.loc 1 86 78 is_stmt 0 view .LVU57
- 254 004c 0022     		movs	r2, #0
- 255 004e 0392     		str	r2, [sp, #12]
- 256 0050 0492     		str	r2, [sp, #16]
- 257 0052 0592     		str	r2, [sp, #20]
- 258 0054 D323     		movs	r3, #211
- 259 0056 8DF80C30 		strb	r3, [sp, #12]
-  86:app/tasks/event_manager/event_manager.c ****       osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_CMD_START_CONT
- 260              		.loc 1 86 7 view .LVU58
- 261 005a 1346     		mov	r3, r2
- 262 005c 03A9     		add	r1, sp, #12
- 263 005e 0448     		ldr	r0, .L21
- 264 0060 8068     		ldr	r0, [r0, #8]
- 265 0062 FFF7FEFF 		bl	osMessageQueuePut
- 266              	.LVL24:
-  87:app/tasks/event_manager/event_manager.c ****       return osOK;
- 267              		.loc 1 87 7 is_stmt 1 view .LVU59
-ARM GAS  /tmp/cc16hDXu.s 			page 9
+ 220 002e 8068     		ldr	r0, [r0, #8]
+ 221 0030 FFF7FEFF 		bl	osMessageQueuePut
+ 222              	.LVL23:
+  83:app/tasks/event_manager/event_manager.c ****       return osOK;
+ 223              		.loc 1 83 7 is_stmt 1 view .LVU56
+ 224              	.L17:
+ 225              	.LBE5:
+  96:app/tasks/event_manager/event_manager.c **** }
+ 226              		.loc 1 96 1 is_stmt 0 view .LVU57
+ 227 0034 0020     		movs	r0, #0
+ 228 0036 07B0     		add	sp, sp, #28
+ 229              	.LCFI3:
+ 230              		.cfi_remember_state
+ 231              		.cfi_def_cfa_offset 4
+ 232              		@ sp needed
+ 233 0038 5DF804FB 		ldr	pc, [sp], #4
+ 234              	.LVL24:
+ 235              	.L15:
+ 236              	.LCFI4:
+ 237              		.cfi_restore_state
+ 238              	.LBB6:
+  85:app/tasks/event_manager/event_manager.c ****       publishEventToSubscribers(message);
+ 239              		.loc 1 85 7 is_stmt 1 view .LVU58
+ 240 003c FFF7FEFF 		bl	publishEventToSubscribers
+ 241              	.LVL25:
+  87:app/tasks/event_manager/event_manager.c ****       osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_CMD_START_CONT
+ 242              		.loc 1 87 7 view .LVU59
+  87:app/tasks/event_manager/event_manager.c ****       osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_CMD_START_CONT
+ 243              		.loc 1 87 78 is_stmt 0 view .LVU60
+ 244 0040 0022     		movs	r2, #0
+ 245 0042 0392     		str	r2, [sp, #12]
+ 246 0044 0492     		str	r2, [sp, #16]
+ 247 0046 0592     		str	r2, [sp, #20]
+ 248 0048 D323     		movs	r3, #211
+ 249 004a 8DF80C30 		strb	r3, [sp, #12]
+  87:app/tasks/event_manager/event_manager.c ****       osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_CMD_START_CONT
+ 250              		.loc 1 87 7 view .LVU61
+ 251 004e 1346     		mov	r3, r2
+ 252 0050 03A9     		add	r1, sp, #12
+ 253 0052 0248     		ldr	r0, .L20
+ 254 0054 8068     		ldr	r0, [r0, #8]
+ 255 0056 FFF7FEFF 		bl	osMessageQueuePut
+ 256              	.LVL26:
+  88:app/tasks/event_manager/event_manager.c ****       return osOK;
+ 257              		.loc 1 88 7 is_stmt 1 view .LVU62
+  88:app/tasks/event_manager/event_manager.c ****       return osOK;
+ 258              		.loc 1 88 14 is_stmt 0 view .LVU63
+ 259 005a EBE7     		b	.L17
+ 260              	.L21:
+ 261              		.align	2
+ 262              	.L20:
+ 263 005c 00000000 		.word	.LANCHOR1
+ 264              	.LBE6:
+ 265              		.cfi_endproc
+ 266              	.LFE140:
+ 268              		.section	.rodata.EV_MANAGER_ActorInit.str1.4,"aMS",%progbits,1
+ 269              		.align	2
+ARM GAS  /tmp/ccWTOyQ8.s 			page 9
 
 
-  87:app/tasks/event_manager/event_manager.c ****       return osOK;
- 268              		.loc 1 87 14 is_stmt 0 view .LVU60
- 269 0066 EBE7     		b	.L14
- 270              	.LVL25:
- 271              	.L15:
-  96:app/tasks/event_manager/event_manager.c ****       publishEventToSubscribers(message);
- 272              		.loc 1 96 7 is_stmt 1 view .LVU61
- 273 0068 FFF7FEFF 		bl	publishEventToSubscribers
- 274              	.LVL26:
-  97:app/tasks/event_manager/event_manager.c ****       return osOK;
- 275              		.loc 1 97 7 view .LVU62
-  97:app/tasks/event_manager/event_manager.c ****       return osOK;
- 276              		.loc 1 97 14 is_stmt 0 view .LVU63
- 277 006c E8E7     		b	.L14
- 278              	.L22:
- 279 006e 00BF     		.align	2
- 280              	.L21:
- 281 0070 00000000 		.word	.LANCHOR1
- 282              	.LBE6:
- 283              		.cfi_endproc
- 284              	.LFE140:
- 286              		.section	.rodata.EV_MANAGER_ActorInit.str1.4,"aMS",%progbits,1
- 287              		.align	2
- 288              	.LC1:
- 289 0000 6576656E 		.ascii	"eventManagerQueue\000"
- 289      744D616E 
- 289      61676572 
- 289      51756575 
- 289      6500
- 290 0012 0000     		.align	2
- 291              	.LC2:
- 292 0014 4576656E 		.ascii	"Event Manager initialized\012\000"
- 292      74204D61 
- 292      6E616765 
- 292      7220696E 
- 292      69746961 
- 293              		.section	.text.EV_MANAGER_ActorInit,"ax",%progbits
- 294              		.align	1
- 295              		.global	EV_MANAGER_ActorInit
- 296              		.syntax unified
- 297              		.thumb
- 298              		.thumb_func
- 299              		.fpu fpv4-sp-d16
- 301              	EV_MANAGER_ActorInit:
- 302              	.LVL27:
- 303              	.LFB139:
-  61:app/tasks/event_manager/event_manager.c **** actor_t* EV_MANAGER_ActorInit(osThreadId_t defaultTaskHandle) {
- 304              		.loc 1 61 63 is_stmt 1 view -0
- 305              		.cfi_startproc
- 306              		@ args = 0, pretend = 0, frame = 40
- 307              		@ frame_needed = 0, uses_anonymous_args = 0
-  61:app/tasks/event_manager/event_manager.c **** actor_t* EV_MANAGER_ActorInit(osThreadId_t defaultTaskHandle) {
- 308              		.loc 1 61 63 is_stmt 0 view .LVU65
- 309 0000 70B5     		push	{r4, r5, r6, lr}
- 310              	.LCFI5:
- 311              		.cfi_def_cfa_offset 16
- 312              		.cfi_offset 4, -16
-ARM GAS  /tmp/cc16hDXu.s 			page 10
+ 270              	.LC1:
+ 271 0000 6576656E 		.ascii	"eventManagerQueue\000"
+ 271      744D616E 
+ 271      61676572 
+ 271      51756575 
+ 271      6500
+ 272 0012 0000     		.align	2
+ 273              	.LC2:
+ 274 0014 4576656E 		.ascii	"Event Manager initialized\012\000"
+ 274      74204D61 
+ 274      6E616765 
+ 274      7220696E 
+ 274      69746961 
+ 275              		.section	.text.EV_MANAGER_ActorInit,"ax",%progbits
+ 276              		.align	1
+ 277              		.global	EV_MANAGER_ActorInit
+ 278              		.syntax unified
+ 279              		.thumb
+ 280              		.thumb_func
+ 281              		.fpu fpv4-sp-d16
+ 283              	EV_MANAGER_ActorInit:
+ 284              	.LVL27:
+ 285              	.LFB139:
+  62:app/tasks/event_manager/event_manager.c **** actor_t* EV_MANAGER_ActorInit(osThreadId_t defaultTaskHandle) {
+ 286              		.loc 1 62 63 is_stmt 1 view -0
+ 287              		.cfi_startproc
+ 288              		@ args = 0, pretend = 0, frame = 40
+ 289              		@ frame_needed = 0, uses_anonymous_args = 0
+  62:app/tasks/event_manager/event_manager.c **** actor_t* EV_MANAGER_ActorInit(osThreadId_t defaultTaskHandle) {
+ 290              		.loc 1 62 63 is_stmt 0 view .LVU65
+ 291 0000 70B5     		push	{r4, r5, r6, lr}
+ 292              	.LCFI5:
+ 293              		.cfi_def_cfa_offset 16
+ 294              		.cfi_offset 4, -16
+ 295              		.cfi_offset 5, -12
+ 296              		.cfi_offset 6, -8
+ 297              		.cfi_offset 14, -4
+ 298 0002 8AB0     		sub	sp, sp, #40
+ 299              	.LCFI6:
+ 300              		.cfi_def_cfa_offset 56
+ 301 0004 0646     		mov	r6, r0
+  63:app/tasks/event_manager/event_manager.c ****   EV_MANAGER_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MES
+ 302              		.loc 1 63 3 is_stmt 1 view .LVU66
+  63:app/tasks/event_manager/event_manager.c ****   EV_MANAGER_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MES
+ 303              		.loc 1 63 134 is_stmt 0 view .LVU67
+ 304 0006 0024     		movs	r4, #0
+ 305 0008 0194     		str	r4, [sp, #4]
+ 306 000a 0294     		str	r4, [sp, #8]
+ 307 000c 0394     		str	r4, [sp, #12]
+ 308 000e 0494     		str	r4, [sp, #16]
+ 309 0010 0594     		str	r4, [sp, #20]
+ 310 0012 0694     		str	r4, [sp, #24]
+ 311 0014 104B     		ldr	r3, .L24
+ 312 0016 0193     		str	r3, [sp, #4]
+  63:app/tasks/event_manager/event_manager.c ****   EV_MANAGER_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MES
+ 313              		.loc 1 63 45 view .LVU68
+ 314 0018 01AA     		add	r2, sp, #4
+ARM GAS  /tmp/ccWTOyQ8.s 			page 10
 
 
- 313              		.cfi_offset 5, -12
- 314              		.cfi_offset 6, -8
- 315              		.cfi_offset 14, -4
- 316 0002 8AB0     		sub	sp, sp, #40
- 317              	.LCFI6:
- 318              		.cfi_def_cfa_offset 56
- 319 0004 0646     		mov	r6, r0
-  62:app/tasks/event_manager/event_manager.c ****   EV_MANAGER_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MES
- 320              		.loc 1 62 3 is_stmt 1 view .LVU66
-  62:app/tasks/event_manager/event_manager.c ****   EV_MANAGER_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MES
- 321              		.loc 1 62 134 is_stmt 0 view .LVU67
- 322 0006 0024     		movs	r4, #0
- 323 0008 0194     		str	r4, [sp, #4]
- 324 000a 0294     		str	r4, [sp, #8]
- 325 000c 0394     		str	r4, [sp, #12]
- 326 000e 0494     		str	r4, [sp, #16]
- 327 0010 0594     		str	r4, [sp, #20]
- 328 0012 0694     		str	r4, [sp, #24]
- 329 0014 104B     		ldr	r3, .L25
- 330 0016 0193     		str	r3, [sp, #4]
-  62:app/tasks/event_manager/event_manager.c ****   EV_MANAGER_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MES
- 331              		.loc 1 62 45 view .LVU68
- 332 0018 01AA     		add	r2, sp, #4
- 333 001a 0C21     		movs	r1, #12
- 334 001c 0820     		movs	r0, #8
- 335              	.LVL28:
-  62:app/tasks/event_manager/event_manager.c ****   EV_MANAGER_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MES
- 336              		.loc 1 62 45 view .LVU69
- 337 001e FFF7FEFF 		bl	osMessageQueueNew
- 338              	.LVL29:
-  62:app/tasks/event_manager/event_manager.c ****   EV_MANAGER_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MES
- 339              		.loc 1 62 43 view .LVU70
- 340 0022 0E4D     		ldr	r5, .L25+4
- 341 0024 A860     		str	r0, [r5, #8]
-  65:app/tasks/event_manager/event_manager.c ****   EV_MANAGER_Actor.super.osThreadId = defaultTaskHandle;
- 342              		.loc 1 65 3 is_stmt 1 view .LVU71
-  65:app/tasks/event_manager/event_manager.c ****   EV_MANAGER_Actor.super.osThreadId = defaultTaskHandle;
- 343              		.loc 1 65 37 is_stmt 0 view .LVU72
- 344 0026 6E60     		str	r6, [r5, #4]
-  67:app/tasks/event_manager/event_manager.c ****   fprintf(stdout, "Event Manager initialized\n");
- 345              		.loc 1 67 3 is_stmt 1 view .LVU73
-  67:app/tasks/event_manager/event_manager.c ****   fprintf(stdout, "Event Manager initialized\n");
- 346              		.loc 1 67 11 is_stmt 0 view .LVU74
- 347 0028 0D4B     		ldr	r3, .L25+8
- 348 002a 1B68     		ldr	r3, [r3]
-  67:app/tasks/event_manager/event_manager.c ****   fprintf(stdout, "Event Manager initialized\n");
- 349              		.loc 1 67 3 view .LVU75
- 350 002c 9B68     		ldr	r3, [r3, #8]
- 351 002e 1A22     		movs	r2, #26
- 352 0030 0121     		movs	r1, #1
- 353 0032 0C48     		ldr	r0, .L25+12
- 354 0034 FFF7FEFF 		bl	fwrite
- 355              	.LVL30:
-  70:app/tasks/event_manager/event_manager.c ****   osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_CMD_INITIALIZE}, 0
- 356              		.loc 1 70 3 is_stmt 1 view .LVU76
-  70:app/tasks/event_manager/event_manager.c ****   osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_CMD_INITIALIZE}, 0
- 357              		.loc 1 70 74 is_stmt 0 view .LVU77
-ARM GAS  /tmp/cc16hDXu.s 			page 11
+ 315 001a 0C21     		movs	r1, #12
+ 316 001c 0820     		movs	r0, #8
+ 317              	.LVL28:
+  63:app/tasks/event_manager/event_manager.c ****   EV_MANAGER_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MES
+ 318              		.loc 1 63 45 view .LVU69
+ 319 001e FFF7FEFF 		bl	osMessageQueueNew
+ 320              	.LVL29:
+  63:app/tasks/event_manager/event_manager.c ****   EV_MANAGER_Actor.super.osMessageQueueId = osMessageQueueNew(DEFAULT_QUEUE_SIZE, DEFAULT_QUEUE_MES
+ 321              		.loc 1 63 43 view .LVU70
+ 322 0022 0E4D     		ldr	r5, .L24+4
+ 323 0024 A860     		str	r0, [r5, #8]
+  66:app/tasks/event_manager/event_manager.c ****   EV_MANAGER_Actor.super.osThreadId = defaultTaskHandle;
+ 324              		.loc 1 66 3 is_stmt 1 view .LVU71
+  66:app/tasks/event_manager/event_manager.c ****   EV_MANAGER_Actor.super.osThreadId = defaultTaskHandle;
+ 325              		.loc 1 66 37 is_stmt 0 view .LVU72
+ 326 0026 6E60     		str	r6, [r5, #4]
+  68:app/tasks/event_manager/event_manager.c ****   fprintf(stdout, "Event Manager initialized\n");
+ 327              		.loc 1 68 3 is_stmt 1 view .LVU73
+  68:app/tasks/event_manager/event_manager.c ****   fprintf(stdout, "Event Manager initialized\n");
+ 328              		.loc 1 68 11 is_stmt 0 view .LVU74
+ 329 0028 0D4B     		ldr	r3, .L24+8
+ 330 002a 1B68     		ldr	r3, [r3]
+  68:app/tasks/event_manager/event_manager.c ****   fprintf(stdout, "Event Manager initialized\n");
+ 331              		.loc 1 68 3 view .LVU75
+ 332 002c 9B68     		ldr	r3, [r3, #8]
+ 333 002e 1A22     		movs	r2, #26
+ 334 0030 0121     		movs	r1, #1
+ 335 0032 0C48     		ldr	r0, .L24+12
+ 336 0034 FFF7FEFF 		bl	fwrite
+ 337              	.LVL30:
+  71:app/tasks/event_manager/event_manager.c ****   osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_CMD_INITIALIZE}, 0
+ 338              		.loc 1 71 3 is_stmt 1 view .LVU76
+  71:app/tasks/event_manager/event_manager.c ****   osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_CMD_INITIALIZE}, 0
+ 339              		.loc 1 71 74 is_stmt 0 view .LVU77
+ 340 0038 0794     		str	r4, [sp, #28]
+ 341 003a 0894     		str	r4, [sp, #32]
+ 342 003c 0994     		str	r4, [sp, #36]
+ 343 003e C623     		movs	r3, #198
+ 344 0040 8DF81C30 		strb	r3, [sp, #28]
+  71:app/tasks/event_manager/event_manager.c ****   osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_CMD_INITIALIZE}, 0
+ 345              		.loc 1 71 3 view .LVU78
+ 346 0044 2346     		mov	r3, r4
+ 347 0046 2246     		mov	r2, r4
+ 348 0048 07A9     		add	r1, sp, #28
+ 349 004a A868     		ldr	r0, [r5, #8]
+ 350 004c FFF7FEFF 		bl	osMessageQueuePut
+ 351              	.LVL31:
+  73:app/tasks/event_manager/event_manager.c ****   return &EV_MANAGER_Actor.super;
+ 352              		.loc 1 73 3 is_stmt 1 view .LVU79
+  74:app/tasks/event_manager/event_manager.c **** }
+ 353              		.loc 1 74 1 is_stmt 0 view .LVU80
+ 354 0050 2846     		mov	r0, r5
+ 355 0052 0AB0     		add	sp, sp, #40
+ 356              	.LCFI7:
+ 357              		.cfi_def_cfa_offset 16
+ 358              		@ sp needed
+ 359 0054 70BD     		pop	{r4, r5, r6, pc}
+ARM GAS  /tmp/ccWTOyQ8.s 			page 11
 
 
- 358 0038 0794     		str	r4, [sp, #28]
- 359 003a 0894     		str	r4, [sp, #32]
- 360 003c 0994     		str	r4, [sp, #36]
- 361 003e C623     		movs	r3, #198
- 362 0040 8DF81C30 		strb	r3, [sp, #28]
-  70:app/tasks/event_manager/event_manager.c ****   osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_CMD_INITIALIZE}, 0
- 363              		.loc 1 70 3 view .LVU78
- 364 0044 2346     		mov	r3, r4
- 365 0046 2246     		mov	r2, r4
- 366 0048 07A9     		add	r1, sp, #28
- 367 004a A868     		ldr	r0, [r5, #8]
- 368 004c FFF7FEFF 		bl	osMessageQueuePut
- 369              	.LVL31:
-  72:app/tasks/event_manager/event_manager.c ****   return &EV_MANAGER_Actor.super;
- 370              		.loc 1 72 3 is_stmt 1 view .LVU79
-  73:app/tasks/event_manager/event_manager.c **** }
- 371              		.loc 1 73 1 is_stmt 0 view .LVU80
- 372 0050 2846     		mov	r0, r5
- 373 0052 0AB0     		add	sp, sp, #40
- 374              	.LCFI7:
- 375              		.cfi_def_cfa_offset 16
- 376              		@ sp needed
- 377 0054 70BD     		pop	{r4, r5, r6, pc}
- 378              	.LVL32:
- 379              	.L26:
-  73:app/tasks/event_manager/event_manager.c **** }
- 380              		.loc 1 73 1 view .LVU81
- 381 0056 00BF     		.align	2
- 382              	.L25:
- 383 0058 00000000 		.word	.LC1
- 384 005c 00000000 		.word	.LANCHOR1
- 385 0060 00000000 		.word	_impure_ptr
- 386 0064 14000000 		.word	.LC2
- 387              		.cfi_endproc
- 388              	.LFE139:
- 390              		.global	EV_MANAGER_Actor
- 391              		.global	EV_MANAGER_SubscribersIdsMatrix
- 392              		.section	.data.EV_MANAGER_Actor,"aw"
- 393              		.align	2
- 394              		.set	.LANCHOR1,. + 0
- 397              	EV_MANAGER_Actor:
- 398 0000 01000000 		.word	1
- 399 0004 00000000 		.word	0
- 400 0008 00000000 		.word	0
- 401 000c 00000000 		.word	handleEvManagerMessage
- 402              		.section	.rodata.EV_MANAGER_SubscribersIdsMatrix,"a"
- 403              		.align	2
- 404              		.set	.LANCHOR0,. + 0
- 407              	EV_MANAGER_SubscribersIdsMatrix:
- 408 0000 00000000 		.space	1980
- 408      00000000 
- 408      00000000 
- 408      00000000 
- 408      00000000 
- 409 07bc 02       		.byte	2
- 410 07bd 03       		.byte	3
- 411 07be 04       		.byte	4
-ARM GAS  /tmp/cc16hDXu.s 			page 12
+ 360              	.LVL32:
+ 361              	.L25:
+  74:app/tasks/event_manager/event_manager.c **** }
+ 362              		.loc 1 74 1 view .LVU81
+ 363 0056 00BF     		.align	2
+ 364              	.L24:
+ 365 0058 00000000 		.word	.LC1
+ 366 005c 00000000 		.word	.LANCHOR1
+ 367 0060 00000000 		.word	_impure_ptr
+ 368 0064 14000000 		.word	.LC2
+ 369              		.cfi_endproc
+ 370              	.LFE139:
+ 372              		.global	EV_MANAGER_Actor
+ 373              		.global	EV_MANAGER_SubscribersIdsMatrix
+ 374              		.section	.data.EV_MANAGER_Actor,"aw"
+ 375              		.align	2
+ 376              		.set	.LANCHOR1,. + 0
+ 379              	EV_MANAGER_Actor:
+ 380 0000 01000000 		.word	1
+ 381 0004 00000000 		.word	0
+ 382 0008 00000000 		.word	0
+ 383 000c 00000000 		.word	handleEvManagerMessage
+ 384              		.section	.rodata.EV_MANAGER_SubscribersIdsMatrix,"a"
+ 385              		.align	2
+ 386              		.set	.LANCHOR0,. + 0
+ 389              	EV_MANAGER_SubscribersIdsMatrix:
+ 390 0000 00000000 		.space	1950
+ 390      00000000 
+ 390      00000000 
+ 390      00000000 
+ 390      00000000 
+ 391 079e 08       		.byte	8
+ 392 079f 00000000 		.space	9
+ 392      00000000 
+ 392      00
+ 393 07a8 00000000 		.space	20
+ 393      00000000 
+ 393      00000000 
+ 393      00000000 
+ 393      00000000 
+ 394 07bc 02       		.byte	2
+ 395 07bd 03       		.byte	3
+ 396 07be 04       		.byte	4
+ 397 07bf 08       		.byte	8
+ 398 07c0 00000000 		.space	6
+ 398      0000
+ 399 07c6 00000000 		.space	10
+ 399      00000000 
+ 399      0000
+ 400 07d0 06       		.byte	6
+ 401 07d1 07       		.byte	7
+ 402 07d2 00000000 		.space	8
+ 402      00000000 
+ 403 07da 08       		.byte	8
+ 404 07db 00000000 		.space	9
+ 404      00000000 
+ 404      00
+ARM GAS  /tmp/ccWTOyQ8.s 			page 12
 
 
- 412 07bf 08       		.byte	8
- 413 07c0 00000000 		.space	6
- 413      0000
- 414 07c6 00000000 		.space	10
+ 405 07e4 08       		.byte	8
+ 406 07e5 00000000 		.space	9
+ 406      00000000 
+ 406      00
+ 407 07ee 08       		.byte	8
+ 408 07ef 04       		.byte	4
+ 409 07f0 00000000 		.space	8
+ 409      00000000 
+ 410 07f8 04       		.byte	4
+ 411 07f9 00000000 		.space	9
+ 411      00000000 
+ 411      00
+ 412 0802 08       		.byte	8
+ 413 0803 04       		.byte	4
+ 414 0804 00000000 		.space	8
  414      00000000 
- 414      0000
- 415 07d0 06       		.byte	6
- 416 07d1 07       		.byte	7
- 417 07d2 00000000 		.space	8
+ 415 080c 04       		.byte	4
+ 416 080d 00000000 		.space	9
+ 416      00000000 
+ 416      00
+ 417 0816 00000000 		.space	20
  417      00000000 
- 418 07da 08       		.byte	8
- 419 07db 00000000 		.space	9
+ 417      00000000 
+ 417      00000000 
+ 417      00000000 
+ 418 082a 02       		.byte	2
+ 419 082b 00000000 		.space	9
  419      00000000 
  419      00
- 420 07e4 08       		.byte	8
- 421 07e5 00000000 		.space	9
+ 420 0834 02       		.byte	2
+ 421 0835 00000000 		.space	9
  421      00000000 
  421      00
- 422 07ee 08       		.byte	8
- 423 07ef 04       		.byte	4
- 424 07f0 00000000 		.space	8
+ 422 083e 06       		.byte	6
+ 423 083f 07       		.byte	7
+ 424 0840 00000000 		.space	8
  424      00000000 
- 425 07f8 04       		.byte	4
- 426 07f9 00000000 		.space	9
- 426      00000000 
- 426      00
- 427 0802 08       		.byte	8
- 428 0803 04       		.byte	4
- 429 0804 00000000 		.space	8
+ 425 0848 06       		.byte	6
+ 426 0849 07       		.byte	7
+ 427 084a 03       		.byte	3
+ 428 084b 00000000 		.space	7
+ 428      000000
+ 429 0852 00000000 		.space	20
  429      00000000 
- 430 080c 04       		.byte	4
- 431 080d 00000000 		.space	9
- 431      00000000 
- 431      00
- 432 0816 00000000 		.space	20
- 432      00000000 
- 432      00000000 
- 432      00000000 
- 432      00000000 
- 433 082a 02       		.byte	2
- 434 082b 00000000 		.space	9
- 434      00000000 
- 434      00
- 435 0834 02       		.byte	2
- 436 0835 00000000 		.space	9
- 436      00000000 
- 436      00
- 437 083e 06       		.byte	6
- 438 083f 07       		.byte	7
- 439 0840 00000000 		.space	8
- 439      00000000 
- 440 0848 06       		.byte	6
- 441 0849 07       		.byte	7
- 442 084a 03       		.byte	3
- 443 084b 00000000 		.space	7
- 443      000000
- 444 0852 00000000 		.space	20
-ARM GAS  /tmp/cc16hDXu.s 			page 13
+ 429      00000000 
+ 429      00000000 
+ 429      00000000 
+ 430              		.text
+ 431              	.Letext0:
+ 432              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 433              		.file 3 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stddef.h"
+ 434              		.file 4 "/usr/include/newlib/sys/_types.h"
+ 435              		.file 5 "/usr/include/newlib/sys/reent.h"
+ 436              		.file 6 "/usr/include/newlib/sys/lock.h"
+ 437              		.file 7 "/usr/include/newlib/sys/_stdint.h"
+ 438              		.file 8 "/usr/include/newlib/sys/types.h"
+ 439              		.file 9 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
+ARM GAS  /tmp/ccWTOyQ8.s 			page 13
 
 
- 444      00000000 
- 444      00000000 
- 444      00000000 
- 444      00000000 
- 445              		.text
- 446              	.Letext0:
- 447              		.file 2 "/usr/include/newlib/machine/_default_types.h"
- 448              		.file 3 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stddef.h"
- 449              		.file 4 "/usr/include/newlib/sys/_types.h"
- 450              		.file 5 "/usr/include/newlib/sys/reent.h"
- 451              		.file 6 "/usr/include/newlib/sys/lock.h"
- 452              		.file 7 "/usr/include/newlib/sys/_stdint.h"
- 453              		.file 8 "/usr/include/newlib/sys/types.h"
- 454              		.file 9 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
- 455              		.file 10 "app/core/actor/../../config/events_list/events_list.h"
- 456              		.file 11 "app/core/actor/../../config/actors_lookup/actors_lookup.h"
- 457              		.file 12 "app/core/actor/actor.h"
- 458              		.file 13 "app/tasks/event_manager/event_manager.h"
- 459              		.file 14 "/usr/include/newlib/stdio.h"
- 460              		.file 15 "<built-in>"
-ARM GAS  /tmp/cc16hDXu.s 			page 14
+ 440              		.file 10 "app/core/actor/../../config/events_list/events_list.h"
+ 441              		.file 11 "app/core/actor/../../config/actors_lookup/actors_lookup.h"
+ 442              		.file 12 "app/core/actor/actor.h"
+ 443              		.file 13 "app/tasks/event_manager/event_manager.h"
+ 444              		.file 14 "/usr/include/newlib/stdio.h"
+ 445              		.file 15 "<built-in>"
+ARM GAS  /tmp/ccWTOyQ8.s 			page 14
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 event_manager.c
-     /tmp/cc16hDXu.s:18     .rodata.publishEventToSubscribers.str1.4:0000000000000000 $d
-     /tmp/cc16hDXu.s:23     .text.publishEventToSubscribers:0000000000000000 $t
-     /tmp/cc16hDXu.s:30     .text.publishEventToSubscribers:0000000000000000 publishEventToSubscribers
-     /tmp/cc16hDXu.s:157    .text.publishEventToSubscribers:0000000000000058 $d
-     /tmp/cc16hDXu.s:165    .text.handleEvManagerMessage:0000000000000000 $t
-     /tmp/cc16hDXu.s:171    .text.handleEvManagerMessage:0000000000000000 handleEvManagerMessage
-     /tmp/cc16hDXu.s:197    .text.handleEvManagerMessage:0000000000000012 $d
-     /tmp/cc16hDXu.s:281    .text.handleEvManagerMessage:0000000000000070 $d
-     /tmp/cc16hDXu.s:287    .rodata.EV_MANAGER_ActorInit.str1.4:0000000000000000 $d
-     /tmp/cc16hDXu.s:294    .text.EV_MANAGER_ActorInit:0000000000000000 $t
-     /tmp/cc16hDXu.s:301    .text.EV_MANAGER_ActorInit:0000000000000000 EV_MANAGER_ActorInit
-     /tmp/cc16hDXu.s:383    .text.EV_MANAGER_ActorInit:0000000000000058 $d
-     /tmp/cc16hDXu.s:397    .data.EV_MANAGER_Actor:0000000000000000 EV_MANAGER_Actor
-     /tmp/cc16hDXu.s:407    .rodata.EV_MANAGER_SubscribersIdsMatrix:0000000000000000 EV_MANAGER_SubscribersIdsMatrix
-     /tmp/cc16hDXu.s:393    .data.EV_MANAGER_Actor:0000000000000000 $d
-     /tmp/cc16hDXu.s:403    .rodata.EV_MANAGER_SubscribersIdsMatrix:0000000000000000 $d
-     /tmp/cc16hDXu.s:212    .text.handleEvManagerMessage:0000000000000021 $d
-     /tmp/cc16hDXu.s:212    .text.handleEvManagerMessage:0000000000000022 $t
+     /tmp/ccWTOyQ8.s:18     .rodata.publishEventToSubscribers.str1.4:0000000000000000 $d
+     /tmp/ccWTOyQ8.s:23     .text.publishEventToSubscribers:0000000000000000 $t
+     /tmp/ccWTOyQ8.s:30     .text.publishEventToSubscribers:0000000000000000 publishEventToSubscribers
+     /tmp/ccWTOyQ8.s:157    .text.publishEventToSubscribers:0000000000000058 $d
+     /tmp/ccWTOyQ8.s:165    .text.handleEvManagerMessage:0000000000000000 $t
+     /tmp/ccWTOyQ8.s:171    .text.handleEvManagerMessage:0000000000000000 handleEvManagerMessage
+     /tmp/ccWTOyQ8.s:263    .text.handleEvManagerMessage:000000000000005c $d
+     /tmp/ccWTOyQ8.s:269    .rodata.EV_MANAGER_ActorInit.str1.4:0000000000000000 $d
+     /tmp/ccWTOyQ8.s:276    .text.EV_MANAGER_ActorInit:0000000000000000 $t
+     /tmp/ccWTOyQ8.s:283    .text.EV_MANAGER_ActorInit:0000000000000000 EV_MANAGER_ActorInit
+     /tmp/ccWTOyQ8.s:365    .text.EV_MANAGER_ActorInit:0000000000000058 $d
+     /tmp/ccWTOyQ8.s:379    .data.EV_MANAGER_Actor:0000000000000000 EV_MANAGER_Actor
+     /tmp/ccWTOyQ8.s:389    .rodata.EV_MANAGER_SubscribersIdsMatrix:0000000000000000 EV_MANAGER_SubscribersIdsMatrix
+     /tmp/ccWTOyQ8.s:375    .data.EV_MANAGER_Actor:0000000000000000 $d
+     /tmp/ccWTOyQ8.s:385    .rodata.EV_MANAGER_SubscribersIdsMatrix:0000000000000000 $d
 
 UNDEFINED SYMBOLS
 fprintf
