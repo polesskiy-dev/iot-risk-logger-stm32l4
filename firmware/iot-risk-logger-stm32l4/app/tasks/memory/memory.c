@@ -303,6 +303,7 @@ static osStatus_t handleSleep(MEMORY_Actor_t *this, message_t *message) {
       // wake up the chip
       W25Q_WakeUp(&MEMORY_W25QHandle);
 
+      // other module is responsible to provide correct buffer address to write to
       measurementsLogReadBuff = (uint8_t *) message->payload.ptr;
 
       // read settings from the memory

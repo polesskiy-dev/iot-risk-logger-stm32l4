@@ -19,8 +19,8 @@ TODO: Should I add packet number / total data size in protocol? e.g. size could 
 |------------|------------|------------------------------------------------------------------------------------------------------------------|---------|
 | CRC8       | 1          | Checksum                                                                                                         | 0xAA |
 | Command ID | 1          | Command to process, response duplicates it                                                                       | 0xC1    |
-| Payload size | 1          | Actual data size in packet                                                                                       | 0x04    |
-| Payload | 0...253    | Actual data, for commands it could be address to read or settings<br/> for response it could be e,g chunk of log | 0xAA... |
+| Payload size | 1          | Useful data size in packet                                                                                       | 0x04    |
+| Payload | 0...253    | Useful data, for commands it could be address to read or settings<br/> for response it could be e,g chunk of log | 0xAA... |
 
 #### Response Device -> Mobile
 | Name             | Size, bytes | Description                                                                                                      | Example |
@@ -61,7 +61,8 @@ MAILBOX_RECEIVE_CMD --> VALIDATE_MAILBOX : NEW_MAILBOX_RF_CMD
 VALIDATE_MAILBOX --> MAILBOX_WRITE_RESPONSE: CRC_ERROR
 VALIDATE_MAILBOX --> MAILBOX_WRITE_RESPONSE: GLOBAL_CMD_XXX
 note on link
-    CMDs are processed globally
+    CMDs are processed globally:
+    GLOBAL_SETTINGS_READ_SUCCESS
 end note
 
 MAILBOX_WRITE_RESPONSE --> STANDBY: GLOBAL_CMD_NFC_MAILBOX_WRITE

@@ -43,6 +43,7 @@ const ACTOR_ID EV_MANAGER_SubscribersIdsMatrix[GLOBAL_EVENTS_MAX][MAX_ACTORS] = 
   [GLOBAL_LOG_CHUNK_READ_SUCCESS]                   = { NFC_ACTOR_ID},
   [GLOBAL_SETTINGS_WRITE_SUCCESS]                   = {MEMORY_ACTOR_ID, NFC_ACTOR_ID},
   [GLOBAL_SETTINGS_READ_SUCCESS]                    = { NFC_ACTOR_ID},
+  [GLOBAL_CMD_READ_SETTINGS]                        = { MEMORY_ACTOR_ID},
   [GLOBAL_CMD_START_CONTINUOUS_SENSING]             = {TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID, LIGHT_SENSOR_ACTOR_ID},
   [GLOBAL_CMD_SET_TIME_DATE]                        = {CRON_ACTOR_ID},
   [GLOBAL_CMD_SET_WAKE_UP_PERIOD]                   = {CRON_ACTOR_ID},
@@ -85,14 +86,8 @@ static osStatus_t handleEvManagerMessage(EV_MANAGER_Actor_t *this, message_t *me
       // TODO remove from here, emit only in NFC
       osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_CMD_START_CONTINUOUS_SENSING}, 0, 0);
       return osOK;
-    case GLOBAL_WAKE_N_READ:
-    case GLOBAL_TEMPERATURE_HUMIDITY_MEASUREMENTS_READY:
-    case GLOBAL_LIGHT_MEASUREMENTS_READY:
-    case GLOBAL_MEASUREMENTS_WRITE_SUCCESS:
-    case GLOBAL_CMD_START_CONTINUOUS_SENSING:
-    case GLOBAL_CMD_SET_TIME_DATE:
-    case GLOBAL_CMD_SET_WAKE_UP_PERIOD:
-    case GLOBAL_CMD_TURN_OFF:
+    // all not specially dedicated to evManager events are published to subscribers
+    default:
       publishEventToSubscribers(message);
       return osOK;
   }

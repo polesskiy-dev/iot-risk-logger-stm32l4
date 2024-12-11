@@ -51,6 +51,7 @@ actor_t* NFC_TaskInit(void) {
 void NFC_Task(void *argument) {
   (void) argument; // Avoid unused parameter warning
   message_t msg;
+  osMessageQueueId_t evManagerQueue = ACTORS_LOOKUP_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
 
   /* Reset Mailbox enable to allow write to EEPROM */
 //  ST25DV_ResetMBEN_Dyn(&st25dv);
@@ -61,7 +62,7 @@ void NFC_Task(void *argument) {
       osStatus_t status = NFC_Actor.super.messageHandler((actor_t *) &NFC_Actor, &msg);
 
       if (status != osOK) {
-        osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId, &(message_t){GLOBAL_ERROR, .payload.value = NFC_ACTOR_ID}, 0, 0);
+        osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_ERROR, .payload.value = NFC_ACTOR_ID}, 0, 0);
         TO_STATE(&NFC_Actor, NFC_STATE_ERROR);
       }
     }
@@ -130,6 +131,7 @@ static osStatus_t handleStandby(NFC_Actor_t *this, message_t *message) {
 static osStatus_t handleMailboxReceiveCMD(NFC_Actor_t *this, message_t *message) {
   uint8_t *mailboxPayload   = NULL;
   uint8_t mailboxSize       = 0;
+  osMessageQueueId_t evManagerQueue = ACTORS_LOOKUP_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
 
   switch (message->event) {
     case NEW_MAILBOX_RF_CMD:
@@ -148,11 +150,10 @@ static osStatus_t handleMailboxReceiveCMD(NFC_Actor_t *this, message_t *message)
         #endif
 
         // dispatch received CMD to EV_MANAGER (globally)
-        mailboxPayload = this->mailboxBuffer + NFC_MAILBOX_PROTOCOL_PAYLOAD_ADDR;
+        mailboxPayload = this->mailboxBuffer + NFC_MAILBOX_PROTOCOL_PAYLOAD_ADDR; // address where useful payload could be written by another module
         mailboxSize = this->mailboxBuffer[NFC_MAILBOX_PROTOCOL_PAYLOAD_SIZE_ADDR];
 
-        osMessageQueuePut(EV_MANAGER_Actor.super.osMessageQueueId,
-        &(message_t){.event = cmdEvent, .payload.ptr = mailboxPayload, .payload_size = mailboxSize}, 0, 0);
+        osMessageQueuePut(evManagerQueue,&(message_t){.event = cmdEvent, .payload.ptr = mailboxPayload, .payload_size = mailboxSize}, 0, 0);
       }
 
       if (!isValidCRC8) {
@@ -178,7 +179,7 @@ static osStatus_t handleMailboxValidate(NFC_Actor_t *this, message_t *message) {
     TO_STATE(this, NFC_MAILBOX_WRITE_RESPONSE_STATE);
   }
 
-  // All Commands transmit NFC FSM to the write data to mailbox state
+  // All Commands transmit NFC FSM to the write data to mailbox state e.g. GLOBAL_SETTINGS_READ_SUCCESS
   if (message->event >= GLOBAL_CMD_START_LOGGING && message->event < GLOBAL_EVENTS_MAX) {
     /**
      * @note No events are published here
