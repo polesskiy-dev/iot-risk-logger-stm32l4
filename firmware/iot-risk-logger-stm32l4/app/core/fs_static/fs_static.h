@@ -24,8 +24,8 @@ extern "C" {
 
 // Settings file
 #define SETTINGS_FILE_NAME      "settings.bin"
-#define SETTINGS_DATA_SIZE      (0x0100) // 256B, settings data size is page size
-#define SETTINGS_FILE_SIZE      (0x1000) // 4KB - 1 erasable sector
+#define SETTINGS_DATA_SIZE      (0x80)    // 256B, settings data size is page size
+#define SETTINGS_FILE_SIZE      (0x1000)  // 4KB - 1 erasable sector
 #define SETTINGS_FILE_ADDR      (FAT12_BOOT_SECTOR_SIZE + 1)
 
 // Log file

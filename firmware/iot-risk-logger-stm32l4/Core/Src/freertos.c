@@ -99,8 +99,11 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_THREADS */
   extern actor_t* ACTORS_LOOKUP_SystemRegistry[MAX_ACTORS];
   /* add threads, ... */
+
   /**
-   * Initialize actors threads and save pointers to them in common registry
+   * @brief Initialize actors threads
+   *
+   * Save pointers to them in common registry
    * Not actors have threads but all of them have os message queues so they're should be initialized in terms of os
    * */
   ACTORS_LOOKUP_SystemRegistry[CRON_ACTOR_ID]                         = CRON_ActorInit();
@@ -108,6 +111,8 @@ void MX_FREERTOS_Init(void) {
   ACTORS_LOOKUP_SystemRegistry[TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID]  = TH_SENS_TaskInit();
   ACTORS_LOOKUP_SystemRegistry[LIGHT_SENSOR_ACTOR_ID]                 = LIGHT_SENS_TaskInit();
   ACTORS_LOOKUP_SystemRegistry[MEMORY_ACTOR_ID]                       = MEMORY_TaskInit();
+  // TODO uncomment to support NFC
+
   ACTORS_LOOKUP_SystemRegistry[NFC_ACTOR_ID]                          = NFC_TaskInit();
   ACTORS_LOOKUP_SystemRegistry[EV_MANAGER_ACTOR_ID]                   = EV_MANAGER_ActorInit(defaultTaskHandle); // should be initialized last
   // TODO

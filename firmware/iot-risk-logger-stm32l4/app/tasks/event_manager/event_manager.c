@@ -33,8 +33,9 @@ extern actor_t* ACTORS_LOOKUP_SystemRegistry[MAX_ACTORS];
  * @warning Ensure that the matrix is kept up-to-date whenever new events or actors are added to the system.
  */
 const ACTOR_ID EV_MANAGER_SubscribersIdsMatrix[GLOBAL_EVENTS_MAX][MAX_ACTORS] = {
+  // TODO: uncomment the full list to initialize all actors
 //  [GLOBAL_CMD_INITIALIZE]                           = {CRON_ACTOR_ID, PWRM_MANAGER_ACTOR_ID, NFC_ACTOR_ID, ACCELEROMETER_ACTOR_ID, TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID, LIGHT_SENSOR_ACTOR_ID, MEMORY_ACTOR_ID},
-  [GLOBAL_CMD_INITIALIZE]                           = {CRON_ACTOR_ID, PWRM_MANAGER_ACTOR_ID, NFC_ACTOR_ID, MEMORY_ACTOR_ID},
+  [GLOBAL_CMD_INITIALIZE]                           = {CRON_ACTOR_ID, PWRM_MANAGER_ACTOR_ID, TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID, MEMORY_ACTOR_ID},
   [GLOBAL_INITIALIZE_SUCCESS]                       = {},
   [GLOBAL_WAKE_N_READ]                              = {TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID, LIGHT_SENSOR_ACTOR_ID},
   [GLOBAL_TEMPERATURE_HUMIDITY_MEASUREMENTS_READY]  = {MEMORY_ACTOR_ID},
@@ -132,7 +133,7 @@ static osStatus_t publishEventToSubscribers(message_t *message) {
 
     bool isTask = subscribedActor->osThreadId != NULL;
 
-    // actor doesn't have task, hence it can simply process message immediately
+    // actor doesn't have task (not the OS thread), hence it can simply process message immediately
     if (!isTask) {
       subscribedActor->messageHandler(subscribedActor, message);
       continue;
@@ -140,7 +141,17 @@ static osStatus_t publishEventToSubscribers(message_t *message) {
 
     // actor has task, hence we should put message to its queue
     osMessageQueueId_t actorsOsMessageQueueId = subscribedActor->osMessageQueueId;
-    osMessageQueuePut(actorsOsMessageQueueId, message, 0, 0);
+
+    // Make a local copy of the message
+//    message_t messageCopy;
+//    memcpy(&messageCopy, &message, sizeof(message_t));
+
+    // Try to put the message into the queue
+//    osStatus_t status = osMessageQueuePut(actorsOsMessageQueueId, &messageCopy, 0, 0);
+    osStatus_t status = osMessageQueuePut(actorsOsMessageQueueId, message, 0, 0);
+    if (status != osOK) {
+      fprintf(stderr, "Failed to enqueue message for actor ID %d (queue full or other error)\n", subscribedActorId);
+    }
   }
 
   return osOK;

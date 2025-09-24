@@ -1,6 +1,6 @@
 /*!
  * @file sleep.c
- * @brief implementation of power mode manager
+ * @brief Implementation of the power mode manager
  *
  * Detailed description of the implementation file.
  *

@@ -180,7 +180,7 @@ static osStatus_t handleMailboxValidate(NFC_Actor_t *this, message_t *message) {
   }
 
   // All Commands transmit NFC FSM to the write data to mailbox state e.g. GLOBAL_SETTINGS_READ_SUCCESS
-  if (message->event >= GLOBAL_CMD_START_LOGGING && message->event < GLOBAL_EVENTS_MAX) {
+  if (message->event >= GLOBAL_CMD_START_LOGGING && message->event < GLOBAL_EVENTS_MAX) { // TODO verify should it be GLOBAL_EVENTS_MAX or GLOBAL_CMD_MAX
     /**
      * @note No events are published here
      * NFC module will wait for GLOBAL_CMD_NFC_MAILBOX_WRITE from Event Manager
@@ -204,7 +204,7 @@ static osStatus_t handleMailboxWriteResponse(NFC_Actor_t *this, message_t *messa
       // TODO enhance protocol with ACK and ERROR CODES, Error codes could follow HTTP status codes
 
       // TODO copy data from event to mailbox buf
-      // TODO check utilization f double buffer technique
+      // TODO check utilization of double buffer technique
       payloadData = (uint8_t *) message->payload.ptr;
       memcpy(this->mailboxBuffer, payloadData, message->payload_size);
 
