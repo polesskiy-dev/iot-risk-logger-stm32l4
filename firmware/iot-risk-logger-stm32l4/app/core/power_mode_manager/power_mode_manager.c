@@ -45,6 +45,11 @@ void PreSleepProcessing(uint32_t ulExpectedIdleTime)
         fprintf(stdout, "Entering STOP2 Mode...\n");
       #endif
 
+
+
+      // TODO remove it, it's debug disabling
+      // DBGMCU->CR &= ~(DBGMCU_CR_DBG_STOP | DBGMCU_CR_DBG_STANDBY | DBGMCU_CR_DBG_SLEEP);
+
       HAL_PWREx_EnterSTOP2Mode(PWR_STOPENTRY_WFI);
       break;
   }
