@@ -148,7 +148,7 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void *argument)
 {
   /* init code for USB_DEVICE */
-  MX_USB_DEVICE_Init();
+  // MX_USB_DEVICE_Init();
   /* USER CODE BEGIN StartDefaultTask */
   (void) argument; // Avoid unused parameter warning
   message_t msg;

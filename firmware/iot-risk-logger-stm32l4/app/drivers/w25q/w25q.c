@@ -264,10 +264,8 @@ HAL_StatusTypeDef W25Q_Sleep(W25Q_HandleTypeDef *hflash) {
 
   // Send the command
   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, W25Q_TIMEOUT_DEFAULT);
-  if (status != HAL_OK)
-    return status;
 
-  return HAL_OK;
+  return status;
 }
 
 /**
@@ -298,8 +296,6 @@ HAL_StatusTypeDef W25Q_WakeUp(W25Q_HandleTypeDef *hflash) {
 
   // Send the command
   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, W25Q_TIMEOUT_DEFAULT);
-  if (status != HAL_OK)
-    return status;
 
   return status;
 }
@@ -346,8 +342,6 @@ HAL_StatusTypeDef W25Q_ReadID(W25Q_HandleTypeDef *hflash, uint8_t ID[W25Q_ID_SIZ
 
   // Receive the data
   status = HAL_QSPI_Receive(hflash->hqspi, ID, W25Q_TIMEOUT_DEFAULT);
-  if (status != HAL_OK)
-    return status;
 
   return status;
 }
@@ -377,18 +371,16 @@ HAL_StatusTypeDef W25Q_ReadStatusReg(W25Q_HandleTypeDef *hflash) {
 
   // Receive the status register value
   status = HAL_QSPI_Receive(hflash->hqspi, &hflash->status.status1Reg, HAL_QSPI_TIMEOUT_DEFAULT_VALUE);
-  if (status != HAL_OK)
-    return status;
 
-  return HAL_OK;
+  return status;
 }
 
 /**
  * @brief Check if the flash is busy
  *
- * @description BUSY is a read only bit in the status register (S0) that is set to a 1 state when the device is executing a
- * *Page Program, Quad Page Program, Sector Erase, Block Erase, Chip Erase, Write Status Register or
- * Erase/Program Security Register* instruction. During this time the device will ignore further instructions
+ * @description BUSY is a read-only bit in the status register (S0) that is set to a one state when the device is executing a
+ * *Page Program, Quad Page Program, Sector Erase, Block Erase, Chip Erase, Write Status Register, or
+ * Erase/Program Security Register* instruction. During this time, the device will ignore further instructions
  * except for the Read Status Register and Erase/Program Suspend instruction
  *
  * @param {W25Q_HandleTypeDef} hflash [in]
@@ -427,11 +419,8 @@ HAL_StatusTypeDef W25Q_EnableWright(W25Q_HandleTypeDef *hflash) {
   sCommand.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
   sCommand.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
 
-  // Send the enable wright command
+  // Send the enable write command
   status = HAL_QSPI_Command(hflash->hqspi, &sCommand, HAL_QSPI_TIMEOUT_DEFAULT_VALUE);
-
-  if (status != HAL_OK)
-    return status;
 
   return status;
 }

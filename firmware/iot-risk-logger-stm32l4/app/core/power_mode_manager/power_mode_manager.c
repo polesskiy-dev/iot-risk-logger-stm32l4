@@ -13,6 +13,7 @@
 extern void SystemClock_Config(void);
 
 static osStatus_t handlePwrModeManagerMessage(PWRM_MANAGER_Actor_t *this, message_t *message);
+static void I2C1_PinsToAnalog(void);
 
 PWRM_MANAGER_Actor_t PWRM_MANAGER_Actor = {
         .super = {
@@ -48,7 +49,8 @@ void PreSleepProcessing(uint32_t ulExpectedIdleTime)
 
 
       // TODO remove it, it's debug disabling
-      // DBGMCU->CR &= ~(DBGMCU_CR_DBG_STOP | DBGMCU_CR_DBG_STANDBY | DBGMCU_CR_DBG_SLEEP);
+      I2C1_PinsToAnalog();
+      DBGMCU->CR &= ~(DBGMCU_CR_DBG_STOP | DBGMCU_CR_DBG_STANDBY | DBGMCU_CR_DBG_SLEEP);
 
       HAL_PWREx_EnterSTOP2Mode(PWR_STOPENTRY_WFI);
       break;
@@ -89,4 +91,15 @@ static osStatus_t handlePwrModeManagerMessage(PWRM_MANAGER_Actor_t *this, messag
   }
 
   return osOK;
+}
+
+static void I2C1_PinsToAnalog(void) {
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+
+  GPIO_InitStruct.Pin = GPIO_PIN_0 | GPIO_PIN_11 | GPIO_PIN_12 | GPIO_PIN_15;
+  GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 }
