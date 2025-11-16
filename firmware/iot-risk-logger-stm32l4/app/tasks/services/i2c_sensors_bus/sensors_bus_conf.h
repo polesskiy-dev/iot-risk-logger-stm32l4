@@ -21,6 +21,14 @@ extern "C" {
 #define I2C_BUS_SERVICE_FLAG_DONE      (1U << 0)
 #endif
 
+#ifndef I2C_BUS_SERVICE_MAX_RETRIES
+#define I2C_BUS_SERVICE_MAX_RETRIES    3U
+#endif
+
+#ifndef I2C_BUS_SERVICE_RETRY_DELAY_MS
+#define I2C_BUS_SERVICE_RETRY_DELAY_MS 10U
+#endif
+
 #ifdef __cplusplus
 }
 #endif

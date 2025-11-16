@@ -83,11 +83,100 @@ HAL_StatusTypeDef I2C_BusService_RequestSync(I2C_BusService_Request_t *req, uint
     return status;
 }
 
+/**
+ * @brief Execute a single I2C transaction with retry logic.
+ *
+ * @param hi2c I2C handle
+ * @param req Request descriptor
+ * @return HAL_StatusTypeDef Final status after retries
+ */
+static HAL_StatusTypeDef I2C_ExecuteTransaction(I2C_HandleTypeDef *hi2c, I2C_BusService_Request_t *req)
+{
+    HAL_StatusTypeDef status = HAL_ERROR;
+    uint32_t retries = 0;
+
+    do {
+        switch (req->type) {
+            case I2C_BUS_SERVICE_REQ_WRITE:
+                status = HAL_I2C_Master_Transmit(hi2c,
+                                              req->devAddr,
+                                              req->pData,
+                                              req->size,
+                                              req->halTimeoutMs);
+                break;
+
+            case I2C_BUS_SERVICE_REQ_READ:
+                status = HAL_I2C_Master_Receive(hi2c,
+                                             req->devAddr,
+                                             req->pData,
+                                             req->size,
+                                             req->halTimeoutMs);
+                break;
+
+            case I2C_BUS_SERVICE_REQ_MEM_WRITE:
+                status = HAL_I2C_Mem_Write(hi2c,
+                                        req->devAddr,
+                                        req->memAddr,
+                                        req->memAddrSize,
+                                        req->pData,
+                                        req->size,
+                                        req->halTimeoutMs);
+                break;
+
+            case I2C_BUS_SERVICE_REQ_MEM_READ:
+                status = HAL_I2C_Mem_Read(hi2c,
+                                       req->devAddr,
+                                       req->memAddr,
+                                       req->memAddrSize,
+                                       req->pData,
+                                       req->size,
+                                       req->halTimeoutMs);
+                break;
+
+            default:
+                /* Unknown type */
+                return HAL_ERROR;
+        }
+
+        /* Success - return immediately */
+        if (status == HAL_OK) {
+            return HAL_OK;
+        }
+
+        /* HAL_BUSY - retry after delay */
+        if (status == HAL_BUSY && retries < I2C_BUS_SERVICE_MAX_RETRIES) {
+            osDelay(I2C_BUS_SERVICE_RETRY_DELAY_MS);
+            retries++;
+            continue;
+        }
+
+        /* HAL_ERROR or HAL_TIMEOUT - check error type */
+        if (status == HAL_ERROR || status == HAL_TIMEOUT) {
+            uint32_t error = HAL_I2C_GetError(hi2c);
+            
+            /* Bus error, arbitration lost - try bus reset once */
+            if ((error & (HAL_I2C_ERROR_BERR | HAL_I2C_ERROR_ARLO)) && retries == 0) {
+                I2C_BusService_Reset();
+                retries++;
+                continue;
+            }
+            
+            /* Other errors - return immediately */
+            return status;
+        }
+
+        /* Other status codes */
+        return status;
+
+    } while (retries < I2C_BUS_SERVICE_MAX_RETRIES);
+
+    return status;
+}
+
 void I2C_BusService_Task(void *argument)
 {
     (void)argument;
 
-    /** @warning should never be allocated on the stack! */
     I2C_BusService_Request_t req;
 
     for (;;) {
@@ -110,51 +199,8 @@ void I2C_BusService_Task(void *argument)
             continue;
         }
 
-        switch (req.type) {
-            case I2C_BUS_SERVICE_REQ_WRITE:
-                status = HAL_I2C_Master_Transmit(hi2c,
-                                              req.devAddr,
-                                              req.pData,
-                                              req.size,
-                                              req.halTimeoutMs);
-                break;
-
-            case I2C_BUS_SERVICE_REQ_READ:
-                status = HAL_I2C_Master_Receive(hi2c,
-                                             req.devAddr,
-                                             req.pData,
-                                             req.size,
-                                             req.halTimeoutMs);
-                break;
-
-            case I2C_BUS_SERVICE_REQ_MEM_WRITE:
-                status = HAL_I2C_Mem_Write(hi2c,
-                                        req.devAddr,
-                                        req.memAddr,
-                                        req.memAddrSize,
-                                        req.pData,
-                                        req.size,
-                                        req.halTimeoutMs);
-                break;
-
-            case I2C_BUS_SERVICE_REQ_MEM_READ:
-                status = HAL_I2C_Mem_Read(hi2c,
-                                       req.devAddr,
-                                       req.memAddr,
-                                       req.memAddrSize,
-                                       req.pData,
-                                       req.size,
-                                       req.halTimeoutMs);
-                break;
-
-            default:
-                /* Unknown type */
-                status = HAL_ERROR;
-                break;
-
-        }
-
-        // TODO handle status == HAL_BUSY by retrying? and erorr?
+        /* Execute transaction with retry and error recovery */
+        status = I2C_ExecuteTransaction(hi2c, &req);
 
         if (req.pStatusOut != NULL) {
             *req.pStatusOut = status;
@@ -164,4 +210,27 @@ void I2C_BusService_Task(void *argument)
             osThreadFlagsSet(req.requester, I2C_BUS_SERVICE_FLAG_DONE);
         }
     }
+}
+
+HAL_StatusTypeDef I2C_BusService_Reset(void)
+{
+    if (s_hi2c == NULL) {
+        return HAL_ERROR;
+    }
+
+    /* Disable and deinitialize I2C */
+    if (HAL_I2C_DeInit(s_hi2c) != HAL_OK) {
+        return HAL_ERROR;
+    }
+
+    /* Small delay to ensure peripheral reset */
+    osDelay(10);
+
+    /* Reinitialize I2C using the MX_I2C1_Init function */
+    extern HAL_StatusTypeDef MX_I2C1_Init(I2C_HandleTypeDef* hi2c);
+    if (MX_I2C1_Init(s_hi2c) != HAL_OK) {
+        return HAL_ERROR;
+    }
+
+    return HAL_OK;
 }
