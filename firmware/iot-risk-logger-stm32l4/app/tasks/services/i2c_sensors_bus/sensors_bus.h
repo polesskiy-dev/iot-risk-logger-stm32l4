@@ -74,6 +74,16 @@ HAL_StatusTypeDef I2C_BusService_RequestSync(I2C_BusService_Request_t *req, uint
  */
 void I2C_BusService_Task(void *argument);
 
+/**
+ * @brief Reset and reinitialize the I2C bus.
+ *
+ * This function performs a hardware reset of the I2C peripheral.
+ * Useful for recovery from bus errors or after wake from low-power modes.
+ *
+ * @return HAL_StatusTypeDef Status of the reset operation.
+ */
+HAL_StatusTypeDef I2C_BusService_Reset(void);
+
 #ifdef __cplusplus
 }
 #endif
