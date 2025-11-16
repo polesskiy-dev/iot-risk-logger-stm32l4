@@ -15,9 +15,8 @@
 extern "C" {
 #endif
 
-#include <stdio.h>
-
-#include "main.h"
+#include <stdint.h>
+#include <stddef.h>
 
 #define OPT3001_I2C_ADDR_45 (0x45)
 
@@ -76,7 +75,7 @@ extern "C" {
 #define OPT3001_REGISTER_SIZE       (2)
 
 /**
-* @brief Calculate the exponent and mantissa of lux value from the raw register value.
+* @brief Calculate the exponent and mantissa of the lux value from the raw register value.
 */
 #define OPT3001_REG_EXPONENT(n)		  ((n) >> 12)
 #define OPT3001_REG_MANTISSA(n)		  ((n) & 0x0FFF)

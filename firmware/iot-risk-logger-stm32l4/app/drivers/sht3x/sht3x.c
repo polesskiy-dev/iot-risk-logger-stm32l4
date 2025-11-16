@@ -20,6 +20,7 @@ SHT3x_IO_t SHT3x_IO = {
         .crc8 = NULL
 };
 
+// TODO move to utils
 /**
  * CRC-8 lookup table,
  * CRC-8/NRSC-5 Standard: 0x31

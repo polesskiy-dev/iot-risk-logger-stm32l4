@@ -117,7 +117,7 @@ libraries/RTT/RTT/SEGGER_RTT_printf.c \
 libraries/RTT/Syscalls/SEGGER_RTT_Syscalls_GCC.c \
 libraries/SystemView/SYSVIEW/SEGGER_SYSVIEW.c \
 libraries/SystemView/Sample/FreeRTOSV10/SEGGER_SYSVIEW_FreeRTOS.c \
-app/core/trace/SEGGER_SYSVIEW_Config_FreeRTOS.c \
+app/debug-utils/trace/SEGGER_SYSVIEW_Config_FreeRTOS.c \
 app/core/actor/actor.c \
 app/core/gpio_ext_interrupts/gpio_ext_interrupts.c \
 app/core/power_mode_manager/power_mode_manager.c \
@@ -136,7 +136,8 @@ app/tasks/memory/memory.c \
 app/tasks/temperature_humidity_sensor/temperature_humidity_sensor.c \
 app/tasks/light_sensor/light_sensor.c \
 app/tasks/nfc/nfc_handlers.c \
-app/tasks/nfc/nfc.c
+app/tasks/nfc/nfc.c \
+app/tasks/services/i2c_sensors_bus/sensors_bus.c
 
 # ASM sources
 ASM_SOURCES =  \
@@ -224,8 +225,8 @@ C_INCLUDES =  \
 -Ilibraries/SystemView/SYSVIEW \
 -Ilibraries/SystemView/Sample/FreeRTOSV10 \
 -Ilibraries/fp-sns-stbox1/Middlewares/ST/ST25FTM/Inc \
+-Iapp/debug-utils/trace \
 -Iapp/core/actor \
--Iapp/core/trace \
 -Iapp/config/bsp_bus \
 -Iapp/core/fs_static \
 -Iapp/core/power_mode_manager \
@@ -242,7 +243,8 @@ C_INCLUDES =  \
 -Iapp/tasks/memory \
 -Iapp/tasks/temperature_humidity_sensor \
 -Iapp/tasks/light_sensor \
--Iapp/tasks/nfc
+-Iapp/tasks/nfc \
+-Iapp/tasks/services/i2c_sensors_bus
 #-Iapp/middlewares/nfc_st25ftm
 #-Iapp/middlewares/nfc_st25ftm#-Iapp/middlewares/nfc_st25ftm#-Iapp/middlewares/nfc_st25ftm
 # compile gcc flags

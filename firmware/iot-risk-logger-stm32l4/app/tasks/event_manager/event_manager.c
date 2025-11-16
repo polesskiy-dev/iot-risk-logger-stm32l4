@@ -20,7 +20,7 @@ extern actor_t* ACTORS_LOOKUP_SystemRegistry[MAX_ACTORS];
  *
  * This 2D array maps each global event to the list of actors that are subscribed to it.
  * Each row corresponds to a specific global event, and each column contains the IDs of actors
- * that are interested in that event.
+ * those who are interested in that event.
  *
  * @note The matrix is initialized at compile-time and stored in Flash memory for efficiency.
  * @note The matrix includes Actors IDs, not Actors themselves to decouple the event manager from the actors.
@@ -35,9 +35,9 @@ extern actor_t* ACTORS_LOOKUP_SystemRegistry[MAX_ACTORS];
 const ACTOR_ID EV_MANAGER_SubscribersIdsMatrix[GLOBAL_EVENTS_MAX][MAX_ACTORS] = {
   // TODO: uncomment the full list to initialize all actors
 //  [GLOBAL_CMD_INITIALIZE]                           = {CRON_ACTOR_ID, PWRM_MANAGER_ACTOR_ID, NFC_ACTOR_ID, ACCELEROMETER_ACTOR_ID, TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID, LIGHT_SENSOR_ACTOR_ID, MEMORY_ACTOR_ID},
-  [GLOBAL_CMD_INITIALIZE]                           = {CRON_ACTOR_ID, PWRM_MANAGER_ACTOR_ID, MEMORY_ACTOR_ID},
+  [GLOBAL_CMD_INITIALIZE]                           = {CRON_ACTOR_ID, LIGHT_SENSOR_ACTOR_ID},
   [GLOBAL_INITIALIZE_SUCCESS]                       = {},
-  [GLOBAL_WAKE_N_READ]                              = {TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID, LIGHT_SENSOR_ACTOR_ID},
+  [GLOBAL_WAKE_N_READ]                              = {LIGHT_SENSOR_ACTOR_ID},
   [GLOBAL_TEMPERATURE_HUMIDITY_MEASUREMENTS_READY]  = {MEMORY_ACTOR_ID},
   [GLOBAL_LIGHT_MEASUREMENTS_READY]                 = {MEMORY_ACTOR_ID},
   [GLOBAL_MEASUREMENTS_WRITE_SUCCESS]               = {MEMORY_ACTOR_ID, NFC_ACTOR_ID},
@@ -50,6 +50,8 @@ const ACTOR_ID EV_MANAGER_SubscribersIdsMatrix[GLOBAL_EVENTS_MAX][MAX_ACTORS] = 
   [GLOBAL_CMD_SET_WAKE_UP_PERIOD]                   = {CRON_ACTOR_ID},
   [GLOBAL_CMD_TURN_OFF]                             = {TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID, LIGHT_SENSOR_ACTOR_ID, PWRM_MANAGER_ACTOR_ID},
 };
+
+// TODO simplify it from the task [DFT-24](https://www.notion.so/recycle-refactor-Event-Manager-transform-from-task-to-plain-function-2ad109abe35680949db7d59a1498757d?source=copy_link)
 
 EV_MANAGER_Actor_t EV_MANAGER_Actor = {
         .super = {
