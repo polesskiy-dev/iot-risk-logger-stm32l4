@@ -86,15 +86,24 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    needs: compile
     steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
         with:
-          name: build-artifacts
+          submodules: true
 
-      - name: Run tests
-        run: echo "Run your test commands here"
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y gcc make
+
+      - name: Download Unity framework
+        run: |
+          cd firmware/iot-risk-logger-stm32l4/tests
+          git clone --depth 1 https://github.com/ThrowTheSwitch/Unity.git unity_framework
+
+      - name: Run unit tests
+        run: |
+          cd firmware/iot-risk-logger-stm32l4/tests
+          make test
 
   generate-diagrams:
     runs-on: ubuntu-latest
