@@ -16,6 +16,9 @@ extern "C" {
 #endif
 
 #include <stdio.h>
+#include <stdint.h>
+
+  // TODO [DFT-22](https://www.notion.so/sparkles-feat-MEMORY-static-filesystem-FAT16-header-and-local-addresses-table-2ac109abe356807fa00de8f06ab31c1c?v=2a7109abe35680779b2b000ca621d753&source=copy_link)
 
 // FAT12 boot sector
 #define FAT12_SECTOR_SIZE       (512)

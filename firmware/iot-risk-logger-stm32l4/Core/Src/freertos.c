@@ -65,18 +65,6 @@ void StartDefaultTask(void *argument);
 extern void MX_USB_DEVICE_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
-/* USER CODE BEGIN PREPOSTSLEEP */
-__weak void PreSleepProcessing(uint32_t ulExpectedIdleTime)
-{
-/* place for user code */
-}
-
-__weak void PostSleepProcessing(uint32_t ulExpectedIdleTime)
-{
-/* place for user code */
-}
-/* USER CODE END PREPOSTSLEEP */
-
 /**
   * @brief  FreeRTOS initialization
   * @param  None
@@ -148,7 +136,7 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void *argument)
 {
   /* init code for USB_DEVICE */
-  // MX_USB_DEVICE_Init();
+  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN StartDefaultTask */
   (void) argument; // Avoid unused parameter warning
   message_t msg;

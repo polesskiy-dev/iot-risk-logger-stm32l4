@@ -33,6 +33,7 @@ extern "C" {
 /* USER CODE BEGIN Includes */
 #include "SEGGER_SYSVIEW_Conf.h"
 #include "SEGGER_SYSVIEW.h"
+#include "SEGGER_RTT.h"
 
 #include "actor.h"
 #include "event_manager.h"
@@ -71,15 +72,19 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define _NFC_INT_Pin GPIO_PIN_0
-#define _NFC_INT_GPIO_Port GPIOA
-#define _NFC_INT_EXTI_IRQn EXTI0_IRQn
-#define _LIGHT_INT_Pin GPIO_PIN_1
-#define _LIGHT_INT_GPIO_Port GPIOA
-#define _LIGHT_INT_EXTI_IRQn EXTI1_IRQn
+#define NFC_INT_N_Pin GPIO_PIN_0
+#define NFC_INT_N_GPIO_Port GPIOA
+#define NFC_INT_N_EXTI_IRQn EXTI0_IRQn
+#define LIGHT_INT_N_Pin GPIO_PIN_1
+#define LIGHT_INT_N_GPIO_Port GPIOA
+#define LIGHT_INT_N_EXTI_IRQn EXTI1_IRQn
 #define USB_VBUS_SENSE_Pin GPIO_PIN_8
 #define USB_VBUS_SENSE_GPIO_Port GPIOA
 #define USB_VBUS_SENSE_EXTI_IRQn EXTI9_5_IRQn
+#define I2C1_SCL_SENS_Pin GPIO_PIN_9
+#define I2C1_SCL_SENS_GPIO_Port GPIOA
+#define I2C1_SDA_SENS_Pin GPIO_PIN_10
+#define I2C1_SDA_SENS_GPIO_Port GPIOA
 #define _LED_Pin GPIO_PIN_15
 #define _LED_GPIO_Port GPIOA
 #define _TEMP_RESET_Pin GPIO_PIN_4

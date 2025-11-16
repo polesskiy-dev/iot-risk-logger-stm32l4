@@ -31,7 +31,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
   }
 
   // TODO maybe check only falling edge (configure in CubeMX)
-  if (GPIO_Pin == _NFC_INT_Pin) {
+  if (GPIO_Pin == NFC_INT_N_Pin) {
 #ifdef DEBUG
     fprintf(stdout, "NFC GPO Interrupt\n");
 #endif
