@@ -112,6 +112,9 @@ void MX_FREERTOS_Init(void) {
   extern actor_t* ACTORS_LOOKUP_SystemRegistry[MAX_ACTORS];
   /* add threads, ... */
 
+  // /** services tasks initialization */
+  // I2C_BusService_Init(&hi2c1);
+
   /**
    * @brief Initialize actors threads
    *
@@ -148,7 +151,7 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void *argument)
 {
   /* init code for USB_DEVICE */
-  // MX_USB_DEVICE_Init();
+  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN StartDefaultTask */
   (void) argument; // Avoid unused parameter warning
   message_t msg;

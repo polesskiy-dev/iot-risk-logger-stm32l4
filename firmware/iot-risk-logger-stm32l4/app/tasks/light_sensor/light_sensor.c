@@ -62,7 +62,7 @@ actor_t* LIGHT_SENS_TaskInit(void) {
 
 /**
  * @brief Light Sensor task
- * Waits for message from the queue and proceed it in FSM
+ * Waits for a message from the queue and processes it in FSM
  * Enters ERROR state if message handling failed
  */
 void LIGHT_SENS_Task(void *argument) {

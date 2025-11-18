@@ -117,10 +117,10 @@ static osStatus_t handleInit(TH_SENS_Actor_t *this, message_t *message) {
     if (ioStatus != osOK) return osError;
 
     // reset the sensor by pulling down _TEMP_RESET, at least 1uS duration required
-    HAL_GPIO_WritePin(_TEMP_RESET_GPIO_Port, _TEMP_RESET_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(TEMP_RESET_N_GPIO_Port, TEMP_RESET_N_Pin, GPIO_PIN_RESET);
     osDelay(1);
-    HAL_GPIO_WritePin(_TEMP_RESET_GPIO_Port, _TEMP_RESET_Pin, GPIO_PIN_SET);
-    osDelay(1);
+    HAL_GPIO_WritePin(TEMP_RESET_N_GPIO_Port, TEMP_RESET_N_Pin, GPIO_PIN_SET);
+    osDelay(10); // wait for sensor to be ready after reset
 
     // read sensor ID
     uint32_t sht3xId = 0x00000000;
@@ -177,14 +177,14 @@ static osStatus_t handleContinuousMeasure(TH_SENS_Actor_t *this, message_t *mess
       ioStatus = SHT3x_ReadMeasurements(&this->rawTemperature, &this->rawHumidity);
       if (ioStatus != osOK) return osError;
 
-//      uint16_t t = SHT3x_RawToTemperatureC(this->rawTemperature);
-//      uint16_t rh = SHT3x_RawToHumidityRH(this->rawHumidity);
-//
-//      #ifdef DEBUG
-//        fprintf(stdout, "Temperature: %d humidity %d\n", t, rh);
-//      #endif
+      uint16_t t = SHT3x_RawToTemperatureC(this->rawTemperature);
+      uint16_t rh = SHT3x_RawToHumidityRH(this->rawHumidity);
 
-      // publish to event manager that temperature and humidity are ready with the pointer to the TH actor
+      #ifdef DEBUG
+        fprintf(stdout, "Temperature: %d humidity %d\n", t, rh);
+      #endif
+
+      // publish to the event manager that temperature and humidity are ready with the pointer to the TH actor
       osMessageQueueId_t evManagerQueue = ACTORS_LOOKUP_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
       osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_TEMPERATURE_HUMIDITY_MEASUREMENTS_READY, .payload.ptr = this /* TH Actor */}, 0, 0);
 
