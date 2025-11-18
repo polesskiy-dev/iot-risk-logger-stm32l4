@@ -1,0 +1,55 @@
+
+#nstatic void I2C1_MspInit(I2C_HandleTypeDef* i2cHandle)
+{
+#tGPIO_InitTypeDef GPIO_InitStruct;
+#tRCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
+#t/* USER CODE BEGIN I2C1_MspInit 0 */
+#n#t/* USER CODE END I2C1_MspInit 0 */
+#n#t/** Initializes the peripherals clock#n#t*/
+#t#tPeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_I2C1;
+#t#tPeriphClkInit.I2c1ClockSelection = RCC_I2C1CLKSOURCE_PCLK1;
+#t#tHAL_RCCEx_PeriphCLKConfig(&PeriphClkInit);
+#n
+#n
+#t
+#t#t__HAL_RCC_GPIOA_CLK_ENABLE();
+#t#t/**I2C1 GPIO Configuration#t#t
+#t#tPA9#t#t ------> I2C1_SCL
+#t#tPA10#t#t ------> I2C1_SDA #n#t#t*/
+#t#tGPIO_InitStruct.Pin = BUS_I2C1_SCL_GPIO_PIN;
+#t#tGPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
+#t#tGPIO_InitStruct.Pull = GPIO_NOPULL;
+#t#tGPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+#t#tGPIO_InitStruct.Alternate = BUS_I2C1_SCL_GPIO_AF;
+#t#tHAL_GPIO_Init(BUS_I2C1_SCL_GPIO_PORT, &GPIO_InitStruct);
+#n
+#t#tGPIO_InitStruct.Pin = BUS_I2C1_SDA_GPIO_PIN;
+#t#tGPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
+#t#tGPIO_InitStruct.Pull = GPIO_NOPULL;
+#t#tGPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+#t#tGPIO_InitStruct.Alternate = BUS_I2C1_SDA_GPIO_AF;
+#t#tHAL_GPIO_Init(BUS_I2C1_SDA_GPIO_PORT, &GPIO_InitStruct);
+#n
+#t#t/* Peripheral clock enable */
+#t#t__HAL_RCC_I2C1_CLK_ENABLE();
+#t/* USER CODE BEGIN I2C1_MspInit 1 */
+#n#t/* USER CODE END I2C1_MspInit 1 */
+}
+
+#nstatic void I2C1_MspDeInit(I2C_HandleTypeDef* i2cHandle)
+{
+#t/* USER CODE BEGIN I2C1_MspDeInit 0 */
+#n#t/* USER CODE END I2C1_MspDeInit 0 */
+#t#t/* Peripheral clock disable */
+#t#t__HAL_RCC_I2C1_CLK_DISABLE();
+#t
+#t#t/**I2C1 GPIO Configuration#t#t
+#t#tPA9#t#t ------> I2C1_SCL
+#t#tPA10#t#t ------> I2C1_SDA #n#t#t*/
+#t#tHAL_GPIO_DeInit(BUS_I2C1_SCL_GPIO_PORT, BUS_I2C1_SCL_GPIO_PIN);
+#n
+#t#tHAL_GPIO_DeInit(BUS_I2C1_SDA_GPIO_PORT, BUS_I2C1_SDA_GPIO_PIN);
+#n
+#t/* USER CODE BEGIN I2C1_MspDeInit 1 */
+#n#t/* USER CODE END I2C1_MspDeInit 1 */
+}
