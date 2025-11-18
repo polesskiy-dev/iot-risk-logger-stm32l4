@@ -2,123 +2,138 @@ name: CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
+
+# Least-privilege defaults
+permissions:
+  contents: read
 
 jobs:
-  compile:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-24.04
+
+    # Simple matrix, ready to extend later (e.g. add "tests", "release", etc.)
+    strategy:
+      matrix:
+        target: [all]
+
     steps:
-      - name: Checkout main branch
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          submodules: true  # Initialize and update submodules automatically
-          fetch-depth: 0  # Fetch all history to ensure proper submodule handling
+          submodules: true
+          fetch-depth: 0
 
-      - name: Install dependencies
-        run: sudo apt-get update && sudo apt-get install -y gcc-arm-none-eabi make
-
-      - name: Build project
+      - name: Install build dependencies
         run: |
-          cd firmware/iot-risk-logger-stm32l4
-          make all
+          sudo apt-get update
+          sudo apt-get install -y gcc-arm-none-eabi make
+
+      - name: Build firmware (${{ matrix.target }})
+        working-directory: firmware/iot-risk-logger-stm32l4
+        run: make ${{ matrix.target }}
+
+      - name: Calculate Flash and RAM usage
+        working-directory: firmware/iot-risk-logger-stm32l4
+        run: |
+          # Find ELF in build directory (adjust if your structure differs)
+          ELF_FILE=$(find build -maxdepth 1 -name '*.elf' | head -n 1)
+
+          if [ -z "$ELF_FILE" ]; then
+            echo "No ELF file found in build/"; exit 1;
+          fi
+
+          echo "Using ELF_FILE: $ELF_FILE"
+          SIZE_OUTPUT=$(arm-none-eabi-size "$ELF_FILE")
+          echo "$SIZE_OUTPUT"
+
+          TEXT_SIZE=$(echo "$SIZE_OUTPUT" | awk 'NR==2 {print $1}')
+          DATA_SIZE=$(echo "$SIZE_OUTPUT" | awk 'NR==2 {print $2}')
+          BSS_SIZE=$(echo "$SIZE_OUTPUT" | awk 'NR==2 {print $3}')
+
+          FLASH_USAGE=$((TEXT_SIZE + DATA_SIZE))
+          RAM_USAGE=$((DATA_SIZE + BSS_SIZE))
+
+          FLASH_KB=$(((FLASH_USAGE + 1023) / 1024))
+          RAM_KB=$(((RAM_USAGE + 1023) / 1024))
+
+          FLASH_MAX=128  # KB (STM32L433 Flash)
+          SRAM_MAX=40    # KB
+
+          FLASH_USAGE_PERCENT=$(((FLASH_KB * 100) / FLASH_MAX))
+          SRAM_USAGE_PERCENT=$(((RAM_KB * 100) / SRAM_MAX))
+
+          cat > memory-usage-${{ matrix.target }}.json <<EOF
+          {
+            "target": "${{ matrix.target }}",
+            "flash": "${FLASH_KB}K/${FLASH_MAX}K (${FLASH_USAGE_PERCENT}%)",
+            "SRAM": "${RAM_KB}K/${SRAM_MAX}K (${SRAM_USAGE_PERCENT}%)"
+          }
+          EOF
+
+          echo "Generated memory-usage-${{ matrix.target }}.json:"
+          cat memory-usage-${{ matrix.target }}.json
+
+          # Also publish as job summary
+          echo "## Firmware memory usage (${{ matrix.target }})" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo '```json' >> "$GITHUB_STEP_SUMMARY"
+          cat memory-usage-${{ matrix.target }}.json >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: build-artifacts
+          name: build-artifacts-${{ matrix.target }}
           path: |
             firmware/iot-risk-logger-stm32l4/build/
             firmware/iot-risk-logger-stm32l4/*.elf
             firmware/iot-risk-logger-stm32l4/*.map
+            firmware/iot-risk-logger-stm32l4/memory-usage-${{ matrix.target }}.json
+          if-no-files-found: error
+          retention-days: 7
 
-  calculate-memory-usage:
-    runs-on: ubuntu-latest
-    needs: compile
+  generate-diagrams:
+    runs-on: ubuntu-24.04
+    needs: build
+
     steps:
-      - name: Checkout artifacts branch
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          ref: artifacts  # Checkout the artifacts branch
           submodules: true
           fetch-depth: 0
 
-      - name: Install dependencies
-        run: sudo apt-get update && sudo apt-get install -y gcc-arm-none-eabi
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@v3
+      - name: Download firmware build artifacts
+        uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          # Collect all matrix variants into one dir
+          pattern: build-artifacts-*
+          merge-multiple: true
+          path: build-artifacts
 
-      - name: Calculate Flash and RAM usage
+      - name: Install diagram tools
         run: |
-          SIZE_OUTPUT=$(arm-none-eabi-size build/iot-risk-logger-stm32l4.elf)
-          TEXT_SIZE=$(echo "$SIZE_OUTPUT" | awk 'NR==2 {print $1}')
-          DATA_SIZE=$(echo "$SIZE_OUTPUT" | awk 'NR==2 {print $2}')
-          BSS_SIZE=$(echo "$SIZE_OUTPUT" | awk 'NR==2 {print $3}')
-          FLASH_USAGE=$((TEXT_SIZE + DATA_SIZE))
-          RAM_USAGE=$((DATA_SIZE + BSS_SIZE))
-          FLASH_KB=$(( (FLASH_USAGE + 1023) / 1024 ))  # Round to nearest KB
-          RAM_KB=$(( (RAM_USAGE + 1023) / 1024 ))  # Round to nearest KB
-          FLASH_MAX=128  # Maximum flash size in KB
-          SRAM_MAX=40  # Maximum RAM size in KB
-          FLASH_USAGE_PERCENT=$(( (FLASH_KB * 100) / FLASH_MAX ))
-          SRAM_USAGE_PERCENT=$(( (RAM_KB * 100) / SRAM_MAX ))
-          touch usage.json
-          echo "{ \"flash\": \"${FLASH_KB}K/${FLASH_MAX}K (${FLASH_USAGE_PERCENT}%)\", \"SRAM\": \"${RAM_KB}K/${SRAM_MAX}K (${SRAM_USAGE_PERCENT}%)\" }" > usage.json
-          cat usage.json
-
-      - name: Commit usage.json to artifacts branch
-        run: |
-          mkdir -p artifacts
-          mv usage.json artifacts/
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .
-          git commit -am "Update Flash and RAM usage artifacts"
-          git push origin artifacts
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  test:
-    runs-on: ubuntu-latest
-    needs: compile
-    steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: build-artifacts
-
-<<<<<<< Updated upstream
-      - name: Run tests
-        run: echo "Run your test commands here"
-=======
-      - name: Install dependencies
-        run: sudo apt-get update && sudo apt-get install -y gcc make
-
-      - name: Download Unity framework
-        run: |
-          cd firmware/iot-risk-logger-stm32l4/app/tests
-          git clone --depth 1 https://github.com/ThrowTheSwitch/Unity.git unity_framework
-
-      - name: Run unit tests
-        run: |
-          cd firmware/iot-risk-logger-stm32l4/app/tests
-          make test
->>>>>>> Stashed changes
-
-  generate-diagrams:
-    runs-on: ubuntu-latest
-    needs: compile
-    steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: build-artifacts
+          sudo apt-get update
+          # Add whatever you actually need here:
+          sudo apt-get install -y graphviz
 
       - name: Generate diagrams
-        run: echo "Run your diagram generation commands here"
+        working-directory: firmware/iot-risk-logger-stm32l4
+        run: |
+          echo "Run your diagram generation commands here"
+          # Example (once you add them to the repo):
+          # doxygen Doxyfile
+          # ./scripts/generate_state_machine_diagrams.sh
+
+      - name: Upload diagrams
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: diagrams
+          path: |
+            firmware/iot-risk-logger-stm32l4/docs/diagrams/
+          if-no-files-found: ignore
+          retention-days: 7
