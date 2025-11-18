@@ -65,18 +65,6 @@ void StartDefaultTask(void *argument);
 extern void MX_USB_DEVICE_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
-/* USER CODE BEGIN PREPOSTSLEEP */
-__weak void PreSleepProcessing(uint32_t ulExpectedIdleTime)
-{
-/* place for user code */
-}
-
-__weak void PostSleepProcessing(uint32_t ulExpectedIdleTime)
-{
-/* place for user code */
-}
-/* USER CODE END PREPOSTSLEEP */
-
 /**
   * @brief  FreeRTOS initialization
   * @param  None
@@ -112,26 +100,22 @@ void MX_FREERTOS_Init(void) {
   extern actor_t* ACTORS_LOOKUP_SystemRegistry[MAX_ACTORS];
   /* add threads, ... */
 
-  // /** services tasks initialization */
-  // I2C_BusService_Init(&hi2c1);
+  // TODO maybe move it to /app/init/system_init.c and call from there
 
   /**
    * @brief Initialize actors threads
    *
-   * Save pointers to them in common registry
-   * Not actors have threads but all of them have os message queues so they're should be initialized in terms of os
+   * Save pointers to them in the common registry
+   * Not all actors have threads, but all of them have os message queues, so they should be initialized in terms of os
    * */
   ACTORS_LOOKUP_SystemRegistry[CRON_ACTOR_ID]                         = CRON_ActorInit();
   ACTORS_LOOKUP_SystemRegistry[PWRM_MANAGER_ACTOR_ID]                 = PWRM_MANAGER_ActorInit();
   ACTORS_LOOKUP_SystemRegistry[TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID]  = TH_SENS_TaskInit();
   ACTORS_LOOKUP_SystemRegistry[LIGHT_SENSOR_ACTOR_ID]                 = LIGHT_SENS_TaskInit();
+  ACTORS_LOOKUP_SystemRegistry[IMU_ACTOR_ID]                          = IMU_TaskInit();
   ACTORS_LOOKUP_SystemRegistry[MEMORY_ACTOR_ID]                       = MEMORY_TaskInit();
-  // TODO uncomment to support NFC
-
   ACTORS_LOOKUP_SystemRegistry[NFC_ACTOR_ID]                          = NFC_TaskInit();
   ACTORS_LOOKUP_SystemRegistry[EV_MANAGER_ACTOR_ID]                   = EV_MANAGER_ActorInit(defaultTaskHandle); // should be initialized last
-  // TODO
-  // ACCEL_TaskInit();
 
   /* USER CODE END RTOS_THREADS */
 

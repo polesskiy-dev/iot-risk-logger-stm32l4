@@ -157,7 +157,7 @@ static osStatus_t handleIdle(TH_SENS_Actor_t *this, message_t *message) {
       TO_STATE(this, TH_SENS_CONTINUOUS_MEASURE_STATE);
       return osOK;
     case TH_SENS_START_SINGLE_SHOT_READ:
-      // TODO run single shot measurement
+      // TODO run single-shot measurement
 //      #ifdef DEBUG
 //        fprintf(stdout, "Raw: temperature: %d humidity %d\n", this->rawTemperature, this->rawHumidity);
 //      #endif
