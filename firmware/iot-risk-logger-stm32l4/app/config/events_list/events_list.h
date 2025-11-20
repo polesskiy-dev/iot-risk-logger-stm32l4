@@ -65,8 +65,6 @@ typedef enum {
   NFC_GPO_INTERRUPT,
   NEW_MAILBOX_RF_CMD,
   NFC_CRC_ERROR,
-  // ACCELEROMETER_SENSOR
-  // TODO: Add accelerometer events
   // TEMPERATURE_HUMIDITY_SENSOR
   TH_SENS_START_SINGLE_SHOT_READ,
   TH_SENS_TURN_OFF,
@@ -79,11 +77,15 @@ typedef enum {
   LIGHT_SENS_LIMIT_INT,
   LIGHT_SENS_RECOVER,
   LIGHT_SENS_ERROR,
+  // IMU Accelerometer
+  IMU_FIFO_WTM, ///< FIFO full watermark interrupt event
+  IMU_FREE_FALL_DETECTED, ///< Free-fall event detected by the IMU
   // MEMORY
   MEMORY_MEASUREMENTS_WRITE,
   // USB
   USB_CONNECTED,
   USB_DISCONNECTED,
+  //
   MAX_EVENTS
 } event_t;
 

@@ -8,6 +8,8 @@
  * accelerometer sensor. The IMU actor is responsible for initializing the sensor, handling
  * its state machine, and providing access to sensor data for other system components.
  *
+ * @note vendor examples: https://github.com/STMicroelectronics/STMems_Standard_C_drivers/tree/master/lis2dw12_STdC/examples
+ *
  * @date 19/11/2025
  * @author artempolisskyi
  */
@@ -26,8 +28,10 @@ extern "C" {
 #include <stdint.h>
 
 #include "main.h"
+#include "lis2dw12.h"
 
-#define IMU_I2C_ADDRESS (LIS2DW12_I2C_ADD_H << 1) // SA0 connected to VDD
+#define IMU_I2C_ADDRESS (LIS2DW12_I2C_ADD_H) // SA0 connected to VDD
+#define IMU_SAMPLES_BUFFER_SIZE (32)
 
 typedef enum {
   IMU_NO_STATE = 0,
@@ -39,6 +43,7 @@ typedef enum {
 typedef struct {
   actor_t super;
   IMU_State_t state;
+  LIS2DW12_Object_t lis2dw12;
 } IMU_Actor_t;
 
 extern IMU_Actor_t IMU_Actor;
