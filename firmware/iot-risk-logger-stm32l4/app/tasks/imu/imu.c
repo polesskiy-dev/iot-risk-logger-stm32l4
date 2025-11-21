@@ -127,8 +127,8 @@ static osStatus_t handleInit(IMU_Actor_t *this, message_t *message) {
       .DeInit = BSP_I2C1_DeInit, // TODO verify should we use it at all
       .BusType = LIS2DW12_I2C_BUS,
       .Address = IMU_I2C_ADDRESS,
-      .WriteReg = BSP_I2C1_WriteReg,
-      .ReadReg = BSP_I2C1_ReadReg,
+      .WriteReg = SensorsBus_WriteReg,
+      .ReadReg = SensorsBus_ReadReg,
       .GetTick = BSP_GetTick,
       .Delay = (void(*)(uint32_t))osDelay // TODO verify should it be in ticks as osDelay or in ms
     };

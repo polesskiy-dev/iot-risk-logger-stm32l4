@@ -107,7 +107,7 @@ static osStatus_t handleLightSensorFSM(LIGHT_SENS_Actor_t *this, message_t *mess
 static osStatus_t handleInit(LIGHT_SENS_Actor_t *this, message_t *message) {
   if (GLOBAL_CMD_INITIALIZE == message->event) {
     // init the driver (io)
-    osStatus_t ioStatus = OPT3001_InitIO(LIGHT_SENS_I2C_ADDRESS, I2C_WriteReg, I2C_ReadReg);
+    osStatus_t ioStatus = OPT3001_InitIO(LIGHT_SENS_I2C_ADDRESS, SensorsBus_WriteReg, SensorsBus_ReadReg);
 
     if (ioStatus != osOK) return osError;
 
