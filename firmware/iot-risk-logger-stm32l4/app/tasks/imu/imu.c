@@ -264,6 +264,7 @@ static int32_t readFifoAndLog(IMU_Actor_t *this)
 #endif
 
   // 2) Read each sample from FIFO and accumulate to get average
+  uint8_t samples_read = 0;
   for (uint8_t i = 0; i < fifo_level; i++) {
     int16_t raw[IMU_AXES_COUNT] = {0};
 
@@ -278,25 +279,26 @@ static int32_t readFifoAndLog(IMU_Actor_t *this)
     for (size_t axis = 0; axis < IMU_AXES_COUNT; axis++) {
       accum[axis] += raw[axis];
     }
+    samples_read++;
   }
 
-  if (ret == 0) {
+  if (ret == 0 && samples_read > 0) {
     for (size_t axis = 0; axis < IMU_AXES_COUNT; axis++) {
-      this->lastAcceleration[axis] = (int16_t)(accum[axis] / fifo_level);
+      this->lastAcceleration[axis] = (int16_t)(accum[axis] / samples_read);
     }
-    this->lastFifoLevel = fifo_level;
+    this->lastFifoLevel = samples_read;
 
 #ifdef DEBUG
     fprintf(stdout, "IMU averaged raw: X=%d, Y=%d, Z=%d over %u samples\n",
             this->lastAcceleration[0],
             this->lastAcceleration[1],
             this->lastAcceleration[2],
-            fifo_level);
+            samples_read);
 #endif
 
     // Notify system that IMU data is ready for logging
     osMessageQueueId_t evManagerQueue = ACTORS_LOOKUP_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
-    osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_IMU_MEASUREMENTS_READY, .payload.value = fifo_level}, 0, 0);
+    osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_IMU_MEASUREMENTS_READY, .payload.value = samples_read}, 0, 0);
   }
 
   return ret;
