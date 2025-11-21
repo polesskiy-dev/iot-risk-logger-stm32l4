@@ -32,6 +32,7 @@ extern "C" {
 
 #define IMU_I2C_ADDRESS (LIS2DW12_I2C_ADD_H) // SA0 connected to VDD
 #define IMU_SAMPLES_BUFFER_SIZE (32)
+#define IMU_AXES_COUNT (3)
 
 typedef enum {
   IMU_NO_STATE = 0,
@@ -44,6 +45,8 @@ typedef struct {
   actor_t super;
   IMU_State_t state;
   LIS2DW12_Object_t lis2dw12;
+  int16_t lastAcceleration[IMU_AXES_COUNT]; ///< Averaged accelerometer sample from the last FIFO drain
+  uint8_t lastFifoLevel; ///< Number of samples processed during the last FIFO drain
 } IMU_Actor_t;
 
 extern IMU_Actor_t IMU_Actor;

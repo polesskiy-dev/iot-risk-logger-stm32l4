@@ -48,7 +48,9 @@ IMU_Actor_t IMU_Actor = {
       .handle = NULL     // to be assigned in init
     },
     .is_initialized = 0,
-  }
+  },
+  .lastAcceleration = {0},
+  .lastFifoLevel = 0
 };
 
 // task description required for static task creation
@@ -243,7 +245,8 @@ static int32_t lis2dwConfigLowPower(void) {
 static int32_t readFifoAndLog(IMU_Actor_t *this)
 {
   uint8_t fifo_level = 0;
-  int32_t ret;
+  int32_t ret = 0;
+  int32_t accum[IMU_AXES_COUNT] = {0};
 
   stmdev_ctx_t *ctx = &this->lis2dw12.Ctx;
 
@@ -260,16 +263,10 @@ static int32_t readFifoAndLog(IMU_Actor_t *this)
   fprintf(stdout, "IMU: FIFO WTM, %u samples pending\n", fifo_level);
 #endif
 
-  // 2) Read each sample from FIFO
+  // 2) Read each sample from FIFO and accumulate to get average
   for (uint8_t i = 0; i < fifo_level; i++) {
-    int16_t raw[3] = {0};
-    float   mg[3]  = {0.0f};
+    int16_t raw[IMU_AXES_COUNT] = {0};
 
-    // Read raw acceleration (one sample)
-    // NOTE: function name depends on exact ST driver version, adjust if needed.
-    // Common patterns are:
-    //   lis2dw12_acceleration_raw_get(ctx, raw);
-    //   or LIS2DW12_ACC_GetAxesRaw(&this->lis2dw12, raw);
     ret = lis2dw12_acceleration_raw_get(ctx, raw);
     if (ret != 0) {
 #ifdef DEBUG
@@ -278,24 +275,28 @@ static int32_t readFifoAndLog(IMU_Actor_t *this)
       break;
     }
 
-    // Optionally convert to mg using ST helper
-    // (again, adjust if your BSP wrapper has a different name).
-    // Example:
-    // lis2dw12_from_fs2_to_mg(raw[0], &mg[0]);
-    // lis2dw12_from_fs2_to_mg(raw[1], &mg[1]);
-    // lis2dw12_from_fs2_to_mg(raw[2], &mg[2]);
+    for (size_t axis = 0; axis < IMU_AXES_COUNT; axis++) {
+      accum[axis] += raw[axis];
+    }
+  }
 
-    // 3) Push sample to your logging pipeline
-    //    (this is intentionally abstract – integrate with your
-    //     QSPI logger / event manager as you already do for other sensors).
-    // TODO: replace with your real logging call
-    // Example:
-    // LogManager_LogImuSample(BSP_GetTick(), mg[0], mg[1], mg[2]);
+  if (ret == 0) {
+    for (size_t axis = 0; axis < IMU_AXES_COUNT; axis++) {
+      this->lastAcceleration[axis] = (int16_t)(accum[axis] / fifo_level);
+    }
+    this->lastFifoLevel = fifo_level;
 
 #ifdef DEBUG
-    fprintf(stdout, "IMU sample %u: %.2f mg, %.2f mg, %.2f mg\n",
-            i, mg[0], mg[1], mg[2]);
+    fprintf(stdout, "IMU averaged raw: X=%d, Y=%d, Z=%d over %u samples\n",
+            this->lastAcceleration[0],
+            this->lastAcceleration[1],
+            this->lastAcceleration[2],
+            fifo_level);
 #endif
+
+    // Notify system that IMU data is ready for logging
+    osMessageQueueId_t evManagerQueue = ACTORS_LOOKUP_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
+    osMessageQueuePut(evManagerQueue, &(message_t){GLOBAL_IMU_MEASUREMENTS_READY, .payload.value = fifo_level}, 0, 0);
   }
 
   return ret;

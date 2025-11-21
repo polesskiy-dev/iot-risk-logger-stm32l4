@@ -43,6 +43,7 @@ typedef enum {
   GLOBAL_WAKE_N_READ, ///> RTC wakes up event, mostly leads to the sensor measurements read
   GLOBAL_TEMPERATURE_HUMIDITY_MEASUREMENTS_READY, ///< Temperature and humidity measurements are ready
   GLOBAL_LIGHT_MEASUREMENTS_READY, ///< Light measurements are ready
+  GLOBAL_IMU_MEASUREMENTS_READY, ///< IMU measurements are ready
   GLOBAL_MEASUREMENTS_WRITE_SUCCESS, ///< Sensors measurements are successfully written to the NOR memory
   GLOBAL_LOG_CHUNK_READ_SUCCESS, ///< Log chunk is successfully read from the NOR memory
   GLOBAL_SETTINGS_WRITE_SUCCESS, ///< Settings are successfully written to the NOR memory
