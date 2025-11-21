@@ -295,9 +295,9 @@ static int32_t readFifoAndLog(IMU_Actor_t *this)
     fprintf(stdout, "IMU sample %u: %.2f mg, %.2f mg, %.2f mg\n",
             i, mg[0], mg[1], mg[2]);
 #endif
-
-    return ret;
   }
+
+  return ret;
 }
 
 // TODO refine this
