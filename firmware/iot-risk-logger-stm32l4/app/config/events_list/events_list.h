@@ -43,6 +43,7 @@ typedef enum {
   GLOBAL_WAKE_N_READ, ///> RTC wakes up event, mostly leads to the sensor measurements read
   GLOBAL_TEMPERATURE_HUMIDITY_MEASUREMENTS_READY, ///< Temperature and humidity measurements are ready
   GLOBAL_LIGHT_MEASUREMENTS_READY, ///< Light measurements are ready
+  GLOBAL_IMU_MEASUREMENTS_READY, ///< IMU measurements are ready
   GLOBAL_MEASUREMENTS_WRITE_SUCCESS, ///< Sensors measurements are successfully written to the NOR memory
   GLOBAL_LOG_CHUNK_READ_SUCCESS, ///< Log chunk is successfully read from the NOR memory
   GLOBAL_SETTINGS_WRITE_SUCCESS, ///< Settings are successfully written to the NOR memory
@@ -65,8 +66,6 @@ typedef enum {
   NFC_GPO_INTERRUPT,
   NEW_MAILBOX_RF_CMD,
   NFC_CRC_ERROR,
-  // ACCELEROMETER_SENSOR
-  // TODO: Add accelerometer events
   // TEMPERATURE_HUMIDITY_SENSOR
   TH_SENS_START_SINGLE_SHOT_READ,
   TH_SENS_TURN_OFF,
@@ -79,11 +78,15 @@ typedef enum {
   LIGHT_SENS_LIMIT_INT,
   LIGHT_SENS_RECOVER,
   LIGHT_SENS_ERROR,
+  // IMU Accelerometer
+  IMU_FIFO_WTM, ///< FIFO full watermark interrupt event
+  IMU_FREE_FALL_DETECTED, ///< Free-fall event detected by the IMU
   // MEMORY
   MEMORY_MEASUREMENTS_WRITE,
   // USB
   USB_CONNECTED,
   USB_DISCONNECTED,
+  //
   MAX_EVENTS
 } event_t;
 
