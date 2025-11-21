@@ -112,7 +112,7 @@ static osStatus_t handleTHSensorFSM(TH_SENS_Actor_t *this, message_t *message) {
 static osStatus_t handleInit(TH_SENS_Actor_t *this, message_t *message) {
   if (GLOBAL_CMD_INITIALIZE == message->event) {
     // provide IO functions to the sensor driver
-    osStatus_t ioStatus = SHT3x_InitIO(TH_SENS_I2C_ADDRESS, I2C_Send, I2C_Recv, delayMs, NULL);
+    osStatus_t ioStatus = SHT3x_InitIO(TH_SENS_I2C_ADDRESS, SensorsBus_Send, SensorsBus_Recv, delayMs, NULL);
 
     if (ioStatus != osOK) return osError;
 

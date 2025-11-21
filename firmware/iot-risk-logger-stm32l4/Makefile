@@ -126,7 +126,7 @@ app/core/fs_static/fs_static.c \
 app/core/info_led/info_led.c \
 app/config/actors_lookup/actors_lookup.c \
 app/config/events_list/events_list.c \
-app/config/bsp_bus/bsp_bus.c \
+app/core/sensors_bus/sensors_bus.c \
 app/tasks/event_manager/event_manager.c \
 app/drivers/opt3001/opt3001.c \
 app/drivers/sht3x/sht3x.c \
@@ -227,7 +227,7 @@ C_INCLUDES =  \
 -Ilibraries/fp-sns-stbox1/Middlewares/ST/ST25FTM/Inc \
 -Iapp/core/actor \
 -Iapp/core/trace \
--Iapp/config/bsp_bus \
+-Iapp/core/sensors_bus \
 -Iapp/core/fs_static \
 -Iapp/core/power_mode_manager \
 -Iapp/core/cron \

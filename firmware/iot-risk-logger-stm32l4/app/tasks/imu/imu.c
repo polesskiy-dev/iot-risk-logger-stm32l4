@@ -1,8 +1,9 @@
 /*!
  * @file imu.c
- * @brief Implementation of imu
+ * @brief Implementation of the IMU task for LIS2DW12 accelerometer management and data acquisition.
  *
- * Detailed description of the implementation file.
+ * This file contains the implementation of the IMU task responsible for managing the LIS2DW12 accelerometer,
+ * including its configuration, data acquisition, and event processing within the FreeRTOS environment.
  *
  * @date 19/11/2025
  * @author artempolisskyi
@@ -127,8 +128,8 @@ static osStatus_t handleInit(IMU_Actor_t *this, message_t *message) {
       .DeInit = BSP_I2C1_DeInit, // TODO verify should we use it at all
       .BusType = LIS2DW12_I2C_BUS,
       .Address = IMU_I2C_ADDRESS,
-      .WriteReg = BSP_I2C1_WriteReg,
-      .ReadReg = BSP_I2C1_ReadReg,
+      .WriteReg = SensorsBus_WriteReg,
+      .ReadReg = SensorsBus_ReadReg,
       .GetTick = BSP_GetTick,
       .Delay = (void(*)(uint32_t))osDelay // TODO verify should it be in ticks as osDelay or in ms
     };
@@ -295,9 +296,9 @@ static int32_t readFifoAndLog(IMU_Actor_t *this)
     fprintf(stdout, "IMU sample %u: %.2f mg, %.2f mg, %.2f mg\n",
             i, mg[0], mg[1], mg[2]);
 #endif
-
-    return ret;
   }
+
+  return ret;
 }
 
 // TODO refine this

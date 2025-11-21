@@ -45,7 +45,7 @@ typedef StaticTask_t osStaticThreadDef_t;
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
-osMutexId_t i2cMutexHandle;
+osMutexId_t i2c1MutexHandle;
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
@@ -77,7 +77,7 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */
-  i2cMutexHandle = osMutexNew(&(osMutexAttr_t){ .name = "i2cMutex" });
+  i2c1MutexHandle = osMutexNew(&(osMutexAttr_t){ .name = "i2cMutex" });
   /* USER CODE END RTOS_MUTEX */
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */

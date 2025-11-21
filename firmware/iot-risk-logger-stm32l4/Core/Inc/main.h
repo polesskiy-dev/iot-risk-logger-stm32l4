@@ -46,7 +46,7 @@ extern "C" {
 #include "imu.h"
 #include "cron.h"
 #include "info_led.h"
-#include "bsp_bus.h"
+#include "sensors_bus.h"
 
 /* USER CODE END Includes */
 

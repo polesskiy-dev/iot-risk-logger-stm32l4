@@ -1,6 +1,6 @@
 /*!
  * @file imu.h
- * @brief Brief description of the file.
+ * @brief IMU task interface for LIS2DW12 accelerometer management in the IoT Risk Logger firmware.
  *
  * This header file defines the interface for the IMU (Inertial Measurement Unit) actor/task
  * in the IoT Risk Logger firmware. It provides type definitions, constants, and function
