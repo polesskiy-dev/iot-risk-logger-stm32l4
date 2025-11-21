@@ -43,9 +43,10 @@ extern "C" {
 #include "memory.h"
 #include "temperature_humidity_sensor.h"
 #include "light_sensor.h"
+#include "imu.h"
 #include "cron.h"
 #include "info_led.h"
-#include "bsp_bus.h"
+#include "sensors_bus.h"
 
 /* USER CODE END Includes */
 

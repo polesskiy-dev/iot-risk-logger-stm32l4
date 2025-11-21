@@ -18,7 +18,7 @@ extern "C" {
 #include <stdio.h>
 
 #include "main.h"
-#include "bsp_bus.h"
+#include "sensors_bus.h"
 #include "sht3x.h"
 
 #define TH_SENS_I2C_ADDRESS (SHT3x_I2C_ADDR_44 << 1) // ADDR connected to GND due to OPT3001 address conflict

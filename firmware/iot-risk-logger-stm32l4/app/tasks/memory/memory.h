@@ -16,6 +16,7 @@ extern "C" {
 #endif
 
 #include <stdio.h>
+#include <stdint.h>
 
 #include "main.h"
 #include "quadspi.h"
@@ -35,14 +36,16 @@ extern "C" {
 #define MEMORY_LUX_ENTRY_SIZE                         (0x02)      /* 2 bytes */
 #define MEMORY_TEMPERATURE_ENTRY_SIZE                 (0x02)      /* 2 bytes */
 #define MEMORY_HUMIDITY_ENTRY_SIZE                    (0x04)      /* 2 bytes */
+#define MEMORY_ACCEL_ENTRY_SIZE                       (0x06)      /* 3 * 2 bytes (X, Y, Z) */
 #define RESERVED_ENTRY_SIZE                           (0x04)      /* 4 bytes */
-#define MEMORY_LOG_ENTRY_SIZE                         (MEMORY_TIMESTAMP_ENTRY_SIZE + MEMORY_TEMPERATURE_ENTRY_SIZE + MEMORY_HUMIDITY_ENTRY_SIZE + MEMORY_LUX_ENTRY_SIZE + RESERVED_ENTRY_SIZE)      /* 8 bytes */
+#define MEMORY_LOG_ENTRY_SIZE                         (MEMORY_TIMESTAMP_ENTRY_SIZE + MEMORY_TEMPERATURE_ENTRY_SIZE + MEMORY_HUMIDITY_ENTRY_SIZE + MEMORY_LUX_ENTRY_SIZE + MEMORY_ACCEL_ENTRY_SIZE + RESERVED_ENTRY_SIZE)
 
 #define MEMORY_CHUNKS_ARE_EQUAL                       (0)
 
 typedef enum {
   TEMPERATURE_HUMIDITY_MEASUREMENTS_READY_EVENT_FLAG = 0x01,
-  LIGHT_MEASUREMENTS_READY_EVENT_FLAG = 0x02
+  LIGHT_MEASUREMENTS_READY_EVENT_FLAG = 0x02,
+  IMU_MEASUREMENTS_READY_EVENT_FLAG = 0x04
 } MEMORY_MeasurementEventFlag_t;
 
 typedef enum {
@@ -55,7 +58,6 @@ typedef enum {
 
 /**
  * @brief Sensors measurements log entry
- * 16 bytes size
  * Contains timestamp, raw temperature, raw humidity, raw lux and reserved fields
  */
 typedef struct __attribute__((packed)) {
@@ -63,7 +65,10 @@ typedef struct __attribute__((packed)) {
   uint16_t rawTemperature;
   uint16_t rawHumidity;
   uint16_t rawLux;
-  uint32_t reserved; // 4 bytes reserved, can be event type, Accelerometer data, etc.
+  int16_t accelX;
+  int16_t accelY;
+  int16_t accelZ;
+  uint32_t reserved; // 4 bytes reserved, can be event type, extra info etc.
 } MEMORY_SensorsMeasurementEntry_t;
 
 typedef struct {

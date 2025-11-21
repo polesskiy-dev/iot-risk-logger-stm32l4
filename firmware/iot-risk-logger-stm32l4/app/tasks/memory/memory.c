@@ -260,6 +260,16 @@ static osStatus_t handleSleep(MEMORY_Actor_t *this, message_t *message) {
       TO_STATE(this, MEMORY_SLEEP_STATE);
       return osOK;
 
+    case GLOBAL_IMU_MEASUREMENTS_READY:
+      // set appropriate event flag
+      osEventFlagsSet(measurementsReadyEventFlags, IMU_MEASUREMENTS_READY_EVENT_FLAG);
+
+      // if both measurements are ready, emit write to the memory message
+      publishMemoryWriteOnMeasurementsReady(this);
+
+      TO_STATE(this, MEMORY_SLEEP_STATE);
+      return osOK;
+
     case MEMORY_MEASUREMENTS_WRITE:
       // wake up the chip
       W25Q_WakeUp(&MEMORY_W25QHandle);
@@ -353,8 +363,14 @@ static osStatus_t writeSettingsToMemory(MEMORY_Actor_t *this, uint8_t *settingsW
  * @brief Publishes MEMORY_MEASUREMENTS_WRITE message to the memory task on both measurements ready
  */
 static void publishMemoryWriteOnMeasurementsReady(MEMORY_Actor_t *this) {
-  if (osEventFlagsGet(measurementsReadyEventFlags) == (TEMPERATURE_HUMIDITY_MEASUREMENTS_READY_EVENT_FLAG | LIGHT_MEASUREMENTS_READY_EVENT_FLAG)) {
-    osEventFlagsClear(measurementsReadyEventFlags, TEMPERATURE_HUMIDITY_MEASUREMENTS_READY_EVENT_FLAG | LIGHT_MEASUREMENTS_READY_EVENT_FLAG);
+  const uint32_t readyMask = TEMPERATURE_HUMIDITY_MEASUREMENTS_READY_EVENT_FLAG |
+                             LIGHT_MEASUREMENTS_READY_EVENT_FLAG |
+                             IMU_MEASUREMENTS_READY_EVENT_FLAG;
+
+  const uint32_t currentFlags = osEventFlagsGet(measurementsReadyEventFlags);
+
+  if ((currentFlags & readyMask) == readyMask) {
+    osEventFlagsClear(measurementsReadyEventFlags, readyMask);
     osMessageQueuePut(this->super.osMessageQueueId, &(message_t) {MEMORY_MEASUREMENTS_WRITE}, 0, 0);
   }
 }
@@ -365,6 +381,7 @@ static osStatus_t appendMeasurementsToNORFlashLogTail(MEMORY_Actor_t *this) {
   // sensors actors pointers from the system registry
   TH_SENS_Actor_t *thSensActor = (TH_SENS_Actor_t *)ACTORS_LOOKUP_SystemRegistry[TEMPERATURE_HUMIDITY_SENSOR_ACTOR_ID];
   LIGHT_SENS_Actor_t *lightSensorActor = (LIGHT_SENS_Actor_t *)ACTORS_LOOKUP_SystemRegistry[LIGHT_SENSOR_ACTOR_ID];
+  IMU_Actor_t *imuActor = (IMU_Actor_t *)ACTORS_LOOKUP_SystemRegistry[IMU_ACTOR_ID];
 
   // current timestamp in UNIX format
   int32_t timestamp = CRON_GetCurrentUnixTimestamp();
@@ -375,16 +392,22 @@ static osStatus_t appendMeasurementsToNORFlashLogTail(MEMORY_Actor_t *this) {
           .rawTemperature = thSensActor->rawTemperature,
           .rawHumidity = thSensActor->rawHumidity,
           .rawLux = lightSensorActor->rawLux,
-          .reserved = 0x00000000
+          .accelX = imuActor->lastAcceleration[0],
+          .accelY = imuActor->lastAcceleration[1],
+          .accelZ = imuActor->lastAcceleration[2],
+          .reserved = 0
   };
 
   #ifdef DEBUG
-  fprintf(stdout, "Log entry to write:\n timestamp: %ld\n rawTemperature: 0x%x\n rawHumidity: 0x%x\n rawLux: 0x%x\n reserved: %ld\n",
+  fprintf(stdout, "Log entry to write:\n timestamp: %ld\n rawTemperature: 0x%x\n rawHumidity: 0x%x\n rawLux: 0x%x\n accelX: 0x%x\n accelY: 0x%x\n accelZ: 0x%x\n lastFifoLevel: %d\n",
             sensorsMeasurementEntry.timestamp,
             sensorsMeasurementEntry.rawTemperature,
             sensorsMeasurementEntry.rawHumidity,
             sensorsMeasurementEntry.rawLux,
-            sensorsMeasurementEntry.reserved);
+            sensorsMeasurementEntry.accelX,
+            sensorsMeasurementEntry.accelY,
+            sensorsMeasurementEntry.accelZ,
+            imuActor->lastFifoLevel & 0x000000FF);
   #endif
 
   // write measurements to the memory
