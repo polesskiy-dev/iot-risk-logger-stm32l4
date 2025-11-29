@@ -16,19 +16,19 @@ Useful payload for now is about 128 bytes. Due to I2C reading from NOR Flash and
 TODO: Should I add packet number / total data size in protocol? e.g. size could be in packets
 
 | Name       | Size, bytes | Description                                                                                                      | Example |
-|------------|------------|------------------------------------------------------------------------------------------------------------------|---------|
-| CRC8       | 1          | Checksum                                                                                                         | 0xAA |
-| Command ID | 1          | Command to process, response duplicates it                                                                       | 0xC1    |
-| Payload size | 1          | Useful data size in packet                                                                                       | 0x04    |
-| Payload | 0...253    | Useful data, for commands it could be address to read or settings<br/> for response it could be e,g chunk of log | 0xAA... |
+|------------|-------------|------------------------------------------------------------------------------------------------------------------|---------|
+| CRC8       | 1           | Checksum                                                                                                         | 0xAA |
+| Command ID | 1           | Command to process                                                                       | 0xC1    |
+| Payload size | 1           | Useful data size in packet                                                                                       | 0x04    |
+| Payload | 0...252     | Useful data, for commands it could be address to read or settings<br/> for response it could be e,g chunk of log | 0xAA... |
 
 #### Response Device -> Mobile
 | Name             | Size, bytes | Description                                                                                                      | Example |
-|------------------|------------|------------------------------------------------------------------------------------------------------------------|---------|
-| CRC8             | 1          | Checksum                                                                                                         | 0xAA    |
-| Response Code ID | 1          | Command to process, response duplicates it                                                                       | 0xFF    |
-| Payload size     | 1          | Actual data size in packet                                                                                       | 0x04    |
-| Payload          | 0...253    | Actual data, for commands it could be address to read or settings<br/> for response it could be e,g chunk of log | 0xAA... | 
+|------------------|-------------|------------------------------------------------------------------------------------------------------------------|---------|
+| CRC8             | 1           | Checksum                                                                                                         | 0xAA    |
+| Response Code ID | 1           | Response code                                                                                                    | 0xFF    |
+| Payload size     | 1           | Actual data size in packet                                                                                       | 0x04    |
+| Payload          | 0...252     | Actual data, for commands it could be address to read or settings<br/> for response it could be e,g chunk of log | 0xAA... | 
 
 #### Response Codes
 | Code | Description         |
