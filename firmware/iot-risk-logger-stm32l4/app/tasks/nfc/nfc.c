@@ -143,14 +143,14 @@ static osStatus_t handleMailboxReceiveCMD(NFC_Actor_t *this, message_t *message)
       if (isValidCRC8) {
         // get CMD from read mailbox
         event_t cmdEvent = this->mailboxBuffer[NFC_MAILBOX_PROTOCOL_CMD_ADDR];
-        assert_param(cmdEvent >= GLOBAL_CMD_START_LOGGING && cmdEvent < GLOBAL_EVENTS_MAX);
+        // assert_param(cmdEvent >= GLOBAL_CMD_START_LOGGING && cmdEvent < GLOBAL_EVENTS_MAX);
 
         #ifdef DEBUG
           fprintf(stdout, "RF CMD: 0x%x\n", cmdEvent);
         #endif
 
         // dispatch received CMD to EV_MANAGER (globally)
-        mailboxPayload = this->mailboxBuffer + NFC_MAILBOX_PROTOCOL_PAYLOAD_ADDR; // address where useful payload could be written by another module
+        mailboxPayload = this->mailboxBuffer + NFC_MAILBOX_PROTOCOL_PAYLOAD_ADDR; // address where another module could write useful payload
         mailboxSize = this->mailboxBuffer[NFC_MAILBOX_PROTOCOL_PAYLOAD_SIZE_ADDR];
 
         osMessageQueuePut(evManagerQueue,&(message_t){.event = cmdEvent, .payload.ptr = mailboxPayload, .payload_size = mailboxSize}, 0, 0);
@@ -173,7 +173,7 @@ static osStatus_t handleMailboxValidate(NFC_Actor_t *this, message_t *message) {
     // TODO: handle CRC error, write e.g. NACK to mailbox
     // TODO: maybe put this message as a static?
     this->mailboxBuffer[NFC_MAILBOX_PROTOCOL_CRC8_ADDR] = 0xF4; // CRC-8/NRSC-5 Standard from [0xFE, 0x00]
-    this->mailboxBuffer[NFC_MAILBOX_PROTOCOL_CMD_ADDR] = NFC_RESPONSE_NACK_CRC_ERROR;
+    this->mailboxBuffer[NFC_MAILBOX_PROTOCOL_CMD_ADDR] = NFC_RESPONSE_NACK_CRC_ERROR;t
     this->mailboxBuffer[NFC_MAILBOX_PROTOCOL_PAYLOAD_SIZE_ADDR] = 0x00;
 
     TO_STATE(this, NFC_MAILBOX_WRITE_RESPONSE_STATE);

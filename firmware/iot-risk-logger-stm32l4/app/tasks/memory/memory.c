@@ -168,22 +168,26 @@ static osStatus_t writeFAT12BootSector(MEMORY_Actor_t *this) {
   HAL_StatusTypeDef status = W25Q_EraseChip(&MEMORY_W25QHandle);
   if (status != HAL_OK) {
     #ifdef DEBUG
-      fprintf(stderr,  "memory error on chip erase");
-    #endif
-    return status;
-  }
-
-  // flash FAT12 boot sector
-  status = W25Q_WriteData(&MEMORY_W25QHandle, FAT12_BootSector, 0, FAT12_BOOT_SECTOR_SIZE);
-  if (status != HAL_OK) {
-    #ifdef DEBUG
-      fprintf(stderr,  "memory error on FAT12 write");
+      fprintf(stderr,  "memory error on chip erase\n");
     #endif
     return status;
   }
 
   #ifdef DEBUG
-    fprintf(stdout,  "FS FAT12 boot sector has been written on NOR Flash");
+    fprintf(stdout,  "Chip erased\n");
+  #endif
+
+  // flash FAT12 boot sector
+  status = W25Q_WriteData(&MEMORY_W25QHandle, FAT12_BootSector, 0, FAT12_BOOT_SECTOR_SIZE);
+  if (status != HAL_OK) {
+    #ifdef DEBUG
+      fprintf(stderr,  "memory error on FAT12 write\n");
+    #endif
+    return status;
+  }
+
+  #ifdef DEBUG
+    fprintf(stdout,  "FS FAT12 boot sector has been written on NOR Flash\n");
   #endif
 
   return status;
