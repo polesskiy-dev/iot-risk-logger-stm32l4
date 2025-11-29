@@ -372,10 +372,12 @@ void NFC_Task(void *argument)
             /* Dispatch command synchronously */
             result = nfc_handle_command(cmd, payload, payloadSize);
 
-            /* Build and send response */
-            uint8_t status = (result == NFC_OK) ? NFC_RESPONSE_OK : NFC_RESPONSE_ERROR;
-            size_t respLen = NFC_BuildResponse(NFC_Context.mailboxBuffer, cmd, status, NULL, 0);
-            NFC_Write(NFC_Context.mailboxBuffer, respLen);
+            /* Build and send response only if handler didn't already send one */
+            if (result != NFC_OK_RESPONSE_SENT) {
+                uint8_t status = (result == NFC_OK) ? NFC_RESPONSE_OK : NFC_RESPONSE_ERROR;
+                size_t respLen = NFC_BuildResponse(NFC_Context.mailboxBuffer, cmd, status, NULL, 0);
+                NFC_Write(NFC_Context.mailboxBuffer, respLen);
+            }
         }
     }
 }
@@ -489,6 +491,7 @@ static int nfc_dispatch_write_settings(const uint8_t *payload, size_t payloadLen
 /**
  * @brief Read settings command handler
  * @note Settings data will be placed in response payload
+ * @return NFC_OK_RESPONSE_SENT on success (response already sent), negative error code on failure
  */
 static int nfc_dispatch_read_settings(void)
 {
@@ -528,12 +531,13 @@ static int nfc_dispatch_read_settings(void)
     fprintf(stdout, "NFC: Settings read and sent (%zu bytes)\n", SETTINGS_DATA_SIZE);
 #endif
 
-    return NFC_OK;
+    return NFC_OK_RESPONSE_SENT;
 }
 
 /**
  * @brief Read log chunk command handler
  * @note Payload should contain the log address offset
+ * @return NFC_OK_RESPONSE_SENT on success (response already sent), negative error code on failure
  */
 static int nfc_dispatch_read_log_chunk(const uint8_t *payload, size_t payloadLen)
 {
@@ -594,5 +598,5 @@ static int nfc_dispatch_read_log_chunk(const uint8_t *payload, size_t payloadLen
             (unsigned long)logAddr, maxLogSize, isEndOfLog);
 #endif
 
-    return NFC_OK;
+    return NFC_OK_RESPONSE_SENT;
 }

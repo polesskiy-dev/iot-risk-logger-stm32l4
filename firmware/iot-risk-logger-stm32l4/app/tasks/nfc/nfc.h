@@ -68,6 +68,7 @@ extern "C" {
  * @{
  */
 #define NFC_OK                        0     /**< Operation successful */
+#define NFC_OK_RESPONSE_SENT          1     /**< Success, response already sent by handler */
 #define NFC_ERROR                    -1     /**< General error */
 #define NFC_ERROR_CRC                -2     /**< CRC validation error */
 #define NFC_ERROR_INVALID_CMD        -3     /**< Invalid command received */
