@@ -536,17 +536,19 @@ static int nfc_dispatch_read_settings(void)
 
 /**
  * @brief Read log chunk command handler
- * @note Payload should contain the log address offset
+ * @note Payload should contain the log address offset (4 bytes, little-endian)
+ * @note End-of-log is detected by checking if all bytes are 0xFF (erased flash state)
+ *       This is standard for NOR flash memory where erased state is 0xFF
  * @return NFC_OK_RESPONSE_SENT on success (response already sent), negative error code on failure
  */
 static int nfc_dispatch_read_log_chunk(const uint8_t *payload, size_t payloadLen)
 {
     uint32_t logAddr;
-    uint8_t logBuffer[ST25DV_MAX_MAILBOX_LENGTH - NFC_MAILBOX_PROTOCOL_HEADER_SIZE - 1];
+    uint8_t logBuffer[NFC_MAX_LOG_CHUNK_SIZE];
 
     /* Extract log address from payload (4 bytes, little-endian) */
-    if (payloadLen >= 4) {
-        logAddr = payload[0] | (payload[1] << 8) | (payload[2] << 16) | (payload[3] << 24);
+    if (payloadLen >= sizeof(uint32_t)) {
+        memcpy(&logAddr, payload, sizeof(uint32_t));  /* Safe on little-endian STM32 */
     } else {
         logAddr = INITIAL_LOG_START_ADDR;
     }
@@ -570,7 +572,10 @@ static int nfc_dispatch_read_log_chunk(const uint8_t *payload, size_t payloadLen
         return NFC_ERROR_IO;
     }
 
-    /* Check if we've reached end of log (all 0xFF means empty) */
+    /*
+     * Check if we've reached end of log (all 0xFF means empty/erased flash)
+     * This is the standard erased state for NOR flash memory
+     */
     bool isEndOfLog = true;
     for (size_t i = 0; i < maxLogSize; i++) {
         if (logBuffer[i] != 0xFF) {
