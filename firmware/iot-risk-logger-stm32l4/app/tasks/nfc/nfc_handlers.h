@@ -1,3 +1,13 @@
+/**
+ * @file nfc_handlers.h
+ * @brief NFC GPO interrupt and mailbox helper functions for ST25DV.
+ *
+ * This module provides low-level helper functions for NFC operations.
+ *
+ * @date 17/07/2024
+ * @author artempolisskyi
+ */
+
 #ifndef NFC_HANDLERS_H
 #define NFC_HANDLERS_H
 
@@ -6,21 +16,29 @@ extern "C" {
 #endif
 
 #include <stdio.h>
+#include <stdint.h>
 
 #include "main.h"
 #include "st25dv.h"
 #include "custom_bus.h"
 #include "cmsis_os2.h"
-#include "nfc.h"
+
+/* Mailbox read offset */
+#define MAILBOX_START_OFFSET 0x00
+
+/* Forward declaration */
+struct NFC_Context_t;
+
+/**
+ * @brief GPO interrupt callback handler
+ *
+ * Called from HAL GPIO EXTI callback when ST25DV GPO pin triggers.
+ * Posts NFC_GPO_INTERRUPT event to the NFC task queue.
+ */
+void NFC_GPOInterruptCallback(void);
 
 #ifdef __cplusplus
 }
 #endif
 
-#define MAILBOX_START_OFFSET 0x00
-
-int32_t NFC_ST25DVInit(ST25DV_Object_t *pObj);
-void NFC_HandleGPOInterrupt(ST25DV_Object_t *pObj);
-int32_t NFC_ReadMailboxTo(ST25DV_Object_t *pObj, uint8_t pMailboxBuffer[ST25DV_MAX_MAILBOX_LENGTH]);
-
-#endif //NFC_HANDLERS_H
+#endif /* NFC_HANDLERS_H */
