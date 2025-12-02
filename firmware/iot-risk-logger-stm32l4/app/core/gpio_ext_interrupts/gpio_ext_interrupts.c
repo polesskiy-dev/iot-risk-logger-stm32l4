@@ -13,8 +13,8 @@
 extern actor_t* ACTORS_LOOKUP_SystemRegistry[MAX_ACTORS];
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-  if (GPIO_Pin == USB_VBUS_SENSE_Pin) {
-    GPIO_PinState usbVBusPin = HAL_GPIO_ReadPin(USB_VBUS_SENSE_GPIO_Port, USB_VBUS_SENSE_Pin);
+  if (GPIO_Pin == USB_VBUS_SENSE_WKUP2_Pin) {
+    GPIO_PinState usbVBusPin = HAL_GPIO_ReadPin(USB_VBUS_SENSE_WKUP2_GPIO_Port, USB_VBUS_SENSE_WKUP2_Pin);
     osMessageQueueId_t evManagerQueue = ACTORS_LOOKUP_SystemRegistry[EV_MANAGER_ACTOR_ID]->osMessageQueueId;
 
     if (usbVBusPin == GPIO_PIN_SET) {
@@ -31,7 +31,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
   }
 
   // TODO maybe check only falling edge (configure in CubeMX)
-  if (GPIO_Pin == _NFC_INT_Pin) {
+  if (GPIO_Pin == NFC_INT_WKUP_Pin) {
 #ifdef DEBUG
     fprintf(stdout, "NFC GPO Interrupt\n");
 #endif

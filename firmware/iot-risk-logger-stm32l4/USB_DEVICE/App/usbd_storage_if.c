@@ -7,7 +7,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -128,7 +128,7 @@ const int8_t STORAGE_Inquirydata_FS[] = {/* 36 */
 extern USBD_HandleTypeDef hUsbDeviceFS;
 
 /* USER CODE BEGIN EXPORTED_VARIABLES */
-extern W25Q_HandleTypeDef MEMORY_W25QHandle;
+
 /* USER CODE END EXPORTED_VARIABLES */
 
 /**
@@ -191,7 +191,9 @@ int8_t STORAGE_Init_FS(uint8_t lun)
 int8_t STORAGE_GetCapacity_FS(uint8_t lun, uint32_t *block_num, uint16_t *block_size)
 {
   /* USER CODE BEGIN 3 */
-  return STORAGE_GetCapacity(lun, block_num, block_size);
+  *block_num  = STORAGE_BLK_NBR;
+  *block_size = STORAGE_BLK_SIZ;
+  return (USBD_OK);
   /* USER CODE END 3 */
 }
 
@@ -203,7 +205,7 @@ int8_t STORAGE_GetCapacity_FS(uint8_t lun, uint32_t *block_num, uint16_t *block_
 int8_t STORAGE_IsReady_FS(uint8_t lun)
 {
   /* USER CODE BEGIN 4 */
-  return STORAGE_IsReady(lun);
+  return (USBD_OK);
   /* USER CODE END 4 */
 }
 
@@ -227,7 +229,7 @@ int8_t STORAGE_IsWriteProtected_FS(uint8_t lun)
 int8_t STORAGE_Read_FS(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t blk_len)
 {
   /* USER CODE BEGIN 6 */
-  return STORAGE_Read(lun, buf, blk_addr, blk_len);
+  return (USBD_OK);
   /* USER CODE END 6 */
 }
 
@@ -239,7 +241,7 @@ int8_t STORAGE_Read_FS(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t bl
 int8_t STORAGE_Write_FS(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t blk_len)
 {
   /* USER CODE BEGIN 7 */
-  return STORAGE_Write(lun, buf, blk_addr, blk_len);
+  return (USBD_OK);
   /* USER CODE END 7 */
 }
 

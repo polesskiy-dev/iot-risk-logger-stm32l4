@@ -27,6 +27,7 @@ extern "C" {
 /* Exported defines ----------------------------------------------------------*/
 #define UNKNOWN_UNICLEO_ID          0xFF
 
+/* ACC GYR */
 #define LSM6DS0_UNICLEO_ID          1
 #define LSM6DS3_UNICLEO_ID          2
 #define LSM6DSL_UNICLEO_ID          3
@@ -66,13 +67,23 @@ extern "C" {
 #define LIS2DUX12_UNICLEO_ID        37
 #define LIS2DUXS12_UNICLEO_ID       38
 #define LSM6DSV32X_UNICLEO_ID       39
+#define ISM330BX_UNICLEO_ID         40
+#define ST1VAFE6AX_UNICLEO_ID       41
+#define LSM6DSV256X_UNICLEO_ID      42
+#define LSM6DSV80X_UNICLEO_ID       43
+#define IIS2DULPX_UNICLEO_ID        44
+#define LSM6DSV320X_UNICLEO_ID      45
+#define ST1VAFE3BX_UNICLEO_ID       46
+#define ISM6HG256X_UNICLEO_ID       47
 
+/* MAG */
 #define LIS3MDL_UNICLEO_ID          1
 #define LSM303AGR_UNICLEO_ID_MAG    2
 #define LIS2MDL_UNICLEO_ID          3
 #define IIS2MDC_UNICLEO_ID          4
 #define ISM303DAC_UNICLEO_ID_MAG    5
 
+/* PRESS */
 #define LPS25HB_UNICLEO_ID_ONBOARD  1
 #define LPS25HB_UNICLEO_ID_DIL      2
 #define LPS22HB_UNICLEO_ID          3
@@ -86,6 +97,7 @@ extern "C" {
 #define ILPS28QSW_UNICLEO_ID        11
 #define LPS28DFW_UNICLEO_ID         12
 
+/* HUM TEMP GAS TMOS */
 #define HTS221_UNICLEO_ID           1
 #define STTS751_UNICLEO_ID          2
 #define STTS22H_UNICLEO_ID          3

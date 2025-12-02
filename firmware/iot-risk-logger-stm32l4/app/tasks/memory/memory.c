@@ -21,6 +21,8 @@ static osStatus_t writeSettingsToMemory(MEMORY_Actor_t *this, uint8_t *settingsW
 static void publishMemoryWriteOnMeasurementsReady(MEMORY_Actor_t *this);
 static osStatus_t appendMeasurementsToNORFlashLogTail(MEMORY_Actor_t *this);
 
+extern QSPI_HandleTypeDef hqspi;
+
 extern actor_t* ACTORS_LOOKUP_SystemRegistry[MAX_ACTORS];
 extern uint8_t FAT12_BootSector[FAT12_BOOT_SECTOR_SIZE];
 

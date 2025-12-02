@@ -18,7 +18,6 @@ extern "C" {
 #include <stdio.h>
 
 #include "main.h"
-#include "quadspi.h"
 #include "w25q.h"
 #include "fs_static.h"
 

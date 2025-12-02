@@ -16,6 +16,7 @@ extern "C" {
 #endif
 
 #include <stdio.h>
+#include <stdint.h>
 
 // FAT12 boot sector
 #define FAT12_SECTOR_SIZE       (512)

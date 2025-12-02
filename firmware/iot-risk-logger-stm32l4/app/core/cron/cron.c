@@ -18,6 +18,8 @@ static osStatus_t setWakeUpPeriod(uint32_t periodSeconds);
 static HAL_StatusTypeDef setCurrentTime(void);
 static HAL_StatusTypeDef setCurrentDate(void);
 
+extern RTC_HandleTypeDef hrtc;
+
 CRON_Actor_t CRON_Actor = {
   .super = {
     .actorId = CRON_ACTOR_ID,
@@ -102,7 +104,7 @@ static osStatus_t setWakeUpPeriod(uint32_t periodSeconds) {
 
   uint32_t wakeUpCounter = periodSeconds - 1; // Adjust for 0-based counter
 
-  if (HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, wakeUpCounter, RTC_WAKEUPCLOCK_CK_SPRE_16BITS, WAKE_UP_AUTO_CLEAR) != HAL_OK) {
+  if (HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, wakeUpCounter, RTC_WAKEUPCLOCK_CK_SPRE_16BITS) != HAL_OK) {
     return osError;
   }
 

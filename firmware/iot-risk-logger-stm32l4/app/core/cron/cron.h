@@ -21,7 +21,6 @@ extern "C" {
 #include <time.h>
 
 #include "main.h"
-#include "rtc.h"
 
 #define YEARS_FROM_1900_TO_2000 100
 #define WAKE_UP_AUTO_CLEAR 1 ///< Auto-clear the wake-up event, especially useful in low-power modes.

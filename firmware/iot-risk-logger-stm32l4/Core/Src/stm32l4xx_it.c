@@ -56,7 +56,6 @@
 
 /* External variables --------------------------------------------------------*/
 extern PCD_HandleTypeDef hpcd_USB_FS;
-extern RTC_HandleTypeDef hrtc;
 extern TIM_HandleTypeDef htim6;
 
 /* USER CODE BEGIN EV */
@@ -162,20 +161,6 @@ void DebugMon_Handler(void)
 /******************************************************************************/
 
 /**
-  * @brief This function handles RTC wake-up interrupt through EXTI line 20.
-  */
-void RTC_WKUP_IRQHandler(void)
-{
-  /* USER CODE BEGIN RTC_WKUP_IRQn 0 */
-  SEGGER_SYSVIEW_RecordEnterISR();
-  /* USER CODE END RTC_WKUP_IRQn 0 */
-  HAL_RTCEx_WakeUpTimerIRQHandler(&hrtc);
-  /* USER CODE BEGIN RTC_WKUP_IRQn 1 */
-  SEGGER_SYSVIEW_RecordExitISR();
-  /* USER CODE END RTC_WKUP_IRQn 1 */
-}
-
-/**
   * @brief This function handles EXTI line0 interrupt.
   */
 void EXTI0_IRQHandler(void)
@@ -183,24 +168,10 @@ void EXTI0_IRQHandler(void)
   /* USER CODE BEGIN EXTI0_IRQn 0 */
   SEGGER_SYSVIEW_RecordEnterISR();
   /* USER CODE END EXTI0_IRQn 0 */
-  HAL_GPIO_EXTI_IRQHandler(_NFC_INT_Pin);
+  HAL_GPIO_EXTI_IRQHandler(NFC_INT_WKUP_Pin);
   /* USER CODE BEGIN EXTI0_IRQn 1 */
   SEGGER_SYSVIEW_RecordExitISR();
   /* USER CODE END EXTI0_IRQn 1 */
-}
-
-/**
-  * @brief This function handles EXTI line1 interrupt.
-  */
-void EXTI1_IRQHandler(void)
-{
-  /* USER CODE BEGIN EXTI1_IRQn 0 */
-  SEGGER_SYSVIEW_RecordEnterISR();
-  /* USER CODE END EXTI1_IRQn 0 */
-  HAL_GPIO_EXTI_IRQHandler(_LIGHT_INT_Pin);
-  /* USER CODE BEGIN EXTI1_IRQn 1 */
-  SEGGER_SYSVIEW_RecordExitISR();
-  /* USER CODE END EXTI1_IRQn 1 */
 }
 
 /**
@@ -214,24 +185,24 @@ void EXTI9_5_IRQHandler(void)
   HAL_GPIO_EXTI_IRQHandler(TEMP_INT_Pin);
   HAL_GPIO_EXTI_IRQHandler(IMU_INT1_Pin);
   HAL_GPIO_EXTI_IRQHandler(IMU_INT2_Pin);
-  HAL_GPIO_EXTI_IRQHandler(USB_VBUS_SENSE_Pin);
+  HAL_GPIO_EXTI_IRQHandler(LIGHT_INT_N_Pin);
   /* USER CODE BEGIN EXTI9_5_IRQn 1 */
   SEGGER_SYSVIEW_RecordExitISR();
   /* USER CODE END EXTI9_5_IRQn 1 */
 }
 
 /**
-  * @brief This function handles TIM6 global interrupt.
+  * @brief This function handles TIM6 global interrupt, DAC channel1 and channel2 underrun error interrupts.
   */
-void TIM6_IRQHandler(void)
+void TIM6_DAC_IRQHandler(void)
 {
-  /* USER CODE BEGIN TIM6_IRQn 0 */
-  SEGGER_SYSVIEW_RecordEnterISR();
-  /* USER CODE END TIM6_IRQn 0 */
+  /* USER CODE BEGIN TIM6_DAC_IRQn 0 */
+
+  /* USER CODE END TIM6_DAC_IRQn 0 */
   HAL_TIM_IRQHandler(&htim6);
-  /* USER CODE BEGIN TIM6_IRQn 1 */
-  SEGGER_SYSVIEW_RecordExitISR();
-  /* USER CODE END TIM6_IRQn 1 */
+  /* USER CODE BEGIN TIM6_DAC_IRQn 1 */
+
+  /* USER CODE END TIM6_DAC_IRQn 1 */
 }
 
 /**
@@ -240,11 +211,11 @@ void TIM6_IRQHandler(void)
 void USB_IRQHandler(void)
 {
   /* USER CODE BEGIN USB_IRQn 0 */
-  SEGGER_SYSVIEW_RecordEnterISR();
+
   /* USER CODE END USB_IRQn 0 */
   HAL_PCD_IRQHandler(&hpcd_USB_FS);
   /* USER CODE BEGIN USB_IRQn 1 */
-  SEGGER_SYSVIEW_RecordExitISR();
+
   /* USER CODE END USB_IRQn 1 */
 }
 
